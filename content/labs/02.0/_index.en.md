@@ -1,53 +1,64 @@
 ---
-title: "2.0 - Documentation"
+title: "2.0 - Create a simple Chart"
 weight: 20
 ---
 
+
 ### Task 1
 
-- Print out a list of all Ansible modules in your terminal
+```bash
+helm create mychart
+```
 
-{{% notice note %}} 
- Don’t be rattled about the massive amount of modules you’ll see in your terminal.
-{{% /notice %}}
+This template is already a valid and fully functional chart which deploys NGINX. Have a look now on the generated files and their content. For an explanation of the files, visit the [Helm Developer Documentation](https://docs.helm.sh/developing_charts/#the-chart-file-structure). In a later Section you find all the information about Helm templates
 
-- Print out information about the Ansible module `file` in your terminal
 
 ### Task 2
 
-- Find the official online documentation of Ansible in your browser
-- Visit the module index (e.g. list of all modules) in the online documentation
-- Use the search field in the upper left of the webpage and also use the search field in the lower right
+Before actually deploying our generated chart, we can check the (to be) generated Kubernetes ressources with the following Command:
 
-### Task 3 (Advanced)
-
-- By installing the `ansible-doc` package, not only the command itself gets installed but also a lot of additional documentation. Use your package-managers functionality to find out what files are installed with `yum install ansible-doc`.
-- Now find documentation about jinja2 on the controller.
-
-### Solutions
-
-{{% collapse solution-1 "Solution 1" %}}
 ```bash
-$ ansible-doc -l
-$ ansible-doc file
-$ ansible-doc -s file
+helm install --dry-run --debug --namespace [USER]-dockerimage mychart
 ```
-{{% /collapse %}}
 
-{{% collapse solution-2 "Solution 2" %}}
-- visit [Ansible Docs](https://docs.ansible.com/)
-- visit [Ansible Docs - Modules by category](https://docs.ansible.com/ansible/latest/modules/modules_by_category.html)
-{{% /collapse %}}
+Finally, the following command creates a new Release with the Helm chart and deploys the application::
 
-{{% collapse solution-3 "Solution 3" %}}
-One way to find a list of provided documentation:
 ```bash
-$ yum install -y yum-utils # (if needed)
-$ repoquery ansible-doc -l
-``` 
-
-You can also search for files in `/usr/share/doc`:
-```bash
-$ ls -lahr /usr/share/doc/ | grep jinja2
+helm install mychart --namespace [USER]-dockerimage
 ```
-{{% /collapse %}}
+
+With kubectl get pods --namespace [USER]-dockerimage you should see a new Pod. You can list the newly created Helm release with 
+the following command:
+
+```bash
+helm ls --namespace [USER]-dockerimage
+```
+
+
+### Task 3
+
+Your deployed NGINX is not yet accessible from external. To expose it, you have to change the Service Type to NodePort. Search 
+now for the service type definition in your chart and make the change. You can apply your change with the following command:
+
+```bash
+helm upgrade [RELEASE] --namespace [namespace] mychart
+```
+
+As soon as the Service has a NodePort, you will see it with the following command (As we use -w (watch) you have to terminate the command with CTRL-C):
+
+```bash
+kubectl get svc --namespace [namespace] -w
+```
+
+NGINX is now available at the given NodePort and should display a welcome-page when accessing it with curl or you can also open the page in your browser:
+
+
+### Task 4
+
+To remove an application, you can simply remove the Helm release with the following command:
+
+```bash
+helm delete [RELEASE]
+```
+
+With `kubectl get pods --namespace [USER]-dockerimage` you should now longer see your application Pod.

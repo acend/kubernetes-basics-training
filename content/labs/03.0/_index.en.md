@@ -1,145 +1,86 @@
 ---
-title: "3.0 - Setup and AdHoc Commands"
+title: "3.0 - Deploy a more complex Application"
 weight: 30
 ---
 
-In this lab we’ll continue with our environment setup from [Lab 1](../lab-01) and learn how to run ad hoc commands.
+In this extended lab, we are going to deploy an existing application with a Helm chart
 
-### Task 1
+### Helm Hub
 
-  - Ping all nodes in the inventory file using the ping module
+Check out [Helm Hub](https://hub.helm.sh/), there you find a lot of Helm charts. For this lab, we choose [HackMD](https://hub.helm.sh/charts/stable/hackmd) a realtime, multiplatform collaborative markdown note editor.
 
-{{% notice tip %}}
-You’ve used the `ping` module in a previous lab.
-{{% /notice %}}
+### HackMD
 
-### Task 2
+The official HackMD Helm-Chart ist published in the stable Helm repository. First, make sure that you have the stable repo added in your Helm client.
 
-  - Gather all facts from the nodes.
-  - Only gather the fact `ansible_default_ipv4` from all hosts.
-
-### Task 3
-
-  - Search through the online documentation for special (magical) variables.
-  - Which special variable you could use to set the `hostname` on each of the servers using the information in the `inventory` file?
-
-### Task 4
-
-  - Try to find an appropriate Ansible module to complete Task 3. Find out what parameters the module accepts.
-  - This module will try make changes to the `/etc/hostname` file. What options should you use with the `ansible` command for it to work?
-
-### Task 5
-
-  - Set the hostname on all nodes using the inventory and an ansible ad-hoc command.
-  - Check on all nodes if the `hostname` has been changed.
-
-### Task 6
-
-Complete the next steps using Ansible ad hoc commands:
-
-  - Install `httpd` on the nodes in group `web`
-  - Start `httpd` on the remote server and configure it to always start on boot.
-  - Revert the changes made by the ad hoc commands again.
-
-### Task 7
-
-Complete the next steps using ansible ad hoc commands:
-
-  - Create a file `/home/ansible/testfile.txt` on node2.
-  - Paste some custom text into the file using the `copy` module.
-  - Remove the file with an ad hoc command.
-
-## Solutions
-
-{{% collapse solution-1 "Solution 1" %}}
-```bash
-$ ansible all -i hosts -m ping
-5.102.146.128 | SUCCESS => {
-    "ansible_facts": {
-        "discovered_interpreter_python": "/usr/bin/python"
-    },
-    "changed": false,
-    "ping": "pong"
-}
-...
-...
 ```
-{{% /collapse %}}
-
-{{% collapse solution-2 "Solution 2" %}}
-```bash
-$ ansible all -i hosts -m setup # (a lot of green output should be printed)
-$ ansible all -i hosts -m setup -a "filter=ansible_default_ipv4"
-5.102.146.204 | SUCCESS => {
-    "ansible_facts": {
-        "ansible_default_ipv4": {
-            "address": "5.102.146.204",
-            "alias": "eth0",
-            "broadcast": "5.102.146.255",
-            "gateway": "5.102.146.1",
-            "interface": "eth0",
-            "macaddress": "5a:42:05:66:92:cc",
-            "mtu": 1500,
-            "netmask": "255.255.255.0",
-            "network": "5.102.146.0",
-            "type": "ether"
-        },
-        "discovered_interpreter_python": "/usr/bin/python"
-    },
-    "changed": false
-}
-...
-...
+helm repo list
+NAME           	URL                                              
+stable         	https://kubernetes-charts.storage.googleapis.com 
+local          	http://127.0.0.1:8879/charts
 ```
-{{% /collapse %}}
 
-{{% collapse solution-3 "Solution 3" %}}
-  - See Ansible docs for special variables: <https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html>
-  - `inventory_hostname` can be set to the hostname on the servers.
-{{% /collapse %}}
 
-{{% collapse solution-4 "Solution 4" %}}
+which should already be the case. If, for any reason, you don't have the stable repo, you can add it by typing:
 
-```bash
-$ ansible-doc -l | grep hostname # or see webpage
-bigip_hostname                                         Manage the hostname of a BIG-IP
-hostname                                               Manage hostname
-win_hostname                                           Manages local Windows computer name
-
-$ ansible-doc -s hostname
-- name: Manage hostname
-  hostname:
-      name:                  # (required) Name of the host
 ```
-  - We will need root privileges and therefore we have to use the become option `-b`
-{{% /collapse %}}
-
-{{% collapse solution-5 "Solution 5" %}}
-```bash
-$ ansible all -i hosts -b -m hostname -a "name={{ inventory_hostname }}"
-$ ansible all -i hosts -b -a "cat /etc/hostname"
-``` 
-{{% /collapse %}}
-    
-
-{{% collapse solution-6 "Solution 6" %}}
-```bash
-$ ansible web -i hosts -b -m yum -a "name=httpd state=installed"
-$ ansible web -i hosts -b -m service -a "name=httpd state=started enabled=yes"
-``` 
-
-Reverting the changes made on the remote hosts:
-
-```bash
-$ ansible web -i hosts -b -m service -a "name=httpd state=stopped enabled=no"
-$ ansible web -i hosts -b -m yum -a "name=httpd state=absent"
+helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 ```
-{{% /collapse %}}
 
-{{% collapse solution-7 "Solution 7" %}}
-```bash
-$ ansible node2 -i hosts -b -m file -a "path=/home/ansible/testfile.txt state=touch"
-$ ansible node2 -i hosts -b -m copy -a "dest=/home/ansible/testfile.txt content='SOME RANDOM TEXT'"
-$ ansible node2 -i hosts -b -m file -a "path=/home/ansible/testfile.txt state=absent"
+Let's check the available configuration for this Helm chart. Normally you find them in the `values.yaml` File inside the repository or described in the charts readme.
+
+We are going to override some of the values, for that purpose, create a new values.yaml file locally on your workstation with the following content:
+
+```yaml
+image:
+  tag: 1.3.0-alpine
+persistence:
+  storageClass: TODO
+  size: 1Gi
+ingress:
+  enabled: true
+  hosts:
+    - TODO
+postgresql:
+  persistence:
+    size: 1Gi
+    storageClass: TODO
+  postgresPassword: my-secret-password
 ```
-{{% /collapse %}}
+
+
+If you look inside the requirements.yaml file of the HackMD Chart you see a dependency to the postgresql Helm chart. All the postgresql values are used by this dependent Helm chart and the chart is automaticly deployed when installing HackMD.
+
+Now deploy the application with:
+
+```
+helm install -f values.yaml stable/hackmd
+```
+
+Watch the deployed application with helm ls and also check the Rancher WebGUI for the newly created Deployments, the Ingress and also the PersistenceVolumeClaim.
+
+```
+helm ls
+NAME             	REVISION	UPDATED                 	STATUS  	CHART       	APP VERSION 	NAMESPACE        
+altered-billygoat	1       	Thu Sep 26 14:06:59 2019	DEPLOYED	hackmd-1.2.1	1.3.0-alpine	team1-dockerimage
+```
+
+As soon as all Deployments are ready (hackmd and postgres) you can open the application with the URL from your `values.yaml` file or by using the link inside the Rancher WebGUI.
+
+
+### Upgrade
+
+We are now going to upgrade the application to a newer Container image. You can do this with:
+
+```
+helm upgrade --reuse-values --set image.tag=1.3.1-alpine quiet-squirrel stable/hackmd
+```
+
+*Note*: Make sure to use the correct release name, as shown with the helm ls command.
+
+
+And then observe how the Deployment was changed to a the new container image tag.
+
+### Cleanup
+
+helm delete --purge altered-billygoat
