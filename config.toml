@@ -6,7 +6,7 @@ enableGitInfo = true
 languageCode = "en-us"
 
 # site title
-title = "Puzzle Ansible Techlabs"
+title = "Puzzle HELM Techlabs"
 
 # theme
 theme = "dot"
@@ -36,12 +36,12 @@ textColorDark = "#242738"
 whiteColor = "#ffffff"
 
 # public Git Repo - used for "improve this page" links
-gitRepoUrl = "https://github.com/puzzle/ansible-techlab"
+gitRepoUrl = "https://github.com/puzzle/helm-techlab"
 
 ############################## social links ##############################
 [[params.social]]
 icon = "ti-github" # themify icon pack : https://themify.me/themify-icons
-link = "https://github.com/puzzle/ansible-techlab"
+link = "https://github.com/puzzle/helm-techlab"
 
 [[params.social]]
 icon = "ti-twitter-alt" # themify icon pack : https://themify.me/themify-icons
@@ -73,8 +73,8 @@ link = "https://linkedin.com/company/puzzle-itc"
 
     # banner
     [Languages.en.params.banner]
-      title = "Puzzle Ansible Techlabs"
-      description = "Learning Ansible from the ground up"
+      title = "Puzzle HELM Techlabs"
+      description = "Learning HELM from the ground up"
       image = "images/pic_puzzle_man.png"
       placeholder = "Just enter terms to query our labs content"
 
