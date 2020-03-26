@@ -6,7 +6,7 @@ enableGitInfo = true
 languageCode = "en-us"
 
 # site title
-title = "Puzzle HELM Techlabs"
+title = "Kubernetes Techlabs"
 
 # theme
 theme = "dot"
