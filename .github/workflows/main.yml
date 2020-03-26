@@ -14,4 +14,4 @@ jobs:
           -F "ref=master" \
           -F "variables[GITHUB_SHA]=$GITHUB_SHA" \
           -F "variables[GITHUB_REF]=$GITHUB_REF" \
-          https://gitlab.puzzle.ch/api/v4/projects/1850/trigger/pipeline
+          https://gitlab.puzzle.ch/api/v4/projects/1863/trigger/pipeline
