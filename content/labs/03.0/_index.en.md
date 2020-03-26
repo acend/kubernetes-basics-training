@@ -1,86 +1,112 @@
 ---
-title: "3.0 - Deploy a more complex Application"
+title: "3.0 - First steps in the lab environment"
 weight: 30
 ---
 
-In this extended lab, we are going to deploy an existing application with a Helm chart
+# Lab 3: First steps in the lab environment
 
-### Helm Hub
-
-Check out [Helm Hub](https://hub.helm.sh/), there you find a lot of Helm charts. For this lab, we choose [HackMD](https://hub.helm.sh/charts/stable/hackmd) a realtime, multiplatform collaborative markdown note editor.
-
-### HackMD
-
-The official HackMD Helm-Chart ist published in the stable Helm repository. First, make sure that you have the stable repo added in your Helm client.
-
-```
-helm repo list
-NAME           	URL                                              
-stable         	https://kubernetes-charts.storage.googleapis.com 
-local          	http://127.0.0.1:8879/charts
-```
+In this excercise we will interact for the first time with the lab environment, both with `kubectl` as well as via web console.
 
 
-which should already be the case. If, for any reason, you don't have the stable repo, you can add it by typing:
+## Preparation for the labs
+
+Please clone the git repository, to have a local copy of all necessary excercises.
 
 ```
-helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+$ cd [Git Repo Project Folder]
+$ git clone https://github.com/puzzle/kubernetes-techlab.git
 ```
 
-Let's check the available configuration for this Helm chart. Normally you find them in the `values.yaml` File inside the repository or described in the charts readme.
+As a fallback the repository can be downloaded as [zip file](https://github.com/puzzle/kubernetes-techlab/archive/master.zip).
 
-We are going to override some of the values, for that purpose, create a new values.yaml file locally on your workstation with the following content:
 
-```yaml
-image:
-  tag: 1.3.0-alpine
-persistence:
-  storageClass: TODO
-  size: 1Gi
-ingress:
-  enabled: true
-  hosts:
-    - TODO
-postgresql:
-  persistence:
-    size: 1Gi
-    storageClass: TODO
-  postgresPassword: my-secret-password
+## Login
+
+**Note:** Please make sure, the be finshed with [Lab 2](02_cli.md).
+
+Our Kubernetes cluster of the techlab environment runs on [cloudscale.ch](cloudscale.ch) and has been provisioned with [Rancher](https://rancher.com/). You can login into the cluster with a Rancher user.
+
+**Note:** For details about your credentials to log in, ask your teacher.
+
+
+
+### Login and choose Kubernetes Cluster
+
+Login into the Rancher WebGUI with your assigned user and the choose the desired cluster.
+
+
+On the cluster dashboard you find top right a button with `Kubeconfig File`. Save the config file into your homedirectory `.kube/config`. Verify afterwards if `kubectl` works correctly e.g. with `kubectl version`
+
+**Note:** If you already have a kubeconfig file, you might need to merge the Rancher entries with yours. Or use the KUBECONFIG environment variable to specify a dedicated file.
+
+```
+#example location ~/.kube-techlab/config
+vim ~/.kube-techlab/config
+# paste content 
+
+# set KUBECONFIG Environment Variable to the correct file
+export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 ```
 
 
-If you look inside the requirements.yaml file of the HackMD Chart you see a dependency to the postgresql Helm chart. All the postgresql values are used by this dependent Helm chart and the chart is automaticly deployed when installing HackMD.
+## Create a namespace
 
-Now deploy the application with:
+A namespace is the logical design used in Kubernetes to organize and separate your applications, deployments, services etc. on a top level base. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/).
 
+
+**Note:** Additionaly Rancher does know the concept of a [project](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple namespaces.
+
+In the Rancher WebGUI you can now choose your Project.
+
+
+
+## Exercise: LAB3.1
+
+Create a new namespace in the lab environment.
+
+**Note**: Please choose an identifying name for the namespace, in best case your the techlab username, e.g. `[TEAM]-lab3-1`
+
+> How can a new namespace be created?
+
+**Tip** :information_source:
 ```
-helm install -f values.yaml stable/hackmd
-```
-
-Watch the deployed application with helm ls and also check the Rancher WebGUI for the newly created Deployments, the Ingress and also the PersistenceVolumeClaim.
-
-```
-helm ls
-NAME             	REVISION	UPDATED                 	STATUS  	CHART       	APP VERSION 	NAMESPACE        
-altered-billygoat	1       	Thu Sep 26 14:06:59 2019	DEPLOYED	hackmd-1.2.1	1.3.0-alpine	team1-dockerimage
-```
-
-As soon as all Deployments are ready (hackmd and postgres) you can open the application with the URL from your `values.yaml` file or by using the link inside the Rancher WebGUI.
-
-
-### Upgrade
-
-We are now going to upgrade the application to a newer Container image. You can do this with:
-
-```
-helm upgrade --reuse-values --set image.tag=1.3.1-alpine quiet-squirrel stable/hackmd
+$ kubectl help
 ```
 
-*Note*: Make sure to use the correct release name, as shown with the helm ls command.
+**Tip:** By using the following command, you can switch into another namespace:
+```
+Linux:
+$ kubectl config set-context $(kubectl config current-context) --namespace=[TEAM]-lab3-1
+```
+
+```
+Windows:
+$ kubectl config current-context
+// Save the context in a variable
+SET KUBE_CONTEXT=[Insert output of the upper command]
+$ kubectl config set-context %KUBE_CONTEXT% --namespace=[TEAM]-lab3-1
+```
 
 
-And then observe how the Deployment was changed to a the new container image tag.
+**Note:** Namespaces created via `kubectl`, have to be assigned to your project in order to be seen inside the Rancher WebGUI. Ask your teacher for the assignement.
 
-### Cleanup
+## Exercise: LAB3.2 discover the web console
 
-helm delete --purge altered-billygoat
+
+Please check the menu entries, there should neither appear any deployments nor any pods or services.
+
+
+---
+
+## Solution: LAB3.1
+
+```
+$ kubectl create namespace [TEAM]-lab3-1
+```
+---
+
+It is bestpractice to explicitly select the Namespace in each `kubectl` command by adding `--namespace namespace` or in short`-n namespace`.
+
+---
+
+**Ende Lab 3**
