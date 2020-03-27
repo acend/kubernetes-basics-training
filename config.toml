@@ -15,7 +15,7 @@ theme = "dot"
 defaultContentLanguage = "en"
 defaultContentLanguageInSubdir = true
 
-copyright = "The Hugo Documents are copyright © [gethugothemes](https://gethugothemes.com/) 2019."
+copyright = "The Hugo Documents are copyright © [gethugothemes](https://gethugothemes.com/) 2020."
 
 [frontmatter]
 publishDate = ["publishDate", "date", ":git"]
@@ -60,7 +60,7 @@ link = "https://linkedin.com/company/puzzle-itc"
   languageCode = "en-us"
   weight = 1
   home = "Home"
-  copyright = "The Techlabs are copyright &copy; [Puzzle ITC](https://puzzle.ch) 2019."
+  copyright = "The Techlabs are copyright &copy; [Puzzle ITC](https://puzzle.ch) 2020."
 
     # navigation
     [Languages.en.menu]
