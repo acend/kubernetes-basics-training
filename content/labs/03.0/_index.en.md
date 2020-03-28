@@ -24,7 +24,7 @@ As a fallback the repository can be downloaded as [zip file](https://github.com/
 
 **Note:** Please make sure, the be finshed with [Lab 2](02_cli.md).
 
-Our Kubernetes cluster of the techlab environment runs on [cloudscale.ch](cloudscale.ch) and has been provisioned with [Rancher](https://rancher.com/). You can login into the cluster with a Rancher user.
+Our Kubernetes cluster of the techlab environment runs on [cloudscale.ch](https://cloudscale.ch) and has been provisioned with [Rancher](https://rancher.com/). You can login into the cluster with a Rancher user.
 
 **Note:** For details about your credentials to log in, ask your teacher.
 
