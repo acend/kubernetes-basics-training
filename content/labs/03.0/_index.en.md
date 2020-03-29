@@ -105,8 +105,9 @@ $ kubectl create namespace [TEAM]-lab3-1
 ```
 ---
 
-**Note:** Some prefer to explicitly select the namespace for each `kubectl` command by adding `--namespace namespace` or 
-`-n namespace`. And others prefer helper tools like `kubens` (see lab 2).
+**Note:** Some prefer to explicitly select the namespace for each `kubectl` command by adding `--namespace namespace` 
+or `-n namespace`. And others prefer helper tools like `kubens` (see lab 2).
+
 ---
 
 **End of lab 3**
