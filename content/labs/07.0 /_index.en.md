@@ -25,24 +25,24 @@ $ kubectl exec -it [POD] --namespace [TEAM]-dockerimage -- /bin/bash
 
 With this, you can work inside the pod, e.g.:
 
-```bash
-bash-4.2$ ls -la
-total 40
-drwxr-xr-x 1 default root 4096 Jun 21  2016 .
-drwxr-xr-x 1 default root 4096 Jun 21  2016 ..
-drwxr-xr-x 6 default root 4096 Jun 21  2016 .gradle
-drwxr-xr-x 3 default root 4096 Jun 21  2016 .pki
-drwxr-xr-x 9 default root 4096 Jun 21  2016 build
--rw-r--r-- 1 root    root 1145 Jun 21  2016 build.gradle
-drwxr-xr-x 3 root    root 4096 Jun 21  2016 gradle
--rwxr-xr-x 1 root    root 4971 Jun 21  2016 gradlew
-drwxr-xr-x 4 root    root 4096 Jun 21  2016 src
+```sh
+/ $ ls -l
+total 60
+drwxr-xr-x    2 root     root          4096 Jan 16 21:52 bin
+drwxr-xr-x    5 root     root           360 Apr  1 11:37 dev
+drwxr-xr-x    1 root     root          4096 Apr  1 11:37 etc
+drwxr-xr-x    1 root     root          4096 Mar 27 12:32 home
+drwxr-xr-x    5 root     root          4096 Jan 16 21:52 lib
+drwxr-xr-x    5 root     root          4096 Jan 16 21:52 media
+drwxr-xr-x    2 root     root          4096 Jan 16 21:52 mnt
+drwxr-xr-x    2 root     root          4096 Jan 16 21:52 opt
+...
 ```
 
 With `exit` you can leave the pod and close the connection
 
-```bash
-bash-4.2$ exit
+```sh
+/ $ exit
 ```
 
 ## Task: LAB7.2 Single Command
@@ -55,9 +55,9 @@ $ kubectl exec [POD] --namespace [TEAM]-dockerimage env
 ```
 
 ```bash
-$ kubectl exec example-spring-boot-69b658f647-xnm94 --namespace [TEAM]-dockerimage env
-PATH=/opt/app-root/src/bin:/opt/app-root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-HOSTNAME=example-spring-boot-4-8mbwe
+$ kubectl exec example-web-python-69b658f647-xnm94 --namespace [TEAM]-dockerimage env
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HOSTNAME=example-web-python-xnm94
 KUBERNETES_SERVICE_PORT_DNS_TCP=53
 KUBERNETES_PORT_443_TCP_PROTO=tcp
 KUBERNETES_PORT_443_TCP_ADDR=172.30.0.1
@@ -89,21 +89,18 @@ $ kubectl logs -p [POD] --namespace [TEAM]-dockerimage
 
 Kubernetes allows you to forward arbitrary ports to your development workstation. This allows you to access admin consoles, databases etc, even when they are not exposed externaly. Port forwarding are handled by the Kubernetes master and therefore tunneled from the client via HTTPS. This allows you to access the Kubernetes platform even when there are restrictive firewalls and/or proxies between your workstation and Kubernetes.
 
-Exercise: Access the Spring Boot Metrics from [Lab 4](04_deploy_dockerimage.md).
-
-
 ```bash
 $ kubectl get pod --namespace [TEAM]-dockerimage
-$ kubectl port-forward example-spring-boot-1-xj1df 9000:9000 --namespace [TEAM]-dockerimage
-Forwarding from 127.0.0.1:9000 -> 9000
-Forwarding from [::1]:9000 -> 9000
+$ kubectl port-forward example-web-python-1-xj1df 5000:5000 --namespace [TEAM]-dockerimage
+Forwarding from 127.0.0.1:5000 -> 5000
+Forwarding from [::1]:5000 -> 5000
 ```
 
 Don't forget to change the pod Name to your own Installation. If configured, you can use Auto-Completion.
 
-The metrics are now available with the following Link: [http://localhost:9000/metrics/](http://localhost:9000/metrics/).
-Those metrics are shown in JSON. With the same concept you can access databases from your local client or connect your local development environment via remote debugging to your application in the pod.
- 
+The application is now available with the following Link: [localhost:5000/](http://localhost:5000/).
+With the same concept you can access databases from your local client or connect your local development environment via remote debugging to your application in the pod.
+
 With the following link you find more information about port forwarding: <https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/>
 
 **Note:** The `kubectl port-forward`-process runs as long as it is not terminated by the user. So when done, stop it with CTRL-C.

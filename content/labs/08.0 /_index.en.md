@@ -60,75 +60,122 @@ We are now going to create deployment and service. As a first example we use a d
 
 As we had seen in the earlier labs, all resources like deployments, services, secrets and so on can be displayed in yaml or json format. But it doesn't end there, capabilities also include the creation and exportation of resources using yaml or json files.
 
-In our case we want to create a deployment including a service for our MySQL database:
+In our case we want to create a deployment including a service for our MySQL database.  
+Save this snippet as `mysql.yaml`:
 
 
+```yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: mysql
+---
+apiVersion: apps/v1 # for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:5.7
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-root-password
+              key: password
+        - name: MYSQL_DATABASE
+          value: example
+        - name: MYSQL_USER
+          value: example
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-password
+              key: password
+        livenessProbe:
+          tcpSocket:
+            port: 3306
+        ports:
+        - containerPort: 3306
+          name: mysql
 ```
-$ kubectl create -f ./labs/08_data/mysql-deployment-empty.yaml --namespace [TEAM]-dockerimage
-service/springboot-mysql created
-deployment.apps/springboot-mysql created
+
+Execute it with:
+```bash
+$ kubectl --namespace [TEAM]-dockerimage apply -f mysql.yaml
+service/mysql created
+persistentvolumeclaim/mysql created
+deployment/mysql created
 ```
 
-As soon as the container image for mysql:5.6 has been pulled, you will see a new pod using `kubectl get pods`.
+As soon as the container image for mysql:5.7 has been pulled, you will see a new pod using `kubectl get pods`.
 
 The environment variables defined in the deployment configure the MySQL pod and how our frontend will be able to access it.
 
 
 ## Task: LAB8.2: Attaching the Database to the Application
 
-By default our example-spring-boot application uses a H2 memory database. However, this can be changed by defining the following environment variables to use the newly created MySQL service:
+By default our example-web-python application uses a sqlite memory database. However, this can be changed by defining the following environment variables to use the newly created MySQL service:
 
-- SPRING_DATASOURCE_USERNAME springboot
-- SPRING_DATASOURCE_PASSWORD [value from the secret]
-- SPRING_DATASOURCE_DRIVER_CLASS_NAME com.mysql.jdbc.Driver
-- SPRING_DATASOURCE_URL jdbc:mysql://[MySQL service address]/springboot?autoReconnect=true
+- MYSQL_URI mysql://example:mysqlpassword@mysql/example
 
 You can either use the MySQL service's cluster ip or DNS name as address. All services and pods can be resolved by DNS using their name.
 
-For us this means we can use the following value as `SPRING_DATASOURCE_URL`:
-
-
-```bash
-Name des Services: springboot-mysql
-
-jdbc:mysql://springboot-mysql/springboot?autoReconnect=true
-```
-
-We now can set these environment variables inside the deployment configuration. The configuration change automatically triggers a new deployment of the application. Because we set the environment variables the application now tries to connect to the MySQL database and [Liquibase](http://www.liquibase.org/) creates the schema and imports some test data.
-
-**Note:** Liquibase is an open source, database-independent library for managing and applying database changes. Liquibase recognizes at application startup if database changes are necessary. You can also look at the logs to find out if Liquibase did some changes or not.
+We now can set these environment variables inside the deployment configuration. The configuration change automatically triggers a new deployment of the application. Because we set the environment variables the application now tries to connect to the MySQL database.
 
 So let's set the environment variables in the example-spring-boot deployment:
 
-```
-$ kubectl set env deployment/example-spring-boot SPRING_DATASOURCE_USERNAME=springboot SPRING_DATASOURCE_PASSWORD=mysqlpassword SPRING_DATASOURCE_DRIVER_CLASS_NAME="com.mysql.jdbc.Driver" SPRING_DATASOURCE_URL="jdbc:mysql://springboot-mysql/springboot?autoReconnect=true" --namespace [TEAM]-dockerimage
-```
-
-You could also do the changes by direclty editing the deployment:
-
-```
-$ kubectl edit deployment --namespace [TEAM]-dockerimage example-spring-boot
+```bash
+$ kubectl create secret generic mysql-uri --namespace [TEAM]-dockerimage --from-literal=MYSQL_URI="mysql://example:mysqlpassword@mysql/example"
+secret/mysql-uri created
 ```
 
+```bash
+$ kubectl --namespace [TEAM]-dockerimage set env deployment/example-web-python --from-secret=secret/mysql-uri
 ```
-$ kubectl get deployment --namespace [TEAM]-dockerimage example-spring-boot
+
+You could also do the changes by directly editing the deployment:
+
+```bash
+$ kubectl --namespace [TEAM]-dockerimage edit deployment example-web-python
 ```
+
+```bash
+$ kubectl --namespace [TEAM]-dockerimage get deployment example-web-python
 ```
+```yaml
 ...
       - env:
-        - name: SPRING_DATASOURCE_USERNAME
-          value: springboot
-        - name: SPRING_DATASOURCE_PASSWORD
-          value: mysqlpassword
-        - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
-          value: com.mysql.jdbc.Driver
-        - name: SPRING_DATASOURCE_URL
-          value: jdbc:mysql://springboot-mysql/springboot?autoReconnect=true
-
+        - name: MYSQL_URI
+          valueFrom:
+            secretKeyRef:
+              name: mysql-uri
+              key: MYSQL_URI
 ...
 ```
 
-In order to find out if the change worked we can either look at the springboot container's logs (**Tip**: `kubectl logs [POD NAME]`).
+In order to find out if the change worked we can either look at the container's logs (**Tip**: `kubectl logs [POD NAME]`).
 Or we could register some "Hellos" in the application, delete the pod, wait for the new pod to be started and check if they are still there.
 
 **Attention:** This does not work if we delete the database pod as its data is not yet persisted.
@@ -142,21 +189,21 @@ Show all pods:
 
 ```
 $ kubectl get pods --namespace [TEAM]-dockerimage
-NAME                                   READY   STATUS    RESTARTS   AGE
-example-spring-boot-574544fd68-qfkcm   1/1     Running   0          2m20s
-springboot-mysql-f845ccdb7-hf2x5       1/1     Running   0          31m
+NAME                                  READY   STATUS    RESTARTS   AGE
+example-web-python-574544fd68-qfkcm   1/1     Running   0          2m20s
+mysql-f845ccdb7-hf2x5                 1/1     Running   0          31m
 ```
 
 Log into the MySQL pod:
 
 ```
-$ kubectl exec -it springboot-mysql-f845ccdb7-hf2x5 --namespace [TEAM]-dockerimage -- /bin/bash
+$ kubectl exec -it mysql-f845ccdb7-hf2x5 --namespace [TEAM]-dockerimage -- /bin/bash
 ```
 
 You are now able to connect to the database and display the tables. Log in using:
 
 ```
-$ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD springboot
+$ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD example
 Warning: Using a password on the command line interface can be insecure.
 Reading table information for completion of table and column names
 You can turn off this feature to get a quicker startup with -A
@@ -189,12 +236,6 @@ Our task is now to import this [dump](https://raw.githubusercontent.com/appuio/t
 
 **Tip:** You can also copy local files into a pod using `kubectl cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the pod and using `curl -O [URL]`.
 
-
-## Task: LAB8.5: Springboot Deployment Password from Secret
-
-Analogue to the `MYSQL_PASSWORD` environment variable, remove the value of the `SPRING_DATASOURCE_PASSWORD` environment variable and instead insert a reference to the secret which contains the password.
-
-
 ---
 
 ## Solution: LAB8.4
@@ -202,35 +243,34 @@ Analogue to the `MYSQL_PASSWORD` environment variable, remove the value of the `
 This is how you copy the database dump into the pod:
 
 ```
-kubectl cp ./labs/08_data/dump/ springboot-mysql-f845ccdb7-hf2x5:/tmp/ --namespace [TEAM]-dockerimage
+kubectl cp ./labs/08_data/dump/ mysql-f845ccdb7-hf2x5:/tmp/ --namespace [TEAM]-dockerimage
 ```
 
 This is how you log into the MySQL pod:
 
 ```
-$ kubectl exec -it springboot-mysql-f845ccdb7-hf2x5 --namespace [TEAM]-dockerimage -- /bin/bash
+$ kubectl exec -it mysql-f845ccdb7-hf2x5 --namespace [TEAM]-dockerimage -- /bin/bash
 ```
 
 This shows how to drop the whole database:
 ```
-$ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD  springboot
+$ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD example
 ...
-mysql> drop database springboot;
-mysql> create database springboot;
+mysql> drop database example;
+mysql> create database example;
 mysql> exit
 ```
 Importing a dump:
 
 ```
-$ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD springboot < /tmp/dump/dump.sql
+$ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD example < /tmp/dump/dump.sql
 ```
 
 **Note:** A database dump can be created as follows:
 
 ```
-mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD springboot > /tmp/dump.sql
+mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD example > /tmp/dump.sql
 ```
-
 
 ---
 **End of lab 8**

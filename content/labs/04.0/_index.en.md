@@ -56,15 +56,15 @@ With the following command we can create a deployment inside our already created
 
 
 ```
-$ kubectl create deployment example-spring-boot --image=appuio/example-spring-boot --namespace [TEAM]-dockerimage
+$ kubectl create deployment example-web-go --image=gbreak/example-web-go --namespace [TEAM]-dockerimage
 ```
 
 The output should be:
 ```
-deployment.apps/example-spring-boot created
+deployment.apps/example-web-go created
 ```
 
-We're using an example from APPUiO (a Java Spring Boot application), which you can find on [Docker Hub](https://hub.docker.com/r/appuio/example-spring-boot/) and [GitHub (Source)](https://github.com/appuio/example-spring-boot-helloworld).
+We're using an example from Groundbreak (a Golang application), which you can find on [Docker Hub](https://hub.docker.com/r/gbreak/example-web-go/) and [GitHub (Source)](https://github.com/gbreak/awesome-app).
 
 Kubernetes creates the defined and necessary resources, pulls the container image (in this case from Docker Hub) and deploys the pod.
 
@@ -84,7 +84,7 @@ This process can last for some time depending on your internet connection and if
 
 ## Viewing the Created Resources
 
-When we executed the command `kubectl create deployment example-spring-boot --image=appuio/example-spring-boot --namespace [TEAM]-dockerimage`, Kubernetes created a deployment resource.
+When we executed the command `kubectl create deployment example-web-go --image=groundbreak/example-web-go --namespace [TEAM]-dockerimage`, Kubernetes created a deployment resource.
 
 
 ### Deployment
@@ -105,7 +105,7 @@ A [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deploym
 
 By using the `-o` (or `--output`) parameter we get a lot more information about the deployment itself:
 ```
-$ kubectl get deployment example-spring-boot -o json --namespace [TEAM]-dockerimage
+$ kubectl get deployment example-web-go -o json --namespace [TEAM]-dockerimage
 ```
 
 After the image has been pulled, Kubernetes deploys a pod according to the deployment:
@@ -115,15 +115,15 @@ $ kubectl get pod --namespace [TEAM]-dockerimage
 ```
 
 ```
-NAME                                   READY   STATUS    RESTARTS   AGE
-example-spring-boot-69b658f647-xnm94   1/1     Running   0          52m
+NAME                              READY   STATUS    RESTARTS   AGE
+example-web-go-69b658f647-xnm94   1/1     Running   0          52m
 ```
 
 The deployment defines that one replica should be deployed, which is running as we can see in the output. This pod is not yet reachable from outside of the cluster.
 
 ## Task: LAB4.4 Verify the Deployment in the Rancher WebGUI
 
-Try to display the logs from the Springboot application via the Rancher WebGui.
+Try to display the logs from the example application via the Rancher WebGui.
 
 
 ---

@@ -14,10 +14,10 @@ The command `kubectl create deployment` from [lab](04_deploy_dockerimage.md) cre
 
 ## Task: LAB5.1
 
-With the following command we create a service and by doing this we expose our deployment. There are different kinds of services. For this example, we are going to use the `NodePort` type and expose port 8080:
+With the following command we create a service and by doing this we expose our deployment. There are different kinds of services. For this example, we are going to use the `NodePort` type and expose port 5000:
 
 ```
-$ kubectl expose deployment example-spring-boot --type="NodePort" --name="example-spring-boot" --port=80 --target-port=8080 --namespace [TEAM]-dockerimage
+$ kubectl expose deployment example-web-go --type="NodePort" --name="example-web-go" --port=5000 --target-port=5000 --namespace [TEAM]-dockerimage
 ```
 
 [Services](https://kubernetes.io/docs/concepts/services-networking/service/) in Kubernetes serve as an abstraction layer, entry point and proxy/load balancer for pods. A Service makes it possible to group and address pods from the same kind.
@@ -33,8 +33,8 @@ $ kubectl get services --namespace [TEAM]-dockerimage
 ```
 
 ```bash
-NAME                  TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
-example-spring-boot   NodePort   10.43.91.62   <none>        80:30692/TCP  
+NAME             TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+example-web-go   NodePort   10.43.91.62   <none>        5000:30692/TCP  
 ```
 
 The `NodePort` number is being assigned by Kubernetes and stays the same as long as the services is not deleted. A NodePort service is rather suitable for infrastructure tools than for public URLs. But don't worry, we are going to do that later too with Ingress mappings that create better readable URLs.
@@ -42,7 +42,7 @@ The `NodePort` number is being assigned by Kubernetes and stays the same as long
 You get additional information by executing the following command:
 
 ```
-$ kubectl get service example-spring-boot --namespace [TEAM]-dockerimage -o json
+$ kubectl get service example-web-go --namespace [TEAM]-dockerimage -o json
 ```
 
 ```
@@ -50,17 +50,14 @@ $ kubectl get service example-spring-boot --namespace [TEAM]-dockerimage -o json
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": {
-        "annotations": {
-            "field.cattle.io/publicEndpoints": "[{\"addresses\":[\"5.102.145.8\"],\"port\":30692,\"protocol\":\"TCP\",\"serviceName\":\"team1-dockerimage:example-spring-boot\",\"allNodes\":true}]"
-        },
         "creationTimestamp": "2019-06-21T06:25:38Z",
         "labels": {
-            "app": "example-spring-boot"
+            "app": "example-web-go"
         },
-        "name": "example-spring-boot",
+        "name": "example-web-go",
         "namespace": "team1-dockerimage",
         "resourceVersion": "102747",
-        "selfLink": "/api/v1/namespaces/team1-dockerimage/services/example-spring-boot",
+        "selfLink": "/api/v1/namespaces/team1-dockerimage/services/example-web-go",
         "uid": "62ce2e59-93ed-11e9-b6c9-5a4205669108"
     },
     "spec": {
@@ -69,13 +66,13 @@ $ kubectl get service example-spring-boot --namespace [TEAM]-dockerimage -o json
         "ports": [
             {
                 "nodePort": 30692,
-                "port": 80,
+                "port": 5000,
                 "protocol": "TCP",
-                "targetPort": 8080
+                "targetPort": 5000
             }
         ],
         "selector": {
-            "app": "example-spring-boot"
+            "app": "example-web-go"
         },
         "sessionAffinity": "None",
         "type": "NodePort"
@@ -84,14 +81,12 @@ $ kubectl get service example-spring-boot --namespace [TEAM]-dockerimage -o json
         "loadBalancer": {}
     }
 }
-
-
 ```
 
 With the appropriate command you get details from the pod (or any other resource):
 
 ```
-$ kubectl get pod example-spring-boot-3-nwzku --namespace [TEAM]-dockerimage -o json
+$ kubectl get pod example-web-go-3-nwzku --namespace [TEAM]-dockerimage -o json
 ```
 
 **Note:** First, get all pod names from your namespace with (`kubectl get pods --namespace [TEAM]-dockerimage`) and then replace it in the following command.
@@ -103,9 +98,8 @@ Service (`kubectl get service <Service Name> --namespace [TEAM]-dockerimage -o j
 ```
 ...
 "selector": {
-    "app": "example-spring-boot",
+    "app": "example-web-go",
 },
-
 ...
 ```
 
@@ -113,29 +107,29 @@ Pod (`kubectl get pod <Pod Name> --namespace [TEAM]-dockerimage`):
 ```
 ...
 "labels": {
-    "app": "example-spring-boot",
+    "app": "example-web-go",
 },
 ...
 ```
 
 This link between service and pod can be displayed in an easier fashion with the `kubectl describe` command:
 ```
-$ kubectl describe service example-spring-boot --namespace [TEAM]-dockerimage
+$ kubectl describe service example-web-go --namespace [TEAM]-dockerimage
 ```
 
 ```
-Name:                     example-spring-boot
+Name:                     example-web-go
 Namespace:                philipona
-Labels:                   app=example-spring-boot
+Labels:                   app=example-web-go
 Annotations:              <none>
-Selector:                 app=example-spring-boot
+Selector:                 app=example-web-go
 Type:                     LoadBalancer
 IP:                       10.39.240.212
 LoadBalancer Ingress:     104.199.26.127
-Port:                     <unset>  80/TCP
-TargetPort:               8080/TCP
+Port:                     <unset>  5000/TCP
+TargetPort:               5000/TCP
 NodePort:                 <unset>  30100/TCP
-Endpoints:                10.36.0.8:8080
+Endpoints:                10.36.0.8:5000
 Session Affinity:         None
 External Traffic Policy:  Cluster
 Events:
@@ -143,7 +137,6 @@ Events:
   ----    ------                ----   ----                -------
   Normal  EnsuringLoadBalancer  7m20s  service-controller  Ensuring load balancer
   Normal  EnsuredLoadBalancer   6m28s  service-controller  Ensured load balancer
-
 ```
 
 
@@ -155,10 +148,10 @@ Open `http://[NodeIP]:[NodePort]` in your Browser. You can use any NodeIP as the
 ```
 kubectl get node -o wide
 NAME                  STATUS   ROLES               AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
-k8s-techlab-master1   Ready    controlplane,etcd   42m   v1.14.6   5.102.145.172   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
-k8s-techlab-worker1   Ready    worker              41m   v1.14.6   5.102.145.190   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
-k8s-techlab-worker2   Ready    worker              19m   v1.14.6   5.102.146.103   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
-k8s-techlab-worker3   Ready    worker              41m   v1.14.6   5.102.145.175   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
+k8s-techlab-master1   Ready    controlplane,etcd   42m   v1.17.4   5.102.145.172   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
+k8s-techlab-worker1   Ready    worker              41m   v1.17.4   5.102.145.190   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
+k8s-techlab-worker2   Ready    worker              19m   v1.17.4   5.102.146.103   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
+k8s-techlab-worker3   Ready    worker              41m   v1.17.4   5.102.145.175   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
 ```
 
 **Note:** As you might not have the correct permissions to display the existing nodes, ask your teacher to get the node IP's.
@@ -173,12 +166,12 @@ There's a second option to make a service accessible from outside: Use an ingres
 In order to switch the service type, we are going to delete the NodePort service that we've created before:
 
 ```
-$ kubectl delete service example-spring-boot --namespace=[TEAM]-dockerimage
+$ kubectl delete service example-web-go --namespace=[TEAM]-dockerimage
 ```
 Now we create a service with type ClusterIP:
 
 ```
-$ kubectl expose deployment example-spring-boot --type=ClusterIP --name=example-spring-boot --port=80 --target-port=8080 --namespace [TEAM]-dockerimage
+$ kubectl expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace [TEAM]-dockerimage
 ```
 
 In order to create the ingress resource, we first need to edit the file `./labs/05_data/ingress.yaml` and change `spec.rules[0].host` in the kubernetes-techlab git repository.
@@ -188,15 +181,13 @@ After editing the ingress resource, we can create it:
 ```
 $ kubectl create -f ./labs/05_data/ingress.yaml --namespace [TEAM]-dockerimage
 ```
-Afterwards we are able to access our freshly created service at `http://springboot-example-[USER].k8s-techlab.puzzle.ch`
-
+Afterwards we are able to access our freshly created service at `http://web-go-[USER].k8s-techlab.puzzle.ch`
 
 ---
 
 ## Additional Task for Fast Learners
 
 Have a closer look at the created resources with `kubectl get [RESOURCE TYPE] [NAME] -o json` and `kubectl describe [RESOURCE TYPE] [NAME]` from your namespace `[TEAM]-dockerimage` and try to understand them.
-
 
 ---
 

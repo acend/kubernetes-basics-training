@@ -21,46 +21,62 @@ The PersistentVolumeClaim only represents a request but not the storage itself. 
 
 In a second step, the pvc from before is going to be attached to the right pod. In [lab 6](06_scale.md) we edited the deployment configuration in order to insert a readiness probe. We are now going to do the same for inserting the persistent volume.
 
-The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size:
+The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size.  
+Save it to `pvc.yaml`:
 
+```yaml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: mysql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
 ```
-$ kubectl create --namespace [TEAM]-dockerimage -f ./labs/08_data/mysql-persistent-volume-claim.yaml
+And deploy with:
+
+```bash
+$ kubectl create --namespace [TEAM]-dockerimage -f pvc.yaml
 ```
 
 We now have to insert the volume definition in the correct section of the MySQL deployment:
 
 ```
-$ kubectl edit deployment springboot-mysql --namespace [TEAM]-dockerimage
+$ kubectl edit deployment mysql --namespace [TEAM]-dockerimage
 ```
-```
+```yaml
 ...
     spec:
       containers:
-      - env:
-        - name: MYSQL_DATABASE
-          value: springboot
-        - name: MYSQL_USER
-          value: springboot
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: password
-              name: mysql-password
+      - image: mysql:5.7
+        name: mysql
+        env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              key: password
               name: mysql-root-password
-        image: mysql:5.6
-        imagePullPolicy: IfNotPresent
-        name: mysql
+              key: password
+        - name: MYSQL_DATABASE
+          value: example
+        - name: MYSQL_USER
+          value: example
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-password
+              key: password
+        livenessProbe:
+          tcpSocket:
+            port: 3306
         ports:
         - containerPort: 3306
           name: mysql
-          protocol: TCP
-        resources: {}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
@@ -78,7 +94,7 @@ Our application automatically creates the database schema at startup.
 **Tip:** If you want to force a redeployment of a pod, you could e.g. use this:
 
 ```
-$ kubectl patch deployment example-spring-boot -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [USER]-dockerimage
+$ kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [USER]-dockerimage
 ```
 
 Using the command `kubectl get persistentvolumeclaim` or - a bit easier to write - `kubectl get pvc --namespace [TEAM]-dockerimage`, we can display the freshly created PersistentVolumeClaim:
