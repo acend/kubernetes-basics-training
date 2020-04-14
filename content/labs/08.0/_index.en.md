@@ -236,9 +236,7 @@ Our task is now to import this [dump](https://raw.githubusercontent.com/appuio/t
 
 **Tip:** You can also copy local files into a pod using `kubectl cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the pod and using `curl -O [URL]`.
 
----
-
-## Solution: LAB8.4
+{{< collapse solution-1 "Solution LAB 8.4" >}}
 
 This is how you copy the database dump into the pod (you find the dump [here](dump.sql))
 
@@ -271,6 +269,9 @@ $ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD example < /tmp/dump/dump.sql
 ```
 mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD example > /tmp/dump.sql
 ```
+
+{{< /collapse >}}
+
 
 ---
 **End of lab 8**

@@ -75,8 +75,18 @@ SET KUBE_CONTEXT=[Insert output of the upper command]
 $ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]
 ```
 
+**Note:** Some prefer to explicitly select the namespace for each `kubectl` command by adding `--namespace [USER]` 
+or `-n [USER]`. And others prefer helper tools like `kubens` (see lab 2)
 
 **Note:** Namespaces created via `kubectl`, have to be assigned to your project in order to be seen inside the Rancher WebGUI. Ask your teacher for the assignement.
+
+{{< collapse solution-1 "Solution Task 1" >}}
+
+```
+$ kubectl create namespace [USER]
+```
+
+{{< /collapse >}}
 
 ## Exercise: LAB3.2 discover the web console
 
@@ -93,15 +103,6 @@ With the command `kubectl get` you can display all kinds of resources of differe
 
 ---
 
-## Solution: LAB3.1
-
-```
-$ kubectl create namespace [USER]
-```
----
-
-**Note:** Some prefer to explicitly select the namespace for each `kubectl` command by adding `--namespace [USER]` 
-or `-n [USER]`. And others prefer helper tools like `kubens` (see lab 2).
 
 ---
 
