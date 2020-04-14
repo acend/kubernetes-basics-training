@@ -23,7 +23,7 @@ spec:
         app: kubernetes-techlab
     spec:
       containers:
-      - image: docker.io/acend/kubernetes-techlab:latest
+      - image: acend/kubernetes-techlab:latest
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
