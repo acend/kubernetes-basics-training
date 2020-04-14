@@ -36,12 +36,12 @@ textColorDark = "#242738"
 whiteColor = "#ffffff"
 
 # public Git Repo - used for "improve this page" links
-gitRepoUrl = "https://github.com/dreng-labs/kubernetes-techlab"
+gitRepoUrl = "https://github.com/acend/kubernetes-techlab"
 
 ############################## social links ##############################
 [[params.social]]
 icon = "ti-github" # themify icon pack : https://themify.me/themify-icons
-link = "https://github.com/dreng/kubernetes-techlab"
+link = "https://github.com/acend/kubernetes-techlab"
 
 [[params.social]]
 icon = "ti-twitter-alt" # themify icon pack : https://themify.me/themify-icons
