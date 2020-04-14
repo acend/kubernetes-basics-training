@@ -37,6 +37,15 @@ Run it locally:
 docker run -i -p 8080:8080 acend/kubernetes-techlab
 ```
 
+## How to develop locally
+
+To develop locally we don't want to rebuild the entire container image every time something changed, and it is also important to use the same hugo versions like in production.
+We simply mount the working directory into a running container, where hugo is started in the server mode.
+
+```bash
+$ docker run --rm --interactive --publish 8080:8080 -v $(pwd):/opt/app/src -w /opt/app/src acend/hugo:0.68.3 hugo server -p 8080 --bind 0.0.0.0
+```
+
 ## Contributions
 
 If you find errors, bugs or missing information please help us improve our techlab and have a look at the [Contribution Guide](CONTRIBUTING.md).
