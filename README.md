@@ -28,7 +28,7 @@ git submodule update --init --recursive
 Build the image:
 
 ```bash
-docker build --build-arg -t acend/kubernetes-techlab:latest .
+docker build -t acend/kubernetes-techlab:latest .
 ```
 
 Run it locally:
