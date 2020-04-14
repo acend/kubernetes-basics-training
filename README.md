@@ -28,13 +28,13 @@ git submodule update --init --recursive
 Build the image:
 
 ```bash
-docker build --build-arg HUGO_BASE_URL=http://localhost:8080/ -t dreng/kubernetes-techlab:latest .
+docker build --build-arg -t acend/kubernetes-techlab:latest .
 ```
 
 Run it locally:
 
 ```bash
-docker run -i -p 8080:8080 dreng/kubernetes-techlab
+docker run -i -p 8080:8080 acend/kubernetes-techlab
 ```
 
 ## Contributions

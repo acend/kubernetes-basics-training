@@ -9,13 +9,9 @@ RUN mkdir -p /opt/app/src/static && \
 
 WORKDIR /opt/app/src
 
-ARG HUGO_BASE_URL
-ENV HUGO_BASE_URL $HUGO_BASE_URL
-
 COPY . /opt/app/src
 
-RUN hugo --baseURL=${HUGO_BASE_URL:-http://localhost/} \
-  --theme ${HUGO_THEME:-dot} --minify
+RUN hugo --theme ${HUGO_THEME:-dot} --minify
 
 FROM nginxinc/nginx-unprivileged:alpine
 
