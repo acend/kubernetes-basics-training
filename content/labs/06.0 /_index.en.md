@@ -15,7 +15,7 @@ Create a new deployment in your namespace:
 
 
 ```
-$ kubectl create deployment appuio-php-docker --image=appuio/example-php-docker-helloworld --namespace [TEAM]-dockerimage
+$ kubectl create deployment example-web-python --image=gbreak/example-web-python --namespace [TEAM]-dockerimage
 ```
 
 If we want to scale our example application, we have to tell the deployment that we e.g. want to have three running replicas instead of one.
@@ -26,14 +26,14 @@ Let's have a closer look at the existing replicaset:
 ```
 $ kubectl get replicasets --namespace [TEAM]-dockerimage
 
-NAME                           DESIRED   CURRENT   READY   AGE
-appuio-php-docker-86d9d584f8   1         1         1       110s
+NAME                            DESIRED   CURRENT   READY   AGE
+example-web-python-86d9d584f8   1         1         1       110s
 ```
 
 Or for even more details:
 
 ```
-$ kubectl get replicaset appuio-php-docker-86d9d584f8 -o json --namespace [TEAM]-dockerimage
+$ kubectl get replicaset example-web-python-86d9d584f8 -o json --namespace [TEAM]-dockerimage
 ```
 
 The replicaset shows how many pods/replicas are desired, current and ready.
@@ -42,7 +42,7 @@ The replicaset shows how many pods/replicas are desired, current and ready.
 Now we scale our application to three replicas:
 
 ```
-$ kubectl scale deployment appuio-php-docker --replicas=3 --namespace [TEAM]-dockerimage
+$ kubectl scale deployment example-web-python --replicas=3 --namespace [TEAM]-dockerimage
 ```
 
 Check the number of desired, current and ready replicas:
@@ -50,8 +50,8 @@ Check the number of desired, current and ready replicas:
 ```
 $ kubectl get replicasets --namespace [TEAM]-dockerimage
 
-NAME                           DESIRED   CURRENT   READY   AGE
-appuio-php-docker-86d9d584f8   3         3         1       4m33s
+NAME                            DESIRED   CURRENT   READY   AGE
+example-web-python-86d9d584f8   3         3         1       4m33s
 
 ```
 
@@ -59,10 +59,10 @@ and look at how many pods there are:
 
 ```
 $ kubectl get pods --namespace [TEAM]-dockerimage
-NAME                                 READY   STATUS    RESTARTS   AGE
-appuio-php-docker-86d9d584f8-7vjcj   1/1     Running   0          5m2s
-appuio-php-docker-86d9d584f8-hbvlv   1/1     Running   0          31s
-appuio-php-docker-86d9d584f8-qg499   1/1     Running   0          31s
+NAME                                  READY   STATUS    RESTARTS   AGE
+example-web-python-86d9d584f8-7vjcj   1/1     Running   0          5m2s
+example-web-python-86d9d584f8-hbvlv   1/1     Running   0          31s
+example-web-python-86d9d584f8-qg499   1/1     Running   0          31s
 
 ```
 
@@ -74,24 +74,24 @@ appuio-php-docker-86d9d584f8-qg499   1/1     Running   0          31s
 Now we create a new service with type NodePort:
 
 ```
-$ kubectl expose deployment appuio-php-docker --type="NodePort" --name="appuio-php-docker" --port=80 --target-port=8080 --namespace [TEAM]-dockerimage
+$ kubectl expose deployment example-web-python --type="NodePort" --name="example-web-python" --port=5000 --target-port=5000 --namespace [TEAM]-dockerimage
 ```
 
 Let's look at our service. We should see all three endpoints referenced:
 
 ```bash
-$ kubectl describe service appuio-php-docker --namespace [TEAM]-dockerimage
-Name:                     appuio-php-docker
+$ kubectl describe service example-web-python --namespace [TEAM]-dockerimage
+Name:                     example-web-python
 Namespace:                philipona-scale
-Labels:                   app=appuio-php-docker
+Labels:                   app=example-web-python
 Annotations:              <none>
-Selector:                 app=appuio-php-docker
+Selector:                 app=example-web-python
 Type:                     LoadBalancer
 IP:                       10.39.245.205
-Port:                     <unset>  80/TCP
-TargetPort:               8080/TCP
+Port:                     <unset>  5000/TCP
+TargetPort:               5000/TCP
 NodePort:                 <unset>  32193/TCP
-Endpoints:                10.36.0.10:8080,10.36.0.11:8080,10.36.0.9:8080
+Endpoints:                10.36.0.10:5000,10.36.0.11:5000,10.36.0.9:5000
 Session Affinity:         None
 External Traffic Policy:  Cluster
 Events:
@@ -126,10 +126,10 @@ while true; do sleep 1; curl -s [URL]/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 
 ```
 @Windows (ab Powershell-Version 3.0):
-while(1) { 
-	Start-Sleep -s 1 
-	Invoke-RestMethod http://[URL]/pod/ 
-	Get-Date -Uformat "+ TIME: %H:%M:%S,%3N" 
+while(1) {
+	Start-Sleep -s 1
+	Invoke-RestMethod http://[URL]/pod/
+	Get-Date -Uformat "+ TIME: %H:%M:%S,%3N"
 }
 ```
 
@@ -138,25 +138,25 @@ The output shows which pod responded to the sent request:
 
 
 ```
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:07,289
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:08,357
-POD: appuio-php-docker-86d9d584f8-hbvlv TIME: 17:33:09,423
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:10,494
-POD: appuio-php-docker-86d9d584f8-qg499 TIME: 17:33:11,559
-POD: appuio-php-docker-86d9d584f8-hbvlv TIME: 17:33:12,629
-POD: appuio-php-docker-86d9d584f8-qg499 TIME: 17:33:13,695
-POD: appuio-php-docker-86d9d584f8-hbvlv TIME: 17:33:14,771
-POD: appuio-php-docker-86d9d584f8-hbvlv TIME: 17:33:15,840
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:16,912
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:17,980
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:19,051
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:20,119
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:21,182
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:22,248
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:23,313
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:24,377
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:25,445
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:33:26,513
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:07,289
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:08,357
+POD: example-web-python-86d9d584f8-hbvlv TIME: 17:33:09,423
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:10,494
+POD: example-web-python-86d9d584f8-qg499 TIME: 17:33:11,559
+POD: example-web-python-86d9d584f8-hbvlv TIME: 17:33:12,629
+POD: example-web-python-86d9d584f8-qg499 TIME: 17:33:13,695
+POD: example-web-python-86d9d584f8-hbvlv TIME: 17:33:14,771
+POD: example-web-python-86d9d584f8-hbvlv TIME: 17:33:15,840
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:16,912
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:17,980
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:19,051
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:20,119
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:21,182
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:22,248
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:23,313
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:24,377
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:25,445
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:26,513
 ```
 The requests are being distributed amongst the pods. As soon as you scale down to one pod, there should only be one pod remaining that responds.
 
@@ -166,28 +166,28 @@ But what happens if start a new deployment while our while command is running?
 **Tip:** If on Windows, execute the following command in Gitbash, Powershell seems not to work.
 
 ```
-$ kubectl patch deployment appuio-php-docker -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [TEAM]-dockerimage
+$ kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [TEAM]-dockerimage
 ```
 During a short period we won't get a response:
 ```
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:37:24,121
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:37:25,189
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:37:26,262
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:37:27,328
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:37:28,395
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:37:29,459
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:37:30,531
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:37:31,596
-POD: appuio-php-docker-86d9d584f8-7vjcj TIME: 17:37:32,662
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:24,121
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:25,189
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:26,262
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:27,328
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:28,395
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:29,459
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:30,531
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:31,596
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:32,662
 # no answer
-POD: appuio-php-docker-f4c5dd8fc-4nx2t TIME: 17:37:33,729
-POD: appuio-php-docker-f4c5dd8fc-4nx2t TIME: 17:37:34,794
-POD: appuio-php-docker-f4c5dd8fc-4nx2t TIME: 17:37:35,862
-POD: appuio-php-docker-f4c5dd8fc-4nx2t TIME: 17:37:36,929
-POD: appuio-php-docker-f4c5dd8fc-4nx2t TIME: 17:37:37,995
-POD: appuio-php-docker-f4c5dd8fc-4nx2t TIME: 17:37:39,060
-POD: appuio-php-docker-f4c5dd8fc-4nx2t TIME: 17:37:40,118
-POD: appuio-php-docker-f4c5dd8fc-4nx2t TIME: 17:37:41,187
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:33,729
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:34,794
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:35,862
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:36,929
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:37,995
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:39,060
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:40,118
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:41,187
 ```
 
 In our example we use a very lightweight pod. If we had used a more heavy-weight pod that needed a longer time to respond to requests, we would of course see a larger gap.
@@ -233,10 +233,10 @@ Basically there are two different kinds of checks that can be implemented:
 
 These probes can be implemented as HTTP checks, container execution checks (the execution of a command or script inside a container) or TCP socket checks.
 
-In our example we want the application to tell Kubernetes that it is ready for requests with an appropriate readiness probe. Our example application has a health check endpoint on port 8080 at:
+In our example we want the application to tell Kubernetes that it is ready for requests with an appropriate readiness probe. Our example application has a health check endpoint on port 5000 at:
 
 ```
-http://[URL]:8080/health/
+http://[URL]:5000/health/
 ```
 
 
@@ -247,7 +247,7 @@ In our deployment configuration inside the rolling update strategy section we de
 You can directly edit the deployment (or any resource) with:
 
 ```
-$ kubectl edit deployment appuio-php-docker --namespace [TEAM]-dockerimage
+$ kubectl edit deployment example-web-python --namespace [TEAM]-dockerimage
 ```
 
 
@@ -266,7 +266,7 @@ spec:
 
 If you prefer json formatting to yaml, use the `--output`/`-o` parameter to edit the resource in json:
 ```
-$ kubectl edit deployment appuio-php-docker -o json --namespace [TEAM]-dockerimage
+$ kubectl edit deployment example-web-python -o json --namespace [TEAM]-dockerimage
 ```
 **json**
 ```
@@ -289,7 +289,7 @@ Now insert the readiness probe at `.spec.template.spec.containers` above the `re
         readinessProbe:
           httpGet:
             path: /health/
-            port: 8080
+            port: 5000
             scheme: HTTP
           initialDelaySeconds: 10
           timeoutSeconds: 1
@@ -305,7 +305,7 @@ Now insert the readiness probe at `.spec.template.spec.containers` above the `re
                         "readinessProbe": {
                             "httpGet": {
                                 "path": "/health/",
-                                "port": 8080,
+                                "port": 5000,
                                 "scheme": "HTTP"
                             },
                             "initialDelaySeconds": 10,
@@ -322,14 +322,14 @@ The `containers` configuration then looks like:
 
 ```bash
       containers:
-      - image: appuio/example-php-docker-helloworld
+      - image: gbreak/example-php-docker-helloworld
         imagePullPolicy: Always
         name: example-php-docker-helloworld
         readinessProbe:
           failureThreshold: 3
           httpGet:
             path: /health/
-            port: 8080
+            port: 5000
             scheme: HTTP
           initialDelaySeconds: 10
           periodSeconds: 10
@@ -346,14 +346,14 @@ The `containers` configuration then looks like:
 ```bash
                 "containers": [
                     {
-                        "image": "appuio/example-php-docker-helloworld",
+                        "image": "gbreak/example-php-docker-helloworld",
                         "imagePullPolicy": "Always",
                         "name": "example-php-docker-helloworld",
                         "readinessProbe": {
                             "failureThreshold": 3,
                             "httpGet": {
                                 "path": "/health/",
-                                "port": 8080,
+                                "port": 5000,
                                 "scheme": "HTTP"
                             },
                             "initialDelaySeconds": 10,
@@ -379,7 +379,7 @@ while true; do sleep 1; curl -s [URL]pod/; date "+ TIME: %H:%M:%S,%3N"; done
 Start a new deployment by editing it (the so-called ConfigChange trigger triggers the new deployment automatically):
 
 ```bash
-$ kubectl patch deployment appuio-php-docker -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [TEAM]-dockerimage
+$ kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [TEAM]-dockerimage
 ```
 
 
@@ -396,7 +396,7 @@ kubectl get pods -w --namespace [TEAM]-dockerimage
 ```
 Now delete a pod (in another terminal) with the following command:
 ```
-kubectl delete pod appuio-php-docker-3-788j5 --namespace [TEAM]-dockerimage
+kubectl delete pod example-web-python-3-788j5 --namespace [TEAM]-dockerimage
 ```
 
 
