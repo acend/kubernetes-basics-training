@@ -9,46 +9,27 @@ weight: 40
 In this lab, we are going to deploy our first pre-built container image and look at the Kubernetes concepts pod, service and deployment.
 
 
-## Task: LAB4.1
+## Task: LAB4.1 Start a Pod
 
 After we've familiarized ourselves with the platform in [lab 3](03_first_steps.md), we are going to have a look at deploying a pre-built container image from Docker Hub or any other public Container registry.
 
-As a first step we are going to create a new namespace. A namespace represents a grouping of resources (containers and container images, pods, services, configurations, quotas, limits and more). Authorized users inside that namespace are able to manage those resources. Inside a Kubernetes cluster, the name of a namespace has to be unique.
-
-
-
-Create a new namespace with name `[TEAM]-dockerimage`:
+First, we are going to directly start a new pod:
 
 ```
-$ kubectl create namespace [TEAM]-dockerimage
+$ kubectl run nginx --image=nginx --port=80 --restart=Never --namespace [USER]
 ```
 
-Display all existing pods in your namespace (there should not yet be any!):
-```bash
-$ kubectl get pods -n=[TEAM]-dockerimage
-```
-
-With the command `kubectl get` you can display all kinds of resources of different types.
-
-
-## Task: LAB4.2 Start a Pod
-
-As soon as your new namespace has been created, we are able to deploy our first application inside of it. First, we are going to directly start a new pod:
+Use `kubectl get pods --namespace [USER]` in order to show the running pod:
 
 ```
-$ kubectl run nginx --image=nginx --port=80 --restart=Never --namespace [TEAM]-dockerimage
-```
-
-Use `kubectl get pods --namespace [TEAM]-dockerimage` in order to show the running pod:
-```
-$ kubectl get pods --namespace [TEAM]-dockerimage
+$ kubectl get pods --namespace [USER]
 NAME      READY     STATUS    RESTARTS   AGE
 nginx     1/1       Running   0          1m
 ```
 
 Have a look at your nginx pod inside the Rancher WebGUI under "Workloads" an delete the pod right afterwards.
 
-## Task: LAB4.3 Deployment
+## Task: LAB4.2 Deployment
 
 In some usecases it makes sense to start a single pod but has its downsides and is not really best practice. Let's look at another Kubernetes concept which is tightly coupled with the pod: the so-called deployment. A deployment makes sure that a pod is monitored and checks that the number of running pods corresponds to the number of requested pods.
 
@@ -56,7 +37,7 @@ With the following command we can create a deployment inside our already created
 
 
 ```
-$ kubectl create deployment example-web-go --image=gbreak/example-web-go --namespace [TEAM]-dockerimage
+$ kubectl create deployment example-web-go --image=gbreak/example-web-go --namespace [USER]
 ```
 
 The output should be:
@@ -72,7 +53,7 @@ Use the command `kubectl get` with the `-w` parameter in order to get the reques
 
 
 ```
-$ kubectl get pods --namespace [TEAM]-dockerimage -w
+$ kubectl get pods --namespace [USER] -w
 ```
 
 This process can last for some time depending on your internet connection and if the image is already available locally.
@@ -84,7 +65,7 @@ This process can last for some time depending on your internet connection and if
 
 ## Viewing the Created Resources
 
-When we executed the command `kubectl create deployment example-web-go --image=groundbreak/example-web-go --namespace [TEAM]-dockerimage`, Kubernetes created a deployment resource.
+When we executed the command `kubectl create deployment example-web-go --image=groundbreak/example-web-go --namespace [USER]`, Kubernetes created a deployment resource.
 
 
 ### Deployment
@@ -92,7 +73,7 @@ When we executed the command `kubectl create deployment example-web-go --image=g
 Display the created deployment using the following command:
 
 ```
-$ kubectl get deployment --namespace [TEAM]-dockerimage
+$ kubectl get deployment --namespace [USER]
 ```
 A [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) defines the following facts:
 
@@ -105,13 +86,13 @@ A [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deploym
 
 By using the `-o` (or `--output`) parameter we get a lot more information about the deployment itself:
 ```
-$ kubectl get deployment example-web-go -o json --namespace [TEAM]-dockerimage
+$ kubectl get deployment example-web-go -o json --namespace [USER]
 ```
 
 After the image has been pulled, Kubernetes deploys a pod according to the deployment:
 
 ```
-$ kubectl get pod --namespace [TEAM]-dockerimage
+$ kubectl get pod --namespace [USER]
 ```
 
 ```
@@ -121,7 +102,7 @@ example-web-go-69b658f647-xnm94   1/1     Running   0          52m
 
 The deployment defines that one replica should be deployed, which is running as we can see in the output. This pod is not yet reachable from outside of the cluster.
 
-## Task: LAB4.4 Verify the Deployment in the Rancher WebGUI
+## Task: LAB4.3 Verify the Deployment in the Rancher WebGUI
 
 Try to display the logs from the example application via the Rancher WebGui.
 

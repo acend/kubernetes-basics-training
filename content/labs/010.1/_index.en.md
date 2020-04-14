@@ -23,7 +23,7 @@ On scaling up from 3 to 5 within a Deployment, two additional Pods could be star
 
 Example with Rabbitmq
 
-1. Scale `kubectl scale deployment rabbitmq --replicas=5 --namespace rabbitmq-[TEAM]`
+1. Scale `kubectl scale deployment rabbitmq --replicas=5 --namespace [USER]`
 1. `rabbitmq-3` is started
 1. when `rabbitmq-3` done starting up (State: "Ready", take a look at _Readiness probe_), `rabbitmq-4` follows with the start procedure
 
@@ -83,7 +83,7 @@ spec:
 
 1. Start the Statefulset
 ```bash
-kubectl create -f nginx-sfs.yaml --namespace [TEAM]-dockerimage
+kubectl create -f nginx-sfs.yaml --namespace [USER]
 ```
 
 ### Scaling
@@ -91,30 +91,30 @@ kubectl create -f nginx-sfs.yaml --namespace [TEAM]-dockerimage
 1. To watch the progress, open a second console and list the Statefulsets and watch the Pods:
 
 ```bash
-kubectl get statefulset --namespace [TEAM]-dockerimage
-kubectl get pods -l app=nginx -w --namespace [TEAM]-dockerimage
+kubectl get statefulset --namespace [USER]
+kubectl get pods -l app=nginx -w --namespace [USER]
 ```
 
 1. Scale up Statefulset
 ```bash
-kubectl scale statefulset nginx-cluster --replicas=3 --namespace [TEAM]-dockerimage
+kubectl scale statefulset nginx-cluster --replicas=3 --namespace [USER]
 ```
 
 ### Update Statefulset Image
 
 1. To watch the changes of the the Pods, please open a second window and execute the command:
 ```bash
-kubectl get pods -l app=nginx -w --namespace [TEAM]-dockerimage
+kubectl get pods -l app=nginx -w --namespace [USER]
 ```
 
 1. Set new version of the Image in the Statefulset
 ```bash
-kubectl set image statefulset nginx-cluster nginx=nginx:latest --namespace [TEAM]-dockerimage
+kubectl set image statefulset nginx-cluster nginx=nginx:latest --namespace [USER]
 ```
 
 1. Rollback the software
 ```bash
-kubectl rollout undo statefulset nginx-cluster --namespace [TEAM]-dockerimage
+kubectl rollout undo statefulset nginx-cluster --namespace [USER]
 ```
 
 Further Information can be found at the [Kubernetes StatefulSet Dokumentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or at this [published article](https://opensource.com/article/17/2/stateful-applications).

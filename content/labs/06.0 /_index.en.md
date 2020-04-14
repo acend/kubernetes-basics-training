@@ -15,7 +15,7 @@ Create a new deployment in your namespace:
 
 
 ```
-$ kubectl create deployment example-web-python --image=gbreak/example-web-python --namespace [TEAM]-dockerimage
+$ kubectl create deployment example-web-python --image=gbreak/example-web-python --namespace [USER]
 ```
 
 If we want to scale our example application, we have to tell the deployment that we e.g. want to have three running replicas instead of one.
@@ -24,7 +24,7 @@ Let's have a closer look at the existing replicaset:
 
 
 ```
-$ kubectl get replicasets --namespace [TEAM]-dockerimage
+$ kubectl get replicasets --namespace [USER]
 
 NAME                            DESIRED   CURRENT   READY   AGE
 example-web-python-86d9d584f8   1         1         1       110s
@@ -33,7 +33,7 @@ example-web-python-86d9d584f8   1         1         1       110s
 Or for even more details:
 
 ```
-$ kubectl get replicaset example-web-python-86d9d584f8 -o json --namespace [TEAM]-dockerimage
+$ kubectl get replicaset example-web-python-86d9d584f8 -o json --namespace [USER]
 ```
 
 The replicaset shows how many pods/replicas are desired, current and ready.
@@ -42,13 +42,13 @@ The replicaset shows how many pods/replicas are desired, current and ready.
 Now we scale our application to three replicas:
 
 ```
-$ kubectl scale deployment example-web-python --replicas=3 --namespace [TEAM]-dockerimage
+$ kubectl scale deployment example-web-python --replicas=3 --namespace [USER]
 ```
 
 Check the number of desired, current and ready replicas:
 
 ```
-$ kubectl get replicasets --namespace [TEAM]-dockerimage
+$ kubectl get replicasets --namespace [USER]
 
 NAME                            DESIRED   CURRENT   READY   AGE
 example-web-python-86d9d584f8   3         3         1       4m33s
@@ -58,7 +58,7 @@ example-web-python-86d9d584f8   3         3         1       4m33s
 and look at how many pods there are:
 
 ```
-$ kubectl get pods --namespace [TEAM]-dockerimage
+$ kubectl get pods --namespace [USER]
 NAME                                  READY   STATUS    RESTARTS   AGE
 example-web-python-86d9d584f8-7vjcj   1/1     Running   0          5m2s
 example-web-python-86d9d584f8-hbvlv   1/1     Running   0          31s
@@ -74,13 +74,13 @@ example-web-python-86d9d584f8-qg499   1/1     Running   0          31s
 Now we create a new service with type NodePort:
 
 ```
-$ kubectl expose deployment example-web-python --type="NodePort" --name="example-web-python" --port=5000 --target-port=5000 --namespace [TEAM]-dockerimage
+$ kubectl expose deployment example-web-python --type="NodePort" --name="example-web-python" --port=5000 --target-port=5000 --namespace [USER]
 ```
 
 Let's look at our service. We should see all three endpoints referenced:
 
 ```bash
-$ kubectl describe service example-web-python --namespace [TEAM]-dockerimage
+$ kubectl describe service example-web-python --namespace [USER]
 Name:                     example-web-python
 Namespace:                philipona-scale
 Labels:                   app=example-web-python
@@ -103,8 +103,6 @@ Events:
 Scaling of pods within a service ist fast, as Kubernetes simply creates a new container
 
 
-**Tip:** Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
-
 You can check the availability of your service while you scale the number of replicas up and down.
 Replace the `URL` placeholder with the actual, constructed URL:
 
@@ -121,7 +119,7 @@ Now, execute the corresponding loop command for your operating system.
 
 ```
 @Linux:
-while true; do sleep 1; curl -s [URL]/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+while true; do sleep 1; curl -s $URL/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
 ```
@@ -166,7 +164,7 @@ But what happens if start a new deployment while our while command is running?
 **Tip:** If on Windows, execute the following command in Gitbash, Powershell seems not to work.
 
 ```
-$ kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [TEAM]-dockerimage
+$ kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [USER]
 ```
 During a short period we won't get a response:
 ```
@@ -247,7 +245,7 @@ In our deployment configuration inside the rolling update strategy section we de
 You can directly edit the deployment (or any resource) with:
 
 ```
-$ kubectl edit deployment example-web-python --namespace [TEAM]-dockerimage
+$ kubectl edit deployment example-web-python --namespace [USER]
 ```
 
 
@@ -379,7 +377,7 @@ while true; do sleep 1; curl -s [URL]pod/; date "+ TIME: %H:%M:%S,%3N"; done
 Start a new deployment by editing it (the so-called ConfigChange trigger triggers the new deployment automatically):
 
 ```bash
-$ kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [TEAM]-dockerimage
+$ kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [USER]
 ```
 
 
@@ -392,11 +390,11 @@ Look for a running pod (status `RUNNING`) that you can bear to kill via `kubectl
 Show all pods and watch for changes:
 
 ```
-kubectl get pods -w --namespace [TEAM]-dockerimage
+kubectl get pods -w --namespace [USER]
 ```
 Now delete a pod (in another terminal) with the following command:
 ```
-kubectl delete pod example-web-python-3-788j5 --namespace [TEAM]-dockerimage
+kubectl delete pod example-web-python-3-788j5 --namespace [USER]
 ```
 
 

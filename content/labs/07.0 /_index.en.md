@@ -17,10 +17,10 @@ Running container should be treated as immutable infrastructure and should there
 
 With Kubernetes you can open a remote Shell into a pod without installing SSH by Using the command `kubectl exec`. The command is used to executed anything in a pod. With the parameter `-it` you can leave open an connection. We can use `winpty` for this.
 
-Choose a pod with `kubectl get pods --namespace [TEAM]-dockerimage` and execute the following command:
+Choose a pod with `kubectl get pods --namespace [USER]` and execute the following command:
 
 ```bash
-$ kubectl exec -it [POD] --namespace [TEAM]-dockerimage -- /bin/bash
+$ kubectl exec -it [POD] --namespace [USER] -- /bin/bash
 ```
 
 With this, you can work inside the pod, e.g.:
@@ -51,11 +51,11 @@ Single commands inside a container can be executed with `kubectl exec`:
 
 
 ```bash
-$ kubectl exec [POD] --namespace [TEAM]-dockerimage env
+$ kubectl exec [POD] --namespace [USER] env
 ```
 
 ```bash
-$ kubectl exec example-web-python-69b658f647-xnm94 --namespace [TEAM]-dockerimage env
+$ kubectl exec example-web-python-69b658f647-xnm94 --namespace [USER] env
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=example-web-python-xnm94
 KUBERNETES_SERVICE_PORT_DNS_TCP=53
@@ -72,7 +72,7 @@ Logfiles of a pod can with shown with the following command:
 
 
 ```bash
-$ kubectl logs [POD] --namespace [TEAM]-dockerimage
+$ kubectl logs [POD] --namespace [USER]
 ```
 
 The parameter `-f` allows you to follow the logfile (same as `tail -f`). With this, logfiles are streamed and new entries are shown directly
@@ -81,7 +81,7 @@ When a pod is in State **CrashLoopBackOff** it means, that even after some resta
 
 
  ```bash
-$ kubectl logs -p [POD] --namespace [TEAM]-dockerimage
+$ kubectl logs -p [POD] --namespace [USER]
 ```
 
 
@@ -90,8 +90,8 @@ $ kubectl logs -p [POD] --namespace [TEAM]-dockerimage
 Kubernetes allows you to forward arbitrary ports to your development workstation. This allows you to access admin consoles, databases etc, even when they are not exposed externaly. Port forwarding are handled by the Kubernetes master and therefore tunneled from the client via HTTPS. This allows you to access the Kubernetes platform even when there are restrictive firewalls and/or proxies between your workstation and Kubernetes.
 
 ```bash
-$ kubectl get pod --namespace [TEAM]-dockerimage
-$ kubectl port-forward example-web-python-1-xj1df 5000:5000 --namespace [TEAM]-dockerimage
+$ kubectl get pod --namespace [USER]
+$ kubectl port-forward example-web-python-1-xj1df 5000:5000 --namespace [USER]
 Forwarding from 127.0.0.1:5000 -> 5000
 Forwarding from [::1]:5000 -> 5000
 ```

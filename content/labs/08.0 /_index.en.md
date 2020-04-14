@@ -14,14 +14,14 @@ Numerous applications are in some kind stateful and want to save data persistent
 We are first going to create a so-called secret in which we write the password for accessing the database.
 
 ```bash
-$ kubectl create secret generic mysql-password --namespace [TEAM]-dockerimage --from-literal=password=mysqlpassword
+$ kubectl create secret generic mysql-password --namespace [USER] --from-literal=password=mysqlpassword
 secret/mysql-password created
 ```
 
 The secret will neither be shown with `kubectl get` nor with `kubectl describe`:
 
 ```bash
-$ kubectl get secret mysql-password --namespace [TEAM]-dockerimage -o json
+$ kubectl get secret mysql-password --namespace [USER] -o json
 {
     "apiVersion": "v1",
     "data": {
@@ -52,7 +52,7 @@ mysqlpassword
 We are going to create another secret for storing the MySQL root password.
 
 ```bash
-$ kubectl create secret generic mysql-root-password --namespace [TEAM]-dockerimage --from-literal=password=mysqlrootpassword
+$ kubectl create secret generic mysql-root-password --namespace [USER] --from-literal=password=mysqlrootpassword
 secret/mysql-root-password created
 ```
 
@@ -123,7 +123,7 @@ spec:
 
 Execute it with:
 ```bash
-$ kubectl --namespace [TEAM]-dockerimage apply -f mysql.yaml
+$ kubectl --namespace [USER] apply -f mysql.yaml
 service/mysql created
 persistentvolumeclaim/mysql created
 deployment/mysql created
@@ -147,22 +147,22 @@ We now can set these environment variables inside the deployment configuration. 
 So let's set the environment variables in the example-spring-boot deployment:
 
 ```bash
-$ kubectl create secret generic mysql-uri --namespace [TEAM]-dockerimage --from-literal=MYSQL_URI="mysql://example:mysqlpassword@mysql/example"
+$ kubectl create secret generic mysql-uri --namespace [USER] --from-literal=MYSQL_URI="mysql://example:mysqlpassword@mysql/example"
 secret/mysql-uri created
 ```
 
 ```bash
-$ kubectl --namespace [TEAM]-dockerimage set env deployment/example-web-python --from-secret=secret/mysql-uri
+$ kubectl --namespace [USER] set env deployment/example-web-python --from-secret=secret/mysql-uri
 ```
 
 You could also do the changes by directly editing the deployment:
 
 ```bash
-$ kubectl --namespace [TEAM]-dockerimage edit deployment example-web-python
+$ kubectl --namespace [USER] edit deployment example-web-python
 ```
 
 ```bash
-$ kubectl --namespace [TEAM]-dockerimage get deployment example-web-python
+$ kubectl --namespace [USER] get deployment example-web-python
 ```
 ```yaml
 ...
@@ -188,7 +188,7 @@ As described in [lab 07](07_troubleshooting_ops.md) we can log into a pod with `
 Show all pods:
 
 ```
-$ kubectl get pods --namespace [TEAM]-dockerimage
+$ kubectl get pods --namespace [USER]
 NAME                                  READY   STATUS    RESTARTS   AGE
 example-web-python-574544fd68-qfkcm   1/1     Running   0          2m20s
 mysql-f845ccdb7-hf2x5                 1/1     Running   0          31m
@@ -197,7 +197,7 @@ mysql-f845ccdb7-hf2x5                 1/1     Running   0          31m
 Log into the MySQL pod:
 
 ```
-$ kubectl exec -it mysql-f845ccdb7-hf2x5 --namespace [TEAM]-dockerimage -- /bin/bash
+$ kubectl exec -it mysql-f845ccdb7-hf2x5 --namespace [USER] -- /bin/bash
 ```
 
 You are now able to connect to the database and display the tables. Log in using:
@@ -240,16 +240,16 @@ Our task is now to import this [dump](https://raw.githubusercontent.com/appuio/t
 
 ## Solution: LAB8.4
 
-This is how you copy the database dump into the pod:
+This is how you copy the database dump into the pod (you find the dump [here](dump.sql))
 
 ```
-kubectl cp ./labs/08_data/dump/ mysql-f845ccdb7-hf2x5:/tmp/ --namespace [TEAM]-dockerimage
+kubectl cp ./dump.sql mysql-f845ccdb7-hf2x5:/tmp/ --namespace [USER]
 ```
 
 This is how you log into the MySQL pod:
 
 ```
-$ kubectl exec -it mysql-f845ccdb7-hf2x5 --namespace [TEAM]-dockerimage -- /bin/bash
+$ kubectl exec -it mysql-f845ccdb7-hf2x5 --namespace [USER] -- /bin/bash
 ```
 
 This shows how to drop the whole database:

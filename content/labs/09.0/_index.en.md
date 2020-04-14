@@ -42,13 +42,13 @@ spec:
 And deploy with:
 
 ```bash
-$ kubectl create --namespace [TEAM]-dockerimage -f pvc.yaml
+$ kubectl create --namespace [USER] -f pvc.yaml
 ```
 
 We now have to insert the volume definition in the correct section of the MySQL deployment:
 
 ```
-$ kubectl edit deployment mysql --namespace [TEAM]-dockerimage
+$ kubectl edit deployment mysql --namespace [USER]
 ```
 ```yaml
 ...
@@ -94,13 +94,13 @@ Our application automatically creates the database schema at startup.
 **Tip:** If you want to force a redeployment of a pod, you could e.g. use this:
 
 ```
-$ kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [USER]-dockerimage
+$ kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [USER]
 ```
 
-Using the command `kubectl get persistentvolumeclaim` or - a bit easier to write - `kubectl get pvc --namespace [TEAM]-dockerimage`, we can display the freshly created PersistentVolumeClaim:
+Using the command `kubectl get persistentvolumeclaim` or - a bit easier to write - `kubectl get pvc --namespace [USER]`, we can display the freshly created PersistentVolumeClaim:
 
 ```
-$ kubectl get pvc --namespace [TEAM]-dockerimage
+$ kubectl get pvc --namespace [USER]
 NAME             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
 mysql-pv-claim   Bound    pvc-2cb78deb-d157-11e8-a406-42010a840034   1Gi        RWO            standard       11s
 ```

@@ -19,29 +19,68 @@ FIXME Similar to [Task 8.4](08_database.md#aufgabe-lab84-dump-auf-mysql-db-einsp
 Lets first look at the job resource that we want to create. It can be found at [labs/10_data/job_mysql-dump.yaml](https://github.com/puzzle/kubernetes-techlab/blob/master/labs/10_data/job_mysql-dump.yaml).
 The paramter `.spec.template.spec.containers[0].image` shows, that we use the same image as the running database. In contrast to the database pod, we don't start a database afterwards, but run a mysqldump command, specified with `.spec.template.spec.containers[0].command`. To perform the dump, we use the environment variables of the database deployment to set the hostname, user and password parameters of the mysqldump command. The `MYSQL_PASSWORD` variable refers to the value of the secret, which is already used for the database pod. Like this we ensure that the dump is performed with the same credentials.
 
-Lets create our job:
+Lets create our job, use the following `job_mysql-dump.yaml`:
+
+```ỳaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mysql-dump
+spec:
+  template:
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.6
+        command:
+        - 'bash'
+        - '-eo'
+        - 'pipefail'
+        - '-c'
+        - >
+          trap "echo Backup failed; exit 0" ERR;
+          FILENAME=backup-${MYSQL_DATABASE}-`date +%Y-%m-%d_%H%M%S`.sql.gz;
+          mysqldump --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} --host=${MYSQL_HOST} --port=${MYSQL_PORT} --skip-lock-tables --quick --add-drop-database --routines ${MYSQL_DATABASE} | gzip > /tmp/$FILENAME;
+          echo "";
+          echo "Backup successful"; du -h /tmp/$FILENAME;
+        env:
+        - name: MYSQL_DATABASE
+          value: springboot
+        - name: MYSQL_USER
+          value: springboot
+        - name: MYSQL_HOST
+          value: springboot-mysql
+        - name: MYSQL_PORT
+          value: "3306"
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-password
+              key: password
+      restartPolicy: Never
+```
 
 
 ```
-$ kubectl create -f ./labs/10_data/job_mysql-dump.yaml --namespace [TEAM]-dockerimage
+$ kubectl create -f ./job_mysql-dump.yaml --namespace [USER]
 ```
 
 Check if the job was successful:
 
 ```
-$ kubectl describe jobs/mysql-dump --namespace [TEAM]-dockerimage
+$ kubectl describe jobs/mysql-dump --namespace [USER]
 ```
 
 The executed pod can be shown as follows:
 
 ```
-$ kubectl get pods --namespace [TEAM]-dockerimage
+$ kubectl get pods --namespace [USER]
 ```
 
 To show all pods belonging to a job in a human-readable format, the following command can be used:
 
 ```
-$ kubectl get pods --selector=job-name=mysql-dump --output=jsonpath={.items..metadata.name} --namespace [TEAM]-dockerimage
+$ kubectl get pods --selector=job-name=mysql-dump --output=jsonpath={.items..metadata.name} --namespace [USER]
 ```
 
 ## Cron Jobs

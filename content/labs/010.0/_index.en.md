@@ -1,11 +1,9 @@
 ---
-title: "10.0 - ConfigMap Data Sources"
+title: "10.0 - Additional Concepts"
 weight: 100
 ---
 
-Create a ConfigMap and use the different kinds of data sources: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
-
-Make the values accessible in the different ways possible.
+Kubernetes does not only know Pods, Deployments, Services etc, there are various other kinds or resources. In the next few labs we have a look at some of them
 
 
 ---

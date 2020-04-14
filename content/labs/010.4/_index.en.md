@@ -20,12 +20,19 @@ The [data source] can be a file, a directory or a command line input.
 
 A classic example for ConfigMaps are property files of Java applications, which can't be configured with environment variables.
 
-We change to the namespace of lab 4 `$ kubectl config set-context $(kubectl config current-context) --namespace=[TEAM]-dockerimage`
+We change to the namespace of lab 4 `$ kubectl config set-context $(kubectl config current-context) --namespace=[USER]`
 
 With the following command, a ConfigMap based on a local file is created:
 
 ```
-$ kubectl create configmap javaconfiguration --from-file=labs/10_data/properties.properties 
+$ kubectl create configmap javaconfiguration --from-file=./properties.properties 
+```
+
+The content of `properties.properties` should be:
+
+```
+key=value
+key2=value2
 ```
 
 With 
@@ -38,7 +45,7 @@ javaconfiguration   1      7s
 you can verify, if the ConfigMap was crated successfully.
 
 
-The content can also be displayed with `$ kubectl get configmaps javaconfiguration -o json --namespace [TEAM]-dockerimage`.
+The content can also be displayed with `$ kubectl get configmaps javaconfiguration -o json --namespace [USER]`.
 
 
 ## Attach a Configmap to a Pod
@@ -54,7 +61,7 @@ Basically, there are the following possibilities to achieve this: https://kubern
 In this example, we want the file to be mounted as a volume in the container. We add the ConfigMap in the deployment as follows:
 
 
-Basically, the pod or in our case the deployment has to be edited with `kubectl edit deployment example-spring-boot --namespace [TEAM]-dockerimage`:
+Basically, the pod or in our case the deployment has to be edited with `kubectl edit deployment example-spring-boot --namespace [USER]`:
 
 ```
       - configMap:
@@ -64,7 +71,7 @@ Basically, the pod or in our case the deployment has to be edited with `kubectl 
 
 ```
 
-With `kubectl edit deployment example-spring-boot --namespace [TEAM]-dockerimage` we can edit the deployment and add the configuration in the volumes section at the very bottom:
+With `kubectl edit deployment example-spring-boot --namespace [USER]` we can edit the deployment and add the configuration in the volumes section at the very bottom:
 
 
 ```
@@ -136,7 +143,7 @@ spec:
 After that, it's possible for the container to access the values in the ConfigMap in /etc/config/properties.properties 
 
 ```bash
-$ kubectl exec -it [POD]  --namespace [TEAM]-dockerimage -- cat /etc/config/properties.properties
+$ kubectl exec -it [POD]  --namespace [USER] -- cat /etc/config/properties.properties
 key=value
 key2=value2
 ```

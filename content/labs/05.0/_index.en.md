@@ -14,10 +14,10 @@ The command `kubectl create deployment` from [lab](04_deploy_dockerimage.md) cre
 
 ## Task: LAB5.1
 
-With the following command we create a service and by doing this we expose our deployment. There are different kinds of services. For this example, we are going to use the `NodePort` type and expose port 5000:
+With the following command we create a service and by doing this we expose our deployment. There are different kinds of services. For this example, we are going to use the [`NodePort`](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport) type and expose port 5000:
 
 ```
-$ kubectl expose deployment example-web-go --type="NodePort" --name="example-web-go" --port=5000 --target-port=5000 --namespace [TEAM]-dockerimage
+$ kubectl expose deployment example-web-go --type="NodePort" --name="example-web-go" --port=5000 --target-port=5000 --namespace [USER]
 ```
 
 [Services](https://kubernetes.io/docs/concepts/services-networking/service/) in Kubernetes serve as an abstraction layer, entry point and proxy/load balancer for pods. A Service makes it possible to group and address pods from the same kind.
@@ -29,7 +29,7 @@ As an example: If a replica of our application pod cannot handle the load anymor
 Let's have a more detailed look at our service:
 
 ```
-$ kubectl get services --namespace [TEAM]-dockerimage
+$ kubectl get services --namespace [USER]
 ```
 
 ```bash
@@ -42,7 +42,7 @@ The `NodePort` number is being assigned by Kubernetes and stays the same as long
 You get additional information by executing the following command:
 
 ```
-$ kubectl get service example-web-go --namespace [TEAM]-dockerimage -o json
+$ kubectl get service example-web-go --namespace [USER] -o json
 ```
 
 ```
@@ -86,15 +86,15 @@ $ kubectl get service example-web-go --namespace [TEAM]-dockerimage -o json
 With the appropriate command you get details from the pod (or any other resource):
 
 ```
-$ kubectl get pod example-web-go-3-nwzku --namespace [TEAM]-dockerimage -o json
+$ kubectl get pod example-web-go-3-nwzku --namespace [USER] -o json
 ```
 
-**Note:** First, get all pod names from your namespace with (`kubectl get pods --namespace [TEAM]-dockerimage`) and then replace it in the following command.
+**Note:** First, get all pod names from your namespace with (`kubectl get pods --namespace [USER]`) and then replace it in the following command.
 
 The service's `selector` defines, which pods are being used as endpoints. This happens based on labels. Look at the configuration of service and pod in order to find out what maps to what:
 
 
-Service (`kubectl get service <Service Name> --namespace [TEAM]-dockerimage -o json`):
+Service (`kubectl get service <Service Name> --namespace [[USER] -o json`):
 ```
 ...
 "selector": {
@@ -103,7 +103,7 @@ Service (`kubectl get service <Service Name> --namespace [TEAM]-dockerimage -o j
 ...
 ```
 
-Pod (`kubectl get pod <Pod Name> --namespace [TEAM]-dockerimage`):
+Pod (`kubectl get pod <Pod Name> --namespace [USER]`):
 ```
 ...
 "labels": {
@@ -114,7 +114,7 @@ Pod (`kubectl get pod <Pod Name> --namespace [TEAM]-dockerimage`):
 
 This link between service and pod can be displayed in an easier fashion with the `kubectl describe` command:
 ```
-$ kubectl describe service example-web-go --namespace [TEAM]-dockerimage
+$ kubectl describe service example-web-go --namespace [USER]
 ```
 
 ```
@@ -123,9 +123,8 @@ Namespace:                philipona
 Labels:                   app=example-web-go
 Annotations:              <none>
 Selector:                 app=example-web-go
-Type:                     LoadBalancer
+Type:                     NodePort
 IP:                       10.39.240.212
-LoadBalancer Ingress:     104.199.26.127
 Port:                     <unset>  5000/TCP
 TargetPort:               5000/TCP
 NodePort:                 <unset>  30100/TCP
@@ -139,24 +138,20 @@ Events:
   Normal  EnsuredLoadBalancer   6m28s  service-controller  Ensured load balancer
 ```
 
-
-
 **Note:** Service IP addresses stay the same for the duration of the service's life span.
 
-Open `http://[NodeIP]:[NodePort]` in your Browser. You can use any NodeIP as the Service is exposed on all Nodes using the same NodePort. Use `kubectl get nodes -o wide` to display the IP's of the available nodes.
+Open `http://[NodeIP]:[NodePort]` in your Browser. 
+You can use any NodeIP as the Service is exposed on all Nodes using the same NodePort. Use `kubectl get nodes -o wide` to display the IP's (INTERNAL-IP) of the available nodes.
 
 ```
 kubectl get node -o wide
-NAME                  STATUS   ROLES               AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
-k8s-techlab-master1   Ready    controlplane,etcd   42m   v1.17.4   5.102.145.172   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
-k8s-techlab-worker1   Ready    worker              41m   v1.17.4   5.102.145.190   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
-k8s-techlab-worker2   Ready    worker              19m   v1.17.4   5.102.146.103   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
-k8s-techlab-worker3   Ready    worker              41m   v1.17.4   5.102.145.175   <none>        Ubuntu 18.04.3 LTS   4.15.0-64-generic   docker://19.3.2
+NAME         STATUS   ROLES                      AGE    VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+lab-1   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.142   <none>        Ubuntu 18.04.3 LTS   4.15.0-66-generic   docker://19.3.8
+lab-2   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.77    <none>        Ubuntu 18.04.3 LTS   4.15.0-66-generic   docker://19.3.8
+lab-3   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.148   <none>        Ubuntu 18.04.3 LTS   4.15.0-66-generic   docker://19.3.8
 ```
 
-**Note:** As you might not have the correct permissions to display the existing nodes, ask your teacher to get the node IP's.
-
-**Note:** You can also use the Rancher WebGUI to open the exposed application in your Browser. The link is show in your deployent or under "Service Discovery"
+**Note:** You can also use the Rancher WebGUI to open the exposed application in your Browser. The direkt link is shown on your *Resources / Workload* Page in the tab *Workload*. Look for your namespace and the deployment name. The Link looks like `31665/tcp`. Or go to the *Service Discovery* Tab and look for your service Name. The Link there looks the same and is right below the service name.
 
 
 ## Task: LAB5.2
@@ -166,20 +161,33 @@ There's a second option to make a service accessible from outside: Use an ingres
 In order to switch the service type, we are going to delete the NodePort service that we've created before:
 
 ```
-$ kubectl delete service example-web-go --namespace=[TEAM]-dockerimage
+$ kubectl delete service example-web-go --namespace=[USER]
 ```
-Now we create a service with type ClusterIP:
+Now we create a service with type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types):
 
 ```
-$ kubectl expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace [TEAM]-dockerimage
+$ kubectl expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace [USER]
 ```
 
-In order to create the ingress resource, we first need to edit the file `./labs/05_data/ingress.yaml` and change `spec.rules[0].host` in the kubernetes-techlab git repository.
+In order to create the ingress resource, we first need to create the file `ingress.yaml` and change `spec.rules[0].host` to match your environment.
+
+```yaml
+metadata:
+  labels:
+    app: example-web-go
+  name: example-web-go-[USER]
+spec:
+  rules:
+  - host: web-go-[USER].k8s-techlab.puzzle.ch
+    http:
+      paths:
+      - backend:
+```
 
 
 After editing the ingress resource, we can create it:
 ```
-$ kubectl create -f ./labs/05_data/ingress.yaml --namespace [TEAM]-dockerimage
+$ kubectl create -f ingress.yaml --namespace [USER]
 ```
 Afterwards we are able to access our freshly created service at `http://web-go-[USER].k8s-techlab.puzzle.ch`
 
@@ -187,7 +195,7 @@ Afterwards we are able to access our freshly created service at `http://web-go-[
 
 ## Additional Task for Fast Learners
 
-Have a closer look at the created resources with `kubectl get [RESOURCE TYPE] [NAME] -o json` and `kubectl describe [RESOURCE TYPE] [NAME]` from your namespace `[TEAM]-dockerimage` and try to understand them.
+Have a closer look at the created resources with `kubectl get [RESOURCE TYPE] [NAME] -o json` and `kubectl describe [RESOURCE TYPE] [NAME]` from your namespace `[USER]` and try to understand them.
 
 ---
 
