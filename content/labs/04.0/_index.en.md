@@ -45,7 +45,7 @@ The output should be:
 deployment.apps/example-web-go created
 ```
 
-We're using an example from Groundbreak (a Golang application), which you can find on [Docker Hub](https://hub.docker.com/r/acend/example-web-go/) and [GitHub (Source)](https://github.com/acend/awesome-app).
+We're using an example from Acend (a Golang application), which you can find on [Docker Hub](https://hub.docker.com/r/acend/example-web-go/) and [GitHub (Source)](https://github.com/acend/awesome-apps).
 
 Kubernetes creates the defined and necessary resources, pulls the container image (in this case from Docker Hub) and deploys the pod.
 
@@ -65,7 +65,7 @@ This process can last for some time depending on your internet connection and if
 
 ## Viewing the Created Resources
 
-When we executed the command `kubectl create deployment example-web-go --image=groundbreak/example-web-go --namespace [USER]`, Kubernetes created a deployment resource.
+When we executed the command `kubectl create deployment example-web-go --image=acend/example-web-go --namespace [USER]`, Kubernetes created a deployment resource.
 
 
 ### Deployment
