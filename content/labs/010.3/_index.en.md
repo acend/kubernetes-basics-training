@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:5.6
+        image: mysql:5.7
         command:
         - 'bash'
         - '-eo'
@@ -45,11 +45,11 @@ spec:
           echo "Backup successful"; du -h /tmp/$FILENAME;
         env:
         - name: MYSQL_DATABASE
-          value: springboot
+          value: example
         - name: MYSQL_USER
-          value: springboot
+          value: example
         - name: MYSQL_HOST
-          value: springboot-mysql
+          value: mysql
         - name: MYSQL_PORT
           value: "3306"
         - name: MYSQL_PASSWORD
