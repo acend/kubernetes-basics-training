@@ -14,7 +14,7 @@ Numerous applications are in some kind stateful and want to save data persistent
 We are first going to create a so-called secret in which we write the password for accessing the database.
 
 ```bash
-$ kubectl create secret generic mysql-password --namespace [USER] --from-literal=password=mysqlpassword
+$ kubectl create secret generic mysql-password --from-literal=password=mysqlpassword --namespace [USER]
 secret/mysql-password created
 ```
 
@@ -125,7 +125,6 @@ Execute it with:
 ```bash
 $ kubectl --namespace [USER] apply -f mysql.yaml
 service/mysql created
-persistentvolumeclaim/mysql created
 deployment/mysql created
 ```
 
@@ -152,7 +151,7 @@ secret/mysql-uri created
 ```
 
 ```bash
-$ kubectl --namespace [USER] set env deployment/example-web-python --from-secret=secret/mysql-uri
+$ kubectl --namespace [USER] set env deployment/example-web-python --from=secret/mysql-uri
 ```
 
 You could also do the changes by directly editing the deployment:
@@ -236,11 +235,10 @@ Our task is now to import this [dump](https://raw.githubusercontent.com/appuio/t
 
 **Tip:** You can also copy local files into a pod using `kubectl cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the pod and using `curl -O [URL]`.
 
-{{< collapse solution-1 "Solution LAB 8.4" >}}
-
-This is how you copy the database dump into the pod (you find the dump [here](dump.sql))
+{{< collapse solution "Solution LAB 8.4" >}} This is how you copy the database dump into the pod (you find the dump [here](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/labs/08.0/dump.sql))
 
 ```
+wget https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/labs/08.0/dump.sql
 kubectl cp ./dump.sql mysql-f845ccdb7-hf2x5:/tmp/ --namespace [USER]
 ```
 
@@ -261,7 +259,7 @@ mysql> exit
 Importing a dump:
 
 ```
-$ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD example < /tmp/dump/dump.sql
+$ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD example < /tmp/dump.sql
 ```
 
 **Note:** A database dump can be created as follows:

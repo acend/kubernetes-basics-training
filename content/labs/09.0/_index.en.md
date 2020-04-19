@@ -47,36 +47,17 @@ $ kubectl create --namespace [USER] -f pvc.yaml
 
 We now have to insert the volume definition in the correct section of the MySQL deployment:
 
-```
+```bash
 $ kubectl edit deployment mysql --namespace [USER]
 ```
+
+Add the the both parts `volumeMounts` and `volumes`
 ```yaml
 ...
-    spec:
-      containers:
-      - image: mysql:5.7
-        name: mysql
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-root-password
-              key: password
-        - name: MYSQL_DATABASE
-          value: example
-        - name: MYSQL_USER
-          value: example
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-password
-              key: password
-        livenessProbe:
-          tcpSocket:
-            port: 3306
-        ports:
-        - containerPort: 3306
-          name: mysql
+        resources: {}                                                 
+        terminationMessagePath: /dev/termination-log                  
+        terminationMessagePolicy: File
+
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
@@ -84,6 +65,10 @@ $ kubectl edit deployment mysql --namespace [USER]
       - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: mysql-pv-claim
+
+      dnsPolicy: ClusterFirst                                         
+      restartPolicy: Always                                           
+      schedulerName: default-scheduler
 ...
 ```
 
@@ -107,6 +92,15 @@ mysql-pv-claim   Bound    pvc-2cb78deb-d157-11e8-a406-42010a840034   1Gi        
 
 The two columns `STATUS` and `VOLUME` show us that our claim has been bound to the persistent volume `pvc-2cb78deb-d157-11e8-a406-42010a840034`.
 
+### Error case
+If the Container is not able to start it is the right moment to debug it!  
+Check the Logs from the Container and search for the error.
+
+```yaml
+kubectl logs mysql-f845ccdb7-hf2x5 --namespace [USER]
+```
+
+**Tip:** If Container won't start because the data directory has files in it. Mount the volume to a different location in the pod and check the content. Remove it if necessary.
 
 ## Task: LAB9.2: Persistence Check
 

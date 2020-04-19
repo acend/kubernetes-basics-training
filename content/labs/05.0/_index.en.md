@@ -169,27 +169,29 @@ Now we create a service with type [ClusterIP](https://kubernetes.io/docs/concept
 $ kubectl expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace [USER]
 ```
 
-In order to create the ingress resource, we first need to create the file `ingress.yaml` and change `spec.rules[0].host` to match your environment.
+In order to create the ingress resource, we first need to create the file `ingress.yaml` and change the host variable to match your environment.
 
 ```yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
 metadata:
-  labels:
-    app: example-web-go
-  name: example-web-go-[USER]
+  name: example-web-go
 spec:
   rules:
-  - host: web-go-[USER].k8s-techlab.puzzle.ch
+  - host: web-go-[USER].webapp.acend.ch
     http:
       paths:
-      - backend:
+      - path: /
+        backend:
+          serviceName: example-web-go
+          servicePort: 5000
 ```
 
-
-After editing the ingress resource, we can create it:
+After creating the ingress file, we can apply it:
 ```
 $ kubectl create -f ingress.yaml --namespace [USER]
 ```
-Afterwards we are able to access our freshly created service at `http://web-go-[USER].k8s-techlab.puzzle.ch`
+Afterwards we are able to access our freshly created service at `http://web-go-[USER].webapp.acend.ch`
 
 ---
 

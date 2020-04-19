@@ -189,7 +189,7 @@ POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:41,187
 ```
 
 In our example we use a very lightweight pod. If we had used a more heavy-weight pod that needed a longer time to respond to requests, we would of course see a larger gap.
-An example for this would be the Java application from [lab 4](04_deploy_dockerimage.md): **Startup time: 30 seconds**:
+An example for this would be a Java application: **Startup time: 30 seconds**:
 
 
 ```
@@ -231,10 +231,10 @@ Basically there are two different kinds of checks that can be implemented:
 
 These probes can be implemented as HTTP checks, container execution checks (the execution of a command or script inside a container) or TCP socket checks.
 
-In our example we want the application to tell Kubernetes that it is ready for requests with an appropriate readiness probe. Our example application has a health check endpoint on port 5000 at:
+In our example we want the application to tell Kubernetes that it is ready for requests with an appropriate readiness probe. Our example application has a health check context named health:
 
 ```
-http://[URL]:5000/health/
+http://[URL]:[NodePort]/health/
 ```
 
 
@@ -286,7 +286,7 @@ Now insert the readiness probe at `.spec.template.spec.containers` above the `re
 ...
         readinessProbe:
           httpGet:
-            path: /health/
+            path: /health
             port: 5000
             scheme: HTTP
           initialDelaySeconds: 10
@@ -302,7 +302,7 @@ Now insert the readiness probe at `.spec.template.spec.containers` above the `re
                         "resources": {},
                         "readinessProbe": {
                             "httpGet": {
-                                "path": "/health/",
+                                "path": "/health",
                                 "port": 5000,
                                 "scheme": "HTTP"
                             },
@@ -326,7 +326,7 @@ The `containers` configuration then looks like:
         readinessProbe:
           failureThreshold: 3
           httpGet:
-            path: /health/
+            path: /health
             port: 5000
             scheme: HTTP
           initialDelaySeconds: 10
@@ -350,7 +350,7 @@ The `containers` configuration then looks like:
                         "readinessProbe": {
                             "failureThreshold": 3,
                             "httpGet": {
-                                "path": "/health/",
+                                "path": "/health",
                                 "port": 5000,
                                 "scheme": "HTTP"
                             },

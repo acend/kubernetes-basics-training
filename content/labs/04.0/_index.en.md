@@ -97,7 +97,8 @@ $ kubectl get pod --namespace [USER]
 
 ```
 NAME                              READY   STATUS    RESTARTS   AGE
-example-web-go-69b658f647-xnm94   1/1     Running   0          52m
+example-web-go-69b658f647-xnm94   1/1     Running   0          39s
+nginx                             1/1     Running   0          31m
 ```
 
 The deployment defines that one replica should be deployed, which is running as we can see in the output. This pod is not yet reachable from outside of the cluster.

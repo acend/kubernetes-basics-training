@@ -29,7 +29,7 @@ On the cluster dashboard you find top right a button with `Kubeconfig File`. Sav
 ```
 #example location ~/.kube-techlab/config
 vim ~/.kube-techlab/config
-# paste content 
+# paste content
 
 # set KUBECONFIG Environment Variable to the correct file
 export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
@@ -38,7 +38,7 @@ export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 
 ## Create a namespace
 
-As a first step we are going to create a new namespace. 
+As a first step we are going to create a new namespace.
 
 A namespace is the logical design used in Kubernetes to organize and separate your applications, deployments, pods, ingress, services etc. on a top level base. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). Authorized users inside that namespace are able to manage those resources. Namespace names have to be unique in your cluster.
 
@@ -75,12 +75,12 @@ SET KUBE_CONTEXT=[Insert output of the upper command]
 $ kubectl config set-context %KUBE_CONTEXT% --namespace=[USER]
 ```
 
-**Note:** Some prefer to explicitly select the namespace for each `kubectl` command by adding `--namespace [USER]` 
+**Note:** Some prefer to explicitly select the namespace for each `kubectl` command by adding `--namespace [USER]`
 or `-n [USER]`. And others prefer helper tools like `kubens` (see lab 2)
 
 **Note:** Namespaces created via `kubectl`, have to be assigned to your project in order to be seen inside the Rancher WebGUI. Ask your teacher for the assignement.
 
-{{< collapse solution-1 "Solution Task 1" >}}
+{{< collapse solution "Solution Task 1" >}}
 
 ```
 $ kubectl create namespace [USER]

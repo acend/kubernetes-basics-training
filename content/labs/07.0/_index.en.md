@@ -98,7 +98,12 @@ Forwarding from [::1]:5000 -> 5000
 
 Don't forget to change the pod Name to your own Installation. If configured, you can use Auto-Completion.
 
-The application is now available with the following Link: [localhost:5000/](http://localhost:5000/).
+The application is now available with the following Link: [localhost:5000/](http://localhost:5000/). Or try a curl command:
+
+```bash
+curl localhost:5000
+```
+
 With the same concept you can access databases from your local client or connect your local development environment via remote debugging to your application in the pod.
 
 With the following link you find more information about port forwarding: <https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/>
