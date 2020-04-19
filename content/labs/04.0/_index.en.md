@@ -37,7 +37,7 @@ With the following command we can create a deployment inside our already created
 
 
 ```
-$ kubectl create deployment example-web-go --image=gbreak/example-web-go --namespace [USER]
+$ kubectl create deployment example-web-go --image=acend/example-web-go --namespace [USER]
 ```
 
 The output should be:
@@ -45,7 +45,7 @@ The output should be:
 deployment.apps/example-web-go created
 ```
 
-We're using an example from Groundbreak (a Golang application), which you can find on [Docker Hub](https://hub.docker.com/r/gbreak/example-web-go/) and [GitHub (Source)](https://github.com/gbreak/awesome-app).
+We're using an example from Groundbreak (a Golang application), which you can find on [Docker Hub](https://hub.docker.com/r/acend/example-web-go/) and [GitHub (Source)](https://github.com/acend/awesome-app).
 
 Kubernetes creates the defined and necessary resources, pulls the container image (in this case from Docker Hub) and deploys the pod.
 

@@ -15,7 +15,7 @@ Create a new deployment in your namespace:
 
 
 ```
-$ kubectl create deployment example-web-python --image=gbreak/example-web-python --namespace [USER]
+$ kubectl create deployment example-web-python --image=acend/example-web-python --namespace [USER]
 ```
 
 If we want to scale our example application, we have to tell the deployment that we e.g. want to have three running replicas instead of one.
@@ -320,7 +320,7 @@ The `containers` configuration then looks like:
 
 ```bash
       containers:
-      - image: gbreak/example-php-docker-helloworld
+      - image: acend/example-php-docker-helloworld
         imagePullPolicy: Always
         name: example-php-docker-helloworld
         readinessProbe:
@@ -344,7 +344,7 @@ The `containers` configuration then looks like:
 ```bash
                 "containers": [
                     {
-                        "image": "gbreak/example-php-docker-helloworld",
+                        "image": "acend/example-php-docker-helloworld",
                         "imagePullPolicy": "Always",
                         "name": "example-php-docker-helloworld",
                         "readinessProbe": {
