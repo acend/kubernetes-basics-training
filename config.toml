@@ -37,6 +37,7 @@ whiteColor = "#ffffff"
 
 # public Git Repo - used for "improve this page" links
 gitRepoUrl = "https://github.com/acend/kubernetes-techlab"
+consoleUrl = "https://shell.acend.ch"
 
 ############################## social links ##############################
 [[params.social]]
@@ -69,7 +70,6 @@ link = "https://linkedin.com/company/puzzle-itc"
         weight = 2
         name = "Puzzle Website"
         url = "https://www.puzzle.ch"
-
 
     # banner
     [Languages.en.params.banner]

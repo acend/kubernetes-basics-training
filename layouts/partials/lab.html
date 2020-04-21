@@ -18,9 +18,19 @@
       <div class="col-lg-9">
         <div class="p-5 bg-white">
 
+          {{ if .Site.Params.ConsoleUrl }}
+          <div class="float-right p">
+            <span class="ti-linux"> </span>
+	    <a target="popup" onclick="window.open('{{ .Site.Params.ConsoleUrl }}','name','width=1000,height=500')" 
+	       href="{{ .Site.Params.ConsoleUrl }}">
+              Console
+            </a>
+          </div>
+          {{ end }}
+          <br>
           {{ if .Site.Params.GitRepoUrl }}
           <div class="float-right">
-            <span class="ti-pencil"> </span>
+	    <span class="ti-pencil"> </span>
             <a href="{{ .Site.Params.GitRepoUrl }}/edit/master/content/{{ .File }}">
               Improve this page
             </a>
