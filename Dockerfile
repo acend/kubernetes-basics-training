@@ -1,4 +1,4 @@
-ARG HUGO_VERSION=0.68.3
+ARG HUGO_VERSION=0.69.2
 
 FROM acend/hugo:${HUGO_VERSION} AS builder
 
