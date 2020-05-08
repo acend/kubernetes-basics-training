@@ -5,9 +5,3 @@ menu:
   main:
     weight: 3
 ---
-
-
-
-
-### Additional information
-
