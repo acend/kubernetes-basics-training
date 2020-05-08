@@ -1,4 +1,4 @@
-ARG HUGO_VERSION=0.68.3
+ARG HUGO_VERSION=0.70.0
 
 FROM acend/hugo:${HUGO_VERSION} AS builder
 
@@ -14,7 +14,10 @@ WORKDIR /opt/app/src
 
 COPY . /opt/app/src
 
-RUN hugo --theme ${HUGO_THEME:-dot} --minify
+RUN npm install -D --save autoprefixer postcss-cli
+RUN git submodule update --init --recursive
+
+RUN hugo --theme ${HUGO_THEME:-docsy} --minify
 
 FROM alpine
 RUN apk --no-cache add thttpd 

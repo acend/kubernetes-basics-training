@@ -1,83 +1,105 @@
-################################# Default configuration ###################
-# provide your domain here
-baseURL = "/"
-
-enableGitInfo = true
-languageCode = "en-us"
-
-# site title
+baseurl = "/"
 title = "Kubernetes Techlabs"
 
-# theme
-theme = "dot"
+enableGitInfo = true
+
+theme = "docsy"
+
+languageCode = "en-us"
+
+contentDir = "content/en"
 
 # default content language
 defaultContentLanguage = "en"
-defaultContentLanguageInSubdir = true
+defaultContentLanguageInSubdir = false
 
-copyright = "The Hugo Documents are copyright © [gethugothemes](https://gethugothemes.com/) 2020."
 
-[frontmatter]
-publishDate = ["publishDate", "date", ":git"]
+disableKinds = ["taxonomy", "taxonomyTerm"]
 
-############################# Default Parameters ##########################
+# Highlighting config
+pygmentsCodeFences = true
+pygmentsUseClasses = false
+# Use the new Chroma Go highlighter in Hugo.
+pygmentsUseClassic = false
+#pygmentsOptions = "linenos=table"
+# See https://help.farbox.com/pygments.html
+pygmentsStyle = "tango"
+
+# Configure how URLs look like per section.
+[permalinks]
+blog = "/:section/:year/:month/:day/:slug/"
+
+## Configuration for BlackFriday markdown parser: https://github.com/russross/blackfriday
+[blackfriday]
+plainIDAnchors = true
+hrefTargetBlank = true
+angledQuotes = false
+latexDashes = true
+
+# Image processing configuration.
+[imaging]
+resampleFilter = "CatmullRom"
+quality = 75
+anchor = "smart"
+
+
+[Languages]
+[Languages.en]
+title = "Helm Techlabs"
+languageName = "English"
+weight = 1
+
+
+# navigation
+[Languages.en.menu]
+
+[[Languages.en.menu.main]]
+weight = 3
+name = "Puzzle ITC GmbH"
+url = "https://www.puzzle.ch"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+
 [params]
-# logo is for all page
-logo = "images/puzzle_classic_rgb.png"
-# logo white is for homepage logo, you can use colorful logo too...
-logoWhite = "images/puzzle_classic_bg_rgb.png"
-# when logo is empty, it will shown your site title
 
-# customize color
-primaryColor = "#02007e"
-secondaryColor = "#f9f9f9"
-textColor = "#636363"
-textColorDark = "#242738"
-whiteColor = "#ffffff"
+copyright = "Puzzle ITC GmbH"
+github_repo = "https://github.com/acend/kubernetes-techlab"
 
-# public Git Repo - used for "improve this page" links
-gitRepoUrl = "https://github.com/acend/kubernetes-techlab"
-consoleUrl = "https://shell.acend.ch"
+
+enabledModule = "base rancher"
+
+# Enable Lunr.js offline search
+offlineSearch = true
+
+[params.ui]
+# Enable to show the side bar menu in its compact state.
+sidebar_menu_compact = false
+#  Set to true to disable breadcrumb navigation.
+breadcrumb_disable = false
+#  Set to true to hide the sidebar search box (the top nav search box will still be displayed if search is enabled)
+sidebar_search_disable = false
+#  Set to false if you don't want to display a logo (/assets/icons/logo.svg) in the top nav bar
+navbar_logo = true
+# Set to true to disable the About link in the site footer
+footer_about_disable = true
 
 ############################## social links ##############################
-[[params.social]]
-icon = "ti-github" # themify icon pack : https://themify.me/themify-icons
-link = "https://github.com/acend/kubernetes-techlab"
+[params.links]
+[[params.links.developer]]
+name = "Github"
+icon = "fab fa-github" 
+url = "https://github.com/acend/kubernetes-techlab"
 
-[[params.social]]
-icon = "ti-twitter-alt" # themify icon pack : https://themify.me/themify-icons
-link = "https://twitter.com/puzzleitc"
+[[params.links.user]]
+name = "Twitter"
+icon = "fab fa-twitter"
+url = "https://twitter.com/puzzleitc"
   
-[[params.social]]
-icon = "ti-linkedin" # themify icon pack : https://themify.me/themify-icons
-link = "https://linkedin.com/company/puzzle-itc"
-
-################################# language ################################
-[Languages]
-
-  ################################ English Language ######################
-  [Languages.en]
-  languageName = "En"
-  languageCode = "en-us"
-  weight = 1
-  home = "Home"
-  copyright = "The Techlabs are copyright &copy; [Puzzle ITC](https://puzzle.ch) 2020."
-
-    # navigation
-    [Languages.en.menu]
-    
-      [[Languages.en.menu.main]]
-        weight = 2
-        name = "Puzzle Website"
-        url = "https://www.puzzle.ch"
-
-    # banner
-    [Languages.en.params.banner]
-      title = "Kubernetes Techlabs"
-      description = "Learning Kubernetes from the ground up"
-      image = "images/pic_puzzle_man.png"
-      placeholder = "Just enter terms to query our labs content"
-
-    # Topics
-    [Languages.en.params.topics]
-      title = "Techlab Sections"
+[[params.links.user]]
+name = "LinkedIn"
+icon = "fab fa-linkedin-in"
+url = "https://linkedin.com/company/puzzle-itc"
