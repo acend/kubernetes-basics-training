@@ -24,7 +24,9 @@ After cloning the main repo, you need to initialize the submodule like this:
 git submodule update --init --recursive
 ``` 
 
-## Build using Docker
+
+## How to test locally
+### Using Docker
 
 Build the image:
 
@@ -37,6 +39,22 @@ Run it locally:
 ```bash
 docker run -i -p 8080:8080 acend/kubernetes-techlab
 ```
+
+
+### Using Buildah and Podman
+
+Build the image:
+
+```bash
+buildah build-using-dockerfile -t acend/kubernetes-techlab:latest .
+```
+
+Run it locally with the following command. Beware that `--rmi` automatically removes the built image when the container stops, so you either have to rebuild it or remove the parameter from the command.
+
+```bash
+podman run --rm --rmi --interactive --publish 8080:8080 localhost/acend/kubernetes-techlab
+```
+
 
 ## How to develop locally
 
