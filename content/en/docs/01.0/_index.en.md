@@ -44,7 +44,8 @@ Containers are based on images. An image represents the file tree, which include
 A Container image typically is built from a Dockerfile, which is a text file filled with instructions. The endresult is a hierachically, layered binary construct.
 Depending on the used backend, most of the time the implementation is using overlay or COW mechanismens to represent the image.
 
-**Layer example Tomcat**
+Layer example Tomcat:
+
 - Base image (CentOS 7)
 - + install Java
 - + install Tomcat
@@ -78,12 +79,14 @@ The applications port from inside the pod are exposed via services.
 A service represents a stateful endpoint for your application in the pod. As a pod and its IP address typically is considered as stateless, the IP address of the service does not change, when changing the application inside the Pod. If you scale up your pods, you have an automatic internal load balancing towards all pod ip addresses.
 
 There are different kinds of services:
+
 - ClusterIP (the default, virtual IP address range)
 - NodePort (same as ClusterIP + open ports on the nodes)
 - LoadBalancer (external loadbalancer is created, works only in cloud environment, e.g. AWS elb)
 
 A service is unique inside a namespace.
- 
+
+
 ### Deployment
 
 Please follow <https://kubernetes.io/docs/concepts/workloads/controllers/deployment/>
