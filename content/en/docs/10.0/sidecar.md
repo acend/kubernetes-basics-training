@@ -1,6 +1,6 @@
 ---
-title: "10.6 Sidecar"
-weight: 106
+title: "10.7 Sidecar"
+weight: 107
 ---
 
 Lets first check again what a Pod is, from [Pods](https://kubernetes.io/docs/concepts/workloads/pods/pod/) on the Kubernetes documation page:
