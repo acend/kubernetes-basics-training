@@ -38,13 +38,13 @@ spec:
 And deploy with:
 
 ```bash
-kubectl create -f pvc.yaml --namespace [NAMESPACE]
+kubectl create -f pvc.yaml --namespace <NAMESPACE>
 ```
 
 We now have to insert the volume definition in the correct section of the MySQL deployment:
 
 ```bash
-kubectl edit deployment mysql --namespace [NAMESPACE]
+kubectl edit deployment mysql --namespace <NAMESPACE>
 ```
 
 Add the the both parts `volumeMounts` and `volumes`
@@ -78,14 +78,14 @@ Our application automatically creates the database schema at startup.
 If you want to force a redeployment of a pod, you could e.g. use this:
 
 ```bash
-kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [NAMESPACE]
+kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <NAMESPACE>
 ```
 {{% /alert %}}
 
-Using the command `kubectl get persistentvolumeclaim` or - a bit easier to write - `kubectl get pvc --namespace [NAMESPACE]`, we can display the freshly created PersistentVolumeClaim:
+Using the command `kubectl get persistentvolumeclaim` or - a bit easier to write - `kubectl get pvc --namespace <NAMESPACE>`, we can display the freshly created PersistentVolumeClaim:
 
 ```bash
-kubectl get pvc --namespace [NAMESPACE]
+kubectl get pvc --namespace <NAMESPACE>
 ```
 
 wich give you an output similar to this:
@@ -103,7 +103,7 @@ If the Container is not able to start it is the right moment to debug it!
 Check the Logs from the Container and search for the error.
 
 ```bash
-kubectl logs mysql-f845ccdb7-hf2x5 --namespace [NAMESPACE]
+kubectl logs mysql-f845ccdb7-hf2x5 --namespace <NAMESPACE>
 ```
 
 {{% alert title="Tip" color="warning" %}}

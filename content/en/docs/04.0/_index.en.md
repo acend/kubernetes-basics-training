@@ -13,13 +13,13 @@ After we've familiarized ourselves with the platform, we are going to have a loo
 First, we are going to directly start a new pod:
 
 ```bash
-kubectl run nginx --image=nginx --port=80 --restart=Never --namespace [NAMESPACE]
+kubectl run nginx --image=nginx --port=80 --restart=Never --namespace <NAMESPACE>
 ```
 
-Use `kubectl get pods --namespace [NAMESPACE]` in order to show the running pod:
+Use `kubectl get pods --namespace <NAMESPACE>` in order to show the running pod:
 
 ```bash
-kubectl get pods --namespace [NAMESPACE]
+kubectl get pods --namespace <NAMESPACE>
 ```
 
 which give you an output similar to this:
@@ -41,7 +41,7 @@ In some usecases it makes sense to start a single pod but has its downsides and 
 With the following command we can create a deployment inside our already created namespace:
 
 ```bash
-kubectl create deployment example-web-go --image=acend/example-web-go --namespace [NAMESPACE]
+kubectl create deployment example-web-go --image=acend/example-web-go --namespace <NAMESPACE>
 ```
 
 The output should be:
@@ -57,7 +57,7 @@ Use the command `kubectl get` with the `-w` parameter in order to get the reques
 
 
 ```bash
-kubectl get pods --namespace [NAMESPACE] -w
+kubectl get pods --namespace <NAMESPACE> -w
 ```
 
 This process can last for some time depending on your internet connection and if the image is already available locally.
@@ -69,7 +69,7 @@ If you want to create your own container images and use them with Kubernetes, yo
 
 ## Viewing the Created Resources
 
-When we executed the command `kubectl create deployment example-web-go --image=acend/example-web-go --namespace [NAMESPACE]`, Kubernetes created a deployment resource.
+When we executed the command `kubectl create deployment example-web-go --image=acend/example-web-go --namespace <NAMESPACE>`, Kubernetes created a deployment resource.
 
 
 ### Deployment
@@ -77,7 +77,7 @@ When we executed the command `kubectl create deployment example-web-go --image=a
 Display the created deployment using the following command:
 
 ```bash
-kubectl get deployment --namespace [NAMESPACE]
+kubectl get deployment --namespace <NAMESPACE>
 ```
 
 A [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) defines the following facts:
@@ -92,13 +92,13 @@ A [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deploym
 By using the `-o` (or `--output`) parameter we get a lot more information about the deployment itself:
 
 ```bash
-kubectl get deployment example-web-go -o json --namespace [NAMESPACE]
+kubectl get deployment example-web-go -o json --namespace <NAMESPACE>
 ```
 
 After the image has been pulled, Kubernetes deploys a pod according to the deployment:
 
 ```bash
-kubectl get pod --namespace [NAMESPACE]
+kubectl get pod --namespace <NAMESPACE>
 ```
 
 which gives you an output similar to this:

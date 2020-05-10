@@ -102,15 +102,15 @@ kubectl create -f nginx-sfs.yaml --namespace [USER]
 1. To watch the progress, open a second console and list the Statefulsets and watch the Pods:
 
 ```bash
-kubectl get statefulset --namespace [NAMESPACE]
-kubectl get pods -l app=nginx -w --namespace [NAMESPACE]
+kubectl get statefulset --namespace <NAMESPACE>
+kubectl get pods -l app=nginx -w --namespace <NAMESPACE>
 ```
 
 1. Scale up Statefulset
 
 
 ```bash
-kubectl scale statefulset nginx-cluster --replicas=3 --namespace [NAMESPACE]
+kubectl scale statefulset nginx-cluster --replicas=3 --namespace <NAMESPACE>
 ```
 
 
@@ -120,19 +120,19 @@ kubectl scale statefulset nginx-cluster --replicas=3 --namespace [NAMESPACE]
 
 
 ```bash
-kubectl get pods -l app=nginx -w --namespace [NAMESPACE]
+kubectl get pods -l app=nginx -w --namespace <NAMESPACE>
 ```
 
 1. Set new version of the Image in the Statefulset
 
 ```bash
-kubectl set image statefulset nginx-cluster nginx=nginx:latest --namespace [NAMESPACE]
+kubectl set image statefulset nginx-cluster nginx=nginx:latest --namespace <NAMESPACE>
 ```
 
 1. Rollback the software
 
 ```bash
-kubectl rollout undo statefulset nginx-cluster --namespace [NAMESPACE]
+kubectl rollout undo statefulset nginx-cluster --namespace <NAMESPACE>
 ```
 
 Further Information can be found at the [Kubernetes StatefulSet Dokumentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or at this [published article](https://opensource.com/article/17/2/stateful-applications).

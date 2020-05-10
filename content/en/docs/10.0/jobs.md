@@ -61,25 +61,25 @@ The paramter `.spec.template.spec.containers[0].image` shows, that we use the sa
 Lets create our job, create a file `job_mysql-dump.yaml` with the content above
 
 ```bash
-kubectl create -f ./job_mysql-dump.yaml --namespace [NAMESPACE]
+kubectl create -f ./job_mysql-dump.yaml --namespace <NAMESPACE>
 ```
 
 Check if the job was successful:
 
 ```bash
-kubectl describe jobs/mysql-dump --namespace [NAMESPACE]
+kubectl describe jobs/mysql-dump --namespace <NAMESPACE>
 ```
 
 The executed pod can be shown as follows:
 
 ```bash
-kubectl get pods --namespace [NAMESPACE]
+kubectl get pods --namespace <NAMESPACE>
 ```
 
 To show all pods belonging to a job in a human-readable format, the following command can be used:
 
 ```bash
-kubectl get pods --selector=job-name=mysql-dump --output=jsonpath={.items..metadata.name} --namespace [NAMESPACE]
+kubectl get pods --selector=job-name=mysql-dump --output=jsonpath={.items..metadata.name} --namespace <NAMESPACE>
 ```
 
 ## Cron Jobs

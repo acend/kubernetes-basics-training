@@ -13,7 +13,7 @@ The command `kubectl create deployment` from the last labcreates a pod but no se
 With the following command we create a service and by doing this we expose our deployment. There are different kinds of services. For this example, we are going to use the [`NodePort`](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport) type and expose port 5000:
 
 ```bash
-kubectl expose deployment example-web-go --type="NodePort" --name="example-web-go" --port=5000 --target-port=5000 --namespace [NAMESPACE]
+kubectl expose deployment example-web-go --type="NodePort" --name="example-web-go" --port=5000 --target-port=5000 --namespace <NAMESPACE>
 ```
 
 [Services](https://kubernetes.io/docs/concepts/services-networking/service/) in Kubernetes serve as an abstraction layer, entry point and proxy/load balancer for pods. A Service makes it possible to group and address pods from the same kind.
@@ -27,7 +27,7 @@ The application is not yet accessible from outside, the service is a Kubernetes 
 Let's have a more detailed look at our service:
 
 ```bash
-kubectl get services --namespace [NAMESPACE]
+kubectl get services --namespace <NAMESPACE>
 ```
 
 which gives you an output similar to this:
@@ -42,7 +42,7 @@ The `NodePort` number is being assigned by Kubernetes and stays the same as long
 You get additional information by executing the following command:
 
 ```bash
-kubectl get service example-web-go --namespace [NAMESPACE] -o json
+kubectl get service example-web-go --namespace <NAMESPACE> -o json
 ```
 
 ```json
@@ -86,18 +86,18 @@ kubectl get service example-web-go --namespace [NAMESPACE] -o json
 With the appropriate command you get details from the pod (or any other resource):
 
 ```bash
-kubectl get pod example-web-go-3-nwzku --namespace [NAMESPACE] -o json
+kubectl get pod example-web-go-3-nwzku --namespace <NAMESPACE> -o json
 ```
 
 {{% alert title="Note" color="warning" %}}
-First, get all pod names from your namespace with (`kubectl get pods --namespace [NAMESPACE]`) and then replace it in the following command.
+First, get all pod names from your namespace with (`kubectl get pods --namespace <NAMESPACE>`) and then replace it in the following command.
 {{% /alert %}}
 
 The service's `selector` defines, which pods are being used as endpoints. This happens based on labels. Look at the configuration of service and pod in order to find out what maps to what:
 
 Service: 
 ```bash
-kubectl get service <Service Name> --namespace [NAMESPACE] -o json
+kubectl get service <Service Name> --namespace <NAMESPACE> -o json
 ```
 
 ```json
@@ -111,7 +111,7 @@ kubectl get service <Service Name> --namespace [NAMESPACE] -o json
 Pod:
 
 ```bash
-kubectl get pod <Pod Name> --namespace [NAMESPACE]
+kubectl get pod <Pod Name> --namespace <NAMESPACE>
 ```
 ```json
 ...
@@ -124,7 +124,7 @@ kubectl get pod <Pod Name> --namespace [NAMESPACE]
 This link between service and pod can be displayed in an easier fashion with the `kubectl describe` command:
 
 ```bash
-kubectl describe service example-web-go --namespace [NAMESPACE]
+kubectl describe service example-web-go --namespace <NAMESPACE>
 ```
 
 ```
@@ -185,12 +185,12 @@ There's a second option to make a service accessible from outside: Use an ingres
 In order to switch the service type, we are going to delete the NodePort service that we've created before:
 
 ```bash
-kubectl delete service example-web-go --namespace=[NAMESPACE]
+kubectl delete service example-web-go --namespace=<NAMESPACE>
 ```
 Now we create a service with type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types):
 
 ```bash
-kubectl expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace [NAMESPACE]
+kubectl expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace <NAMESPACE>
 ```
 
 In order to create the ingress resource, we first need to create the file `ingress.yaml` and change the host variable to match your environment.
@@ -202,7 +202,7 @@ metadata:
   name: example-web-go
 spec:
   rules:
-  - host: web-go-[NAMESPACE].k8s-techlab.puzzle.ch
+  - host: web-go-<NAMESPACE>.k8s-techlab.puzzle.ch
     http:
       paths:
       - path: /
@@ -213,9 +213,9 @@ spec:
 
 After creating the ingress file, we can apply it:
 ```bash
-kubectl create -f ingress.yaml --namespace [NAMESPACE]
+kubectl create -f ingress.yaml --namespace <NAMESPACE>
 ```
-Afterwards we are able to access our freshly created service at `http://web-go-[NAMESPACE].k8s-techlab.puzzle.ch`
+Afterwards we are able to access our freshly created service at `http://web-go-<NAMESPACE>.k8s-techlab.puzzle.ch`
 
 
 ## Additional Task for Fast Learners
@@ -231,4 +231,4 @@ and
 ```bash
 kubectl describe [RESOURCE TYPE] [NAME]
 ```
-from your namespace `[NAMESPACE]` and try to understand them.
+from your namespace `<NAMESPACE>` and try to understand them.

@@ -66,7 +66,7 @@ In the Rancher WebGUI you can now choose your Project called `techlab`
 Create a new namespace in the lab environment.
 
 {{% alert title="Note" color="warning" %}}
-Please choose an identifying name for the namespace, in best case your abbreviation. We are going to use [NAMESPACE] as a placeholder for your created namespace.
+Please choose an identifying name for the namespace, in best case your abbreviation. We are going to use <NAMESPACE> as a placeholder for your created namespace.
 {{% /alert %}}
 
 > How can a new namespace be created?
@@ -83,7 +83,7 @@ kubectl help
 To create a new namespace on your cluster use the following command:
 
 ```bash
-kubectl create namespace [NAMESPACE]
+kubectl create namespace <NAMESPACE>
 ```
 
 {{< onlyWhen rancher >}}
@@ -95,7 +95,7 @@ Namespaces created via `kubectl`, have to be assigned to your Rancher project in
 **Tip:** By using the following command, you can switch into another namespace instead of specifly the namespace in each `kubectl` command:
 ```bash
 # Linux:
-kubectl config set-context $(kubectl config current-context) --namespace=[NAMESPACE]
+kubectl config set-context $(kubectl config current-context) --namespace=<NAMESPACE>
 ```
 
 ```
@@ -103,12 +103,12 @@ kubectl config set-context $(kubectl config current-context) --namespace=[NAMESP
 kubectl config current-context
 // Save the context in a variable
 SET KUBE_CONTEXT=[Insert output of the upper command]
-kubectl config set-context %KUBE_CONTEXT% --namespace=[NAMESPACE]
+kubectl config set-context %KUBE_CONTEXT% --namespace=<NAMESPACE>
 ```
 
 {{% alert title="Tip" color="warning" %}}
-Some prefer to explicitly select the namespace for each `kubectl` command by adding `--namespace [NAMESPACE]`
-or `-n [NAMESPACE]`. And others prefer helper tools like `kubens` (see lab 2)
+Some prefer to explicitly select the namespace for each `kubectl` command by adding `--namespace <NAMESPACE>`
+or `-n <NAMESPACE>`. And others prefer helper tools like `kubens` (see lab 2)
 {{% /alert %}}
 
 
@@ -119,7 +119,7 @@ Check the menu entries, there should neither appear any deployments nor any pods
 Display all existing pods in the previously created namespace with `kubectl`  (there should not yet be any!):
 
 ```bash
-kubectl get pod -n=[NAMESPACE]
+kubectl get pod -n=<NAMESPACE>
 ```
 
 With the command `kubectl get` you can display all kinds of resources of different types.
