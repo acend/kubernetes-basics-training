@@ -24,7 +24,7 @@ Edit your existing `example-web-pyhton` deployment with:
 kubectl edit deplyoment example-web-python --namespace [NAMESPACE
 ```
 
-and add the initContainer into the existing deployment:
+and add the InitContainer into the existing Deployment:
 
 ```yaml
 [...]
@@ -43,7 +43,7 @@ This obviusly only checks if there is an DNS Record for your mysql service and n
 With (use `kubectl get pod` or autocompletion to get the pod name):
 
 ```bash
-kubectl describe pod [POD NAME] --namespace [NAMESPACE]
+kubectl describe pod <POD NAME> --namespace [NAMESPACE]
 ```
 
 you can see the new init container
@@ -74,12 +74,12 @@ Init Containers:
 [...]
 ```
 
-As you cee, the initcontainer has `State: Terminate`d and an `Exit Code` of 0 which means it was successful.
+As you cee, the InitContainer has `State: Terminate`d and an `Exit Code` of 0 which means it was successful.
 
-You can also check the logs of the Init Container with:
+You can also check the logs of the InitContainer with:
 
 ```bash
-kubectl logs -c wait-for-db  example-web-python-6b5d4ddb8f-94k2h
+kubectl logs -c wait-for-db  <example-web-python-6b5d4ddb8f-94k2h> --namespace [NAMESPACE]
 ```
 
 which should give sou something similar to (the nslookup output from the command in the initcontainer)

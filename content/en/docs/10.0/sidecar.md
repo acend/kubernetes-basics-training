@@ -22,9 +22,9 @@ In a sidecar pattern, the functionality of the main container is extended or enh
 
 ## Task: Add a Prometheus MySQL Exporter as Sidecar
 
-We are going to add a the prometheus MySQL Exporter to our database from [Lab 8](.../08.0/).
+We are going to add a the prometheus MySQL exporter to our database from [Lab 8](.../08.0/).
 
-Change the existing MySQL deployment using:
+Change the existing MySQL Deployment using:
 
 ```bash
 kubectl edit deployment mysql --namespace [NAMESPACE]
@@ -66,7 +66,7 @@ Note the `Ready` column which show you 2 ready container.
 You can observe the logs from the mysqld-exporter with:
 
 ```bash
-kubectl logs mysql-65559644c9-cdjjk -c mysqld-exporter
+kubectl logs <mysql-65559644c9-cdjjk> -c mysqld-exporter
 ```
 
 which gives you an output similar to this:
@@ -87,7 +87,7 @@ time="2020-05-10T11:31:02Z" level=info msg="Listening on :9104" source="mysqld_e
 and by using `kubectl port-forward ...` you can even have a look at the prometheus metrics using your browser:
 
 ```bash
-kubectl port-forward mysql-65559644c9-cdjjk 9104
+kubectl port-forward <mysql-65559644c9-cdjjk> 9104
 ```
 
 And the open <http://localhost:9104/metrics> in your browser.
