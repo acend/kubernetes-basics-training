@@ -22,9 +22,9 @@ In a sidecar pattern, the functionality of the main container is extended or enh
 
 ## Task: Add a Prometheus MySQL Exporter as Sidecar
 
-We are going to add a the prometheus MySQL exporter to our database from [lab 8](../08.0/).
+In [lab 8](../08.0/) you have created a MySQL Deployment. In this task you are going to add the [prometheus MySQL exporter]([lab 8](../08.0/)) to the existing Deployment.
 
-Change the existing MySQL Deployment using:
+Change the existing `mysql` Deployment using:
 
 ```bash
 kubectl edit deployment mysql --namespace <NAMESPACE>
@@ -54,7 +54,7 @@ Your Pod does now have two running container. Verify this with:
 kubectl get pod --namespace <NAMESPACE>
 ```
 
-The output should look similar to this.
+The output should look similar to this:
 
 ```
 NAME                     READY   STATUS    RESTARTS   AGE
