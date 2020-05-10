@@ -15,7 +15,7 @@ The PersistentVolumeClaim only represents a request but not the storage itself. 
 
 ## Attaching a Volume to a Pod
 
-In a second step, the pvc from before is going to be attached to the right pod. In [lab 6](06_scale.md) we edited the deployment configuration in order to insert a readiness probe. We are now going to do the same for inserting the persistent volume.
+In a second step, the pvc from before is going to be attached to the right pod. In [lab 6](../06.0/) we edited the deployment configuration in order to insert a readiness probe. We are now going to do the same for inserting the persistent volume.
 
 The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size.  
 Save it to `pvc.yaml`:
@@ -38,7 +38,7 @@ spec:
 And deploy with:
 
 ```bash
-kubectl create --namespace [NAMESPACE] -f pvc.yaml
+kubectl create -f pvc.yaml --namespace [NAMESPACE]
 ```
 
 We now have to insert the volume definition in the correct section of the MySQL deployment:
@@ -68,15 +68,19 @@ Add the the both parts `volumeMounts` and `volumes`
 ...
 ```
 
-**Note:** Because we just changed the deployment a new pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
+{{% alert title="Note" color="warning" %}}
+Because we just changed the deployment a new pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
+{{% /alert &}}
 
 Our application automatically creates the database schema at startup.
 
-**Tip:** If you want to force a redeployment of a pod, you could e.g. use this:
+{{% alert title="Tip" color="warning" %}}
+If you want to force a redeployment of a pod, you could e.g. use this:
 
 ```bash
 kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [NAMESPACE]
 ```
+{{% /alert &}}
 
 Using the command `kubectl get persistentvolumeclaim` or - a bit easier to write - `kubectl get pvc --namespace [NAMESPACE]`, we can display the freshly created PersistentVolumeClaim:
 
@@ -109,7 +113,7 @@ If Container won't start because the data directory has files in it. Mount the v
 
 ### Restore Data
 
-Repeat the task from [Lab8, Task: Import a Database Dump](../08.0#task-import-a-database-dump).
+Repeat the task from [Lab8, Task: Import a Database Dump](../08.0/#task-import-a-database-dump).
 
 ### Test
 

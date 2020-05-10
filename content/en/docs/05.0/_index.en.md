@@ -88,7 +88,9 @@ With the appropriate command you get details from the pod (or any other resource
 kubectl get pod example-web-go-3-nwzku --namespace [NAMESPACE] -o json
 ```
 
-**Note:** First, get all pod names from your namespace with (`kubectl get pods --namespace [NAMESPACE]`) and then replace it in the following command.
+{{% alert title="Note" color="warning" %}}
+First, get all pod names from your namespace with (`kubectl get pods --namespace [NAMESPACE]`) and then replace it in the following command.
+{{% /alert &}}
 
 The service's `selector` defines, which pods are being used as endpoints. This happens based on labels. Look at the configuration of service and pod in order to find out what maps to what:
 
@@ -145,7 +147,9 @@ Events:
   Normal  EnsuredLoadBalancer   6m28s  service-controller  Ensured load balancer
 ```
 
-**Note:** Service IP addresses stay the same for the duration of the service's life span.
+{{% alert title="Note" color="warning" %}}
+Service IP addresses stay the same for the duration of the service's life span.
+{{% /alert %}}
 
 Open `http://[NodeIP]:[NodePort]` in your Browser. 
 You can use any NodeIP as the Service is exposed on all Nodes using the same NodePort. Use `kubectl get nodes -o wide` to display the IP's (INTERNAL-IP) of the available nodes.
@@ -162,10 +166,17 @@ lab-3   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.148   <no
 ```
 
 {{% onlyWhen rancher %}}
-**Note:** You can also use the Rancher WebGUI to open the exposed application in your Browser. The direkt link is shown on your *Resources / Workload* Page in the tab *Workload*. Look for your namespace and the deployment name. The Link looks like `31665/tcp`. Or go to the *Service Discovery* Tab and look for your service Name. The Link there looks the same and is right below the service name.
+{{% alert title="Note" color="warning" %}}
+You can also use the Rancher WebGUI to open the exposed application in your Browser. The direkt link is shown on your *Resources / Workload* Page in the tab *Workload*. Look for your namespace and the deployment name. The Link looks like `31665/tcp`.
+
+![Rancher NodePort](nodeportrancher.png)
+
+ Or go to the *Service Discovery* Tab and look for your service Name. The Link there looks the same and is right below the service name.
+
+{{% /alert %}}
 {{% /onlyWhen %}}
 
-## Task:
+## Task: Create an ClusterIP Service with an Ingress
 
 There's a second option to make a service accessible from outside: Use an ingress router.
 
@@ -189,7 +200,7 @@ metadata:
   name: example-web-go
 spec:
   rules:
-  - host: web-go-[NAMESPACE].webapp.acend.ch
+  - host: web-go-[NAMESPACE].k8s-techlab.puzzle.ch
     http:
       paths:
       - path: /
@@ -202,7 +213,7 @@ After creating the ingress file, we can apply it:
 ```bash
 kubectl create -f ingress.yaml --namespace [NAMESPACE]
 ```
-Afterwards we are able to access our freshly created service at `http://web-go-[NAMESPACE].webapp.acend.ch`
+Afterwards we are able to access our freshly created service at `http://web-go-[NAMESPACE].k8s-techlab.puzzle.ch`
 
 ---
 

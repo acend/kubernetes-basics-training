@@ -106,6 +106,9 @@ nginx                             1/1     Running   0          31m
 
 The deployment defines that one replica should be deployed, which is running as we can see in the output. This pod is not yet reachable from outside of the cluster.
 
+
+{{% onlyWhen rancher %}}
 ## Task: Verify the Deployment in the Rancher WebGUI
 
 Try to display the logs from the example application via the Rancher WebGui.
+{{% /onlyWhen }}

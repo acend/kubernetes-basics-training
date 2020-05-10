@@ -41,7 +41,7 @@ drwxr-xr-x    2 root     root          4096 Jan 16 21:52 opt
 With `exit` you can leave the pod and close the connection
 
 ```sh
-/ $ exit
+exit
 ```
 
 ## Task: Single Command

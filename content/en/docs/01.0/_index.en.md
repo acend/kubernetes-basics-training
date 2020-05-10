@@ -55,7 +55,10 @@ The ready built images can be version-controlled saved in an image registry and 
 Namespaces in Kubernetes represent a logical segregation of unique names for entities (pods, services, deployments, configmaps, etc.)
 
 Permissions and roles can be bound on a namespace base. This way a user can control his own resources inside a namespace.
-**Note:** Some resources are clusterwide valid and can not be set and controlled on a namespace based.
+
+{{% alert title="Note" color="warning" %}}
+Some resources are clusterwide valid and can not be set and controlled on a namespace based.
+{{% /alert %}}
 
 
 ### Pods

@@ -53,7 +53,7 @@ echo "bXlzcWxwYXNzd29yZA=="| base64 -d
 We are going to create another secret for storing the MySQL root password.
 
 ```bash
-kubectl create secret generic mysql-root-password --namespace [USER] --from-literal=password=mysqlrootpassword
+kubectl create secret generic mysql-root-password --namespace [NAMESPACE] --from-literal=password=mysqlrootpassword
 ```
 
 We are now going to create deployment and service. As a first example we use a database without persistent storage. Only use an ephemeral database for testing purposes as a restart of the pod leads to the loss of all saved data. We are going to look at how to persist this data in a persistent volume later on.
@@ -123,7 +123,7 @@ spec:
 
 Execute it with:
 ```bash
-kubectl --namespace [NAMESPACE] apply -f mysql.yaml
+kubectl apply -f mysql.yaml --namespace [NAMESPACE]
 ```
 
 As soon as the container image for mysql:5.7 has been pulled, you will see a new pod using `kubectl get pods`.
@@ -144,21 +144,21 @@ We now can set these environment variables inside the deployment configuration. 
 So let's set the environment variables in the example-spring-boot deployment:
 
 ```bash
-kubectl create secret generic mysql-uri --namespace [NAMESPACE] --from-literal=MYSQL_URI="mysql://example:mysqlpassword@mysql/example"
+kubectl create secret generic mysql-uri --from-literal=MYSQL_URI="mysql://example:mysqlpassword@mysql/example" --namespace [NAMESPACE] 
 ```
 
 ```bash
-kubectl --namespace [NAMESPACE] set env deployment/example-web-python --from=secret/mysql-uri
+kubectl set env deployment/example-web-python --from=secret/mysql-uri --namespace [NAMESPACE] 
 ```
 
 You could also do the changes by directly editing the deployment:
 
 ```bash
-kubectl --namespace [NAMESPACE] edit deployment example-web-python
+kubectl edit deployment example-web-python --namespace [NAMESPACE] 
 ```
 
 ```bash
-kubectl --namespace [NAMESPACE] get deployment example-web-python
+kubectl get deployment example-web-python --namespace [NAMESPACE]
 ```
 ```yaml
 ...
@@ -179,7 +179,7 @@ Or we could register some "Hellos" in the application, delete the pod, wait for 
 
 ## Task: Manual Database Connection
 
-As described in [lab 07](07_troubleshooting_ops.md) we can log into a pod with `kubectl exec -it [POD NAME] -- /bin/bash`.
+As described in [lab 07](../07.0/) we can log into a pod with `kubectl exec -it [POD NAME] -- /bin/bash`.
 
 Show all pods:
 
@@ -237,12 +237,14 @@ show tables;
 
 ## Task: Import a Database Dump
 
-Our task is now to import this [dump](https://raw.githubusercontent.com/appuio/techlab/lab-3.3/labs/data/08_dump/dump.sql) into the MySQL database running as a pod. Use the `mysql` command line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
+Our task is now to import this [dump](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/labs/08.0/dump.sql) into the MySQL database running as a pod. Use the `mysql` command line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
 
+{{% alert title="Tip" color="warning" %}}
 **Tip:** You can also copy local files into a pod using `kubectl cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the pod and using `curl -O [URL]`.
+{{% /alert %}}
 
 ### Solution
-This is how you copy the database dump into the pod (you find the dump [here](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/labs/08.0/dump.sql))
+This is how you copy the database dump into the pod:
 
 ```bash
 wget https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/labs/08.0/dump.sql

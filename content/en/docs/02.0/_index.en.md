@@ -5,12 +5,6 @@ weight: 2
 
 In this we will install and configure the `kubectl` client to be able to practice on further tasks in the following techlabs.
 
-{{< onlyWhen rancher >}}
-{{% alert title="Tip" color="warning" %}}
-In Rancher you can also use `kubectl` directly within your browser. As soon as you are loggend in Rancher WebGUI, click on "Launch kubectl" (or use the ° key) and you get a console with kubectl installed and configured.
-{{% /alert %}}
-{{< /onlyWhen >}}
-
 ## Command Line Interface
 
 `kubectl` provides for you a console based interface to control one or several Kubernetes clusters.
@@ -20,6 +14,12 @@ As the client is written in Go, you can run the single binary on the following O
 - Microsoft Windows
 - Mac OS X
 - Linux
+
+{{< onlyWhen rancher >}}
+{{% alert title="Tip" color="warning" %}}
+In Rancher you can also use `kubectl` directly within your browser. As soon as you are loggend in Rancher WebGUI, click on "Launch kubectl" (or use the ° key) and you get a console with `kubectl` installed and configured.
+{{% /alert %}}
+{{< /onlyWhen >}}
 
 ## Manual installation of `kubectl`
 
@@ -95,6 +95,10 @@ Client Version: version.Info{Major:"1", Minor:"18", GitVersion:"v1.18.0", GitCom
 
 If you don't see a similar out, possibly there are issues with the set `PATH` variable.
 
+{{% alert title="Note color="warning" %}}
+Make sure to use at least version 1.16.x for your `kubectl`
+{{% /alert %}}
+
 ## bash/zsh completion (optional)
 
 Running on Linux and iOS (Mac) you can activate the bash completion:
@@ -150,3 +154,7 @@ adding an interactive menu to `kubectx`and `kubens`: <https://github.com/junegun
 
 `stern` is a very powerful enhancement of `kubectl logs` and lets you tail logs of multiple containers and pods at the 
 same time: <https://github.com/wercker/stern>. 
+
+## Other tools to work with Kubernetes
+
+* https://github.com/lensapp/lens

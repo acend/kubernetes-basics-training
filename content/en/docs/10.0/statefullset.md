@@ -1,5 +1,5 @@
 ---
-title: "10.1 - StatefulSet"
+title: "10.1 StatefulSet"
 weight: 101
 ---
 

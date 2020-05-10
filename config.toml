@@ -45,7 +45,7 @@ anchor = "smart"
 
 [Languages]
 [Languages.en]
-title = "Helm Techlabs"
+title = "Kubernetes Techlabs"
 languageName = "English"
 weight = 1
 
