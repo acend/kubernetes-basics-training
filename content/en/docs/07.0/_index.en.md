@@ -5,9 +5,11 @@ weight: 7
 
 This Lab helps you to troubleshoot your application and shows you some tools to make troubleshooting easier.
 
+
 ## Login to a Container
 
 Running container should be treated as immutable infrastructure and should therefore not be modified. Although, there are some use-cases in which you have to login into your running container. Debugging and analyze is one example for this.
+
 
 ## Task: Shell into POD
 
@@ -44,6 +46,7 @@ With `exit` you can leave the pod and close the connection
 exit
 ```
 
+
 ## Task: Single Command
 
 Single commands inside a container can be executed with `kubectl exec`:
@@ -67,6 +70,7 @@ KUBERNETES_PORT_53_UDP_PROTO=udp
 KUBERNETES_PORT_53_TCP=tcp://172.30.0.1:53
 ...
 ```
+
 
 ## Watch Logfiles
 

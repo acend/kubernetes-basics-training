@@ -97,6 +97,7 @@ mysql-pv-claim   Bound    pvc-2cb78deb-d157-11e8-a406-42010a840034   1Gi        
 
 The two columns `STATUS` and `VOLUME` show us that our claim has been bound to the persistent volume `pvc-2cb78deb-d157-11e8-a406-42010a840034`.
 
+
 ## Error case
 If the Container is not able to start it is the right moment to debug it!  
 Check the Logs from the Container and search for the error.
@@ -109,11 +110,14 @@ kubectl logs mysql-f845ccdb7-hf2x5 --namespace [NAMESPACE]
 If Container won't start because the data directory has files in it. Mount the volume to a different location in the pod and check the content. Remove it if necessary.
 {{% /alert %}}
 
+
 ## Task: Persistence Check
+
 
 ### Restore Data
 
 Repeat the task from [Lab8, Task: Import a Database Dump](../08.0/#task-import-a-database-dump).
+
 
 ### Test
 

@@ -10,6 +10,7 @@ In this excercise we will interact for the first time with the lab environment, 
 Please make sure, the be finshed with [Lab 2](../02.0/) before continue with this lab.
 {{% /alert %}}
 
+
 ### Login and choose Kubernetes Cluster
 
 {{< onlyWhen rancher >}}
@@ -40,6 +41,7 @@ vim ~/.kube-techlab/config
 export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 ```
 {{< /onlyWhen >}}
+
 
 ## Namespaces
 

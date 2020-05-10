@@ -7,7 +7,9 @@ Stateless applications or applications with a stateful backend, can be described
 For example if your application needs the same hostname every time it starts or if you have a clustered application with a strict start/stop order of all cluster services (e.g. rabbitmq).
 These features are implemented as **Statefulset**.
 
+
 ## Consistent hostnames
+
 While in normal Deployments a hash based name of the Pods (represented also as Hostname inside the Pod) is generated, Statefulsets create Pods with preconfigured names.
 Example of a rabbitmq-cluster with three nodes (Pods):
 
@@ -17,7 +19,9 @@ rabbitmq-1
 rabbitmq-2
 ```
 
+
 ## Scaling
+
 Scaling is handled as well differently in Statefulsets.
 On scaling up from 3 to 5 within a Deployment, two additional Pods could be started at the __same__ time (based on the configuren. Using the Stateful it seems to be more "in control".
 
@@ -31,8 +35,8 @@ On downscaling the order is vice versa. The "youngest" Pod will be stopped in fi
 Order for scaling down: `rabbitmq-4`, `rabbitmq-3`, etc.
 
 
-
 ## Update procedure / Rollout of a new application
+
 On an update of the application, also the "youngest" Pod will be the first and only after a successful Start the next Pod will be updated.
 
 1. Youngest Pod will be stopped
@@ -42,21 +46,26 @@ On an update of the application, also the "youngest" Pod will be the first and o
 
 If the start of a new Pod fails, the Update / Rollout will be interrupted, so that the architecture of your application won't break.
 
+
 ## Trivia
+
 As Statefulsets have predictable names, which are reused, you can integrate PVCs into the sets from a configured storageclass. The will be used als on **scale up**!
 As names are predictable a 1-to-1 relation is given. 
 By setting a _Partition_ updates can be splitted into two steps.
 
+
 ## Conclusion
+
 The control- and predictable behaviour can be perfectly used with application as __rabbitmq__ or __etcd__, as you need unique names the cluster creation.
-
-
 
 
 ## Tasks
 
+
 ### Statefulsets
+
 1. Create a statefulset based on the YAML file _nginx-sfs.yaml_ :
+
 ```YAML
 apiVersion: apps/v1
 kind: StatefulSet
@@ -82,9 +91,11 @@ spec:
 ```
 
 1. Start the Statefulset
+  
 ```bash
 kubectl create -f nginx-sfs.yaml --namespace [USER]
 ```
+
 
 ### Scaling
 
@@ -96,26 +107,32 @@ kubectl get pods -l app=nginx -w --namespace [NAMESPACE]
 ```
 
 1. Scale up Statefulset
+
+
 ```bash
 kubectl scale statefulset nginx-cluster --replicas=3 --namespace [NAMESPACE]
 ```
 
+
 ### Update Statefulset Image
 
 1. To watch the changes of the the Pods, please open a second window and execute the command:
+
+
 ```bash
 kubectl get pods -l app=nginx -w --namespace [NAMESPACE]
 ```
 
 1. Set new version of the Image in the Statefulset
+
 ```bash
 kubectl set image statefulset nginx-cluster nginx=nginx:latest --namespace [NAMESPACE]
 ```
 
 1. Rollback the software
+
 ```bash
 kubectl rollout undo statefulset nginx-cluster --namespace [NAMESPACE]
 ```
 
 Further Information can be found at the [Kubernetes StatefulSet Dokumentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or at this [published article](https://opensource.com/article/17/2/stateful-applications).
-

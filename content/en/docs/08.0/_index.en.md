@@ -243,6 +243,7 @@ Our task is now to import this [dump](https://raw.githubusercontent.com/acend/ku
 **Tip:** You can also copy local files into a pod using `kubectl cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the pod and using `curl -O [URL]`.
 {{% /alert %}}
 
+
 ### Solution
 This is how you copy the database dump into the pod:
 

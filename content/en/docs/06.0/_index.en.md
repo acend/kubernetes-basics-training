@@ -5,10 +5,10 @@ weight: 6
 
 In this lab we are going to show you how to scale applications on Kubernetes. Further we show you how Kubernetes makes sure that the number of requested pods is up and running how an application can tell the platform that it is ready to ready to receive request.
 
+
 ## Task: Scale the Example Application
 
 Create a new deployment in your namespace:
-
 
 ```bash
 kubectl create deployment example-web-python --image=acend/example-web-python --namespace [NAMESPACE]
@@ -76,6 +76,7 @@ example-web-python-86d9d584f8-qg499   1/1     Running   0          31s
 {{% alert title="Tip" color="warning" %}}
 Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
 {{% /alert %}}
+
 
 ## Check for Uninterruptible Scaling/Deploying
 

@@ -22,12 +22,15 @@ Using the open source software Kubernetes, you get a platform to deploy your sof
 
 Kubernetes consists out of Kubernetes master nodes and kubernetes minion (also knows as worker or compute) nodes.
 
+
 ### Master and minion nodes
+
 The master components are the _apiserver_, the _scheduler_ and the _controller-manager_.
 The _apiserver_ itself represents the management interface.
 The scheduler and the controller-manager decide, which applications should be deployed on the cluster. Additionally the state and configuration of the cluster itself is controlled in the master components
 Minion nodes are also known as compute or worker nodes, which are responsible for running the container workloads (applications).
 The Control plane for the minions is implemented in the master components.
+
 
 ### Container and images
 

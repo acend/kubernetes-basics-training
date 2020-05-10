@@ -5,6 +5,7 @@ weight: 4
 
 In this lab, we are going to deploy our first pre-built container image and look at the Kubernetes concepts pod, service and deployment.
 
+
 ## Task: Start a Pod
 
 After we've familiarized ourselves with the platform, we are going to have a look at deploying a pre-built container image from Docker Hub or any other public Container registry.
@@ -31,6 +32,7 @@ nginx     1/1       Running   0          1m
 {{% onlyWhen rancher %}}
 Have a look at your nginx pod inside the Rancher WebGUI under "Workloads" an delete the pod right afterwards.
 {{% /onlyWhen %}}
+
 
 ## Task: Deployment
 
@@ -64,9 +66,11 @@ This process can last for some time depending on your internet connection and if
 If you want to create your own container images and use them with Kubernetes, you definitely should have a look at [these best practices](https://docs.openshift.com/container-platform/latest/creating_images/guidelines.html) and apply them. The Image Creation Guide may be from OpenShift, however it also applies to Kubernetes and other container platforms.
 {{% /alert %}}
 
+
 ## Viewing the Created Resources
 
 When we executed the command `kubectl create deployment example-web-go --image=acend/example-web-go --namespace [NAMESPACE]`, Kubernetes created a deployment resource.
+
 
 ### Deployment
 

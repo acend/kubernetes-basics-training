@@ -6,6 +6,7 @@ weight: 104
 Similar to environment variables, ConfigsMaps allow you to separate the configuration for an application from the image. Pods can access those variables during runtime, which allows maximum portability for applications running in containers.
 In this lab you learn to create and use ConfigMaps.
 
+
 # Create a ConfigMap in the Kubernetes Namespace:
 
 To create a ConfigMap in a namespace, the following command is used:
