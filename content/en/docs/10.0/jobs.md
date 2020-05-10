@@ -14,12 +14,9 @@ More detailed information can be retrieved from [Kubernetes Jobs Documentation](
 ## Task: Create a Job for a MySQL Dump
 
 
-Similar to [Lab8, Task: Import a Database Dump](../08.0#task-import-a-database-dump), we now want to create a dump of a running MySQL database, but without the need of interactively logging into the pod.
+Similar to [Lab8, Task: Import a Database Dump](../08.0/#task-import-a-database-dump), we now want to create a dump of a running MySQL database, but without the need of interactively logging into the pod.
 
-Lets first look at the job resource that we want to create. It can be found at [labs/10_data/job_mysql-dump.yaml](https://github.com/puzzle/kubernetes-techlab/blob/master/labs/10_data/job_mysql-dump.yaml).
-The paramter `.spec.template.spec.containers[0].image` shows, that we use the same image as the running database. In contrast to the database pod, we don't start a database afterwards, but run a mysqldump command, specified with `.spec.template.spec.containers[0].command`. To perform the dump, we use the environment variables of the database deployment to set the hostname, user and password parameters of the mysqldump command. The `MYSQL_PASSWORD` variable refers to the value of the secret, which is already used for the database pod. Like this we ensure that the dump is performed with the same credentials.
-
-Lets create our job, use the following `job_mysql-dump.yaml`:
+Lets first look at the job resource that we want to create.
 
 ```yaml
 apiVersion: batch/v1
@@ -60,6 +57,9 @@ spec:
       restartPolicy: Never
 ```
 
+The paramter `.spec.template.spec.containers[0].image` shows, that we use the same image as the running database. In contrast to the database pod, we don't start a database afterwards, but run a mysqldump command, specified with `.spec.template.spec.containers[0].command`. To perform the dump, we use the environment variables of the database deployment to set the hostname, user and password parameters of the mysqldump command. The `MYSQL_PASSWORD` variable refers to the value of the secret, which is already used for the database pod. Like this we ensure that the dump is performed with the same credentials.
+
+Lets create our job, create a file `job_mysql-dump.yaml` with the content above
 
 ```bash
 kubectl create -f ./job_mysql-dump.yaml --namespace [NAMESPACE]
