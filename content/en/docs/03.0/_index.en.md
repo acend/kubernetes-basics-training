@@ -66,7 +66,7 @@ In the Rancher WebGUI you can now choose your Project called `techlab`
 Create a new namespace in the lab environment.
 
 {{% alert title="Note" color="warning" %}}
-Please choose an identifying name for the namespace, in best case your abbreviation. We are going to use <NAMESPACE> as a placeholder for your created namespace.
+Please choose an identifying name for the namespace, in best case your abbreviation. We are going to use `<NAMESPACE>` as a placeholder for your created namespace.
 {{% /alert %}}
 
 > How can a new namespace be created?
