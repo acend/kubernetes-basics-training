@@ -5,6 +5,7 @@ weight: 2
 
 In this we will install and configure the `kubectl` client to be able to practice on further tasks in the following techlabs.
 
+
 ## Command Line Interface
 
 `kubectl` provides for you a console based interface to control one or several Kubernetes clusters.
@@ -21,9 +22,10 @@ In Rancher you can also use `kubectl` directly within your browser. As soon as y
 {{% /alert %}}
 {{< /onlyWhen >}}
 
+
 ## Manual installation of `kubectl`
 
-Follow https://kubernetes.io/docs/tasks/tools/install-kubectl/
+Follow <https://kubernetes.io/docs/tasks/tools/install-kubectl/>
 
 In case the installation from the official package repositories didn't work or a specific version is need, the static binary can be downloaded and put into one of the following paths.
 
@@ -44,6 +46,7 @@ In case the installation from the official package repositories didn't work or a
 ```
 C:\Kubernetes\
 ```
+
 
 ## Set the the right file modes on Linux and MacOS
 
@@ -78,7 +81,7 @@ Copy the `kubectl` binary directly into the folder `C:\Windows`.
 {{% /alert %}}
 
 
-## Verify installation 
+## Verify installation
 
 The `kubectl` binary should be correctly installed by now. This can be proofed by running the following command:
 
@@ -99,6 +102,7 @@ If you don't see a similar out, possibly there are issues with the set `PATH` va
 Make sure to use at least version 1.16.x for your `kubectl`
 {{% /alert %}}
 
+
 ## bash/zsh completion (optional)
 
 Running on Linux and iOS (Mac) you can activate the bash completion:
@@ -108,6 +112,7 @@ source <(kubectl completion bash)
 ```
 
 As well as for zsh:
+
 ```bash
 source <(kubectl completion zsh)
 ```
@@ -125,13 +130,16 @@ Ubuntu:
 ```bash
 sudo apt install bash-completion
 ```
+
+
 ## First steps with kubectl
 
 `kubectl` has many commands and subcommands. Invoke `kubectl [-h]` to get a list of all commands; `kubectl <command> -h`
 gives you detailed help about a command.
 
-If you don't want to memorize all `kubectl` options then use the `kubectl` Cheat Sheet: 
+If you don't want to memorize all `kubectl` options then use the `kubectl` Cheat Sheet:
 <https://kubernetes.io/docs/reference/kubectl/cheatsheet/>
+
 
 ## Optional power tools for kubectl
 
@@ -146,15 +154,16 @@ curl https://raw.githubusercontent.com/ahmetb/kubectx/master/kubens -o ~/bin/kub
 chmod +x ~/bin/kubectx ~/bin/kubens
 ```
 
-`kube-ps1` is another helpful shell script which adds the current context and namespace to the shell prompt: 
+`kube-ps1` is another helpful shell script which adds the current context and namespace to the shell prompt:
 <https://github.com/jonmosco/kube-ps1>
 
-`fzf` is yet another handy helper tool when you have to deal with a lot of contexts or namespaces by 
+`fzf` is yet another handy helper tool when you have to deal with a lot of contexts or namespaces by
 adding an interactive menu to `kubectx`and `kubens`: <https://github.com/junegunn/fzf>
 
-`stern` is a very powerful enhancement of `kubectl logs` and lets you tail logs of multiple containers and pods at the 
-same time: <https://github.com/wercker/stern>. 
+`stern` is a very powerful enhancement of `kubectl logs` and lets you tail logs of multiple containers and pods at the
+same time: <https://github.com/wercker/stern>.
+
 
 ## Other tools to work with Kubernetes
 
-* https://github.com/lensapp/lens
+- <https://github.com/lensapp/lens>

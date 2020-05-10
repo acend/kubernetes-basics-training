@@ -13,58 +13,60 @@ A sidecar is a utility container in the Pod and its purpose is to support the ma
 
 In a sidecar pattern, the functionality of the main container is extended or enhanced by a sidecar container without strong coupling between two. Although it is always possible to build sidecar container functionality into the main container, there are several benefits with this pattern,
 
-* different resource profiles i.e., independent resource accounting and allocation
-* clear separation of concerns at packaging level i.e., no strong coupling between containers
-* reusability i.e., sidecar containers can be paired with numerous different "main" containers
-* failure containment boundary, making it possible for the overall system to degrade gracefully
-* independent testing, packaging, upgrade, deployment and if necessary roll back
+- different resource profiles i.e., independent resource accounting and allocation
+- clear separation of concerns at packaging level i.e., no strong coupling between containers
+- reusability i.e., sidecar containers can be paired with numerous different "main" containers
+- failure containment boundary, making it possible for the overall system to degrade gracefully
+- independent testing, packaging, upgrade, deployment and if necessary roll back
+
 
 ## Task: Add a Prometheus MySQL Exporter as Sidecar
 
-We are going to add a the prometheus MySQL Exporter to our database from [Lab 8](.../08.0/).
+In [lab 8](../08.0/) you have created a MySQL Deployment. In this task you are going to add the [prometheus MySQL exporter]([lab 8](../08.0/)) to the existing Deployment.
 
-Change the existing MySQL deployment using:
+Change the existing `mysql` Deployment using:
 
 ```bash
-kubectl edit deployment mysql --namespace [NAMESPACE]
+kubectl edit deployment mysql --namespace <NAMESPACE>
 ```
 
 And add a new (sidecar) container into your Deployment:
 
 ```yaml
+containers:
 [...]
 - env:
-  - name: DATA_SOURCE_NAME
+- name: DATA_SOURCE_NAME
     value: root:$MYSQL_ROOT_PASSWORD@(localhost:3306)/
-  - name: MYSQL_ROOT_PASSWORD
+- name: MYSQL_ROOT_PASSWORD
     valueFrom:
-      secretKeyRef:
+    secretKeyRef:
         key: password
         name: mysql-root-password
-  image: prom/mysqld-exporter
-  name: mysqld-exporter
+image: prom/mysqld-exporter
+name: mysqld-exporter
 [...]
 ```
 
 Your Pod does now have two running container. Verify this with:
 
 ```bash
-kubectl get pod --namespace [NAMESPACE]
+kubectl get pod --namespace <NAMESPACE>
 ```
 
-The output should look similar to this.
+The output should look similar to this:
 
 ```
 NAME                     READY   STATUS    RESTARTS   AGE
 mysql-65559644c9-cdjjk   2/2     Running   0          5m35s
 ```
 
-Note the `Ready` column which show you 2 ready container.
+Note the `Ready` column which shows you 2 ready container.
 
 You can observe the logs from the mysqld-exporter with:
 
 ```bash
-kubectl logs mysql-65559644c9-cdjjk -c mysqld-exporter
+kubectl logs <mysql-65559644c9-cdjjk> -c mysqld-exporter
 ```
 
 which gives you an output similar to this:
@@ -82,11 +84,10 @@ time="2020-05-10T11:31:02Z" level=info msg=" --collect.info_schema.innodb_cmpmem
 time="2020-05-10T11:31:02Z" level=info msg="Listening on :9104" source="mysqld_exporter.go:283"
 ```
 
-
 and by using `kubectl port-forward ...` you can even have a look at the prometheus metrics using your browser:
 
 ```bash
-kubectl port-forward mysql-65559644c9-cdjjk 9104
+kubectl port-forward <mysql-65559644c9-cdjjk> 9104
 ```
 
-And the open http://localhost:9104/metrics in your browser.
+And the open <http://localhost:9104/metrics> in your browser.

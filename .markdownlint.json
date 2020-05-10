@@ -1,0 +1,20 @@
+{
+    "default": true,
+    "MD013": false,
+    "MD003": {
+      "style": "atx"
+    },
+    "MD004": {
+      "style": "dash"
+    },
+    "MD022": {
+      "lines_above": 2
+    },
+    "MD035": {
+      "style": "---"
+    },
+    "MD040": false,
+    "MD048": {
+      "style": "backtick"
+    }
+  }

@@ -5,13 +5,13 @@ weight: 6
 
 In this lab we are going to show you how to scale applications on Kubernetes. Further we show you how Kubernetes makes sure that the number of requested pods is up and running how an application can tell the platform that it is ready to ready to receive request.
 
+
 ## Task: Scale the Example Application
 
 Create a new deployment in your namespace:
 
-
 ```bash
-kubectl create deployment example-web-python --image=acend/example-web-python --namespace [NAMESPACE]
+kubectl create deployment example-web-python --image=acend/example-web-python --namespace <NAMESPACE>
 ```
 
 If we want to scale our example application, we have to tell the deployment that we e.g. want to have three running replicas instead of one.
@@ -20,7 +20,7 @@ Let's have a closer look at the existing replicaset:
 
 
 ```bash
-kubectl get replicasets --namespace [NAMESPACE]
+kubectl get replicasets --namespace <NAMESPACE>
 ```
 
 which give you an output similar to this:
@@ -33,7 +33,7 @@ example-web-python-86d9d584f8   1         1         1       110s
 Or for even more details:
 
 ```bash
-kubectl get replicaset example-web-python-86d9d584f8 -o json --namespace [NAMESPACE]
+kubectl get replicaset example-web-python-86d9d584f8 -o json --namespace <NAMESPACE>
 ```
 
 The replicaset shows how many pods/replicas are desired, current and ready.
@@ -42,13 +42,13 @@ The replicaset shows how many pods/replicas are desired, current and ready.
 Now we scale our application to three replicas:
 
 ```bash
-kubectl scale deployment example-web-python --replicas=3 --namespace [NAMESPACE]
+kubectl scale deployment example-web-python --replicas=3 --namespace <NAMESPACE>
 ```
 
 Check the number of desired, current and ready replicas:
 
 ```bash
-kubectl get replicasets --namespace [NAMESPACE]
+kubectl get replicasets --namespace <NAMESPACE>
 ```
 
 ```
@@ -60,7 +60,7 @@ example-web-python-86d9d584f8   3         3         1       4m33s
 and look at how many pods there are:
 
 ```bash
-kubectl get pods --namespace [NAMESPACE]
+kubectl get pods --namespace <NAMESPACE>
 ```
 
 which gives you an output similar to this.
@@ -77,18 +77,19 @@ example-web-python-86d9d584f8-qg499   1/1     Running   0          31s
 Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
 {{% /alert %}}
 
+
 ## Check for Uninterruptible Scaling/Deploying
 
 Now we create a new service with type NodePort:
 
 ```bash
-kubectl expose deployment example-web-python --type="NodePort" --name="example-web-python" --port=5000 --target-port=5000 --namespace [NAMESPACE]
+kubectl expose deployment example-web-python --type="NodePort" --name="example-web-python" --port=5000 --target-port=5000 --namespace <NAMESPACE>
 ```
 
 Let's look at our service. We should see all three endpoints referenced:
 
 ```bash
-kubectl describe service example-web-python --namespace [NAMESPACE]
+kubectl describe service example-web-python --namespace <NAMESPACE>
 ```
 
 ```
@@ -179,7 +180,7 @@ If on Windows, execute the following command in Gitbash, Powershell seems not to
 {{% /alert %}}
 
 ```bash
-kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [NAMESPACE]
+kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <NAMESPACE>
 ```
 
 During a short period we won't get a response:
@@ -261,7 +262,7 @@ In our deployment configuration inside the rolling update strategy section we de
 You can directly edit the deployment (or any resource) with:
 
 ```bash
-kubectl edit deployment example-web-python --namespace [NAMESPACE]
+kubectl edit deployment example-web-python --namespace <NAMESPACE>
 ```
 
 
@@ -393,7 +394,7 @@ while true; do sleep 1; curl -s [URL]pod/; date "+ TIME: %H:%M:%S,%3N"; done
 Start a new deployment by editing it (the so-called ConfigChange trigger triggers the new deployment automatically):
 
 ```bash
-kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [NAMESPACE]
+kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <NAMESPACE>
 ```
 
 
@@ -406,11 +407,11 @@ Look for a running pod (status `RUNNING`) that you can bear to kill via `kubectl
 Show all pods and watch for changes:
 
 ```bash
-kubectl get pods -w --namespace [NAMESPACE]
+kubectl get pods -w --namespace <NAMESPACE>
 ```
 Now delete a pod (in another terminal) with the following command:
 ```bash
-kubectl delete pod example-web-python-3-788j5 --namespace [NAMESPACE]
+kubectl delete pod example-web-python-3-788j5 --namespace <NAMESPACE>
 ```
 
 Observe how Kubernetes instantly creates a new pod in order to fulfill the desired number of running replicas.

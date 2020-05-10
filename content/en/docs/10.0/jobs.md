@@ -13,7 +13,6 @@ More detailed information can be retrieved from [Kubernetes Jobs Documentation](
 
 ## Task: Create a Job for a MySQL Dump
 
-
 Similar to [Lab8, Task: Import a Database Dump](../08.0/#task-import-a-database-dump), we now want to create a dump of a running MySQL database, but without the need of interactively logging into the pod.
 
 Lets first look at the job resource that we want to create.
@@ -62,28 +61,29 @@ The paramter `.spec.template.spec.containers[0].image` shows, that we use the sa
 Lets create our job, create a file `job_mysql-dump.yaml` with the content above
 
 ```bash
-kubectl create -f ./job_mysql-dump.yaml --namespace [NAMESPACE]
+kubectl create -f ./job_mysql-dump.yaml --namespace <NAMESPACE>
 ```
 
 Check if the job was successful:
 
 ```bash
-kubectl describe jobs/mysql-dump --namespace [NAMESPACE]
+kubectl describe jobs/mysql-dump --namespace <NAMESPACE>
 ```
 
 The executed pod can be shown as follows:
 
 ```bash
-kubectl get pods --namespace [NAMESPACE]
+kubectl get pods --namespace <NAMESPACE>
 ```
 
 To show all pods belonging to a job in a human-readable format, the following command can be used:
 
 ```bash
-kubectl get pods --selector=job-name=mysql-dump --output=jsonpath={.items..metadata.name} --namespace [NAMESPACE]
+kubectl get pods --selector=job-name=mysql-dump --output=jsonpath={.items..metadata.name} --namespace <NAMESPACE>
 ```
 
 ## Cron Jobs
+
 A Kubernetes cronjob is nothing else than a resource which creates a job at a defined time, which in turn starts (as we saw in the previous section) a pod to run a command. Typical use cases are cleanup jobs, which tidy up old data for a running pod, or a job to regularly create and save a database dump.
 
 Further information can be found at [Kubernetes CronJob Documentation](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/).

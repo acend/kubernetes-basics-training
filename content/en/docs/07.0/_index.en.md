@@ -5,18 +5,20 @@ weight: 7
 
 This Lab helps you to troubleshoot your application and shows you some tools to make troubleshooting easier.
 
+
 ## Login to a Container
 
 Running container should be treated as immutable infrastructure and should therefore not be modified. Although, there are some use-cases in which you have to login into your running container. Debugging and analyze is one example for this.
+
 
 ## Task: Shell into POD
 
 With Kubernetes you can open a remote Shell into a pod without installing SSH by Using the command `kubectl exec`. The command is used to executed anything in a pod. With the parameter `-it` you can leave open an connection. We can use `winpty` for this.
 
-Choose a pod with `kubectl get pods --namespace [NAMESPACE]` and execute the following command:
+Choose a pod with `kubectl get pods --namespace <NAMESPACE>` and execute the following command:
 
 ```bash
-kubectl exec -it [POD] --namespace [NAMESPACE] -- /bin/bash
+kubectl exec -it [POD] --namespace <NAMESPACE> -- /bin/bash
 ```
 
 With this, you can work inside the pod, e.g.:
@@ -44,17 +46,18 @@ With `exit` you can leave the pod and close the connection
 exit
 ```
 
+
 ## Task: Single Command
 
 Single commands inside a container can be executed with `kubectl exec`:
 
 
 ```bash
-kubectl exec [POD] --namespace [NAMESPACE] env
+kubectl exec [POD] --namespace <NAMESPACE> env
 ```
 
 ```bash
-kubectl exec example-web-python-69b658f647-xnm94 --namespace [NAMESPACE] env
+kubectl exec example-web-python-69b658f647-xnm94 --namespace <NAMESPACE> env
 ```
 
 ```
@@ -68,13 +71,14 @@ KUBERNETES_PORT_53_TCP=tcp://172.30.0.1:53
 ...
 ```
 
+
 ## Watch Logfiles
 
 Logfiles of a pod can with shown with the following command:
 
 
 ```bash
-kubectl logs [POD] --namespace [NAMESPACE]
+kubectl logs [POD] --namespace <NAMESPACE>
 ```
 
 The parameter `-f` allows you to follow the logfile (same as `tail -f`). With this, logfiles are streamed and new entries are shown directly
@@ -83,7 +87,7 @@ When a pod is in State **CrashLoopBackOff** it means, that even after some resta
 
 
  ```bash
-kubectl logs -p [POD] --namespace [NAMESPACE]
+kubectl logs -p [POD] --namespace <NAMESPACE>
 ```
 
 
@@ -95,13 +99,13 @@ Kubernetes allows you to forward arbitrary ports to your development workstation
 Get the name of the pod:
 
 ```bash
-kubectl get pod --namespace [NAMESPACE]
+kubectl get pod --namespace <NAMESPACE>
 ```
 
 and then execute the port-forwarding with this name:
 
 ```bash
-kubectl port-forward example-web-python-1-xj1df 5000:5000 --namespace [NAMESPACE]
+kubectl port-forward example-web-python-1-xj1df 5000:5000 --namespace <NAMESPACE>
 ```
 
 the output of the command should look like this

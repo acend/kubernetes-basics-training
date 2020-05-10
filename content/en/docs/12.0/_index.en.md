@@ -12,6 +12,7 @@ In this lab we deploy a configuration into a integration and a production enviro
 
 For this lab, we need the kustomize client. Check the [documentation](https://github.com/kubernetes-sigs/kustomize/blob/master/docs/INSTALL.md) on how to install.
 
+
 ## Task: LAB11.2 understand kustomize
 
 We are going to deploy a simple application:
@@ -32,6 +33,7 @@ kustomize build ./labs/12_data/overlays/integration
 ```
 
 Diese Konfiguration lässt sich mittels einer Pipe an `kubectl apply` weitergeben um die Konfiguration anzuwenden. Das ist unser nächster Schritt.
+
 
 ## Aufgabe: LAB11.3 Umgebungen deployen
 
@@ -69,6 +71,7 @@ Rufe mittels `curl http://[EXTERNAL_IP]` oder Webbrowser die deployte Applikatio
 
 Prüfe analog, ob auch die Produktion läuft. Falls ja: Gratulation! Zwei identische Applikationsumgebungen sind deployt.
 Im nächsten Schritt verwenden wir kustomize, um umgebungsspezifische Anpassungen vorzunehmen.
+
 
 ## Aufgabe: LAB11.4 Ressourcenlimits setzen
 

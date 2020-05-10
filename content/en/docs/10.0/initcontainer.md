@@ -4,26 +4,27 @@ weight: 106
 ---
 
 
-A Pod can have multiple containers running apps within it, but it can also have one or more init containers, which are run before the app containers are started.
+A Pod can have multiple containers running apps within it, but it can also have one or more *init containers*, which are run before the app containers are started.
 
 Init containers are exactly like regular containers, except:
 
-* Init containers always run to completion.
-* Each init container must complete successfully before the next one starts.
+- Init containers always run to completion.
+- Each init container must complete successfully before the next one starts.
   
-Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes docuemtation for more details
+Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes docuemtation for more details.
+
 
 ## Task: Add init Container to our example-web-python application
 
-We are going to use our example-web-python application from [Lab 8](../08.0/) and add an init container which checks if the MySQL Database is ready to be used.
+In [Lab 8](../08.0/) you created the `example-web-python` application. In this task you are going to add an init container which checks if the MySQL database is ready to be used befor acually start your python application.
 
 Edit your existing `example-web-pyhton` deployment with:
 
 ```bash
-kubectl edit deplyoment example-web-python --namespace [NAMESPACE
+kubectl edit deplyoment example-web-python --namespace <NAMESPACE
 ```
 
-and add the initContainer into the existing deployment:
+Add the init container into the existing Deployment:
 
 ```yaml
 [...]
@@ -39,14 +40,13 @@ spec:
 This obviusly only checks if there is an DNS Record for your mysql service and not if the database is ready. But you get the idea, right?
 {{% /alert %}}
 
-
-With (use `kubectl get pod` or autocompletion to get the pod name):
+Let's see what has changed in you Pod with the following command (use `kubectl get pod` or autocompletion to get the pod name):
 
 ```bash
-kubectl describe pod [POD NAME] --namespace [NAMESPACE]
+kubectl describe pod <POD NAME> --namespace <NAMESPACE>
 ```
 
-you can see the new init container
+You see the new init container with the name `wait-for-db`:
 
 ```
 [...]
@@ -74,15 +74,15 @@ Init Containers:
 [...]
 ```
 
-As you cee, the initcontainer has `State: Terminate`d and an `Exit Code` of 0 which means it was successful.
+The init container has `State: Terminated` and an `Exit Code` of 0 which means it was successful. Thats what we wanted, have the init container executed befor our main application.
 
-You can also check the logs of the Init Container with:
+You can also check the logs of the init container with:
 
 ```bash
-kubectl logs -c wait-for-db  example-web-python-6b5d4ddb8f-94k2h
+kubectl logs -c wait-for-db  <example-web-python-6b5d4ddb8f-94k2h> --namespace <NAMESPACE>
 ```
 
-which should give sou something similar to (the nslookup output from the command in the initcontainer)
+which should give sou something similar to (the `nslookup` output from the command in the init container)
 
 ```
 Server:    10.43.0.10
