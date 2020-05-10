@@ -90,7 +90,7 @@ kubectl get pod example-web-go-3-nwzku --namespace [NAMESPACE] -o json
 
 {{% alert title="Note" color="warning" %}}
 First, get all pod names from your namespace with (`kubectl get pods --namespace [NAMESPACE]`) and then replace it in the following command.
-{{% /alert &}}
+{{% /alert %}}
 
 The service's `selector` defines, which pods are being used as endpoints. This happens based on labels. Look at the configuration of service and pod in order to find out what maps to what:
 

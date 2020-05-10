@@ -111,4 +111,4 @@ The deployment defines that one replica should be deployed, which is running as 
 ## Task: Verify the Deployment in the Rancher WebGUI
 
 Try to display the logs from the example application via the Rancher WebGui.
-{{% /onlyWhen }}
+{{% /onlyWhen %}}

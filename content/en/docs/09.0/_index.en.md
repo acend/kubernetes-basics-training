@@ -70,7 +70,7 @@ Add the the both parts `volumeMounts` and `volumes`
 
 {{% alert title="Note" color="warning" %}}
 Because we just changed the deployment a new pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
-{{% /alert &}}
+{{% /alert %}}
 
 Our application automatically creates the database schema at startup.
 
@@ -80,7 +80,7 @@ If you want to force a redeployment of a pod, you could e.g. use this:
 ```bash
 kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace [NAMESPACE]
 ```
-{{% /alert &}}
+{{% /alert %}}
 
 Using the command `kubectl get persistentvolumeclaim` or - a bit easier to write - `kubectl get pvc --namespace [NAMESPACE]`, we can display the freshly created PersistentVolumeClaim:
 
