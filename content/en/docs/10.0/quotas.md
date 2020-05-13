@@ -30,13 +30,13 @@ Defining resource quotas makes sense e.g. when the cluster administrators want t
 
 In order to check for defined quotas in your namespace, simply see if there are any of type ResourceQuota:
 
-```yaml
+```bash
 kubectl get resourcequota
 ```
 
 To show in detail what kinds of limits the quota imposes:
 
-```yaml
+```bash
 kubectl describe resourcequota <quota-name> -n <namespace>
 ```
 
@@ -121,3 +121,194 @@ Quoting the [Kubernetes documentation](https://kubernetes.io/docs/concepts/polic
 If for example a Container did not define any requests or limits and there was a LimitRange defining default values, these default values would be used when deploying said Container. However, as soon as limits or requests were defined, the default values would no longer be applied.
 
 The possibility of enforcing minimum and maximum resources and defining resource quotas per Namespace allows for many combinations of resource control.
+
+
+## Task 1: Namespace
+
+{{< onlyWhen rancher >}}
+Make sure you're logged in to the cluster. Choose the appropriate cluster, click on __Projects/Namespaces__ and then click on __Add Namespace__. 
+
+Choose a name for your Namespace in the form of <yourname>-quota-lab, expand the __Container Default Resource Limit__ view and set the following values:
+
+- __CPU Limit__: 100
+- __CPU Reservation__: 10
+- __Memory Limit__: 32
+- __Memory Reservation__: 16
+
+![Quota lab namespace creation](create_quotalab_namespace.png)
+
+Finally, click on __Create__.
+{{< /onlyWhen >}}
+
+Check that your quota-lab Namespace contains the LimitRange:
+
+```bash
+kubectl describe limitrange --namespace <yourname>-quota-lab
+```
+
+Above command should output this (name and namespace will vary):
+
+```bash
+Name:       ce01a1b6-a162-479d-847c-4821255cc6db
+Namespace:  eltony-quota-lab
+Type        Resource  Min  Max  Default Request  Default Limit  Max Limit/Request Ratio
+----        --------  ---  ---  ---------------  -------------  -----------------------
+Container   memory    -    -    16Mi             32Mi           -
+Container   cpu       -    -    10m              100m           -
+```
+
+
+Check that a Quota exists in your Namespace:
+
+```bash
+kubectl describe quota --namespace <yourname>-quota-lab
+```
+
+Above command should output this (name and namespace will vary):
+
+```bash
+Name:       lab-quota
+Namespace:  eltony-quota-lab
+Resource    Used  Hard
+--------    ----  ----
+cpu         0     100m
+memory      0     100Mi
+```
+
+
+## Task 2: Default memory limit
+
+Create a Pod using the polinux/stress image:
+
+```bash
+kubectl run stress2much --image=polinux/stress --namespace <yourname>-quota-lab --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+```
+
+{{% alert title="Note" color="warning" %}}
+You have to actively terminate the following command pressing Ctrl+P on your keyboard.
+{{% /alert %}}
+
+Watch the Pod's creation with:
+
+```bash
+kubectl get pods --watch --namespace <yourname>-quota-lab
+```
+
+You should see something like the following:
+
+```bash
+NAME          READY   STATUS              RESTARTS   AGE
+stress2much   0/1     ContainerCreating   0          1s
+stress2much   0/1     ContainerCreating   0          2s
+stress2much   0/1     OOMKilled           0          5s
+stress2much   1/1     Running             1          7s
+stress2much   0/1     OOMKilled           1          9s
+stress2much   0/1     CrashLoopBackOff    1          20s
+```
+
+The `stress2much` Pod was OOM (out of memory) killed. We can see this in the `STATUS` field. Another way to find out why a Pod was killed is by checking its status. Output at the Pod's yaml definition:
+
+```bash
+kubectl get pod stress2much --namespace <yourname>-quota-lab
+```
+
+Near the end of the output you can find the relevant status part:
+
+```yaml
+  containerStatuses:
+  - containerID: docker://da2473f1c8ccdffbb824d03689e9fe738ed689853e9c2643c37f206d10f93a73
+    image: polinux/stress:latest
+    lastState:
+      terminated:
+        [...]
+        reason: OOMKilled
+        [...]
+```
+
+So let's look at the numbers to verify the Container really had too little memory. We started the `stress` command using parameter `--vm-bytes 85M` which means the process wants to allocate 85 megabytes of memory. Again looking at the Pod's yaml definition with:
+
+
+```bash
+kubectl get pod stress2much -o yaml --namespace <yourname>-quota-lab
+```
+
+reveals the following values:
+
+```yaml
+[...]
+    resources:
+      limits:
+        cpu: 100m
+        memory: 32Mi
+      requests:
+        cpu: 10m
+        memory: 16Mi
+[...]
+```
+
+These are the values from the LimitRange and the defined limit of 32 megabytes of memory prevents the `stress` process of ever allocating the desired 85 megabytes.
+
+Let's fix this by recreating the Pod and explicitly setting the memory request to 85 megabytes:
+
+```bash
+kubectl delete pod stress --namespace <yourname>-quota-lab
+kubectl run stress --image=polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <yourname>-quota-lab --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+```
+
+{{% alert title="Note" color="warning" %}
+Remember, if you'd only set the limit, the request would be set to the same value.
+{{% /alert %}}
+
+You should now see that the Pod is successfully running:
+
+```bash
+NAME     READY   STATUS    RESTARTS   AGE
+stress   1/1     Running   0          25s
+```
+
+
+## Task 3: Hitting the quota
+
+Create another Pod, again using the polinux/stress image. This time our application is less demanding and only needs 10 megabytes of memory (`--vm-bytes 10M`):
+
+```bash
+kubectl run overbooked --image=polinux/stress --namespace <yourname>-quota-lab --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+```
+
+We are immediately confronted with an error message:
+
+```bash
+Error from server (Forbidden): pods "overbooked" is forbidden: exceeded quota: lab-quota, requested: memory=16Mi, used: memory=85Mi, limited: memory=100Mi
+```
+
+The default request value of 16 megabytes of memory that was automatically set on the Pod lets us hit the quota which in turn prevents us from creating the Pod.
+
+Let's have a closer look at the quota with:
+
+```bash
+kubectl get quota -o yaml --namespace <yourname>-quota-lab
+```
+
+which should output the following yaml definition:
+
+```yaml
+[...]
+  status:
+    hard:
+      cpu: 100m
+      memory: 100Mi
+    used:
+      cpu: 20m
+      memory: 80Mi
+[...]
+```
+
+The most interesting part is the quota's status which reveals that we cannot use more than 100 megabytes of memory and that 80 megabytes are already used.
+
+Fortunately our application can live with less memory than what the LimitRange sets. Let's set the request to the required 10 megabytes:
+
+```bash
+kubectl run overbooked --image=polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace ba-k8s-techlab-quotas --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+```
+
+Even though the limits of both Pods combined overstretch the quota, the requests do not and so the Pods are allowed to run.
