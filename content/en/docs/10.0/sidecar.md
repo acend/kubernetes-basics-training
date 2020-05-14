@@ -90,4 +90,4 @@ and by using `kubectl port-forward ...` you can even have a look at the promethe
 kubectl port-forward <mysql-65559644c9-cdjjk> 9104
 ```
 
-And the open <http://localhost:9104/metrics> in your browser.
+And then open <http://localhost:9104/metrics> in your browser.

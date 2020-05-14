@@ -45,6 +45,7 @@ kubectl create deployment example-web-go --image=acend/example-web-go --namespac
 ```
 
 The output should be:
+
 ```
 deployment.apps/example-web-go created
 ```
@@ -63,7 +64,7 @@ kubectl get pods --namespace <NAMESPACE> -w
 This process can last for some time depending on your internet connection and if the image is already available locally.
 
 {{% alert title="Tip" color="warning" %}}
-If you want to create your own container images and use them with Kubernetes, you definitely should have a look at [these best practices](https://docs.openshift.com/container-platform/latest/creating_images/guidelines.html) and apply them. The Image Creation Guide may be from OpenShift, however it also applies to Kubernetes and other container platforms.
+If you want to create your own container images and use them with Kubernetes, you definitely should have a look at [these best practices](https://docs.openshift.com/container-platform/4.4/openshift_images/create-images.html) and apply them. The Image Creation Guide may be from OpenShift, however it also applies to Kubernetes and other container platforms.
 {{% /alert %}}
 
 
@@ -102,6 +103,7 @@ kubectl get pod --namespace <NAMESPACE>
 ```
 
 which gives you an output similar to this:
+
 ```
 NAME                              READY   STATUS    RESTARTS   AGE
 example-web-go-69b658f647-xnm94   1/1     Running   0          39s
