@@ -98,7 +98,7 @@ Namespace:                philipona-scale
 Labels:                   app=example-web-python
 Annotations:              <none>
 Selector:                 app=example-web-python
-Type:                     LoadBalancer
+Type:                     NodePort
 IP:                       10.39.245.205
 Port:                     <unset>  5000/TCP
 TargetPort:               5000/TCP
@@ -109,11 +109,9 @@ External Traffic Policy:  Cluster
 Events:
   Type    Reason                Age   From                Message
   ----    ------                ----  ----                -------
-  Normal  EnsuringLoadBalancer  2s    service-controller  Ensuring load balancer
 ```
 
 Scaling of pods within a service ist fast, as Kubernetes simply creates a new container
-
 
 You can check the availability of your service while you scale the number of replicas up and down.
 Replace the `URL` placeholder with the actual, constructed URL:
@@ -148,7 +146,6 @@ while(1) {
 and scale from **3** to **1** replicas.
 The output shows which pod responded to the sent request:
 
-
 ```
 POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:07,289
 POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:08,357
@@ -170,6 +167,7 @@ POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:24,377
 POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:25,445
 POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:26,513
 ```
+
 The requests are being distributed amongst the pods. As soon as you scale down to one pod, there should only be one pod remaining that responds.
 
 But what happens if start a new deployment while our while command is running?

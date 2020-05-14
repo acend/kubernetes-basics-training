@@ -37,7 +37,7 @@ spec:
 ```
 
 {{% alert title="Note" color="warning" %}}
-This obviusly only checks if there is an DNS Record for your mysql service and not if the database is ready. But you get the idea, right?
+This obviously only checks if there is an DNS Record for your mysql service and not if the database is ready. But you get the idea, right?
 {{% /alert %}}
 
 Let's see what has changed in you Pod with the following command (use `kubectl get pod` or autocompletion to get the pod name):

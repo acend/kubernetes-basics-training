@@ -144,15 +144,13 @@ External Traffic Policy:  Cluster
 Events:
   Type    Reason                Age    From                Message
   ----    ------                ----   ----                -------
-  Normal  EnsuringLoadBalancer  7m20s  service-controller  Ensuring load balancer
-  Normal  EnsuredLoadBalancer   6m28s  service-controller  Ensured load balancer
 ```
 
 {{% alert title="Note" color="warning" %}}
 Service IP addresses stay the same for the duration of the service's life span.
 {{% /alert %}}
 
-Open `http://[NodeIP]:[NodePort]` in your Browser. 
+Open `http://[NodeIP]:[NodePort]` in your Browser.
 You can use any NodeIP as the Service is exposed on all Nodes using the same NodePort. Use `kubectl get nodes -o wide` to display the IP's (INTERNAL-IP) of the available nodes.
 
 ```bash 
