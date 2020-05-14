@@ -237,7 +237,7 @@ show tables;
 
 ## Task: Import a Database Dump
 
-Our task is now to import this [dump](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/labs/08.0/dump.sql) into the MySQL database running as a pod. Use the `mysql` command line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
+Our task is now to import this [dump](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/08.0/dump.sql) into the MySQL database running as a pod. Use the `mysql` command line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
 
 {{% alert title="Tip" color="warning" %}}
 **Tip:** You can also copy local files into a pod using `kubectl cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the pod and using `curl -O [URL]`.
@@ -248,7 +248,7 @@ Our task is now to import this [dump](https://raw.githubusercontent.com/acend/ku
 This is how you copy the database dump into the pod:
 
 ```bash
-wget https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/labs/08.0/dump.sql
+wget https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/08.0/dump.sql
 kubectl cp ./dump.sql mysql-f845ccdb7-hf2x5:/tmp/ --namespace <NAMESPACE>
 ```
 
