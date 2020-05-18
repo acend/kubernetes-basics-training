@@ -49,7 +49,7 @@ As we've already seen, compute resource quotas limit the amount of memory and CP
 
 Limits and requests on a Pod, or rather on a Container in a Pod, define how much memory and CPU this Container wants to consume at least (request) and at most (limit). Requests mean that the Container will be guaranteed to get at least this amount of resources, limits represent the upper boundary which can not be crossed. Defining these values helps Kubernetes in determining on which Node to schedule the Pod, because it knows how much resources should be available for it.
 
-{{% alert title="Note" color="warning" %}
+{{% alert title="Note" color="warning" %}}
 Containers using more CPU time than what their limit allows will be throttled.
 Containers using more memory than what they are allowed to use will be killed.
 {{% /alert %}}
