@@ -1,6 +1,6 @@
 ---
-title: "10.5 Init Container"
-weight: 105
+title: "10.6 Init Container"
+weight: 106
 ---
 
 
