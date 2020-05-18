@@ -11,14 +11,14 @@ Init containers are exactly like regular containers, except:
 - Init containers always run to completion.
 - Each init container must complete successfully before the next one starts.
   
-Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes docuemtation for more details.
+Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes documentation for more details.
 
 
 ## Task: Add init Container to our example-web-python application
 
-In [Lab 8](../08.0/) you created the `example-web-python` application. In this task you are going to add an init container which checks if the MySQL database is ready to be used befor acually start your python application.
+In [Lab 8](../08.0/) you created the `example-web-python` application. In this task you are going to add an init container which checks if the MySQL database is ready to be used before actually start your python application.
 
-Edit your existing `example-web-pyhton` deployment with:
+Edit your existing `example-web-python` deployment with:
 
 ```bash
 kubectl edit deplyoment example-web-python --namespace <NAMESPACE
@@ -74,7 +74,7 @@ Init Containers:
 [...]
 ```
 
-The init container has `State: Terminated` and an `Exit Code` of 0 which means it was successful. Thats what we wanted, have the init container executed befor our main application.
+The init container has `State: Terminated` and an `Exit Code` of 0 which means it was successful. Thats what we wanted, have the init container executed before our main application.
 
 You can also check the logs of the init container with:
 
