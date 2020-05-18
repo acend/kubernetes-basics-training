@@ -91,7 +91,7 @@ Setting limits and requests on Containers has yet another effect: It might chang
 The Guaranteed QoS class is applied to Pods that define both limits and requests for both memory and CPU resources on all their Containers. The most important part is that each request has the same value as the limit.
 Pods that belong to this QoS class will never be killed by the scheduler because of resources running out on a Node.
 
-{{% alert title="Note" color="warning" %}
+{{% alert title="Note" color="warning" %}}
 If a Container only defines its limits, Kubernetes automatically assigns a request that matches the limit.
 {{% /alert %}}
 
@@ -255,7 +255,7 @@ kubectl delete pod stress --namespace <yourname>-quota-lab
 kubectl run stress --image=polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <yourname>-quota-lab --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
-{{% alert title="Note" color="warning" %}
+{{% alert title="Note" color="warning" %}}
 Remember, if you'd only set the limit, the request would be set to the same value.
 {{% /alert %}}
 
