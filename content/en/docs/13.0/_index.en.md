@@ -1,6 +1,7 @@
 ---
 title: "13. Kustomize"
 weight: 13
+sectionnumber: 13
 ---
 
 
@@ -8,12 +9,12 @@ weight: 13
 In this lab we deploy a configuration into a integration and a production environment via kustomize
 
 
-## Task: LAB12.1 install kustomize
+## Task {{< param sectionnumber >}}.1: Install kustomize
 
 For this lab, we need the kustomize client. Check the [documentation](https://github.com/kubernetes-sigs/kustomize/blob/master/docs/INSTALL.md) on how to install.
 
 
-## Task: LAB11.2 understand kustomize
+## Task {{< param sectionnumber >}}.2: Understand kustomize
 
 We are going to deploy a simple application:
 
@@ -35,7 +36,7 @@ kustomize build ./labs/12_data/overlays/integration
 Diese Konfiguration lässt sich mittels einer Pipe an `kubectl apply` weitergeben um die Konfiguration anzuwenden. Das ist unser nächster Schritt.
 
 
-## Aufgabe: LAB11.3 Umgebungen deployen
+## Task {{< param sectionnumber >}}.3: Umgebungen deployen
 
 Lege erst zwei Namespaces für die Applikationsumgebungen an:
 
@@ -73,7 +74,7 @@ Prüfe analog, ob auch die Produktion läuft. Falls ja: Gratulation! Zwei identi
 Im nächsten Schritt verwenden wir kustomize, um umgebungsspezifische Anpassungen vorzunehmen.
 
 
-## Aufgabe: LAB11.4 Ressourcenlimits setzen
+## Task {{< param sectionnumber >}}.4: Ressourcenlimits setzen
 
 Unser Kubernetes-Cluster hat beschränkte Ressourcen. Wir verhindern nun mittels [Ressourcenlimits](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container), dass eine Umgebung der andern alle CPU-Power oder den Arbeitsspeicher stehlen kann.
 
@@ -127,7 +128,7 @@ kubectl -n $user-lab-12-integration describe deployment app
 
 Konfiguriere nun analog die höheren Limits für die Produktion und freue dich darüber, wie DRY, aber doch flexibel, die Konfiguration ist ;)
 
-## Aufgabe: LAB11.4 Umgebungsvariabeln setzen
+## Task {{< param sectionnumber >}}.4: Umgebungsvariabeln setzen
 
 Dir ist sicher aufgefallen, dass deine Applikation meldet, ihr Name sei "Test-Applikation"". Diesen Namen kriegt sie über die im Deployment gesetzte Umgebungsvariable `APPLICATION_NAME`.
 
