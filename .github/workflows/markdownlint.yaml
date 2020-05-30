@@ -7,12 +7,22 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  lint_local:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1.4.2
-      - name: lint markdown files
+      - name: lint markdown files local markdownlint file
         run: |
+          npm install
+          node_modules/.bin/markdownlint content
+  lint_global:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1.4.2
+      - name: lint markdown files global markdownlint file
+        run: |
+          curl https://raw.githubusercontent.com/acend/guidelines/master/acend.json -o .markdownlint.yml
           npm install
           node_modules/.bin/markdownlint content
