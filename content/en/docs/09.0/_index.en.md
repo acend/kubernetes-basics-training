@@ -35,6 +35,7 @@ spec:
     requests:
       storage: 1Gi
 ```
+
 And deploy with:
 
 ```bash
@@ -48,10 +49,11 @@ kubectl edit deployment mysql --namespace <NAMESPACE>
 ```
 
 Add the the both parts `volumeMounts` and `volumes`
+
 ```yaml
 ...
-        resources: {}                                                 
-        terminationMessagePath: /dev/termination-log                  
+        resources: {}
+        terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
 
         volumeMounts:
@@ -62,8 +64,8 @@ Add the the both parts `volumeMounts` and `volumes`
         persistentVolumeClaim:
           claimName: mysql-pv-claim
 
-      dnsPolicy: ClusterFirst                                         
-      restartPolicy: Always                                           
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
       schedulerName: default-scheduler
 ...
 ```
@@ -80,8 +82,8 @@ If you want to force a redeployment of a pod, you could e.g. use this:
 ```bash
 kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <NAMESPACE>
 ```
-{{% /alert %}}
 
+{{% /alert %}}
 Using the command `kubectl get persistentvolumeclaim` or - a bit easier to write - `kubectl get pvc --namespace <NAMESPACE>`, we can display the freshly created PersistentVolumeClaim:
 
 ```bash
@@ -99,6 +101,7 @@ The two columns `STATUS` and `VOLUME` show us that our claim has been bound to t
 
 
 ## Error case
+
 If the Container is not able to start it is the right moment to debug it!  
 Check the Logs from the Container and search for the error.
 

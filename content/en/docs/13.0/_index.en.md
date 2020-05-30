@@ -127,12 +127,14 @@ kubectl -n $user-lab-12-integration describe deployment app
 
 Konfiguriere nun analog die höheren Limits für die Produktion und freue dich darüber, wie DRY, aber doch flexibel, die Konfiguration ist ;)
 
+
 ## Aufgabe: LAB11.4 Umgebungsvariabeln setzen
 
 Dir ist sicher aufgefallen, dass deine Applikation meldet, ihr Name sei "Test-Applikation"". Diesen Namen kriegt sie über die im Deployment gesetzte Umgebungsvariable `APPLICATION_NAME`.
 
 * Ändere den Namen in einer der Umgebungen. Der Name steht stellvertretend für die vielen Konfigurationsoptionen verschiedenster Container, welche via Umgebungsvariable gesetzt werden können und mitunter nicht in jeder Applikationsumgebung gleich lauten.
 * Bleibe ordentlich. Du könntest das natürlich im oben angelegten Ressource-Quota-Patch tun, solltest aber eine Lösung finden, um diesen Aspekt deiner Konfiguration in einem separaten Patch abzulegen.
+
 
 ## Weitere Infos
 

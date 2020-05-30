@@ -12,9 +12,9 @@ In this we will install and configure the `kubectl` client to be able to practic
 
 As the client is written in Go, you can run the single binary on the following Operating Systems:
 
-- Microsoft Windows
-- Mac OS X
-- Linux
+* Microsoft Windows
+* Mac OS X
+* Linux
 
 {{< onlyWhen rancher >}}
 {{% alert title="Tip" color="warning" %}}
@@ -29,19 +29,22 @@ Follow <https://kubernetes.io/docs/tasks/tools/install-kubectl/>
 
 In case the installation from the official package repositories didn't work or a specific version is need, the static binary can be downloaded and put into one of the following paths.
 
-**Linux**
+
+**Linux:**
 
 ```
 ~/bin
 ```
 
-**Mac OS X**
+
+**Mac OS X:**
 
 ```
 ~/bin
 ```
 
-**Windows**
+
+**Windows:**
 
 ```
 C:\Kubernetes\
@@ -72,9 +75,9 @@ export PATH=$PATH:[path to kubectl]
 
 The PATH can be set in windows in the advanced system settings. It depends on the used version:
 
-- [Windows 7](http://geekswithblogs.net/renso/archive/2009/10/21/how-to-set-the-windows-path-in-windows-7.aspx)
-- [Windows 8](http://www.itechtics.com/customize-windows-environment-variables/)
-- [Windows 10](http://techmixx.de/windows-10-umgebungsvariablen-bearbeiten/)
+* [Windows 7](http://geekswithblogs.net/renso/archive/2009/10/21/how-to-set-the-windows-path-in-windows-7.aspx)
+* [Windows 8](http://www.itechtics.com/customize-windows-environment-variables/)
+* [Windows 10](http://techmixx.de/windows-10-umgebungsvariablen-bearbeiten/)
 
 {{% alert title="Windows Quick Hack" color="warning" %}}
 Copy the `kubectl` binary directly into the folder `C:\Windows`.
@@ -166,4 +169,4 @@ same time: <https://github.com/wercker/stern>.
 
 ## Other tools to work with Kubernetes
 
-- <https://github.com/lensapp/lens>
+* <https://github.com/lensapp/lens>

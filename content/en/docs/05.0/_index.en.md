@@ -8,7 +8,7 @@ In this lab, we are going to make the freshly deployed application from the last
 The command `kubectl create deployment` from the last labcreates a pod but no service. A service is another Kubernetes concept which we'll need in order to make our application available online. We're going to do this with the command `kubectl expose`. As soon as we then expose the service itself, it is available online.
 
 
-## Task:
+## Task
 
 With the following command we create a service and by doing this we expose our deployment. There are different kinds of services. For this example, we are going to use the [`NodePort`](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport) type and expose port 5000:
 
@@ -95,7 +95,8 @@ First, get all pod names from your namespace with (`kubectl get pods --namespace
 
 The service's `selector` defines, which pods are being used as endpoints. This happens based on labels. Look at the configuration of service and pod in order to find out what maps to what:
 
-Service: 
+Service:
+
 ```bash
 kubectl get service <Service Name> --namespace <NAMESPACE> -o json
 ```
@@ -113,6 +114,7 @@ Pod:
 ```bash
 kubectl get pod <Pod Name> --namespace <NAMESPACE>
 ```
+
 ```json
 ...
 "labels": {
@@ -153,7 +155,7 @@ Service IP addresses stay the same for the duration of the service's life span.
 Open `http://[NodeIP]:[NodePort]` in your Browser.
 You can use any NodeIP as the Service is exposed on all Nodes using the same NodePort. Use `kubectl get nodes -o wide` to display the IP's (INTERNAL-IP) of the available nodes.
 
-```bash 
+```bash
 kubectl get node -o wide
 ```
 
@@ -185,6 +187,7 @@ In order to switch the service type, we are going to delete the NodePort service
 ```bash
 kubectl delete service example-web-go --namespace=<NAMESPACE>
 ```
+
 Now we create a service with type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types):
 
 ```bash
@@ -210,9 +213,11 @@ spec:
 ```
 
 After creating the ingress file, we can apply it:
+
 ```bash
 kubectl create -f ingress.yaml --namespace <NAMESPACE>
 ```
+
 Afterwards we are able to access our freshly created service at `http://web-go-<NAMESPACE>.k8s-techlab.puzzle.ch`
 
 
@@ -224,9 +229,10 @@ Have a closer look at the created resources with
 kubectl get [RESOURCE TYPE] [NAME] -o json
 ```
 
-and 
+and
 
 ```bash
 kubectl describe [RESOURCE TYPE] [NAME]
 ```
+
 from your namespace `<NAMESPACE>` and try to understand them.
