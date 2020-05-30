@@ -1,12 +1,13 @@
 ---
 title: "4. Deploy a Docker Image"
 weight: 4
+sectionnumber: 4
 ---
 
 In this lab, we are going to deploy our first pre-built container image and look at the Kubernetes concepts pod, service and deployment.
 
 
-## Task: Start a Pod
+## Task {{< param sectionnumber >}}.1: Start a Pod
 
 After we've familiarized ourselves with the platform, we are going to have a look at deploying a pre-built container image from Docker Hub or any other public Container registry.
 
@@ -34,7 +35,7 @@ Have a look at your nginx pod inside the Rancher WebGUI under "Workloads" an del
 {{% /onlyWhen %}}
 
 
-## Task: Deployment
+## Task {{< param sectionnumber >}}.2: Deployment
 
 In some usecases it makes sense to start a single pod but has its downsides and is not really best practice. Let's look at another Kubernetes concept which is tightly coupled with the pod: the so-called deployment. A deployment makes sure that a pod is monitored and checks that the number of running pods corresponds to the number of requested pods.
 
@@ -114,7 +115,7 @@ The deployment defines that one replica should be deployed, which is running as 
 
 
 {{% onlyWhen rancher %}}
-## Task: Verify the Deployment in the Rancher WebGUI
+## Task {{< param sectionnumber >}}.3: Verify the Deployment in the Rancher WebGUI
 
 Try to display the logs from the example application via the Rancher WebGui.
 {{% /onlyWhen %}}

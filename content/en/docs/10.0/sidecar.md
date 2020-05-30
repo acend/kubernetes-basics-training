@@ -1,6 +1,7 @@
 ---
 title: "10.7 Sidecar"
 weight: 107
+sectionnumber: 10.7
 ---
 
 Lets first check again what a Pod is, from [Pods](https://kubernetes.io/docs/concepts/workloads/pods/pod/) on the Kubernetes documation page:
@@ -20,7 +21,7 @@ In a sidecar pattern, the functionality of the main container is extended or enh
 - independent testing, packaging, upgrade, deployment and if necessary roll back
 
 
-## Task: Add a Prometheus MySQL Exporter as Sidecar
+## Task {{< param sectionnumber >}}.1: Add a Prometheus MySQL Exporter as Sidecar
 
 In [lab 8](../08.0/) you have created a MySQL Deployment. In this task you are going to add the [prometheus MySQL exporter]([lab 8](../08.0/)) to the existing Deployment.
 

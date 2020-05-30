@@ -1,6 +1,7 @@
 ---
 title: "1. Quicktour Kubernetes"
 weight: 1
+sectionnumber: 1
 ---
 
 In this lab we will introduce the core concepts of Kubernetes.

@@ -1,13 +1,14 @@
 ---
 title: "10.4 ConfigMap"
 weight: 104
+sectionnumber: 10.4
 ---
 
 Similar to environment variables, ConfigsMaps allow you to separate the configuration for an application from the image. Pods can access those variables during runtime, which allows maximum portability for applications running in containers.
 In this lab you learn to create and use ConfigMaps.
 
 
-# Create a ConfigMap in the Kubernetes Namespace:
+## Task {{< param sectionnumber >}}.1: Create a ConfigMap in the Kubernetes Namespace:
 
 To create a ConfigMap in a namespace, the following command is used:
 
@@ -17,7 +18,7 @@ kubectl create configmap [name der ConfigMap] [Data Source]
 The [data source] can be a file, a directory or a command line input.
 
 
-## Java properties Files as ConfigMap
+### Java properties Files as ConfigMap
 
 A classic example for ConfigMaps are property files of Java applications, which can't be configured with environment variables.
 
@@ -56,7 +57,7 @@ kubectl get configmaps javaconfiguration -o json --namespace <NAMESPACE>
 ```
 
 
-## Attach a Configmap to a Pod
+## Taks {{< param sectionnumber >}}.2: Attach a Configmap to a Pod
 
 Next, we want to make a ConfigMap accessible for a pod.
 
@@ -162,7 +163,7 @@ key2=value2
 Like this, the property file can be read and used by the Java application in the container. The image stays portable to other environments.
 
 
-## Task: LAB10.4.1 ConfigMap Data Sources
+## Task {{< param sectionnumber >}}.3: ConfigMap Data Sources
 
 Create a ConfigMap and use the different kinds of data sources: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
 

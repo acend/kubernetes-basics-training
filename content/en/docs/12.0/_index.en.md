@@ -1,6 +1,7 @@
 ---
 title: "12. Helm"
 weight: 12
+sectionnumber: 12
 ---
 
 [Helm](https://github.com/helm/helm) is a [Cloud Native Foundation](https://www.cncf.io/) project to define, install and manage applications in Kubernetes.

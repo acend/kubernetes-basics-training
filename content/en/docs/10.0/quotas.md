@@ -1,6 +1,7 @@
 ---
 title: "10.5 Quotas and limit ranges"
 weight: 105
+sectionnumber: 10.5
 ---
 
 FIXMEs:
@@ -123,7 +124,7 @@ If for example a Container did not define any requests or limits and there was a
 The possibility of enforcing minimum and maximum resources and defining resource quotas per Namespace allows for many combinations of resource control.
 
 
-## Task 1: Namespace
+## Task {{< param sectionnumber >}}.1: Namespace
 
 {{< onlyWhen rancher >}}
 Make sure you're logged in to the cluster. Choose the appropriate cluster, click on __Projects/Namespaces__ and then click on __Add Namespace__. 
@@ -176,7 +177,7 @@ memory      0     100Mi
 ```
 
 
-## Task 2: Default memory limit
+## Task {{< param sectionnumber >}}.2: Default memory limit
 
 Create a Pod using the polinux/stress image:
 
@@ -267,7 +268,7 @@ stress   1/1     Running   0          25s
 ```
 
 
-## Task 3: Hitting the quota
+## Task {{< param sectionnumber >}}.3: Hitting the quota
 
 Create another Pod, again using the polinux/stress image. This time our application is less demanding and only needs 10 megabytes of memory (`--vm-bytes 10M`):
 

@@ -1,6 +1,7 @@
 ---
 title: "9. Persistent Storage"
 weight: 9
+sectionnumber: 9
 ---
 
 By default, data in pods is not persistent which was e.g. the case in lab 8. This means that data that was written in a pod is lost as soon as that pod does not exist anymore. We want to prevent this from happening. One possible solution to this problem is using persistent storage.
@@ -111,7 +112,7 @@ If Container won't start because the data directory has files in it. Mount the v
 {{% /alert %}}
 
 
-## Task: Persistence Check
+## Task {{< param sectionnumber >}}.1: Persistence Check
 
 
 ### Restore Data

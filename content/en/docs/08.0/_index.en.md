@@ -1,12 +1,13 @@
 ---
 title: "8. Attaching a Database"
 weight: 8
+sectionnumber: 8
 ---
 
 Numerous applications are in some kind stateful and want to save data persistently, be it in a database or as files on a filesystem or in an object store. During this lab we are going to create a MySQL service and attach it to our application so that application pods can access the same database.
 
 
-## Task: Create the MySQL Service
+## Task {{< param sectionnumber >}}.1: Create the MySQL Service
 
 
 We are first going to create a so-called secret in which we write the password for accessing the database.
@@ -133,7 +134,7 @@ As soon as the container image for mysql:5.7 has been pulled, you will see a new
 The environment variables defined in the deployment configure the MySQL pod and how our frontend will be able to access it.
 
 
-## Task: Attaching the Database to the Application
+## Task {{< param sectionnumber >}}.2: Attaching the Database to the Application
 
 By default our example-web-python application uses a sqlite memory database. However, this can be changed by defining the following environment variables to use the newly created MySQL service:
 
@@ -179,7 +180,7 @@ Or we could register some "Hellos" in the application, delete the pod, wait for 
 **Attention:** This does not work if we delete the database pod as its data is not yet persisted.
 
 
-## Task: Manual Database Connection
+## Task {{< param sectionnumber >}}.3: Manual Database Connection
 
 As described in [lab 07](../07.0/) we can log into a pod with `kubectl exec -it [POD NAME] -- /bin/bash`.
 
@@ -237,7 +238,7 @@ show tables;
 ```
 
 
-## Task: Import a Database Dump
+## Task {{< param sectionnumber >}}.4: Import a Database Dump
 
 Our task is now to import this [dump](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/08.0/dump.sql) into the MySQL database running as a pod. Use the `mysql` command line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
 

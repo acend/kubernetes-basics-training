@@ -1,12 +1,13 @@
 ---
 title: "6. Scaling"
 weight: 6
+sectionnumber: 6
 ---
 
 In this lab we are going to show you how to scale applications on Kubernetes. Further we show you how Kubernetes makes sure that the number of requested pods is up and running how an application can tell the platform that it is ready to ready to receive request.
 
 
-## Task: Scale the Example Application
+## Task {{< param sectionnumber >}}.1: Scale the Example Application
 
 Create a new deployment in your namespace:
 
@@ -253,7 +254,7 @@ http://[URL]:[NodePort]/health/
 ```
 
 
-## Task
+## Task {{< param sectionnumber >}}.2: Availability during Deployment
 
 In our deployment configuration inside the rolling update strategy section we define that our application has to be always be available during an update: `maxUnavailable: 0%`
 

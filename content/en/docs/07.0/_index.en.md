@@ -1,6 +1,7 @@
 ---
 title: "7. Troubleshooting, what is a Pod?"
 weight: 7
+sectionnumber: 7
 ---
 
 This Lab helps you to troubleshoot your application and shows you some tools to make troubleshooting easier.
@@ -11,7 +12,7 @@ This Lab helps you to troubleshoot your application and shows you some tools to 
 Running container should be treated as immutable infrastructure and should therefore not be modified. Although, there are some use-cases in which you have to login into your running container. Debugging and analyze is one example for this.
 
 
-## Task: Shell into POD
+## Task {{< param sectionnumber >}}.1: Shell into POD
 
 With Kubernetes you can open a remote Shell into a pod without installing SSH by Using the command `kubectl exec`. The command is used to executed anything in a pod. With the parameter `-it` you can leave open an connection. We can use `winpty` for this.
 
@@ -47,7 +48,7 @@ exit
 ```
 
 
-## Task: Single Command
+## Task {{< param sectionnumber >}}.2: Single Command
 
 Single commands inside a container can be executed with `kubectl exec`:
 
@@ -91,7 +92,7 @@ kubectl logs -p [POD] --namespace <NAMESPACE>
 ```
 
 
-## Task: Port Forwarding
+## Task {{< param sectionnumber >}}.3: Port Forwarding
 
 Kubernetes allows you to forward arbitrary ports to your development workstation. This allows you to access admin consoles, databases etc, even when they are not exposed externaly. Port forwarding are handled by the Kubernetes master and therefore tunneled from the client via HTTPS. This allows you to access the Kubernetes platform even when there are restrictive firewalls and/or proxies between your workstation and Kubernetes.
 

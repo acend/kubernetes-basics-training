@@ -1,6 +1,7 @@
 ---
 title: "5. Exposing a Service"
 weight: 5
+sectionnumber: 5
 ---
 
 In this lab, we are going to make the freshly deployed application from the last lab available online.
@@ -8,7 +9,7 @@ In this lab, we are going to make the freshly deployed application from the last
 The command `kubectl create deployment` from the last labcreates a pod but no service. A service is another Kubernetes concept which we'll need in order to make our application available online. We're going to do this with the command `kubectl expose`. As soon as we then expose the service itself, it is available online.
 
 
-## Task:
+## Task {{< param sectionnumber >}}.1: Expose as NodePort
 
 With the following command we create a service and by doing this we expose our deployment. There are different kinds of services. For this example, we are going to use the [`NodePort`](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport) type and expose port 5000:
 
@@ -176,7 +177,7 @@ You can also use the Rancher WebGUI to open the exposed application in your Brow
 {{% /onlyWhen %}}
 
 
-## Task: Create an ClusterIP Service with an Ingress
+## Task {{< param sectionnumber >}}.2: Create an ClusterIP Service with an Ingress
 
 There's a second option to make a service accessible from outside: Use an ingress router.
 
@@ -210,9 +211,11 @@ spec:
 ```
 
 After creating the ingress file, we can apply it:
+
 ```bash
 kubectl create -f ingress.yaml --namespace <NAMESPACE>
 ```
+
 Afterwards we are able to access our freshly created service at `http://web-go-<NAMESPACE>.k8s-techlab.puzzle.ch`
 
 

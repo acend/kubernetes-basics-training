@@ -1,6 +1,7 @@
 ---
 title: "10.6 Init Container"
 weight: 106
+sectionnumber: 10.6
 ---
 
 
@@ -14,7 +15,7 @@ Init containers are exactly like regular containers, except:
 Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes docuemtation for more details.
 
 
-## Task: Add init Container to our example-web-python application
+## Task {{< param sectionnumber >}}.1: Add init Container to our example-web-python application
 
 In [Lab 8](../08.0/) you created the `example-web-python` application. In this task you are going to add an init container which checks if the MySQL database is ready to be used befor acually start your python application.
 
