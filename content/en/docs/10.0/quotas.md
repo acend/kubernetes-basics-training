@@ -5,13 +5,13 @@ weight: 105
 
 FIXMEs:
 
-- [x] Introduction to quotas and description of lab
-- [x] Explanation of what types of quotas exist
-- [x] Explanation and common reason for default LimitRanges
+* [x] Introduction to quotas and description of lab
+* [x] Explanation of what types of quotas exist
+* [x] Explanation and common reason for default LimitRanges
 
-- [ ] Task: Create namespace with Resource Quotas and LimitRange
-- [ ] Task: Create a Deployment without requests and limits, analyse problems with too 
-- [ ] Task: Create a Deployment with requests too high to fit into Quota
+* [ ] Task: Create namespace with Resource Quotas and LimitRange
+* [ ] Task: Create a Deployment without requests and limits, analyse problems with too
+* [ ] Task: Create a Deployment with requests too high to fit into Quota
 
 ---
 
@@ -22,9 +22,9 @@ In this lab we are going to look at resource quotas and limit ranges. As Kuberne
 
 Resource quotas among other things limit the amount of resources pods can use in a namespace. They can also be used to limit the total number of a certain resource type in a namespace. In more detail, there are these kinds of quotas:
 
-- _Compute resource quotas_ can be used to limit the amount of memory and CPU
-- _Storage resource quotas_ can be used to limit the total amount of storage and the number of PersistentVolumeClaims, generally or specific to a StorageClass
-- _Object count quotas_ can be used to limit the number of a certain resource type such as Services, Pods or Secrets
+* _Compute resource quotas_ can be used to limit the amount of memory and CPU
+* _Storage resource quotas_ can be used to limit the total amount of storage and the number of PersistentVolumeClaims, generally or specific to a StorageClass
+* _Object count quotas_ can be used to limit the number of a certain resource type such as Services, Pods or Secrets
 
 Defining resource quotas makes sense e.g. when the cluster administrators want to have better control over consumed resources. A typical use case are public offerings where users pay for a certain guaranteed amount of resources which must not be exceeded.
 
@@ -84,9 +84,9 @@ The CPU value is denoted as "m". "m" stands for _milliCPU_ or sometimes also ref
 
 Setting limits and requests on Containers has yet another effect: It might change the Pod's _Quality of Service_ class. There are three such _QoS_ classes:
 
-- _Guaranteed_
-- _Burstable_
-- _BestEffort_
+* _Guaranteed_
+* _Burstable_
+* _BestEffort_
 
 The Guaranteed QoS class is applied to Pods that define both limits and requests for both memory and CPU resources on all their Containers. The most important part is that each request has the same value as the limit.
 Pods that belong to this QoS class will never be killed by the scheduler because of resources running out on a Node.
@@ -113,10 +113,10 @@ This is exactly what _LimitRanges_ are for.
 
 Quoting the [Kubernetes documentation](https://kubernetes.io/docs/concepts/policy/limit-range/), LimitRanges can be used to:
 
-- Enforce minimum and maximum compute resources usage per Pod or Container in a namespace
-- Enforce minimum and maximum storage request per PersistentVolumeClaim in a namespace
-- Enforce a ratio between request and limit for a resource in a namespace
-- Set default request/limit for compute resources in a namespace and automatically inject them to Containers at runtime
+* Enforce minimum and maximum compute resources usage per Pod or Container in a namespace
+* Enforce minimum and maximum storage request per PersistentVolumeClaim in a namespace
+* Enforce a ratio between request and limit for a resource in a namespace
+* Set default request/limit for compute resources in a namespace and automatically inject them to Containers at runtime
 
 If for example a Container did not define any requests or limits and there was a LimitRange defining default values, these default values would be used when deploying said Container. However, as soon as limits or requests were defined, the default values would no longer be applied.
 
@@ -126,14 +126,14 @@ The possibility of enforcing minimum and maximum resources and defining resource
 ## Task 1: Namespace
 
 {{< onlyWhen rancher >}}
-Make sure you're logged in to the cluster. Choose the appropriate cluster, click on __Projects/Namespaces__ and then click on __Add Namespace__. 
+Make sure you're logged in to the cluster. Choose the appropriate cluster, click on __Projects/Namespaces__ and then click on __Add Namespace__.
 
-Choose a name for your Namespace in the form of <yourname>-quota-lab, expand the __Container Default Resource Limit__ view and set the following values:
+Choose a name for your Namespace in the form of `<yourname>`-quota-lab, expand the __Container Default Resource Limit__ view and set the following values:
 
-- __CPU Limit__: 100
-- __CPU Reservation__: 10
-- __Memory Limit__: 32
-- __Memory Reservation__: 16
+* __CPU Limit__: 100
+* __CPU Reservation__: 10
+* __Memory Limit__: 32
+* __Memory Reservation__: 16
 
 ![Quota lab namespace creation](create_quotalab_namespace.png)
 

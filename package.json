@@ -1,0 +1,6 @@
+{
+  "name": "kubernetes-techlab",
+  "devDependencies": {
+    "markdownlint-cli": "^0.23.1"
+  }
+}

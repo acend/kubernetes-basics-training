@@ -6,18 +6,17 @@ weight: 107
 Lets first check again what a Pod is, from [Pods](https://kubernetes.io/docs/concepts/workloads/pods/pod/) on the Kubernetes documation page:
 
 > A Pod (as in a pod of whales or pea pod) is a group of one or more containers (such as Docker containers), with shared storage/network, and a specification for how to run the containers. A Pod’s contents are always co-located and co-scheduled, and run in a shared context. A Pod models an application-specific “logical host” - it contains one or more application containers which are relatively tightly coupled — in a pre-container world, being executed on the same physical or virtual machine would mean being executed on the same logical host.
-
 > The shared context of a Pod is a set of Linux namespaces, cgroups, and potentially other facets of isolation - the same things that isolate a Docker container. Within a Pod’s context, the individual applications may have further sub-isolations applied.
 
 A sidecar is a utility container in the Pod and its purpose is to support the main container. It is important to note that standalone sidecar does not serve any purpose, it must be paired with one or more main containers. Generally, sidecar container is reusable and can be paired with numerous type of main containers.
 
 In a sidecar pattern, the functionality of the main container is extended or enhanced by a sidecar container without strong coupling between two. Although it is always possible to build sidecar container functionality into the main container, there are several benefits with this pattern,
 
-- different resource profiles i.e., independent resource accounting and allocation
-- clear separation of concerns at packaging level i.e., no strong coupling between containers
-- reusability i.e., sidecar containers can be paired with numerous different "main" containers
-- failure containment boundary, making it possible for the overall system to degrade gracefully
-- independent testing, packaging, upgrade, deployment and if necessary roll back
+* different resource profiles i.e., independent resource accounting and allocation
+* clear separation of concerns at packaging level i.e., no strong coupling between containers
+* reusability i.e., sidecar containers can be paired with numerous different "main" containers
+* failure containment boundary, making it possible for the overall system to degrade gracefully
+* independent testing, packaging, upgrade, deployment and if necessary roll back
 
 
 ## Task: Add a Prometheus MySQL Exporter as Sidecar

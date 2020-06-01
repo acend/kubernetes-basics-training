@@ -124,6 +124,7 @@ spec:
 ```
 
 Execute it with:
+
 ```bash
 kubectl apply -f mysql.yaml --namespace <NAMESPACE>
 ```
@@ -137,7 +138,7 @@ The environment variables defined in the deployment configure the MySQL pod and 
 
 By default our example-web-python application uses a sqlite memory database. However, this can be changed by defining the following environment variables to use the newly created MySQL service:
 
-- MYSQL_URI mysql://example:mysqlpassword@mysql/example
+* MYSQL_URI mysql://example:mysqlpassword@mysql/example
 
 You can either use the MySQL service's cluster ip or DNS name as address. All services and pods can be resolved by DNS using their name.
 
@@ -146,22 +147,23 @@ We now can set these environment variables inside the deployment configuration. 
 So let's set the environment variables in the example-spring-boot deployment:
 
 ```bash
-kubectl create secret generic mysql-uri --from-literal=MYSQL_URI="mysql://example:mysqlpassword@mysql/example" --namespace <NAMESPACE> 
+kubectl create secret generic mysql-uri --from-literal=MYSQL_URI="mysql://example:mysqlpassword@mysql/example" --namespace <NAMESPACE>
 ```
 
 ```bash
-kubectl set env deployment/example-web-python --from=secret/mysql-uri --namespace <NAMESPACE> 
+kubectl set env deployment/example-web-python --from=secret/mysql-uri --namespace <NAMESPACE>
 ```
 
 You could also do the changes by directly editing the deployment:
 
 ```bash
-kubectl edit deployment example-web-python --namespace <NAMESPACE> 
+kubectl edit deployment example-web-python --namespace <NAMESPACE>
 ```
 
 ```bash
 kubectl get deployment example-web-python --namespace <NAMESPACE>
 ```
+
 ```yaml
 ...
       - env:
@@ -247,6 +249,7 @@ Our task is now to import this [dump](https://raw.githubusercontent.com/acend/ku
 
 
 ### Solution
+
 This is how you copy the database dump into the pod:
 
 ```bash
@@ -261,6 +264,7 @@ kubectl exec -it mysql-f845ccdb7-hf2x5 --namespace <NAMESPACE> -- /bin/bash
 ```
 
 This shows how to drop the whole database:
+
 ```bash
 mysql -u$MYSQL_USER -p$MYSQL_PASSWORD example
 ```
