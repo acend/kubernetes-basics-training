@@ -84,12 +84,12 @@ kubectl get deployment --namespace <NAMESPACE>
 
 A [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) defines the following facts:
 
-- Update strategy: How application updates should be executed and how the pods are being exchanged
-- Containers
-  - Which image should be deployed
-  - Environment configuration for pods
-  - ImagePullPolicy
-- The number of pods/replicas that should be deployed
+* Update strategy: How application updates should be executed and how the pods are being exchanged
+* Containers
+  * Which image should be deployed
+  * Environment configuration for pods
+  * ImagePullPolicy
+* The number of pods/replicas that should be deployed
 
 By using the `-o` (or `--output`) parameter we get a lot more information about the deployment itself:
 
@@ -112,9 +112,10 @@ nginx                             1/1     Running   0          31m
 ```
 
 The deployment defines that one replica should be deployed, which is running as we can see in the output. This pod is not yet reachable from outside of the cluster.
-
-
 {{% onlyWhen rancher %}}
+
+
+
 ## Task {{< param sectionnumber >}}.3: Verify the Deployment in the Rancher WebGUI
 
 Try to display the logs from the example application via the Rancher WebGui.

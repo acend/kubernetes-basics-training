@@ -9,8 +9,8 @@ A Pod can have multiple containers running apps within it, but it can also have 
 
 Init containers are exactly like regular containers, except:
 
-- Init containers always run to completion.
-- Each init container must complete successfully before the next one starts.
+* Init containers always run to completion.
+* Each init container must complete successfully before the next one starts.
   
 Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes docuemtation for more details.
 

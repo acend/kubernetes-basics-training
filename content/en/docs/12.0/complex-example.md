@@ -39,7 +39,7 @@ $env:http_proxy="http://u...:PASSWORD@dirproxy.mobi.ch:80"
 $env:https_proxy="http://u...:PASSWORD@dirproxy.mobi.ch:80"
 ```
 
-Replace `u...:PASSWORD` with your account details. If you have specials chars in your password, you have to escape them with hexadecimal value according to https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters
+Replace `u...:PASSWORD` with your account details. If you have specials chars in your password, you have to escape them with hexadecimal value according to [this](https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters)
 {{< /onlyWhen >}}
 
 ```bash
@@ -135,6 +135,7 @@ ingress:
   hostname: helmtechlab-wordpress-[USER].phoenix.mobicorp.test
 [...]
 ```
+
 {{< /onlyWhen >}}
 
 The `requirements.yaml` file allows us to define dependencies on other charts. In our Wordpress chart we use the `requirements.yaml` to add a `mariadb` to store the WordPress data in.
@@ -180,8 +181,8 @@ helm ls --namespace [NAMESPACE]
 which gives you:
 
 ```bash
-NAME     	NAMESPACE      	REVISION	UPDATED                                 	STATUS  	CHART          	APP VERSION
-wordpress	[NAMESPACE]        	1       	2020-03-31 13:23:17.213961038 +0200 CEST	deployed	wordpress-9.0.4	5.3.2
+NAME      NAMESPACE       REVISION      UPDATED                                   STATUS    CHART           APP VERSION
+wordpress [NAMESPACE]         1         2020-03-31 13:23:17.213961038 +0200 CEST  deployed  wordpress-9.0.4 5.3.2
 ```
 
 and
@@ -251,6 +252,7 @@ And then observe the changes in your WordPress and MariaDB Apps
 ```bash
 helm delete wordpress
 ```
+
 
 ## Additional Task
 

@@ -51,7 +51,7 @@ If the start of a new Pod fails, the Update / Rollout will be interrupted, so th
 ## Trivia
 
 As Statefulsets have predictable names, which are reused, you can integrate PVCs into the sets from a configured storageclass. The will be used als on **scale up**!
-As names are predictable a 1-to-1 relation is given. 
+As names are predictable a 1-to-1 relation is given.
 By setting a _Partition_ updates can be splitted into two steps.
 
 
@@ -98,7 +98,7 @@ kubectl create -f nginx-sfs.yaml --namespace [USER]
 ```
 
 
-### Scaling
+### Scaling Statefulset
 
 1. To watch the progress, open a second console and list the Statefulsets and watch the Pods:
 

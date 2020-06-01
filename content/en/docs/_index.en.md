@@ -10,18 +10,18 @@ The goal of these techlabs is to create some hands-on tasks for people. By using
 
 Goal of these techlabs:
 
-- Having an easy start with this modern technology
-- Understand the basic concepts
-- Deploy applications on kubernetes
+* Having an easy start with this modern technology
+* Understand the basic concepts
+* Deploy applications on kubernetes
 
 
 ## Additional Docs
 
-- [Kubernetes Docs](https://kubernetes.io/docs/home/?path=users&persona=app-developer&level=foundational)
-- [Helm Docs](https://docs.helm.sh/)
+* [Kubernetes Docs](https://kubernetes.io/docs/home/?path=users&persona=app-developer&level=foundational)
+* [Helm Docs](https://docs.helm.sh/)
 
 
 ## Additional Tutorials
 
-- [Official Kubernetes Tutorial](https://kubernetes.io/docs/tutorials/)
+* [Official Kubernetes Tutorial](https://kubernetes.io/docs/tutorials/)
 

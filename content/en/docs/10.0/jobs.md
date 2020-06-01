@@ -83,6 +83,7 @@ To show all pods belonging to a job in a human-readable format, the following co
 kubectl get pods --selector=job-name=mysql-dump --output=jsonpath={.items..metadata.name} --namespace <NAMESPACE>
 ```
 
+
 ## Cron Jobs
 
 A Kubernetes cronjob is nothing else than a resource which creates a job at a defined time, which in turn starts (as we saw in the previous section) a pod to run a command. Typical use cases are cleanup jobs, which tidy up old data for a running pod, or a job to regularly create and save a database dump.

@@ -138,9 +138,9 @@ while true; do sleep 1; curl -s $URL/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```bash
 #Windows (ab Powershell-Version 3.0):
 while(1) {
-	Start-Sleep -s 1
-	Invoke-RestMethod http://[URL]/pod/
-	Get-Date -Uformat "+ TIME: %H:%M:%S,%3N"
+  Start-Sleep -s 1
+  Invoke-RestMethod http://[URL]/pod/
+  Get-Date -Uformat "+ TIME: %H:%M:%S,%3N"
 }
 ```
 
@@ -183,6 +183,7 @@ kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metad
 ```
 
 During a short period we won't get a response:
+
 ```
 POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:24,121
 POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:25,189
@@ -242,8 +243,8 @@ Additionally, [container health checks](https://kubernetes.io/docs/tasks/configu
 
 Basically there are two different kinds of checks that can be implemented:
 
-- Liveness probes are used to find out if an application is still running
-- Readiness probes tell us if the application es ready to receive requests (which is especially relevant for above-mentioned rolling updates)
+* Liveness probes are used to find out if an application is still running
+* Readiness probes tell us if the application es ready to receive requests (which is especially relevant for above-mentioned rolling updates)
 
 These probes can be implemented as HTTP checks, container execution checks (the execution of a command or script inside a container) or TCP socket checks.
 
@@ -266,6 +267,7 @@ kubectl edit deployment example-web-python --namespace <NAMESPACE>
 
 
 **YAML:**
+
 ```
 ...
 spec:
@@ -279,10 +281,14 @@ spec:
 
 
 If you prefer json formatting to yaml, use the `--output`/`-o` parameter to edit the resource in json:
+
 ```bash
 kubectl edit deployment example-web-python -o json --namespace [TEAM]-dockerimage
 ```
-**json**
+
+
+**json:**
+
 ```
 "strategy": {
     "rollingUpdate": {
@@ -408,7 +414,9 @@ Show all pods and watch for changes:
 ```bash
 kubectl get pods -w --namespace <NAMESPACE>
 ```
+
 Now delete a pod (in another terminal) with the following command:
+
 ```bash
 kubectl delete pod example-web-python-3-788j5 --namespace <NAMESPACE>
 ```

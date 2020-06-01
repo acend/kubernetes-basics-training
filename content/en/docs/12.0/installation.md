@@ -38,13 +38,13 @@ The latest v3 release v3.1.2 can be found [here](https://github.com/helm/helm/re
 
 Install the `helm` cli on your system:
 
-1. Download your desired version (https://get.helm.sh/helm-v3.1.2-linux-amd64.tar.gz)
+1. Download your desired version from [here](https://get.helm.sh/helm-v3.1.2-linux-amd64.tar.gz)
 1. Unpack it (`tar -zxvf helm-v3.1.2-linux-amd64.tar.gz`)
 1. Find the helm binary in the unpacked directory and move it to its desired destination (e.g. `mv linux-amd64/helm /usr/local/bin/`)
-  * The desired destination should be listed in your $PATH environment variable (`echo $PATH`)
+    * The desired destination should be listed in your $PATH environment variable (`echo $PATH`)
 
 {{% alert title="Windows Users" color="warning" %}}
-Please make sure to select the Windows version https://get.helm.sh/helm-v3.1.2-windows-amd64.zip. Put the binary into your working directory or make sure the directory containing the `helm.exe` binary is in your `Path` environment variable.
+Please make sure to select the [Windows version](https://get.helm.sh/helm-v3.1.2-windows-amd64.zip). Put the binary into your working directory or make sure the directory containing the `helm.exe` binary is in your `Path` environment variable.
 {{% /alert %}}
 
 To verify run the following command and check if `Version` is what you expected:
@@ -54,7 +54,7 @@ helm version
 ```
 
 The output is similar to this:
- 
+
 ```bash
 version.BuildInfo{Version:"v3.1.2", GitCommit:"d878d4d45863e42fd5cff6743294a11d28a9abce", GitTreeState:"clean", GoVersion:"go1.13.8"}
 ```

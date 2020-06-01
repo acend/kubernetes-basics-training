@@ -41,6 +41,7 @@ vim ~/.kube-techlab/config
 # set KUBECONFIG Environment Variable to the correct file
 export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 ```
+
 {{< /onlyWhen >}}
 
 
@@ -94,6 +95,7 @@ Namespaces created via `kubectl`, have to be assigned to your Rancher project in
 {{< /onlyWhen >}}
 
 **Tip:** By using the following command, you can switch into another namespace instead of specifly the namespace in each `kubectl` command:
+
 ```bash
 # Linux:
 kubectl config set-context $(kubectl config current-context) --namespace=<NAMESPACE>

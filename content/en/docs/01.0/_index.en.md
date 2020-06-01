@@ -47,10 +47,10 @@ Depending on the used backend, most of the time the implementation is using over
 
 Layer example Tomcat:
 
-- Base image (CentOS 7)
-- + install Java
-- + install Tomcat
-- + install App
+* Base image (CentOS 7)
+  * install Java
+  * install Tomcat
+  * install App
 
 The ready built images can be version-controlled saved in an image registry and can be used by the container platform.
 
@@ -81,9 +81,9 @@ A service represents a stateful endpoint for your application in the pod. As a p
 
 There are different kinds of services:
 
-- ClusterIP (the default, virtual IP address range)
-- NodePort (same as ClusterIP + open ports on the nodes)
-- LoadBalancer (external loadbalancer is created, works only in cloud environment, e.g. AWS elb)
+* ClusterIP (the default, virtual IP address range)
+* NodePort (same as ClusterIP + open ports on the nodes)
+* LoadBalancer (external loadbalancer is created, works only in cloud environment, e.g. AWS elb)
 
 A service is unique inside a namespace.
 

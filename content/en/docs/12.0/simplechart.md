@@ -48,8 +48,10 @@ Our freshly deployed nginx is not yet accessible from outside of the Kubernetes 
 Search now for the Service type definition in your chart and make the change.
 
 
-### Solution
+### Solution Task 3
+
 A look into the file `templates/service.yaml` reveals that the service type is set by value:
+
 ```yaml
 [...]
 spec:
@@ -58,6 +60,7 @@ spec:
 ```
 
 Thus we need to change this value inside our `values.yaml` file:
+
 ```yaml
 [...]
 service:
@@ -70,7 +73,7 @@ Apply the change by upgrading our release:
 
 
 ```bash
-helm upgrade --namespace <NAMESPACE> myfirstrelease ./mychart 
+helm upgrade --namespace <NAMESPACE> myfirstrelease ./mychart
 ```
 
 You will see in the following command's output when the service gets a `NodePort` (as we use `--watch` you have to terminate the command with CTRL-C):
@@ -94,10 +97,10 @@ An alternative way to set or overwrite values for charts we want to deploy is th
 Update the replica count of your nginx Deployment to 2 using `--set name=value`
 
 
-### Solution
+### Solution Task 4
 
 ```bash
-helm upgrade --namespace <NAMESPACE> --set replicaCount=2 myfirstrelease ./mychart 
+helm upgrade --namespace <NAMESPACE> --set replicaCount=2 myfirstrelease ./mychart
 ```
 
 Values that have been set using `--set` can be reset by helm upgrade with `--reset-values`.

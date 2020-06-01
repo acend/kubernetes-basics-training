@@ -96,7 +96,8 @@ First, get all pod names from your namespace with (`kubectl get pods --namespace
 
 The service's `selector` defines, which pods are being used as endpoints. This happens based on labels. Look at the configuration of service and pod in order to find out what maps to what:
 
-Service: 
+Service:
+
 ```bash
 kubectl get service <Service Name> --namespace <NAMESPACE> -o json
 ```
@@ -114,6 +115,7 @@ Pod:
 ```bash
 kubectl get pod <Pod Name> --namespace <NAMESPACE>
 ```
+
 ```json
 ...
 "labels": {
@@ -154,7 +156,7 @@ Service IP addresses stay the same for the duration of the service's life span.
 Open `http://[NodeIP]:[NodePort]` in your Browser.
 You can use any NodeIP as the Service is exposed on all Nodes using the same NodePort. Use `kubectl get nodes -o wide` to display the IP's (INTERNAL-IP) of the available nodes.
 
-```bash 
+```bash
 kubectl get node -o wide
 ```
 
@@ -186,6 +188,7 @@ In order to switch the service type, we are going to delete the NodePort service
 ```bash
 kubectl delete service example-web-go --namespace=<NAMESPACE>
 ```
+
 Now we create a service with type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types):
 
 ```bash
@@ -227,9 +230,10 @@ Have a closer look at the created resources with
 kubectl get [RESOURCE TYPE] [NAME] -o json
 ```
 
-and 
+and
 
 ```bash
 kubectl describe [RESOURCE TYPE] [NAME]
 ```
+
 from your namespace `<NAMESPACE>` and try to understand them.
