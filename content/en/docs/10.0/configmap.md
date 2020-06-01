@@ -8,7 +8,7 @@ Similar to environment variables, ConfigsMaps allow you to separate the configur
 In this lab you learn to create and use ConfigMaps.
 
 
-## Task {{< param sectionnumber >}}.1: Create a ConfigMap in the Kubernetes Namespace:
+## Task {{< param sectionnumber >}}.1: Create a ConfigMap in the Kubernetes Namespace
 
 To create a ConfigMap in a namespace, the following command is used:
 
