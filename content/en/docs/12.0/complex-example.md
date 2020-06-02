@@ -1,6 +1,7 @@
 ---
 title: "12.4 Complex Example"
 weight: 124
+sectionnumber: 12.4
 ---
 
 In this extended lab, we are going to deploy an existing, more complex application with a Helm chart from the Helm Hub.

@@ -1,6 +1,7 @@
 ---
 title: "12.2 CLI Installation"
 weight: 122
+sectionnumber: 12.2
 ---
 
 This guide shows you how to install the Helm CLI. Helm can be installed either from source or from pre-built binary releases.
@@ -33,7 +34,7 @@ Every [release](https://github.com/helm/helm/releases) of Helm provides binary r
 The latest v3 release v3.1.2 can be found [here](https://github.com/helm/helm/releases/tag/v3.1.2).
 
 
-## Task 1
+## Task {{< param sectionnumber >}}.1: Install CLI
 
 Install the `helm` cli on your system:
 

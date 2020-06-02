@@ -1,6 +1,7 @@
 ---
 title: "10.3  Jobs"
 weight: 103
+sectionnumber: 10.3
 ---
 
 Jobs are different from normal deployments, as they execute a time-constrained operation and report the result, as soon as they are finished. To achieve this, a job creates a pod and runs the defined operation e.g. command. A job isn't limited to create a single pod, it can also create multiple pods. When a job is deleted, the pods started (and stopped) by the job are also deleted.
@@ -11,7 +12,7 @@ For example, a job is used to ensure that a pod is run until its completion. If 
 More detailed information can be retrieved from [Kubernetes Jobs Documentation](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/).
 
 
-## Task: Create a Job for a MySQL Dump
+## Task {{< param sectionnumber >}}.1: Create a Job for a MySQL Dump
 
 Similar to [Lab8, Task: Import a Database Dump](../08.0/#task-import-a-database-dump), we now want to create a dump of a running MySQL database, but without the need of interactively logging into the pod.
 

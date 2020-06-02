@@ -1,6 +1,7 @@
 ---
 title: "2. Install the Kubernetes CLI"
 weight: 2
+sectionnumber: 2
 ---
 
 In this we will install and configure the `kubectl` client to be able to practice on further tasks in the following techlabs.

@@ -1,6 +1,7 @@
 ---
 title: "10.2  DaemonSet"
 weight: 102
+sectionnumber: 10.2
 ---
 
 A DaemonSet is almost identical to a normal deployment, but makes sure that on every (or some specified) Node extractly one pod is running. When a new node is added, the daemonset automatically deploys a pod on the new node.

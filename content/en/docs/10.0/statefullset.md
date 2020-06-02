@@ -1,6 +1,7 @@
 ---
 title: "10.1 StatefulSet"
 weight: 101
+sectionnumber: 10.1
 ---
 
 Stateless applications or applications with a stateful backend, can be described as **Deployments**. Sometimes you need your application to be stateful.
