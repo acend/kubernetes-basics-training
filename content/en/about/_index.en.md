@@ -1,5 +1,5 @@
 ---
-title: "About Kubernetes Techlab"
+title: "About"
 linkTitle: About
 menu:
   main:

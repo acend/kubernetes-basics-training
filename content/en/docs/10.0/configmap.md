@@ -4,26 +4,26 @@ weight: 104
 sectionnumber: 10.4
 ---
 
-Similar to environment variables, ConfigsMaps allow you to separate the configuration for an application from the image. Pods can access those variables during runtime, which allows maximum portability for applications running in containers.
-In this lab you learn to create and use ConfigMaps.
+Similar to environment variables, _ConfigsMaps_ allow you to separate the configuration for an application from the image. Pods can access those variables during runtime, which allows maximum portability for applications running in containers.
+In this lab you learn how to create and use ConfigMaps.
 
 
-## Task {{< param sectionnumber >}}.1: Create a ConfigMap in the Kubernetes Namespace
+## Task {{< param sectionnumber >}}.1: Create a ConfigMap in the Kubernetes namespace
 
-To create a ConfigMap in a namespace, the following command is used:
+Use the following commant to create a ConfigMap in a namespace:
 
 ```bash
-kubectl create configmap [name der ConfigMap] [Data Source]
+kubectl create configmap <name> <data-source>
 ```
 
-The [data source] can be a file, a directory or a command line input.
+The `<data-source>` can be a file, a directory, or a command line input.
 
 
-### Java properties Files as ConfigMap
+### Java properties files as ConfigMap
 
-A classic example for ConfigMaps are property files of Java applications, which can't be configured with environment variables.
+A classic example for ConfigMaps are properties files of Java applications which can't be configured with environment variables.
 
-We change to the namespace of lab 4 `$ kubectl config set-context $(kubectl config current-context) --namespace=<NAMESPACE>`
+We change to the namespace of lab 4 `$ kubectl config set-context $(kubectl config current-context) --namespace=<namespace>`
 
 With the following command, a ConfigMap based on a local file is created:
 
@@ -54,13 +54,13 @@ javaconfiguration   1      7s
 The content can also be displayed with
 
 ```bash
-kubectl get configmaps javaconfiguration -o json --namespace <NAMESPACE>
+kubectl get configmaps javaconfiguration -o json --namespace <namespace>
 ```
 
 
 ## Taks {{< param sectionnumber >}}.2: Attach a Configmap to a Pod
 
-Next, we want to make a ConfigMap accessible for a pod.
+Next, we want to make a ConfigMap accessible for a Pod.
 
 Basically, there are the following possibilities to achieve [this](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
 
@@ -71,7 +71,7 @@ Basically, there are the following possibilities to achieve [this](https://kuber
 In this example, we want the file to be mounted as a volume in the container. We add the ConfigMap in the deployment as follows:
 
 
-Basically, the pod or in our case the deployment has to be edited with `kubectl edit deployment example-spring-boot --namespace <NAMESPACE>`:
+Basically, the Pod or in our case the deployment has to be edited with `kubectl edit deployment example-spring-boot --namespace <namespace>`:
 
 ```yaml
       - configMap:
@@ -81,7 +81,7 @@ Basically, the pod or in our case the deployment has to be edited with `kubectl 
 
 ```
 
-With `kubectl edit deployment example-spring-boot --namespace <NAMESPACE>` we can edit the deployment and add the configuration in the volumes section at the very bottom:
+With `kubectl edit deployment example-spring-boot --namespace <namespace>` we can edit the deployment and add the configuration in the volumes section at the very bottom:
 
 
 ```yaml
@@ -95,7 +95,7 @@ metadata:
   labels:
     app: spring-boot-example
   name: spring-boot-example
-  namespace: <NAMESPACE>
+  namespace: <namespace>
   resourceVersion: "3990918"
   selfLink: /apis/extensions/v1beta1/namespaces/philipona/deployments/spring-boot-example
   uid: a5c2f455-d081-11e8-a406-42010a840034
@@ -153,7 +153,7 @@ spec:
 After that, it's possible for the container to access the values in the ConfigMap in /etc/config/properties.properties
 
 ```bash
-kubectl exec -it [POD]  --namespace <NAMESPACE> -- cat /etc/config/properties.properties
+kubectl exec -it <pod> --namespace <namespace> -- cat /etc/config/properties.properties
 ```
 
 ```

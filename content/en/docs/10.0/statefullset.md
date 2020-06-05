@@ -4,15 +4,15 @@ weight: 101
 sectionnumber: 10.1
 ---
 
-Stateless applications or applications with a stateful backend, can be described as **Deployments**. Sometimes you need your application to be stateful.
-For example if your application needs the same hostname every time it starts or if you have a clustered application with a strict start/stop order of all cluster services (e.g. rabbitmq).
-These features are implemented as **Statefulset**.
+Stateless applications or applications with a stateful backend, can be described as Deployments. Sometimes you need your application to be stateful.
+For example if your application needs the same hostname every time it starts or if you have a clustered application with a strict start/stop order of all cluster services (e.g. RabbitMQ).
+These features are implemented as StatefulSets.
 
 
 ## Consistent hostnames
 
-While in normal Deployments a hash based name of the Pods (represented also as Hostname inside the Pod) is generated, Statefulsets create Pods with preconfigured names.
-Example of a rabbitmq-cluster with three nodes (Pods):
+While in normal Deployments a hash based name of the Pods (represented also as Hostname inside the Pod) is generated, StatefulSets create Pods with preconfigured names.
+Example of a RabbitMQ cluster with three nodes (Pods):
 
 ```
 rabbitmq-0
@@ -23,16 +23,16 @@ rabbitmq-2
 
 ## Scaling
 
-Scaling is handled as well differently in Statefulsets.
-On scaling up from 3 to 5 within a Deployment, two additional Pods could be started at the __same__ time (based on the configuren. Using the Stateful it seems to be more "in control".
+Scaling is handled as well differently in StatefulSets.
+On scaling up from 3 to 5 within a Deployment, two additional Pods could be started at the __same__ time (based on the configuration. Using the StatefulSet it seems to be more "in control".
 
-Example with Rabbitmq
+Example with RabbitMQ:
 
 1. Scale `kubectl scale deployment rabbitmq --replicas=5 --namespace [USER]`
 1. `rabbitmq-3` is started
-1. when `rabbitmq-3` done starting up (State: "Ready", take a look at _Readiness probe_), `rabbitmq-4` follows with the start procedure
+1. When `rabbitmq-3` is done starting up (State: "Ready", take a look at _Readiness probe_), `rabbitmq-4` follows with the start procedure
 
-On downscaling the order is vice versa. The "youngest" Pod will be stopped in first place and it needs to be finished, before the "second youngest" Pod is stopped.
+On downscaling, the order is vice versa. The "youngest" Pod will be stopped in first place and it needs to be finished, before the "second youngest" Pod is stopped.
 Order for scaling down: `rabbitmq-4`, `rabbitmq-3`, etc.
 
 
@@ -65,7 +65,7 @@ The control- and predictable behaviour can be perfectly used with application as
 
 ### Statefulsets
 
-1. Create a statefulset based on the YAML file _nginx-sfs.yaml_ :
+1. Create a statefulset based on the YAML file `nginx-sfs.yaml`:
 
 ```YAML
 apiVersion: apps/v1
@@ -103,15 +103,15 @@ kubectl create -f nginx-sfs.yaml --namespace [USER]
 1. To watch the progress, open a second console and list the Statefulsets and watch the Pods:
 
 ```bash
-kubectl get statefulset --namespace <NAMESPACE>
-kubectl get pods -l app=nginx -w --namespace <NAMESPACE>
+kubectl get statefulset --namespace <namespace>
+kubectl get pods -l app=nginx -w --namespace <namespace>
 ```
 
 1. Scale up Statefulset
 
 
 ```bash
-kubectl scale statefulset nginx-cluster --replicas=3 --namespace <NAMESPACE>
+kubectl scale statefulset nginx-cluster --replicas=3 --namespace <namespace>
 ```
 
 
@@ -121,19 +121,19 @@ kubectl scale statefulset nginx-cluster --replicas=3 --namespace <NAMESPACE>
 
 
 ```bash
-kubectl get pods -l app=nginx -w --namespace <NAMESPACE>
+kubectl get pods -l app=nginx -w --namespace <namespace>
 ```
 
 1. Set new version of the Image in the Statefulset
 
 ```bash
-kubectl set image statefulset nginx-cluster nginx=nginx:latest --namespace <NAMESPACE>
+kubectl set image statefulset nginx-cluster nginx=nginx:latest --namespace <namespace>
 ```
 
 1. Rollback the software
 
 ```bash
-kubectl rollout undo statefulset nginx-cluster --namespace <NAMESPACE>
+kubectl rollout undo statefulset nginx-cluster --namespace <namespace>
 ```
 
 Further Information can be found at the [Kubernetes StatefulSet Dokumentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or at this [published article](https://opensource.com/article/17/2/stateful-applications).

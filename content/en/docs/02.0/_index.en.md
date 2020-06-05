@@ -4,17 +4,17 @@ weight: 2
 sectionnumber: 2
 ---
 
-In this we will install and configure the `kubectl` client to be able to practice on further tasks in the following techlabs.
+In this lab, we will install and configure the `kubectl` client to be able to practice further tasks in the labs that follow.
 
 
-## Command Line Interface
+## Command-line interface
 
-`kubectl` provides for you a console based interface to control one or several Kubernetes clusters.
+The `kubectl` command is the primary command-line tool to control one or several Kubernetes clusters.
 
-As the client is written in Go, you can run the single binary on the following Operating Systems:
+As the client is written in Go, you can run the single binary on the following operating systems:
 
-* Microsoft Windows
-* Mac OS X
+* Windows
+* macOS
 * Linux
 
 {{< onlyWhen rancher >}}
@@ -24,11 +24,11 @@ In Rancher you can also use `kubectl` directly within your browser. As soon as y
 {{< /onlyWhen >}}
 
 
-## Manual installation of `kubectl`
+## Manual installation of kubectl
 
 Follow <https://kubernetes.io/docs/tasks/tools/install-kubectl/>
 
-In case the installation from the official package repositories didn't work or a specific version is need, the static binary can be downloaded and put into one of the following paths.
+In case the installation from the official package repositories didn't work (or a specific version is needed) the static binary can be downloaded and put into one of the following paths.
 
 
 **Linux:**
@@ -38,7 +38,7 @@ In case the installation from the official package repositories didn't work or a
 ```
 
 
-**Mac OS X:**
+**macOS:**
 
 ```
 ~/bin
@@ -52,9 +52,9 @@ C:\Kubernetes\
 ```
 
 
-## Set the the right file modes on Linux and MacOS
+## File modes on Linux and macOS
 
-`kubectl` has to be executable:
+The `kubectl` has to be executable:
 
 ```bash
 cd ~/bin
@@ -62,10 +62,10 @@ chmod +x kubectl
 ```
 
 
-## `kubectl` folder in PATH variable
+## PATH variable
 
-In **Linux** and **Mac OS X** the directory _~/bin_ should already be part of the PATH variable.
-In case `kubectl` is placed in a different directory, you can change the PATH with the following command:
+In **Linux** and **macOSX** the directory `~/bin` should already be part of the `PATH` variable.
+In case `kubectl` is placed in a different directory, you can change the `PATH` variable with the following command:
 
 ```bash
 export PATH=$PATH:[path to kubectl]
@@ -74,7 +74,7 @@ export PATH=$PATH:[path to kubectl]
 
 ### Windows
 
-The PATH can be set in windows in the advanced system settings. It depends on the used version:
+The `PATH` can be set in Windows in the advanced system settings. It depends on the version:
 
 * [Windows 7](http://geekswithblogs.net/renso/archive/2009/10/21/how-to-set-the-windows-path-in-windows-7.aspx)
 * [Windows 8](http://www.itechtics.com/customize-windows-environment-variables/)
@@ -93,41 +93,41 @@ The `kubectl` binary should be correctly installed by now. This can be proofed b
 kubectl version
 ```
 
-The shown output should look similar to this:
+The output should look similar to this:
 
 ```
 Client Version: version.Info{Major:"1", Minor:"18", GitVersion:"v1.18.0", GitCommit:"9e991415386e4cf155a24b1da15becaa390438d8", GitTreeState:"clean", BuildDate:"2020-03-25T14:58:59Z", GoVersion:"go1.13.8", Compiler:"gc", Platform:"linux/amd64"}
-[...]
+...
 ```
 
-If you don't see a similar out, possibly there are issues with the set `PATH` variable.
+If you don't see a similar out, possibly there are issues with the `PATH` variable.
 
 {{% alert title="Note" color="warning" %}}
 Make sure to use at least version 1.16.x for your `kubectl`
 {{% /alert %}}
 
 
-## bash/zsh completion (optional)
+## Completion for Bash and Zsh (optional)
 
-Running on Linux and iOS (Mac) you can activate the bash completion:
+You can activate Bash completion:
 
 ```bash
 source <(kubectl completion bash)
 ```
 
-As well as for zsh:
+As well as for Zsh:
 
 ```bash
 source <(kubectl completion zsh)
 ```
 
-To make it permanent you can put that command in our bash configuration file:
+To make it permanent, you can put that command in your Bash configuration file:
 
 ```bash
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 ```
 
-On most linux systems you have to install the bash-completion packet to make the completion work.
+On most Linux systems, you have to install the `bash-completion` packet to make the completion work.
 
 Ubuntu:
 
@@ -138,10 +138,10 @@ sudo apt install bash-completion
 
 ## First steps with kubectl
 
-`kubectl` has many commands and subcommands. Invoke `kubectl [-h]` to get a list of all commands; `kubectl <command> -h`
+The `kubectl` has many commands and sub-commands. Invoke `kubectl -h` to get a list of all commands; `kubectl <command> -h`
 gives you detailed help about a command.
 
-If you don't want to memorize all `kubectl` options then use the `kubectl` Cheat Sheet:
+If you don't want to memorize all `kubectl` options then use the `kubectl` cheat sheet:
 <https://kubernetes.io/docs/reference/kubectl/cheatsheet/>
 
 
@@ -164,7 +164,7 @@ chmod +x ~/bin/kubectx ~/bin/kubens
 `fzf` is yet another handy helper tool when you have to deal with a lot of contexts or namespaces by
 adding an interactive menu to `kubectx`and `kubens`: <https://github.com/junegunn/fzf>
 
-`stern` is a very powerful enhancement of `kubectl logs` and lets you tail logs of multiple containers and pods at the
+`stern` is a very powerful enhancement of `kubectl logs` and lets you tail logs of multiple containers and Pods at the
 same time: <https://github.com/wercker/stern>.
 
 

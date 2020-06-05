@@ -10,7 +10,7 @@ menu:
 {{< blocks/section type="section" color="light">}}
 
 {{% blocks/feature icon="fa-chalkboard-teacher" url="introduction.pdf" title="Slides" %}}
-Get the slides for this techlab
+Get the slides for this lab
 {{% /blocks/feature %}}
 
 {{< /blocks/section >}}

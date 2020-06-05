@@ -27,14 +27,14 @@ In [lab 8](../08.0/) you have created a MySQL Deployment. In this task you are g
 Change the existing `mysql` Deployment using:
 
 ```bash
-kubectl edit deployment mysql --namespace <NAMESPACE>
+kubectl edit deployment mysql --namespace <namespace>
 ```
 
 And add a new (sidecar) container into your Deployment:
 
 ```yaml
 containers:
-[...]
+...
 - env:
 - name: DATA_SOURCE_NAME
     value: root:$MYSQL_ROOT_PASSWORD@(localhost:3306)/
@@ -45,13 +45,13 @@ containers:
         name: mysql-root-password
 image: prom/mysqld-exporter
 name: mysqld-exporter
-[...]
+...
 ```
 
 Your Pod does now have two running container. Verify this with:
 
 ```bash
-kubectl get pod --namespace <NAMESPACE>
+kubectl get pod --namespace <namespace>
 ```
 
 The output should look similar to this:

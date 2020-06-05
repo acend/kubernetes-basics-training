@@ -21,7 +21,7 @@ In this lab we are going to look at resource quotas and limit ranges. As Kuberne
 
 ## Resource quotas
 
-Resource quotas among other things limit the amount of resources pods can use in a namespace. They can also be used to limit the total number of a certain resource type in a namespace. In more detail, there are these kinds of quotas:
+Resource quotas among other things limit the amount of resources Pods can use in a namespace. They can also be used to limit the total number of a certain resource type in a namespace. In more detail, there are these kinds of quotas:
 
 * _Compute resource quotas_ can be used to limit the amount of memory and CPU
 * _Storage resource quotas_ can be used to limit the total amount of storage and the number of PersistentVolumeClaims, generally or specific to a StorageClass
@@ -207,7 +207,7 @@ stress2much   0/1     OOMKilled           1          9s
 stress2much   0/1     CrashLoopBackOff    1          20s
 ```
 
-The `stress2much` Pod was OOM (out of memory) killed. We can see this in the `STATUS` field. Another way to find out why a Pod was killed is by checking its status. Output at the Pod's yaml definition:
+The `stress2much` Pod was OOM (out of memory) killed. We can see this in the `STATUS` field. Another way to find out why a Pod was killed is by checking its status. Output at the Pod's YAML definition:
 
 ```bash
 kubectl get pod stress2much --namespace <yourname>-quota-lab
@@ -221,12 +221,12 @@ Near the end of the output you can find the relevant status part:
     image: polinux/stress:latest
     lastState:
       terminated:
-        [...]
+        ...
         reason: OOMKilled
-        [...]
+        ...
 ```
 
-So let's look at the numbers to verify the Container really had too little memory. We started the `stress` command using parameter `--vm-bytes 85M` which means the process wants to allocate 85 megabytes of memory. Again looking at the Pod's yaml definition with:
+So let's look at the numbers to verify the Container really had too little memory. We started the `stress` command using parameter `--vm-bytes 85M` which means the process wants to allocate 85 megabytes of memory. Again looking at the Pod's YAML definition with:
 
 
 ```bash
@@ -236,7 +236,7 @@ kubectl get pod stress2much -o yaml --namespace <yourname>-quota-lab
 reveals the following values:
 
 ```yaml
-[...]
+...
     resources:
       limits:
         cpu: 100m
@@ -244,7 +244,7 @@ reveals the following values:
       requests:
         cpu: 10m
         memory: 16Mi
-[...]
+...
 ```
 
 These are the values from the LimitRange and the defined limit of 32 megabytes of memory prevents the `stress` process of ever allocating the desired 85 megabytes.
@@ -290,10 +290,10 @@ Let's have a closer look at the quota with:
 kubectl get quota -o yaml --namespace <yourname>-quota-lab
 ```
 
-which should output the following yaml definition:
+which should output the following YAML definition:
 
 ```yaml
-[...]
+...
   status:
     hard:
       cpu: 100m
@@ -301,7 +301,7 @@ which should output the following yaml definition:
     used:
       cpu: 20m
       memory: 80Mi
-[...]
+...
 ```
 
 The most interesting part is the quota's status which reveals that we cannot use more than 100 megabytes of memory and that 80 megabytes are already used.
