@@ -4,7 +4,7 @@ weight: 7
 sectionnumber: 7
 ---
 
-This lab helps you how to troubleshoot your application and shows you some tools to make troubleshooting easier.
+This lab helps you troubleshoot your application and shows you some tools to make troubleshooting easier.
 
 
 ## Logging into a container
@@ -17,7 +17,7 @@ Running containers should be treated as immutable infrastructure and should ther
 With Kubernetes you can open a remote shell into a Pod without installing SSH by using the command `kubectl exec`. The command can be used to execute anything in a Pod. With the parameter `-it` you can leave an open connection.
 
 {{% alert title="Tip" color="warning" %}}
-On Windows Git Bash, you can use `winpty` for this.
+On Windows, you can use Git Bash and `winpty`.
 {{% /alert %}}
 
 
@@ -65,11 +65,10 @@ Single commands inside a container can also be executed with `kubectl exec`:
 kubectl exec <pod> --namespace <namespace> env
 ```
 
-```bash
-kubectl exec example-web-python-69b658f647-xnm94 --namespace <namespace> env
-```
+Example:
 
-```
+```bash
+$ kubectl exec example-web-python-69b658f647-xnm94 --namespace <namespace> env
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=example-web-python-xnm94
 KUBERNETES_SERVICE_PORT_DNS_TCP=53

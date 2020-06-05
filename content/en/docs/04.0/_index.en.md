@@ -37,13 +37,13 @@ Have a look at your nginx Pod inside the Rancher web console under **Workloads**
 Now delete the newly created Pod:
 
 ```bash
-kubectl delete pod nginx --image=nginx --namespace <namespace>
+kubectl delete pod nginx --namespace <namespace>
 ```
 
 
 ## Task {{< param sectionnumber >}}.2: Create a Deployment
 
-In some use cases it makes sense to start a single Pod but has its downsides and is not really a common practice. Let's look at another Kubernetes concept which is tightly coupled with the Pod: the so-called Deployment. A Deployment makes sure a Pod is monitored and the Deployment also checks that the number of running Pods corresponds to the number of requested Pods.
+In some use cases it makes sense to start a single Pod but has its downsides and is not really a common practice. Let's look at another Kubernetes concept which is tightly coupled with the Pod: the so-called _Deployment_. A Deployment makes sure a Pod is monitored and the Deployment also checks that the number of running Pods corresponds to the number of requested Pods.
 
 With the following command we can create a Deployment inside our already created namespace:
 
@@ -85,7 +85,7 @@ When we executed the command `kubectl create deployment example-web-go --image=a
 Display the created deployment using the following command:
 
 ```bash
-kubectl get deployment --namespace <namespace>
+kubectl get deployments --namespace <namespace>
 ```
 
 A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) defines the following facts:
@@ -106,7 +106,7 @@ kubectl get deployment example-web-go -o json --namespace <namespace>
 After the image has been pulled, Kubernetes deploys a Pod according to the Deployment:
 
 ```bash
-kubectl get pod --namespace <namespace>
+kubectl get pods --namespace <namespace>
 ```
 
 which gives you an output similar to this:
