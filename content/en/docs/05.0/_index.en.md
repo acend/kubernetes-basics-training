@@ -6,44 +6,44 @@ sectionnumber: 5
 
 In this lab, we are going to make the freshly deployed application from the last lab available online.
 
-The command `kubectl create deployment` from the last labcreates a pod but no service. A service is another Kubernetes concept which we'll need in order to make our application available online. We're going to do this with the command `kubectl expose`. As soon as we then expose the service itself, it is available online.
+The command `kubectl create deployment` from the last lab creates a Pod but no Service. A Service is another Kubernetes concept which we'll need in order to make our application available online. We're going to do this with the command `kubectl expose`. As soon as we then expose the Service itself, it is available online.
 
 
 ## Task {{< param sectionnumber >}}.1: Expose as NodePort
 
-With the following command we create a service and by doing this we expose our deployment. There are different kinds of services. For this example, we are going to use the [`NodePort`](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport) type and expose port 5000:
+With the following command we create a Service and by doing this we expose our Deployment. There are different kinds of Services. For this example, we are going to use the [`NodePort`](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport) type and expose port 5000:
 
 ```bash
-kubectl expose deployment example-web-go --type="NodePort" --name="example-web-go" --port=5000 --target-port=5000 --namespace <NAMESPACE>
+kubectl expose deployment example-web-go --type="NodePort" --name="example-web-go" --port=5000 --target-port=5000 --namespace <namespace>
 ```
 
-[Services](https://kubernetes.io/docs/concepts/services-networking/service/) in Kubernetes serve as an abstraction layer, entry point and proxy/load balancer for pods. A Service makes it possible to group and address pods from the same kind.
+[Services](https://kubernetes.io/docs/concepts/services-networking/service/) in Kubernetes serve as an abstraction layer, entry point and proxy/load balancer for Pods. A Service makes it possible to group and address Pods from the same kind.
 
-As an example: If a replica of our application pod cannot handle the load anymore, we can simply scale our application to more pods in order to distribute the load. Kubernetes automatically maps these pods as the service's backends/endpoints. As soon as the pods are ready, they'll receive requests.
+As an example: If a replica of our application Pod cannot handle the load anymore, we can simply scale our application to more Pods in order to distribute the load. Kubernetes automatically maps these Pods as the Service's backends/endpoints. As soon as the Pods are ready, they'll receive requests.
 
 {{% alert title="Note" color="warning" %}}
-The application is not yet accessible from outside, the service is a Kubernetes internal concept. We're going to fully expose the application in the next lab.
+The application is not yet accessible from outside, the Service is a Kubernetes internal concept. We're going to fully expose the application in the next lab.
 {{% /alert %}}
 
-Let's have a more detailed look at our service:
+Let's have a more detailed look at our Service:
 
 ```bash
-kubectl get services --namespace <NAMESPACE>
+kubectl get services --namespace <namespace>
 ```
 
-which gives you an output similar to this:
+Which gives you an output similar to this:
 
 ```bash
 NAME             TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
 example-web-go   NodePort   10.43.91.62   <none>        5000:30692/TCP  
 ```
 
-The `NodePort` number is being assigned by Kubernetes and stays the same as long as the services is not deleted. A NodePort service is rather suitable for infrastructure tools than for public URLs. But don't worry, we are going to do that later too with Ingress mappings that create better readable URLs.
+The `NodePort` number is being assigned by Kubernetes and stays the same as long as the Services is not deleted. A `NodePort` Service is more suitable for infrastructure tools than for public URLs. But don't worry, we are going to do that later too with Ingress mappings that create better readable URLs.
 
 You get additional information by executing the following command:
 
 ```bash
-kubectl get service example-web-go --namespace <NAMESPACE> -o json
+kubectl get service example-web-go --namespace <namespace> -o json
 ```
 
 ```json
@@ -84,22 +84,22 @@ kubectl get service example-web-go --namespace <NAMESPACE> -o json
 }
 ```
 
-With the appropriate command you get details from the pod (or any other resource):
+With the appropriate command you get details from the Pod (or any other resource):
 
 ```bash
-kubectl get pod example-web-go-3-nwzku --namespace <NAMESPACE> -o json
+kubectl get pod example-web-go-3-nwzku --namespace <namespace> -o json
 ```
 
 {{% alert title="Note" color="warning" %}}
-First, get all pod names from your namespace with (`kubectl get pods --namespace <NAMESPACE>`) and then replace it in the following command.
+First, get all Pod names from your namespace with (`kubectl get pods --namespace <namespace>`) and then replace it in the following command.
 {{% /alert %}}
 
-The service's `selector` defines, which pods are being used as endpoints. This happens based on labels. Look at the configuration of service and pod in order to find out what maps to what:
+The Service's `selector` defines, which Pods are being used as Endpoints. This happens based on labels. Look at the configuration of Service and Pod in order to find out what maps to what:
 
 Service:
 
 ```bash
-kubectl get service <Service Name> --namespace <NAMESPACE> -o json
+kubectl get service <Service Name> --namespace <namespace> -o json
 ```
 
 ```json
@@ -113,7 +113,7 @@ kubectl get service <Service Name> --namespace <NAMESPACE> -o json
 Pod:
 
 ```bash
-kubectl get pod <Pod Name> --namespace <NAMESPACE>
+kubectl get pod <Pod Name> --namespace <namespace>
 ```
 
 ```json
@@ -124,10 +124,10 @@ kubectl get pod <Pod Name> --namespace <NAMESPACE>
 ...
 ```
 
-This link between service and pod can be displayed in an easier fashion with the `kubectl describe` command:
+This link between Service and Pod can be displayed in an easier fashion with the `kubectl describe` command:
 
 ```bash
-kubectl describe service example-web-go --namespace <NAMESPACE>
+kubectl describe service example-web-go --namespace <namespace>
 ```
 
 ```
@@ -150,11 +150,11 @@ Events:
 ```
 
 {{% alert title="Note" color="warning" %}}
-Service IP addresses stay the same for the duration of the service's life span.
+Service IP addresses stay the same for the duration of the Service's lifespan.
 {{% /alert %}}
 
-Open `http://[NodeIP]:[NodePort]` in your Browser.
-You can use any NodeIP as the Service is exposed on all Nodes using the same NodePort. Use `kubectl get nodes -o wide` to display the IP's (INTERNAL-IP) of the available nodes.
+Open `http://<node-ip>:<node-port>` in your browser.
+You can use any node IP as the Service is exposed on all nodes using the same `NodePort`. Use `kubectl get nodes -o wide` to display the IPs (`INTERNAL-IP`) of the available nodes.
 
 ```bash
 kubectl get node -o wide
@@ -169,42 +169,41 @@ lab-3   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.148   <no
 
 {{% onlyWhen rancher %}}
 {{% alert title="Note" color="warning" %}}
-You can also use the Rancher WebGUI to open the exposed application in your Browser. The direkt link is shown on your *Resources / Workload* Page in the tab *Workload*. Look for your namespace and the deployment name. The Link looks like `31665/tcp`.
+You can also use the Rancher web console to open the exposed application in your browser. The direkt link is shown on your **Resources / Workload** page in the tab **Workload**. Look for your namespace and the deployment name. The link looks like `31665/tcp`.
 
 ![Rancher NodePort](nodeportrancher.png)
 
- Or go to the *Service Discovery* Tab and look for your service Name. The Link there looks the same and is right below the service name.
-
+Or go to the **Service Discovery** tab and look for your Service name. The link there looks the same and is right below the Service name.
 {{% /alert %}}
 {{% /onlyWhen %}}
 
 
 ## Task {{< param sectionnumber >}}.2: Create an ClusterIP Service with an Ingress
 
-There's a second option to make a service accessible from outside: Use an ingress router.
+There's a second option to make a Service accessible from outside: Use an Ingress router.
 
-In order to switch the service type, we are going to delete the NodePort service that we've created before:
-
-```bash
-kubectl delete service example-web-go --namespace=<NAMESPACE>
-```
-
-Now we create a service with type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types):
+In order to switch the Service type, we are going to delete the `NodePort` Service that we've created before:
 
 ```bash
-kubectl expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace <NAMESPACE>
+kubectl delete service example-web-go --namespace=<namespace>
 ```
 
-In order to create the ingress resource, we first need to create the file `ingress.yaml` and change the host variable to match your environment.
+Now we create a Service with type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types):
+
+```bash
+kubectl expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace <namespace>
+```
+
+In order to create the Ingress resource, we first need to create the file `ingress.yaml` and change the host variable to match your environment.
 
 ```yaml
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: example-web-go
 spec:
   rules:
-  - host: web-go-<NAMESPACE>.k8s-techlab.puzzle.ch
+  - host: web-go-<namespace>.<domain>
     http:
       paths:
       - path: /
@@ -213,27 +212,47 @@ spec:
           servicePort: 5000
 ```
 
-After creating the ingress file, we can apply it:
+After creating the Ingress file, we can apply it:
 
 ```bash
-kubectl create -f ingress.yaml --namespace <NAMESPACE>
+kubectl create -f ingress.yaml --namespace <namespace>
 ```
 
-Afterwards we are able to access our freshly created service at `http://web-go-<NAMESPACE>.k8s-techlab.puzzle.ch`
+Afterwards, we are able to access our freshly created Service at `http://web-go-<namespace>.<domain>`
 
 
-## Additional Task for Fast Learners
+## Task {{< param sectionnumber >}}.3 (optional): For fast learners
 
-Have a closer look at the created resources with
+Have a closer look at the resources created in your namespace `<namespace>` with the following commands and try to understand them:
 
 ```bash
-kubectl get [RESOURCE TYPE] [NAME] -o json
+kubectl get <resource> <name> -o json
 ```
-
-and
 
 ```bash
-kubectl describe [RESOURCE TYPE] [NAME]
+kubectl describe <resource> <name>
 ```
 
-from your namespace `<NAMESPACE>` and try to understand them.
+
+## Task {{< param sectionnumber >}}.4: Clean up
+
+As a last step, clean up the remaining resources so that we have a clean namespace to continue.
+
+Delete the Deployment:
+
+```bash
+kubectl delete deployment example-web-go --namespace <namespace>
+```
+
+Delete the Service:
+
+```bash
+kubectl delete service example-web-go --namespace <namespace>
+```
+
+Delete the Ingress:
+
+```bash
+kubectl delete -f ingress.yaml --namespace <namespace>
+```
+

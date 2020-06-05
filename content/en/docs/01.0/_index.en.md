@@ -1,91 +1,92 @@
 ---
-title: "1. Quicktour Kubernetes"
+title: "1. Quick tour of Kubernetes"
 weight: 1
 sectionnumber: 1
 ---
 
-In this lab we will introduce the core concepts of Kubernetes.
+In this lab, we will introduce the core concepts of Kubernetes.
 
-All explanations and resources used in this labs give only a quick and not detailed overview. Please check [the official documentation](https://kubernetes.io/docs/concepts/) to get further details.
+All explanations and resources used in this lab give only a quick and not detailed overview. Please check [the official documentation](https://kubernetes.io/docs/concepts/) to get further details.
 
 
 ## Core concepts
 
-Using the open source software Kubernetes, you get a platform to deploy your software in a container and operate them at the same time. Therefore Kubernetes is also called "Container Platform" or the term Container-as-a-Service (CaaS) is used. Depending on the configuration Platform-as-a-Service (PaaS) works as well.
+With the open source software Kubernetes, you get a platform to deploy your application in a container and operate it at the same time. Therefore, Kubernetes is also called a _Container Platform_ or the term _Container-as-a-Service_ (CaaS) is used. Depending on the configuration the term _Platform-as-a-Service_ (PaaS) works as well.
 
 
 ### Docker
 
-[Docker](https://www.docker.com/) known as _the_ container engine can be used with Kubernetes besides other container engines (CRI-O). Originally docker was created to help developers testing there applications in there continuous integration environments. Nowadays also also system admins use it. After choosing the best matching base image for your technology kubernetes deploys for you the application as a container.
+[Docker](https://www.docker.com/) known as _the_ container engine can be used with Kubernetes besides other container engines (CRI-O). Originally, Docker was created to help developers test their applications in their continuous integration environments. Nowadays also system admins use it. After choosing the best matching base image for your technology Kubernetes deploys for you the application as a container.
 
 
 ## Overview
 
-Kubernetes consists out of Kubernetes master nodes and kubernetes minion (also knows as worker or compute) nodes.
+Kubernetes consists of master and worker (minion, compute) nodes.
 
 
-### Master and minion nodes
+### Master and worker nodes
 
-The master components are the _apiserver_, the _scheduler_ and the _controller-manager_.
-The _apiserver_ itself represents the management interface.
-The scheduler and the controller-manager decide, which applications should be deployed on the cluster. Additionally the state and configuration of the cluster itself is controlled in the master components
-Minion nodes are also known as compute or worker nodes, which are responsible for running the container workloads (applications).
-The Control plane for the minions is implemented in the master components.
+The master components are the _API server_, the _scheduler_ and the _controller manager_.
+The API server itself represents the management interface.
+The scheduler and the controller manager decide how applications should be deployed on the cluster. Additionally, the state and configuration of the cluster itself is controlled in the master components.
+Worker nodes are also known as compute nodes or minions and are responsible for running the container workloads (applications).
+The _control plane_ for the worker nodes is implemented in the master components.
 
 
-### Container and images
+### Containers and images
 
-The smallest entities in Kubernetes are pods, which resamble your "containerized Application".
-Using container virtualisation, processes on a linux system can be isolated up to a level, where only the predefined resources are available. Several containers can run on the same system, without "seeing" eachother (files, process ids, network). One container should contain one application (webserver, database, cache etc.).
-It should be at least one part of the application, e.g. when running a multi service middleware.
-In a container itself any process can be started, that runs native on your oparating system.
+The smallest entities in Kubernetes are Pods, which resemble your containerized application.
+Using container virtualization, processes on a Linux system can be isolated up to a level where only the predefined resources are available. Several containers can run on the same system without "seeing" each other (files, process IDs, network). One container should contain one application (web server, database, cache, etc.).
+It should be at least one part of the application, e.g. when running a multi-service middleware.
+In a container itself any process can be started that runs natively on your operating system.
 
-Containers are based on images. An image represents the file tree, which includes the binary, shared libraries and other files, which are needed to run your application.
+Containers are based on images. An image represents the file tree, which includes the binary, shared libraries and other files which are needed to run your application.
 
-A Container image typically is built from a Dockerfile, which is a text file filled with instructions. The endresult is a hierachically, layered binary construct.
-Depending on the used backend, most of the time the implementation is using overlay or COW mechanismens to represent the image.
+A container image typically is built from a `Dockerfile`, which is a text file filled with instructions. The end result is a hierarchically layered binary construct.
+Depending on the backend the implementation is using overlay or copy-on-write (COW) mechanisms to represent the image.
 
-Layer example Tomcat:
+Layer example for a Tomcat application:
 
-* Base image (CentOS 7)
-  * install Java
-  * install Tomcat
-  * install App
+1. Base image (CentOS 7)
+1. Install Java
+1. Install Tomcat
+1. Install App
 
-The ready built images can be version-controlled saved in an image registry and can be used by the container platform.
+The pre-built images under version control can be saved in an image registry and can then be used by the container platform.
 
 
 ### Namespaces
 
-Namespaces in Kubernetes represent a logical segregation of unique names for entities (pods, services, deployments, configmaps, etc.)
+Namespaces in Kubernetes represent a logical segregation of unique names for entities (Pods, Services, Deployments, ConfigMaps, etc.)
 
-Permissions and roles can be bound on a namespace base. This way a user can control his own resources inside a namespace.
+Permissions and roles can be bound on a per-namespace basis. This way, a user can control his own resources inside a namespace.
 
 {{% alert title="Note" color="warning" %}}
-Some resources are clusterwide valid and can not be set and controlled on a namespace based.
+Some resources are valid cluster-wise and cannot be set and controlled on a namespace basis.
 {{% /alert %}}
 
 
 ### Pods
 
 A Pod is the smallest entity in Kubernetes. It represents one instance of your running application process.
-The pod consists out of at least two containers, one for your application itself and another one as part of the kubernetes design, to keep the network namespace.
+The Pod consists out of at least two containers, one for your application itself and another one as part of the Kubernetes design, to keep the network namespace.
 The so called infrastructure container (or pause container) therefore is automatically added by Kubernetes.
 
-The applications port from inside the pod are exposed via services.
+The application ports from inside the Pod are exposed via Services.
 
 
 ### Services
 
-A service represents a stateful endpoint for your application in the pod. As a pod and its IP address typically is considered as stateless, the IP address of the service does not change, when changing the application inside the Pod. If you scale up your pods, you have an automatic internal load balancing towards all pod ip addresses.
+A service represents a "stateful" endpoint for your application in the Pod. As a Pod and its IP address typically are considered stateless, the IP address of the Service does not change, when changing the application inside the Pod. If you scale up your Pods, you have an automatic internal load balancing towards all Pod IP addresses.
 
-There are different kinds of services:
+There are different kinds of Services:
 
-* ClusterIP (the default, virtual IP address range)
-* NodePort (same as ClusterIP + open ports on the nodes)
-* LoadBalancer (external loadbalancer is created, works only in cloud environment, e.g. AWS elb)
+* `ClusterIP`: Default virtual IP address range
+* `NodePort`: Same as `ClusterIP` plus open ports on the nodes
+* `LoadBalancer`: An external load balancer is created, works only in cloud environments, e.g. AWS ELB
+* `ExternalName`: A DNS entry is created, also works only in cloud environments
 
-A service is unique inside a namespace.
+A Service is unique inside a namespace.
 
 
 ### Deployment

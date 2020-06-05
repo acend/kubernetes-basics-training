@@ -45,7 +45,7 @@ anchor = "smart"
 
 [Languages]
 [Languages.en]
-title = "Kubernetes Techlabs"
+title = "Kubernetes Basics Training"
 languageName = "English"
 weight = 1
 
@@ -70,7 +70,7 @@ copyright = "Puzzle ITC GmbH"
 github_repo = "https://github.com/acend/kubernetes-techlab"
 
 
-enabledModule = "base rancher"
+enabledModule = "base"
 
 # Enable Lunr.js offline search
 offlineSearch = true
@@ -90,7 +90,7 @@ footer_about_disable = true
 ############################## social links ##############################
 [params.links]
 [[params.links.developer]]
-name = "Github"
+name = "GitHub"
 icon = "fab fa-github" 
 url = "https://github.com/acend/kubernetes-techlab"
 

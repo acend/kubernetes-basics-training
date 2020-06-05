@@ -18,7 +18,7 @@ This implies that Tiller:
 * will usually need admin privileges: If a user wants to install a chart that contains any cluster-wide element like a ClusterRole or a CustomResourceDefinition, Tiller should be privileged enough to create or delete those resources.
 * should be accessible to any authenticated user: Any valid user of the cluster may require access to install a chart.
 
-That leads to a now-obvious security issue: escalation of privileges. Suddenly, users with minimum privileges are able to interact with the cluster as if they were administrators. The problem is bigger if a Kubernetes pod gets compromised: that compromised pod is also able to access the cluster as an administrator. That's indeed disturbing.
+That leads to a now-obvious security issue: escalation of privileges. Suddenly, users with minimum privileges are able to interact with the cluster as if they were administrators. The problem is bigger if a Kubernetes Pod gets compromised: that compromised Pod is also able to access the cluster as an administrator. That's indeed disturbing.
 
 With the v3 release, Helm got rid of Tiller.
 

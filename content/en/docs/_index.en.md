@@ -6,9 +6,9 @@ menu:
     weight: 1
 ---
 
-The goal of these techlabs is to create some hands-on tasks for people. By using the Kubernetes(k8s) platform you find an easy way to deploy and deliver your software packaged in container.
+The goal of these labs is to create some hands-on tasks for people. By using the Kubernetes(k8s) platform you find an easy way to deploy and deliver your software packaged in container.
 
-Goal of these techlabs:
+Goal of these labs:
 
 * Having an easy start with this modern technology
 * Understand the basic concepts

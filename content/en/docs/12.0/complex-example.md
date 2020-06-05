@@ -86,7 +86,7 @@ The WordPress and MariaDB charts use (at the time of writing) the following cont
 As we cannot access these images, we'll have to overwrite them. Add the following to your `values.yaml` file in order to do so:
 
 ```yaml
-[...]
+...
 image:
   registry: docker-registry.mobicorp.ch
   repository: puzzle/helm-techlab/wordpress
@@ -95,7 +95,7 @@ mariadb:
   image:
     registry: docker-registry.mobicorp.ch
     repository: puzzle/helm-techlab/mariadb
-[...]
+...
 ```
 
 You have to merge the `mariadb` part with the already defined `mariadb` part from the lab instructions above. So your final `values.yaml` should look like:
@@ -129,11 +129,11 @@ The image tag remains as already defined in the orginial [`values.yaml`](https:/
 You can use the following snippet for your Ingress configuration if you want to be able to access the WordPress instance after deploying it (although this is not really necessary for this lab).
 
 ```yaml
-[...]
+...
 ingress:
   enabled: true
   hostname: helmtechlab-wordpress-[USER].phoenix.mobicorp.test
-[...]
+...
 ```
 
 {{< /onlyWhen >}}
@@ -169,26 +169,26 @@ Subcharts are an alternative way to define dependencies within a chart: A chart 
 We are now going to deploy the application in a specific version (which is not the latest release on purpose):
 
 ```bash
-helm install -f values.yaml --namespace [NAMESPACE] --version 9.1.3 wordpress bitnami/wordpress
+helm install -f values.yaml --namespace <namespace> --version 9.1.3 wordpress bitnami/wordpress
 ```
 
 Watch for the newly created resources with `helm ls` and `kubectl get deploy,pod,ingress,pvc`:
 
 ```bash
-helm ls --namespace [NAMESPACE]
+helm ls --namespace <namespace>
 ```
 
 which gives you:
 
 ```bash
 NAME      NAMESPACE       REVISION      UPDATED                                   STATUS    CHART           APP VERSION
-wordpress [NAMESPACE]         1         2020-03-31 13:23:17.213961038 +0200 CEST  deployed  wordpress-9.0.4 5.3.2
+wordpress <namespace>         1         2020-03-31 13:23:17.213961038 +0200 CEST  deployed  wordpress-9.0.4 5.3.2
 ```
 
 and
 
 ```bash
-kubectl -n [NAMESPACE] get deploy,pod,ingress,pvc
+kubectl -n <namespace> get deploy,pod,ingress,pvc
 ```
 
 which gives you:
@@ -233,7 +233,7 @@ updateStrategy:
 
 ```
 
-As soon as all deployments are ready (meaning pods `wordpress` and `mariadb` are running) you can open the application with the URL from your Ingress resource defined in `values.yaml`.
+As soon as all deployments are ready (meaning Pods `wordpress` and `mariadb` are running) you can open the application with the URL from your Ingress resource defined in `values.yaml`.
 
 
 ## Upgrade
@@ -241,7 +241,7 @@ As soon as all deployments are ready (meaning pods `wordpress` and `mariadb` are
 We are now going to upgrade the application to a newer Helm chart version. You can do this with:
 
 ```bash
-helm upgrade -f values.yaml --namespace [NAMESPACE] --version 9.1.4 wordpress bitnami/wordpress
+helm upgrade -f values.yaml --namespace <namespace> --version 9.1.4 wordpress bitnami/wordpress
 ```
 
 And then observe the changes in your WordPress and MariaDB Apps
