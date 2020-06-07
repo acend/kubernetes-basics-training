@@ -112,17 +112,10 @@ Events:
 
 Scaling of Pods within a Service is fast, as Kubernetes simply creates a new container.
 
-You can check the availability of your Service while you scale the number of replicas up and down.
-Replace the `URL` placeholder with the actual, constructed URL:
-
-```
-NodePort=32193
-
-URL=http://[NodeIP]:38709/
-```
+You can check the availability of your Service while you scale the number of replicas up and down in your browser: `http://<node-ip>:<node-port>`.
 
 {{% alert title="Tip" color="warning" %}}
-Check the previous lab on how to get the `NodeIP`
+Check the [previous lab](../05.0) on how to get the `<node-ip>` and `<node-port>` or how to use an Ingress instead.
 {{% /alert %}}
 
 Now, execute the corresponding loop command for your operating system in another console.
@@ -130,6 +123,7 @@ Now, execute the corresponding loop command for your operating system in another
 Linux:
 
 ```bash
+URL=http://<node-ip>:<node-port>
 while true; do sleep 1; curl -s $URL/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
@@ -245,16 +239,12 @@ Basically, there are two different kinds of checks that can be implemented:
 
 These probes can be implemented as HTTP checks, container execution checks (the execution of a command or script inside a container), or TCP socket checks.
 
-In our example, we want the application to tell Kubernetes that it is ready for requests with an appropriate readiness probe. Our example application has a health check context named health:
-
-```
-http://[URL]:[NodePort]/health/
-```
+In our example, we want the application to tell Kubernetes that it is ready for requests with an appropriate readiness probe. Our example application has a health check context named health: `http://<node-ip>:<node-port>/health`
 
 
 ## Task {{< param sectionnumber >}}.2: Availability during Deployment
 
-In our deployment configuration inside the rolling update strategy section we define that our application has to be always be available during an update: `maxUnavailable: 0%`
+In our deployment configuration inside the rolling update strategy section we define that our application has to be always be available during an update: `maxUnavailable: 0`
 
 You can directly edit the deployment (or any resource) with:
 
@@ -271,7 +261,7 @@ spec:
   strategy:
     rollingUpdate:
       maxSurge: 25%
-      maxUnavailable: 0%
+      maxUnavailable: 0 # <- change this line
     type: RollingUpdate
 ...
 ```
@@ -291,7 +281,7 @@ kubectl edit deployment example-web-python -o json --namespace <namespace>
 "strategy": {
     "rollingUpdate": {
         "maxSurge": "25%",
-        "maxUnavailable": "0%" // <- change this line
+        "maxUnavailable": "0" // <- change this line
     },
     "type": "RollingUpdate"
 },
@@ -352,9 +342,9 @@ The `containers` configuration then looks like:
 ```yaml
 ...
       containers:
-      - image: acend/example-php-docker-helloworld
+      - image: acend/example-web-python
         imagePullPolicy: Always
-        name: example-php-docker-helloworld
+        name: example-web-python
         readinessProbe:
           failureThreshold: 3
           httpGet:
@@ -377,9 +367,9 @@ The `containers` configuration then looks like:
 ...
                 "containers": [
                     {
-                        "image": "acend/example-php-docker-helloworld",
+                        "image": "acend/example-web-python",
                         "imagePullPolicy": "Always",
-                        "name": "example-php-docker-helloworld",
+                        "name": "example-web-python",
                         "readinessProbe": {
                             "failureThreshold": 3,
                             "httpGet": {
@@ -405,10 +395,11 @@ We are now going to verify that a redeployment of the application does not lead 
 Set up the loop to periodically check the application's response:
 
 ```bash
-while true; do sleep 1; curl -s [URL]pod/; date "+ TIME: %H:%M:%S,%3N"; done
+URL=http://<node-ip>:<node-port>
+while true; do sleep 1; curl -s $URL/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
-Start a new deployment by editing it (the so-called ConfigChange trigger creates the new Deployment automatically):
+Start a new deployment by editing it (the so-called _ConfigChange_ trigger creates the new Deployment automatically):
 
 ```bash
 kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>

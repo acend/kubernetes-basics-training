@@ -10,7 +10,7 @@ Numerous applications are stateful lin some way and want to save data persistent
 ## Task {{< param sectionnumber >}}.1: Create the MySQL Service
 
 
-We are first going to create a so-called Secret in which we write the password for accessing the database.
+We are first going to create a so-called _Secret_ in which we write the password for accessing the database.
 
 ```bash
 kubectl create secret generic mysql-password --from-literal=password=mysqlpassword --namespace <namespace>
@@ -19,7 +19,7 @@ kubectl create secret generic mysql-password --from-literal=password=mysqlpasswo
 The Secret will neither be shown with `kubectl get` nor with `kubectl describe`:
 
 ```bash
-kubectl get secret mysql-password --namespace <namespace> -o json
+kubectl get secret mysql-password -o json --namespace <namespace>
 ```
 
 Which gives you an output similar to this:
