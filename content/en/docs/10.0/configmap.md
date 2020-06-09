@@ -8,7 +8,7 @@ Similar to environment variables, _ConfigsMaps_ allow you to separate the config
 In this lab you learn how to create and use ConfigMaps.
 
 
-## Task {{< param sectionnumber >}}.1: Create a ConfigMap in the Kubernetes namespace
+## Task {{% param sectionnumber %}}.1: Create a ConfigMap in the Kubernetes namespace
 
 Use the following commant to create a ConfigMap in a namespace:
 
@@ -58,7 +58,7 @@ kubectl get configmaps javaconfiguration -o json --namespace <namespace>
 ```
 
 
-## Taks {{< param sectionnumber >}}.2: Attach a Configmap to a Pod
+## Taks {{% param sectionnumber %}}.2: Attach a Configmap to a Pod
 
 Next, we want to make a ConfigMap accessible for a Pod.
 
@@ -164,7 +164,7 @@ key2=value2
 Like this, the property file can be read and used by the Java application in the container. The image stays portable to other environments.
 
 
-## Task {{< param sectionnumber >}}.3: ConfigMap Data Sources
+## Task {{% param sectionnumber %}}.3: ConfigMap Data Sources
 
 Create a ConfigMap and use the different kinds of [data sources](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
 

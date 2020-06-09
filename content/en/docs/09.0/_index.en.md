@@ -116,7 +116,7 @@ If the container won't start because the data directory has files in it then mou
 {{% /alert %}}
 
 
-## Task {{< param sectionnumber >}}.1: Persistence check
+## Task {{% param sectionnumber %}}.1: Persistence check
 
 
 ### Restore data

@@ -34,7 +34,7 @@ Every [release](https://github.com/helm/helm/releases) of Helm provides binary r
 The latest v3 release v3.1.2 can be found [here](https://github.com/helm/helm/releases/tag/v3.1.2).
 
 
-## Task {{< param sectionnumber >}}.1: Install CLI
+## Task {{% param sectionnumber %}}.1: Install CLI
 
 Install the `helm` cli on your system:
 

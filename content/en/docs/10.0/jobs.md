@@ -12,7 +12,7 @@ For example, a job is used to ensure that a Pod is run until its completion. If 
 More detailed information can be retrieved from [Kubernetes Jobs Documentation](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/).
 
 
-## Task {{< param sectionnumber >}}.1: Create a Job for a MySQL Dump
+## Task {{% param sectionnumber %}}.1: Create a Job for a MySQL Dump
 
 Similar to [Lab8, Task: Import a Database Dump](../08.0/#task-import-a-database-dump), we now want to create a dump of a running MySQL database, but without the need of interactively logging into the Pod.
 

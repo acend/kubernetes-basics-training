@@ -7,7 +7,7 @@ sectionnumber: 4
 In this lab, we are going to deploy our first pre-built container image and look at the Kubernetes concepts Pod, Service, and Deployment.
 
 
-## Task {{< param sectionnumber >}}.1: Start and stop a single Pod
+## Task {{% param sectionnumber %}}.1: Start and stop a single Pod
 
 After we've familiarized ourselves with the platform, we are going to have a look at deploying a pre-built container image from Docker Hub or any other public Container registry.
 
@@ -41,7 +41,7 @@ kubectl delete pod nginx --namespace <namespace>
 ```
 
 
-## Task {{< param sectionnumber >}}.2: Create a Deployment
+## Task {{% param sectionnumber %}}.2: Create a Deployment
 
 In some use cases it makes sense to start a single Pod but has its downsides and is not really a common practice. Let's look at another Kubernetes concept which is tightly coupled with the Pod: the so-called _Deployment_. A Deployment makes sure a Pod is monitored and the Deployment also checks that the number of running Pods corresponds to the number of requested Pods.
 
@@ -122,7 +122,7 @@ The deployment defines that one replica should be deployed---which is running as
 {{% onlyWhen rancher %}}
 
 
-## Task {{< param sectionnumber >}}.3: Verify the Deployment in the Rancher web console
+## Task {{% param sectionnumber %}}.3: Verify the Deployment in the Rancher web console
 
 Try to display the logs from the example application via the Rancher WebGui.
 {{% /onlyWhen %}}
