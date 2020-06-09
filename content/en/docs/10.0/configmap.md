@@ -4,16 +4,16 @@ weight: 104
 sectionnumber: 10.4
 ---
 
-Similar to environment variables, _ConfigsMaps_ allow you to separate the configuration for an application from the image. Pods can access those variables during runtime, which allows maximum portability for applications running in containers.
-In this lab you learn how to create and use ConfigMaps.
+Similar to environment variables, _ConfigsMaps_ allow you to separate the configuration for an application from the image. Pods can access those variables at runtime which allows maximum portability for applications running in containers.
+In this lab, you learn how to create and use ConfigMaps.
 
 
 ## Task {{% param sectionnumber %}}.1: Create a ConfigMap in the Kubernetes namespace
 
-Use the following commant to create a ConfigMap in a namespace:
+Use the following command to create a ConfigMap in a namespace:
 
 ```bash
-kubectl create configmap <name> <data-source>
+kubectl create configmap <name> <data-source> --namespace <namespace>
 ```
 
 The `<data-source>` can be a file, a directory, or a command line input.
@@ -23,17 +23,15 @@ The `<data-source>` can be a file, a directory, or a command line input.
 
 A classic example for ConfigMaps are properties files of Java applications which can't be configured with environment variables.
 
-We change to the namespace of lab 4 `$ kubectl config set-context $(kubectl config current-context) --namespace=<namespace>`
-
 With the following command, a ConfigMap based on a local file is created:
 
 ```bash
-kubectl create configmap javaconfiguration --from-file=./properties.properties
+kubectl create configmap javaconfiguration --from-file=./java.properties --namespace <namespace>
 ```
 
-The content of `properties.properties` should be:
+The content of `java.properties` should be:
 
-```ini
+```properties
 key=value
 key2=value2
 ```
@@ -41,10 +39,10 @@ key2=value2
 With
 
 ```bash
-kubectl get configmaps
+kubectl get configmaps --namespace <namespace>
 ```
 
-you can verify, if the ConfigMap was crated successfully:
+you can verify, if the ConfigMap was created successfully:
 
 ```
 NAME                DATA   AGE
@@ -54,7 +52,7 @@ javaconfiguration   1      7s
 The content can also be displayed with
 
 ```bash
-kubectl get configmaps javaconfiguration -o json --namespace <namespace>
+kubectl get configmap javaconfiguration -o json --namespace <namespace>
 ```
 
 
@@ -68,21 +66,22 @@ Basically, there are the following possibilities to achieve [this](https://kuber
 * Commandline arguments via environment variables
 * Mounted as volumes in the container
 
-In this example, we want the file to be mounted as a volume in the container. We add the ConfigMap in the deployment as follows:
-
-
-Basically, the Pod or in our case the deployment has to be edited with `kubectl edit deployment example-spring-boot --namespace <namespace>`:
+In this example, we want the file to be mounted as a volume in the container.
+Basically, a Deployment has to be extended with the following config:
 
 ```yaml
+...
+        - mountPath: /etc/config
+          name: config-volume
+      ...
       - configMap:
           defaultMode: 420
           name: javaconfiguration
         name: config-volume
-
+...
 ```
 
-With `kubectl edit deployment example-spring-boot --namespace <namespace>` we can edit the deployment and add the configuration in the volumes section at the very bottom:
-
+Here is a complete example Deployment of a sample Java app:
 
 ```yaml
 apiVersion: extensions/v1beta1
@@ -150,13 +149,13 @@ spec:
 
 ```
 
-After that, it's possible for the container to access the values in the ConfigMap in /etc/config/properties.properties
+After that, it's possible for the container to access the values in the ConfigMap in `/etc/config/java.properties`
 
 ```bash
-kubectl exec -it <pod> --namespace <namespace> -- cat /etc/config/properties.properties
+kubectl exec -it <pod> --namespace <namespace> -- cat /etc/config/java.properties
 ```
 
-```
+```properties
 key=value
 key2=value2
 ```
@@ -166,6 +165,4 @@ Like this, the property file can be read and used by the Java application in the
 
 ## Task {{% param sectionnumber %}}.3: ConfigMap Data Sources
 
-Create a ConfigMap and use the different kinds of [data sources](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
-
-Make the values accessible in the different ways possible.
+Create a ConfigMap and use the other kinds of [data sources](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
