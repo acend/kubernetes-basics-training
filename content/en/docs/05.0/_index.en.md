@@ -9,7 +9,7 @@ In this lab, we are going to make the freshly deployed application from the last
 The command `kubectl create deployment` from the last lab creates a Pod but no Service. A Service is another Kubernetes concept which we'll need in order to make our application available online. We're going to do this with the command `kubectl expose`. As soon as we then expose the Service itself, it is available online.
 
 
-## Task {{< param sectionnumber >}}.1: Expose as NodePort
+## Task {{% param sectionnumber %}}.1: Expose as NodePort
 
 With the following command we create a Service and by doing this we expose our Deployment. There are different kinds of Services. For this example, we are going to use the [`NodePort`](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport) type and expose port 5000:
 
@@ -183,7 +183,7 @@ Or go to the **Service Discovery** tab and look for your Service name. The link 
 {{% /onlyWhen %}}
 
 
-## Task {{< param sectionnumber >}}.2: Create an ClusterIP Service with an Ingress
+## Task {{% param sectionnumber %}}.2: Create an ClusterIP Service with an Ingress
 
 There's a second option to make a Service accessible from outside: Use an Ingress router.
 
@@ -226,7 +226,7 @@ kubectl create -f ingress.yaml --namespace <namespace>
 Afterwards, we are able to access our freshly created Service at `http://web-go-<namespace>.<domain>`
 
 
-## Task {{< param sectionnumber >}}.3 (optional): For fast learners
+## Task {{% param sectionnumber %}}.3 (optional): For fast learners
 
 Have a closer look at the resources created in your namespace `<namespace>` with the following commands and try to understand them:
 
@@ -247,7 +247,7 @@ kubectl get <resource> <name> -o json --namespace <namespace>
 ```
 
 
-## Task {{< param sectionnumber >}}.4: Clean up
+## Task {{% param sectionnumber %}}.4: Clean up
 
 As a last step, clean up the remaining resources so that we have a clean namespace to continue.
 

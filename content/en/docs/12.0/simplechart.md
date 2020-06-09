@@ -7,7 +7,7 @@ sectionnumber: 12.3
 In this lab we're going to create our very first Helm chart and deploy it.
 
 
-## Task {{< param sectionnumber >}}.1: Create Chart
+## Task {{% param sectionnumber %}}.1: Create Chart
 
 First let's create our chart:
 
@@ -18,7 +18,7 @@ helm create mychart
 You'll now find a `mychart` directory with the newly created chart. It already is a valid and fully functional chart which deploys nginx. Have a look at the generated files and their content. For an explanation of the files, visit the [Helm Developer Documentation](https://docs.helm.sh/developing_charts/#the-chart-file-structure). In a later section you'll find all the information about Helm templates.
 
 
-## Task {{< param sectionnumber >}}.2: Install Release
+## Task {{% param sectionnumber %}}.2: Install Release
 
 Before actually deploying our generated chart, we can check the (to be) generated Kubernetes resources with the following command:
 
@@ -42,7 +42,7 @@ helm ls --namespace <namespace>
 ```
 
 
-## Task {{< param sectionnumber >}}.3: Expose Application
+## Task {{% param sectionnumber %}}.3: Expose Application
 
 Our freshly deployed nginx is not yet accessible from outside of the Kubernetes cluster. To expose it, we have to change the Service type to `NodePort`.
 Search now for the Service type definition in your chart and make the change.
@@ -90,7 +90,7 @@ Use `kubectl get node -o wide` to get a node ip address. Remember, [NodePort's](
 {{% /alert %}}
 
 
-## Task {{< param sectionnumber >}}.4: Overwrite value using commandline param
+## Task {{% param sectionnumber %}}.4: Overwrite value using commandline param
 
 An alternative way to set or overwrite values for charts we want to deploy is the `--set name=value` parameter. `--set name=value` can be used when installing a chart as well as upgrading.
 
@@ -106,7 +106,7 @@ helm upgrade --namespace <namespace> --set replicaCount=2 myfirstrelease ./mycha
 Values that have been set using `--set` can be reset by helm upgrade with `--reset-values`.
 
 
-## Task {{< param sectionnumber >}}.5: Remove release
+## Task {{% param sectionnumber %}}.5: Remove release
 
 To remove an application, simply remove the Helm release with the following command:
 

@@ -66,7 +66,7 @@ In the Rancher WebGUI you can now choose your Project called `techlab`
 {{< /onlyWhen >}}
 
 
-### Task {{< param sectionnumber >}}.1: Create a Namespace
+### Task {{% param sectionnumber %}}.1: Create a Namespace
 
 Create a new namespace in the lab environment.
 
@@ -125,7 +125,7 @@ or `-n <namespace>`. And others prefer helper tools like `kubens`, see [lab 2](.
 {{< onlyWhen rancher >}}
 
 
-## Task {{< param sectionnumber >}}.2: Discover the Rancher web console
+## Task {{% param sectionnumber %}}.2: Discover the Rancher web console
 
 Check the menu entries, there should neither appear any deployments nor any Pods or Services in your namespace.
 

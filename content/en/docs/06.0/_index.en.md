@@ -7,7 +7,7 @@ sectionnumber: 6
 In this lab, we are going to show you how to scale applications on Kubernetes. Further, we show you how Kubernetes makes sure that the number of requested Pods is up and running and how an application can tell the platform that it is ready to receive requests.
 
 
-## Task {{< param sectionnumber >}}.1: Scale the example application
+## Task {{% param sectionnumber %}}.1: Scale the example application
 
 Create a new Deployment in your namespace:
 
@@ -242,7 +242,7 @@ These probes can be implemented as HTTP checks, container execution checks (the 
 In our example, we want the application to tell Kubernetes that it is ready for requests with an appropriate readiness probe. Our example application has a health check context named health: `http://<node-ip>:<node-port>/health`
 
 
-## Task {{< param sectionnumber >}}.2: Availability during Deployment
+## Task {{% param sectionnumber %}}.2: Availability during Deployment
 
 In our deployment configuration inside the rolling update strategy section we define that our application has to be always be available during an update: `maxUnavailable: 0`
 

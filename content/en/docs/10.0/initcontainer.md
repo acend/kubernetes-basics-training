@@ -15,7 +15,7 @@ Init containers are exactly like regular containers, except:
 Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes documentation for more details.
 
 
-## Task {{< param sectionnumber >}}.1: Add init Container to our example-web-python application
+## Task {{% param sectionnumber %}}.1: Add init Container to our example-web-python application
 
 In [Lab 8](../08.0/) you created the `example-web-python` application. In this task you are going to add an init container which checks if the MySQL database is ready to be used before actually start your python application.
 
