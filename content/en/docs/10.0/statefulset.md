@@ -4,7 +4,7 @@ weight: 101
 sectionnumber: 10.1
 ---
 
-Stateless applications or applications with a stateful backend can be described as Deployments. 
+Stateless applications or applications with a stateful backend can be described as Deployments.
 Sometimes your application has to be stateful.
 For example, if your application needs the same hostname every time it starts or if you have a clustered application with a strict start/stop order of all cluster services (e.g., RabbitMQ).
 These features are implemented as StatefulSets.
