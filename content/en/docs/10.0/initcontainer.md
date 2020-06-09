@@ -17,12 +17,12 @@ Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-c
 
 ## Task {{% param sectionnumber %}}.1: Add init Container to our example-web-python application
 
-In [Lab 8](../08.0/) you created the `example-web-python` application. In this task you are going to add an init container which checks if the MySQL database is ready to be used before actually start your python application.
+In [lab 8](../../08.0/) you created the `example-web-python` application. In this task, you are going to add an init container which checks if the MySQL database is ready to be used before actually starting your python application.
 
 Edit your existing `example-web-python` deployment with:
 
 ```bash
-kubectl edit deplyoment example-web-python --namespace <NAMESPACE
+kubectl edit deplyoment example-web-python --namespace <namespace>
 ```
 
 Add the init container into the existing Deployment:
@@ -38,13 +38,13 @@ spec:
 ```
 
 {{% alert title="Note" color="warning" %}}
-This obviously only checks if there is an DNS Record for your MySQL Service and not if the database is ready. But you get the idea, right?
+This obviously only checks if there is a DNS Record for your MySQL Service and not if the database is ready. But you get the idea, right?
 {{% /alert %}}
 
-Let's see what has changed in you Pod with the following command (use `kubectl get pod` or autocompletion to get the Pod name):
+Let's see what has changed by analyzing your `example-web-python` Pod with the following command (use `kubectl get pod` or auto-completion to get the Pod name):
 
 ```bash
-kubectl describe pod <POD NAME> --namespace <namespace>
+kubectl describe pod <pod> --namespace <namespace>
 ```
 
 You see the new init container with the name `wait-for-db`:
@@ -75,15 +75,15 @@ Init Containers:
 ...
 ```
 
-The init container has `State: Terminated` and an `Exit Code` of 0 which means it was successful. Thats what we wanted, have the init container executed before our main application.
+The init container has `State: Terminated` and an `Exit Code: 0` which means it was successful. That's what we wanted, the init container was successfully executed before our main application.
 
 You can also check the logs of the init container with:
 
 ```bash
-kubectl logs -c wait-for-db  <example-web-python-6b5d4ddb8f-94k2h> --namespace <namespace>
+kubectl logs -c wait-for-db <pod> --namespace <namespace>
 ```
 
-which should give sou something similar to (the `nslookup` output from the command in the init container)
+Which should give you something similar to (the `nslookup` output from the command in the init container):
 
 ```
 Server:    10.43.0.10
