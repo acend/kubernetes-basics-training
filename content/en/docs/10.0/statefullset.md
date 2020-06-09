@@ -4,15 +4,16 @@ weight: 101
 sectionnumber: 10.1
 ---
 
-Stateless applications or applications with a stateful backend, can be described as Deployments. Sometimes you need your application to be stateful.
-For example if your application needs the same hostname every time it starts or if you have a clustered application with a strict start/stop order of all cluster services (e.g. RabbitMQ).
+Stateless applications or applications with a stateful backend can be described as Deployments. 
+Sometimes your application has to be stateful.
+For example, if your application needs the same hostname every time it starts or if you have a clustered application with a strict start/stop order of all cluster services (e.g., RabbitMQ).
 These features are implemented as StatefulSets.
 
 
 ## Consistent hostnames
 
 While in normal Deployments a hash based name of the Pods (represented also as Hostname inside the Pod) is generated, StatefulSets create Pods with preconfigured names.
-Example of a RabbitMQ cluster with three nodes (Pods):
+Example of a RabbitMQ cluster with three instances (Pods):
 
 ```
 rabbitmq-0
@@ -23,49 +24,49 @@ rabbitmq-2
 
 ## Scaling
 
-Scaling is handled as well differently in StatefulSets.
-On scaling up from 3 to 5 within a Deployment, two additional Pods could be started at the __same__ time (based on the configuration. Using the StatefulSet it seems to be more "in control".
+Scaling is handled differently in StatefulSets.
+When scaling up from 3 to 5 replicas in a Deployment, two additional Pods could be started at the same time (based on the configuration). Using the StatefulSet it seems to be more "in control".
 
 Example with RabbitMQ:
 
 1. Scale `kubectl scale deployment rabbitmq --replicas=5 --namespace [USER]`
 1. `rabbitmq-3` is started
-1. When `rabbitmq-3` is done starting up (State: "Ready", take a look at _Readiness probe_), `rabbitmq-4` follows with the start procedure
+1. When `rabbitmq-3` is done starting up (State: "Ready", take a look at the readiness probe), `rabbitmq-4` follows with the start procedure
 
-On downscaling, the order is vice versa. The "youngest" Pod will be stopped in first place and it needs to be finished, before the "second youngest" Pod is stopped.
+On downscaling, the order is vice versa. The "youngest" Pod will be stopped in the first place, and it needs to be finished before the "second youngest" Pod is stopped.
 Order for scaling down: `rabbitmq-4`, `rabbitmq-3`, etc.
 
 
-## Update procedure / Rollout of a new application
+## Update procedure
 
-On an update of the application, also the "youngest" Pod will be the first and only after a successful Start the next Pod will be updated.
+During an update of an application with a StatefulSet the "youngest" Pod will be the first to be updated and only after a successful start the next Pod will follow.
 
 1. Youngest Pod will be stopped
-1. new Pod with new Image version is started
-1. Having a successful "readinessProbe" the second youngest Pod will be stopped
-1. etc...
+1. New Pod with new image version is started
+1. Having a successful readiness probe, the second youngest Pod will be stopped
+1. And so on...
 
-If the start of a new Pod fails, the Update / Rollout will be interrupted, so that the architecture of your application won't break.
+If the start of a new Pod fails the update will be interrupted so that the architecture of your application won't break.
 
 
 ## Trivia
 
-As Statefulsets have predictable names, which are reused, you can integrate PVCs into the sets from a configured storageclass. The will be used als on **scale up**!
+As StatefulSets have predictable names---which are reused---you can integrate PVCs into the sets from a configured StorageClass. They will also be used on scaling up!
 As names are predictable a 1-to-1 relation is given.
-By setting a _Partition_ updates can be splitted into two steps.
+By setting a _partition_ updates can be splitted into two steps.
 
 
 ## Conclusion
 
-The control- and predictable behaviour can be perfectly used with application as __rabbitmq__ or __etcd__, as you need unique names the cluster creation.
+The controllable and predictable behaviour can be a perfect match for applications such as RabbitMQ or etcd, as you need unique names for such application clusters.
 
 
 ## Tasks
 
 
-### Statefulsets
+### StatefulSets
 
-1. Create a statefulset based on the YAML file `nginx-sfs.yaml`:
+Create a StatefulSets based on the YAML file `nginx-sfs.yaml`:
 
 ```YAML
 apiVersion: apps/v1
@@ -91,49 +92,53 @@ spec:
           name: nginx
 ```
 
-1. Start the Statefulset
+Start the StatefulSet:
   
 ```bash
-kubectl create -f nginx-sfs.yaml --namespace [USER]
+kubectl create -f nginx-sfs.yaml --namespace <namespace>
 ```
 
 
-### Scaling Statefulset
+### Scale the StatefulSet
 
-1. To watch the progress, open a second console and list the Statefulsets and watch the Pods:
+To watch the progress, open a second console and list the StatefulSet and watch the Pods:
 
 ```bash
 kubectl get statefulset --namespace <namespace>
 kubectl get pods -l app=nginx -w --namespace <namespace>
 ```
 
-1. Scale up Statefulset
-
+Scale the StatefulSet up:
 
 ```bash
 kubectl scale statefulset nginx-cluster --replicas=3 --namespace <namespace>
 ```
 
 
-### Update Statefulset Image
+### Update the StatefulSet
 
-1. To watch the changes of the the Pods, please open a second window and execute the command:
-
+To watch the changes of the Pods, please open a second window and execute the command:
 
 ```bash
 kubectl get pods -l app=nginx -w --namespace <namespace>
 ```
 
-1. Set new version of the Image in the Statefulset
+Set the image version to `latest` in the StatefulSet:
 
 ```bash
 kubectl set image statefulset nginx-cluster nginx=nginx:latest --namespace <namespace>
 ```
 
-1. Rollback the software
+Rollback the software:
 
 ```bash
 kubectl rollout undo statefulset nginx-cluster --namespace <namespace>
+```
+
+Clean up:
+
+```bash
+kubectl delete statefulset nginx-cluster --namespace <namespace>
 ```
 
 Further Information can be found at the [Kubernetes StatefulSet Dokumentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or at this [published article](https://opensource.com/article/17/2/stateful-applications).
