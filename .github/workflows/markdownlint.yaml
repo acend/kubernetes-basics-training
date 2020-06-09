@@ -1,28 +1,15 @@
-name: markdownlint
+name: Lint Markdown files
 
 on:
   push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
 
 jobs:
-  lint_local:
+  markdownlint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1.4.2
-      - name: lint markdown files local markdownlint file
-        run: |
-          npm install
-          node_modules/.bin/markdownlint content
-  lint_global:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1.4.2
-      - name: lint markdown files global markdownlint file
-        run: |
-          curl https://raw.githubusercontent.com/acend/guidelines/master/acend.json -o .markdownlint.yml
-          npm install
-          node_modules/.bin/markdownlint content
+      - uses: nosborn/github-action-markdown-cli@v1.1.1
+        with:
+          files: "content *.md"
+          config_file: ".markdownlint.json"
