@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: kubernetes-techlab
-  name: kubernetes-techlab
+    app: kubernetes-techlab-rancher
+  name: kubernetes-techlab-rancher
   namespace: dreng-kubernetestechlab-prod
 spec:
   ports:
