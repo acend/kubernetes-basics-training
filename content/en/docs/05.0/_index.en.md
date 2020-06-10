@@ -19,6 +19,7 @@ kubectl expose deployment example-web-go --type=NodePort --name=example-web-go -
 
 {{% alert title="Note" color="warning" %}}
 If `NodePort` is not supported in your environment then you can use `--type=ClusterIP` (or omit this parameter completely as it is the default) and use port forwarding to the Service instead.
+
 Head over to task 7.3 in [lab 7](../07.0) to learn how to use port forwarding.
 {{% /alert %}}
 
