@@ -1,5 +1,5 @@
 ---
-title: "10.6 Init Container"
+title: "10.6 Init container"
 weight: 106
 sectionnumber: 10.6
 ---

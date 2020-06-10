@@ -190,7 +190,7 @@ This does not work if we delete the database Pod as its data is not yet persiste
 
 ## Task {{% param sectionnumber %}}.3: Manual database connection
 
-As described in [lab 07](../07.0/) we can log into a Pod with `kubectl exec -it <pod> -- /bin/bash`.
+As described in [lab 7](../07.0/) we can log into a Pod with `kubectl exec -it <pod> -- /bin/bash`.
 
 Show all Pods:
 
@@ -277,7 +277,6 @@ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD example
 ```
 
 ```bash
-
 drop database example;
 create database example;
 exit

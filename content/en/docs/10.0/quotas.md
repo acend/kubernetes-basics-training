@@ -1,5 +1,5 @@
 ---
-title: "10.5 ResourceQuotas and LimitRanges"
+title: "10.5 ResourceQuota and LimitRange"
 weight: 105
 sectionnumber: 10.5
 ---

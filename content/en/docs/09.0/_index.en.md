@@ -121,7 +121,7 @@ If the container won't start because the data directory has files in it then mou
 
 ### Restore data
 
-Repeat the task from [Lab8, Task: Import a database dump](../08.0/#task-import-a-database-dump).
+Repeat [task 8.4](../08.0/#task-84-import-a-database-dump).
 
 
 ### Test
