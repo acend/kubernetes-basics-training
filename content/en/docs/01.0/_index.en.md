@@ -29,7 +29,8 @@ Kubernetes consists of master and worker (minion, compute) nodes.
 The master components are the _API server_, the _scheduler_ and the _controller manager_.
 The API server itself represents the management interface.
 The scheduler and the controller manager decide how applications should be deployed on the cluster. Additionally, the state and configuration of the cluster itself is controlled in the master components.
-Worker nodes are also known as compute nodes or minions and are responsible for running the container workloads (applications).
+
+Worker nodes are also known as compute nodes or minions and are responsible for running the container workload (applications).
 The _control plane_ for the worker nodes is implemented in the master components.
 
 
@@ -69,7 +70,7 @@ Some resources are valid cluster-wise and cannot be set and controlled on a name
 ### Pods
 
 A Pod is the smallest entity in Kubernetes. It represents one instance of your running application process.
-The Pod consists out of at least two containers, one for your application itself and another one as part of the Kubernetes design, to keep the network namespace.
+The Pod consists of at least two containers, one for your application itself and another one as part of the Kubernetes design, to keep the network namespace.
 The so called infrastructure container (or pause container) therefore is automatically added by Kubernetes.
 
 The application ports from inside the Pod are exposed via Services.
@@ -77,7 +78,7 @@ The application ports from inside the Pod are exposed via Services.
 
 ### Services
 
-A service represents a "stateful" endpoint for your application in the Pod. As a Pod and its IP address typically are considered stateless, the IP address of the Service does not change, when changing the application inside the Pod. If you scale up your Pods, you have an automatic internal load balancing towards all Pod IP addresses.
+A service represents a static endpoint for your application in the Pod. As a Pod and its IP address typically are considered dynamic, the IP address of the Service does not change when changing the application inside the Pod. If you scale up your Pods, you have an automatic internal load balancing towards all Pod IP addresses.
 
 There are different kinds of Services:
 
@@ -91,14 +92,14 @@ A Service is unique inside a namespace.
 
 ### Deployment
 
-Please follow <https://kubernetes.io/docs/concepts/workloads/controllers/deployment/>
+Please follow <https://kubernetes.io/docs/concepts/workloads/controllers/deployment/>.
 
 
 ### Volume
 
-Please follow <https://kubernetes.io/docs/concepts/storage/volumes/>
+Please follow <https://kubernetes.io/docs/concepts/storage/volumes/>.
 
 
 ### Job
 
-Please follow <https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/>
+Please follow <https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/>.

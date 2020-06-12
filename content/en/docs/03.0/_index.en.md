@@ -5,7 +5,7 @@ sectionnumber: 3
 ---
 
 
-In this lab, we will interact for the first time with the Kubernetes cluster.
+In this lab, we will interact with the Kubernetes cluster for the first time.
 
 {{% alert title="Tip" color="warning" %}}
 Please make sure you completed [lab 2](../02.0/) before you continue with this lab.
@@ -15,33 +15,32 @@ Please make sure you completed [lab 2](../02.0/) before you continue with this l
 ## Login and choose a Kubernetes cluster
 
 {{% alert title="Note" color="warning" %}}
-Authentication depends on the specific Kubernetes cluster environment. You may need special instructions if you're not
-using our lab environment.
+Authentication depends on the specific Kubernetes cluster environment. You may need special instructions if you're not using our lab environment.
 {{% /alert %}}
 
 {{< onlyWhen rancher >}}
-Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cloudscale.ch) (a swiss IaaS Provider) and has been provisioned with [Rancher](https://rancher.com/). You can login into the cluster with a Rancher user.
+Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cloudscale.ch) (a Swiss IaaS provider) and has been provisioned with [Rancher](https://rancher.com/). You can log in into the cluster with a Rancher user.
 
 {{% alert title="Tip" color="warning" %}}
-For details about your credentials to log in, ask your teacher.
+Your teacher will provide you with the credentials to log in.
 {{% /alert %}}
 
-Login into the Rancher WebGUI choose the desired cluster.
+Log in to the Rancher web console and choose the desired cluster.
 
-On the cluster dashboard you find top right a button with `Kubeconfig File`. Save the config file into your homedirectory `.kube/config`. Verify afterwards if `kubectl` works correctly e.g. with `kubectl version`
+You now see a button at the top right that says **Kubeconfig File**. Click it, scroll down to the bottom and click **Copy to Clipboard**.
 
-![Download Kubeconfig File](kubectlconfigfilebutton.png)
+![Download kubeconfig File](kubectlconfigfilebutton.png)
+
+The copied kubeconfig now needs to be put into a file. The default location for the kubeconfig file is `~/.kube/config`.
 
 {{% alert title="Tip" color="warning" %}}
-If you already have a kubeconfig file, you might need to merge the Rancher entries with yours. Or use the KUBECONFIG environment variable to specify a dedicated file.
+If you already have a kubeconfig file, you might need to merge the Rancher entries with yours. Or use a dedicated file as described below.
 {{% /alert %}}
+
+Put the copied content into a kubeconfig file on your system.
+If you decide to not use the default kubeconfig location at `~/.kube/config` then let `kubectl` know where you put it with the KUBECONFIG environment variable:
 
 ```
-#example location ~/.kube-techlab/config
-vim ~/.kube-techlab/config
-# paste content
-
-# set KUBECONFIG Environment Variable to the correct file
 export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 ```
 
@@ -50,16 +49,16 @@ export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 
 ## Namespaces
 
-As a first step we are going to create a new namespace.
+As a first step on the cluster we are going to create a new namespace.
 
 A namespace is the logical design used in Kubernetes to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc., on a top-level basis. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). Authorized users inside a namespace are able to manage those resources. Namespace names have to be unique in your cluster.
 
 {{< onlyWhen rancher >}}
 {{% alert title="Note" color="warning" %}}
-Additionally, Rancher does know the concept of a [project](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple namespaces.
+Additionally, Rancher knows the concept of a [*Project*](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple namespaces.
 {{% /alert %}}
 
-In the Rancher WebGUI you can now choose your Project called `techlab`
+In the Rancher web console choose the Project called `techlab`.
 
 ![Rancher Project](chooseproject.png)
 
@@ -71,12 +70,12 @@ In the Rancher WebGUI you can now choose your Project called `techlab`
 Create a new namespace in the lab environment.
 
 {{% alert title="Note" color="warning" %}}
-Please choose an identifying name for the namespace, in best case your abbreviation. We are going to use `<namespace>` as a placeholder for your created namespace.
+Please choose an identifying name for your Namespace, e.g. your initials or name as a prefix. We are going to use `<namespace>` as a placeholder for your created Namespace.
 {{% /alert %}}
 
 
 {{% alert title="Tip" color="warning" %}}
-How can a new namespace be created? The `kubectl` can help you to figure out the right commands:
+How can a new Namespace be created? The `kubectl` can help you figure out the right command:
 
 ```bash
 kubectl help
@@ -87,7 +86,7 @@ kubectl help
 
 ### Solution
 
-To create a new namespace on your cluster use the following command:
+To create a new Namespace on your cluster use the following command:
 
 ```bash
 kubectl create namespace <namespace>
@@ -95,16 +94,16 @@ kubectl create namespace <namespace>
 
 {{< onlyWhen rancher >}}
 {{% alert title="Note" color="warning" %}}
-Namespaces created via `kubectl`, have to be assigned to your Rancher project in order to be seen inside the Rancher WebGUI. Ask your teacher for the assignement. Or you can create the namespace directlly within the Rancher WebGui
+Namespaces created via `kubectl` have to be assigned to the correct Rancher Project in order to be visible in the Rancher web console. Please ask your teacher for this assignment. Or you can create the namespace directly within the Rancher web console.
 {{% /alert %}}
 {{< /onlyWhen >}}
 
-
 {{% alert title="Tip" color="warning" %}}
-By using the following command, you can switch into another namespace instead of specifying the namespace for each `kubectl` command:
+By using the following command, you can switch into another Namespace instead of specifying it for each `kubectl` command.
+
+Linux:
 
 ```bash
-# Linux:
 kubectl config set-context $(kubectl config current-context) --namespace <namespace>
 ```
 
@@ -112,13 +111,11 @@ Windows:
 
 ```bash
 kubectl config current-context
-// Save the context in a variable
 SET KUBE_CONTEXT=[Insert output of the upper command]
 kubectl config set-context %KUBE_CONTEXT% --namespace <namespace>
 ```
 
-Some prefer to explicitly select the namespace for each `kubectl` command by adding `--namespace <namespace>`
-or `-n <namespace>`. And others prefer helper tools like `kubens`, see [lab 2](../02.0)
+Some prefer to explicitly select the Namespace for each `kubectl` command by adding `--namespace <namespace>` or `-n <namespace>`. Others prefer helper tools like `kubens` (see [lab 2](../02.0)).
 {{% /alert %}}
 
 
@@ -127,13 +124,13 @@ or `-n <namespace>`. And others prefer helper tools like `kubens`, see [lab 2](.
 
 ## Task {{% param sectionnumber %}}.2: Discover the Rancher web console
 
-Check the menu entries, there should neither appear any deployments nor any Pods or Services in your namespace.
+Check the menu entries, there should neither appear any Deployments nor any Pods or Services in your Namespace.
 
-Display all existing Pods in the previously created namespace with `kubectl`  (there should not yet be any!):
+Display all existing Pods in the previously created Namespace with `kubectl` (there shouldn't yet be any):
 
 ```bash
 kubectl get pod -n <namespace>
 ```
 
-With the command `kubectl get` you can display all kinds of resources of different types.
+With the command `kubectl get` you can display all kinds of resources.
 {{< /onlyWhen >}}
