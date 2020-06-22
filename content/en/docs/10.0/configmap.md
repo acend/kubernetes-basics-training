@@ -82,8 +82,8 @@ Basically, a Deployment has to be extended with the following config:
 ```
 
 Here is a complete example Deployment of a sample Java app:
-
 {{< onlyWhenNot mobi >}}
+
 ```yaml
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -201,8 +201,8 @@ spec:
         name: config-volume
 
 ```
-{{< /onlyWhen >}}
 
+{{< /onlyWhen >}}
 After that, it's possible for the container to access the values in the ConfigMap in `/etc/config/java.properties`
 
 ```bash

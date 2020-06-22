@@ -126,8 +126,10 @@ spec:
         - containerPort: 3306
           name: mysql
 ```
+
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
+
 ```yaml
 ---
 apiVersion: v1
@@ -186,8 +188,8 @@ spec:
         - containerPort: 3306
           name: mysql
 ```
-{{< /onlyWhen >}}
 
+{{< /onlyWhen >}}
 Execute it with:
 
 ```bash

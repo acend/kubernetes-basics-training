@@ -31,8 +31,8 @@ kubectl edit deployment mysql --namespace <namespace>
 ```
 
 And add a new (sidecar) container into your Deployment:
-
 {{< onlyWhenNot mobi >}}
+
 ```yaml
 containers:
 ...
@@ -48,8 +48,10 @@ image: prom/mysqld-exporter
 name: mysqld-exporter
 ...
 ```
+
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
+
 ```yaml
 containers:
 ...
@@ -65,8 +67,8 @@ image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mysqld-exporter:v0.12.1
 name: mysqld-exporter
 ...
 ```
-{{< /onlyWhen >}}
 
+{{< /onlyWhen >}}
 Your Pod does now have two running containers. Verify this with:
 
 ```bash

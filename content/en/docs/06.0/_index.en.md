@@ -10,18 +10,20 @@ In this lab, we are going to show you how to scale applications on Kubernetes. F
 ## Task {{% param sectionnumber %}}.1: Scale the example application
 
 Create a new Deployment in your namespace:
-
 {{< onlyWhenNot mobi >}}
+
 ```bash
 kubectl create deployment example-web-python --image=acend/example-web-python --namespace <namespace>
 ```
+
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
+
 ```bash
 kubectl create deployment example-web-python --image=docker-registry.mobicorp.ch/puzzle/k8s/example-web-python --namespace <namespace>
 ```
-{{< /onlyWhen >}}
 
+{{< /onlyWhen >}}
 If we want to scale our example application, we have to tell the Deployment that we want to have three running replicas instead of one.
 Let's have a closer look at the existing ReplicaSet:
 
@@ -88,7 +90,6 @@ Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-appl
 ## Check for uninterruptible Deployments
 
 Now we create a new Service of type `NodePort`:
-
 
 
 ```bash
