@@ -14,7 +14,7 @@ Please make sure you completed [lab 2](../02.0/) before you continue with this l
 
 ## Login and choose a Kubernetes cluster
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Authentication depends on the specific Kubernetes cluster environment. You may need special instructions if you're not
 using our lab environment.
 {{% /alert %}}
@@ -33,7 +33,7 @@ On the cluster dashboard you find top right a button with `Kubeconfig File`. Sav
 
 ![Download Kubeconfig File](kubectlconfigfilebutton.png)
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Tip" color="primary" %}}
 If you already have a kubeconfig file, you might need to merge the Rancher entries with yours. Or use the KUBECONFIG environment variable to specify a dedicated file.
 {{% /alert %}}
 
@@ -45,6 +45,7 @@ vim ~/.kube-techlab/config
 # set KUBECONFIG Environment Variable to the correct file
 export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 ```
+
 {{< /onlyWhenNot >}}
 {{< /onlyWhen >}}
 
@@ -70,7 +71,7 @@ As a first step we are going to create a new namespace.
 A namespace is the logical design used in Kubernetes to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc., on a top-level basis. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). Authorized users inside a namespace are able to manage those resources. Namespace names have to be unique in your cluster.
 
 {{< onlyWhen rancher >}}
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Additionally, Rancher does know the concept of a [project](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple namespaces.
 {{% /alert %}}
 
@@ -91,12 +92,12 @@ We use the project `kubernetes-techlab` on the `kubedev` cluster.
 
 Create a new namespace in the lab environment.
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Please choose an identifying name for the namespace, in best case your abbreviation. We are going to use `<namespace>` as a placeholder for your created namespace.
 {{% /alert %}}
 
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Tip" color="primary" %}}
 How can a new namespace be created? The `kubectl` can help you to figure out the right commands:
 
 ```bash
@@ -115,13 +116,13 @@ kubectl create namespace <namespace>
 ```
 
 {{< onlyWhen rancher >}}
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Namespaces created via `kubectl`, have to be assigned to your Rancher project in order to be seen inside the Rancher WebGUI. Ask your teacher for the assignement. Or you can create the namespace directlly within the Rancher WebGui
 {{% /alert %}}
 {{< /onlyWhen >}}
 
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Tip" color="primary" %}}
 By using the following command, you can switch into another namespace instead of specifying the namespace for each `kubectl` command:
 
 ```bash

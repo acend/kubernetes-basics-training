@@ -17,7 +17,7 @@ With the following command we create a Service and by doing this we expose our D
 kubectl expose deployment example-web-go --type=NodePort --name=example-web-go --port=5000 --target-port=5000 --namespace <namespace>
 ```
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 If `NodePort` is not supported in your environment then you can use `--type=ClusterIP` (or omit this parameter completely as it is the default) and use port forwarding to the Service instead.
 
 Head over to task 7.3 in [lab 7](../07.0) to learn how to use port forwarding.
@@ -27,7 +27,7 @@ Head over to task 7.3 in [lab 7](../07.0) to learn how to use port forwarding.
 
 As an example: If a replica of our application Pod cannot handle the load anymore, we can simply scale our application to more Pods in order to distribute the load. Kubernetes automatically maps these Pods as the Service's backends/endpoints. As soon as the Pods are ready, they'll receive requests.
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 The application is not yet accessible from outside, the Service is a Kubernetes internal concept. We're going to fully expose the application in the next lab.
 {{% /alert %}}
 
@@ -96,7 +96,7 @@ With the appropriate command you get details from the Pod (or any other resource
 kubectl get pod <pod> -o json --namespace <namespace>
 ```
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 First, get all Pod names from your namespace with (`kubectl get pods --namespace <namespace>`) and then replace it in the following command.
 {{% /alert %}}
 
@@ -159,7 +159,7 @@ Events:
 ```
 
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Service IP addresses stay the same for the duration of the Service's lifespan.
 {{% /alert %}}
 
@@ -170,6 +170,8 @@ You can use any node IP as the Service is exposed on all nodes using the same `N
 kubectl get node -o wide
 ```
 
+The output may vary depending on your setup:
+
 ```
 NAME         STATUS   ROLES                      AGE    VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
 lab-1   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.142   <none>        Ubuntu 18.04.3 LTS   4.15.0-66-generic   docker://19.3.8
@@ -178,7 +180,7 @@ lab-3   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.148   <no
 ```
 
 {{% onlyWhen rancher %}}
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 You can also use the Rancher web console to open the exposed application in your browser. The direkt link is shown on your **Resources / Workload** page in the tab **Workload**. Look for your namespace and the deployment name. The link looks like `31665/tcp`.
 
 ![Rancher NodePort](nodeportrancher.png)
@@ -208,8 +210,8 @@ kubectl expose deployment example-web-go --type=ClusterIP --name=example-web-go 
 
 
 In order to create the Ingress resource, we first need to create the file `ingress.yaml` and change the host variable to match your environment.
-
 {{< onlyWhenNot mobi >}}
+
 ```yaml
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
@@ -225,8 +227,10 @@ spec:
           serviceName: example-web-go
           servicePort: 5000
 ```
+
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
+
 ```yaml
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
@@ -242,6 +246,7 @@ spec:
           serviceName: example-web-go
           servicePort: 5000
 ```
+
 {{< /onlyWhen >}}
 
 After creating the Ingress file, we can apply it:
@@ -249,12 +254,14 @@ After creating the Ingress file, we can apply it:
 ```bash
 kubectl create -f ingress.yaml --namespace <namespace>
 ```
+
 {{< onlyWhenNot mobi >}}
 Afterwards, we are able to access our freshly created Service at `http://web-go-<namespace>.<domain>`
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
 Afterwards, we are able to access our freshly created Service at `http://web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your ingress is created. You can verify the ingress later.
 {{< /onlyWhen >}}
+
 
 ## Task {{% param sectionnumber %}}.3 (optional): For fast learners
 
