@@ -114,6 +114,10 @@ Then execute the port forwarding with this name:
 kubectl port-forward example-web-python-1-xj1df 5000:5000 --namespace <namespace>
 ```
 
+{{% alert title="Tip" color="warning" %}}
+Use the additional parameter `--address 0.0.0.0` if you want to access the forwarded port from outside.  
+{{% /alert %}}
+
 The output of the command should look like this:
 
 ```
@@ -128,10 +132,6 @@ The application is now available with the following link: <http://localhost:5000
 ```bash
 curl localhost:5000
 ```
-
-{{% alert title="Tip" color="warning" %}}
-Use the additional parameter `--address 0.0.0.0` if you want to access the forwarded port from outside.  
-{{% /alert %}}
 
 With the same concept you can access databases from your local client or connect your local development environment via remote debugging to your application in the Pod.
 
