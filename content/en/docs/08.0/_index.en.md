@@ -293,7 +293,7 @@ A database dump can be created as follows:
 
 ```bash
 kubectl exec -it mysql-f845ccdb7-hf2x5 -- /bin/bash
-``` 
+```
 
 ```bash
 mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD example > /tmp/dump.sql
