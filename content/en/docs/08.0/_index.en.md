@@ -165,18 +165,21 @@ You could also do the changes by directly editing the Deployment:
 kubectl edit deployment example-web-python --namespace <namespace>
 ```
 
-```bash
-kubectl get deployment example-web-python --namespace <namespace>
-```
-
 ```yaml
 ...
-      - env:
+    spec:
+      containers:
+      - # start to copy here
+        env:
         - name: MYSQL_URI
           valueFrom:
             secretKeyRef:
-              name: mysql-uri
               key: MYSQL_URI
+              name: mysql-uri
+        # stop to copy here
+        image: acend/example-web-python
+        imagePullPolicy: Always
+        name: example-web-python
 ...
 ```
 
