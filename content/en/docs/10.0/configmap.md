@@ -83,21 +83,15 @@ Basically, a Deployment has to be extended with the following config:
 
 Here is a complete example Deployment of a sample Java app:
 
+{{< onlyWhenNot mobi >}}
 ```yaml
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "8"
-  creationTimestamp: 2018-10-15T13:53:08Z
-  generation: 8
   labels:
     app: spring-boot-example
   name: spring-boot-example
   namespace: <namespace>
-  resourceVersion: "3990918"
-  selfLink: /apis/extensions/v1beta1/namespaces/philipona/deployments/spring-boot-example
-  uid: a5c2f455-d081-11e8-a406-42010a840034
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -115,7 +109,6 @@ spec:
       creationTimestamp: null
       labels:
         app: spring-boot-example
-        date: "1539788777"
     spec:
       containers:
       - env:
@@ -146,8 +139,69 @@ spec:
           defaultMode: 420
           name: javaconfiguration
         name: config-volume
+```
+
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: spring-boot-example
+  name: spring-boot-example
+  namespace: <namespace>
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: spring-boot-example
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: spring-boot-example
+    spec:
+      containers:
+      - env:
+        - name: SPRING_DATASOURCE_USERNAME
+          value: springboot
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: mysqlpassword
+        - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+          value: com.mysql.jdbc.Driver
+        - name: SPRING_DATASOURCE_URL
+          value: jdbc:mysql://springboot-mysql/springboot?autoReconnect=true
+        image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-spring-boot:latest
+        imagePullPolicy: Always
+        name: example-spring-boot
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/config
+          name: config-volume
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: javaconfiguration
+        name: config-volume
 
 ```
+{{< /onlyWhen >}}
 
 After that, it's possible for the container to access the values in the ConfigMap in `/etc/config/java.properties`
 

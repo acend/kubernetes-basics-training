@@ -93,7 +93,7 @@ kubectl get service example-web-go -o json --namespace <namespace>
 With the appropriate command you get details from the Pod (or any other resource):
 
 ```bash
-kubectl get pod example-web-go-3-nwzku -o json --namespace <namespace>
+kubectl get pod <pod> -o json --namespace <namespace>
 ```
 
 {{% alert title="Note" color="warning" %}}
@@ -103,6 +103,7 @@ First, get all Pod names from your namespace with (`kubectl get pods --namespace
 The Service's `selector` defines, which Pods are being used as Endpoints. This happens based on labels. Look at the configuration of Service and Pod in order to find out what maps to what:
 
 Service:
+
 
 ```bash
 kubectl get service example-web-go -o json --namespace <namespace>
@@ -130,7 +131,9 @@ kubectl get pod <pod> -o json --namespace <namespace>
 ...
 ```
 
+
 This link between Service and Pod can be displayed in an easier fashion with the `kubectl describe` command:
+
 
 ```bash
 kubectl describe service example-web-go --namespace <namespace>
@@ -154,6 +157,7 @@ Events:
   Type    Reason                Age    From                Message
   ----    ------                ----   ----                -------
 ```
+
 
 {{% alert title="Note" color="warning" %}}
 Service IP addresses stay the same for the duration of the Service's lifespan.
@@ -190,9 +194,11 @@ There's a second option to make a Service accessible from outside: Use an Ingres
 
 In order to switch the Service type, we are going to delete the `NodePort` Service that we've created before:
 
+
 ```bash
 kubectl delete service example-web-go --namespace=<namespace>
 ```
+
 
 Now we create a Service with type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types):
 
@@ -200,8 +206,10 @@ Now we create a Service with type [ClusterIP](https://kubernetes.io/docs/concept
 kubectl expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace <namespace>
 ```
 
+
 In order to create the Ingress resource, we first need to create the file `ingress.yaml` and change the host variable to match your environment.
 
+{{< onlyWhenNot mobi >}}
 ```yaml
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
@@ -217,15 +225,36 @@ spec:
           serviceName: example-web-go
           servicePort: 5000
 ```
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+```yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: example-web-go
+spec:
+  rules:
+  - host: example-web-go-<namespace>.phoenix.mobicorp.test
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: example-web-go
+          servicePort: 5000
+```
+{{< /onlyWhen >}}
 
 After creating the Ingress file, we can apply it:
 
 ```bash
 kubectl create -f ingress.yaml --namespace <namespace>
 ```
-
+{{< onlyWhenNot mobi >}}
 Afterwards, we are able to access our freshly created Service at `http://web-go-<namespace>.<domain>`
-
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+Afterwards, we are able to access our freshly created Service at `http://web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your ingress is created. You can verify the ingress later.
+{{< /onlyWhen >}}
 
 ## Task {{% param sectionnumber %}}.3 (optional): For fast learners
 

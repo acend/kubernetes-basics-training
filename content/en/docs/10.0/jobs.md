@@ -17,6 +17,7 @@ Similar to [task 8.4](../../08.0/#task-84-import-a-database-dump), we now want t
 
 Let's first look at the Job resource that we want to create.
 
+{{< onlyWhenNot mobi >}}
 ```yaml
 apiVersion: batch/v1
 kind: Job
@@ -55,6 +56,47 @@ spec:
               key: password
       restartPolicy: Never
 ```
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mysql-dump
+spec:
+  template:
+    spec:
+      containers:
+      - name: mysql
+        image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mysql:5.6
+        command:
+        - 'bash'
+        - '-eo'
+        - 'pipefail'
+        - '-c'
+        - >
+          trap "echo Backup failed; exit 0" ERR;
+          FILENAME=backup-${MYSQL_DATABASE}-`date +%Y-%m-%d_%H%M%S`.sql.gz;
+          mysqldump --user=${MYSQL_USER} --password=${MYSQL_PASSWORD} --host=${MYSQL_HOST} --port=${MYSQL_PORT} --skip-lock-tables --quick --add-drop-database --routines ${MYSQL_DATABASE} | gzip > /tmp/$FILENAME;
+          echo "";
+          echo "Backup successful"; du -h /tmp/$FILENAME;
+        env:
+        - name: MYSQL_DATABASE
+          value: example
+        - name: MYSQL_USER
+          value: example
+        - name: MYSQL_HOST
+          value: mysql
+        - name: MYSQL_PORT
+          value: "3306"
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-password
+              key: password
+      restartPolicy: Never
+```
+{{< /onlyWhen >}}
 
 The parameter `.spec.template.spec.containers[0].image` shows that we use the same image as the running database. In contrast to the database Pod, we don't start a database afterwards, but run a `mysqldump` command, specified with `.spec.template.spec.containers[0].command`. To perform the dump, we use the environment variables of the database deployment to set the hostname, user and password parameters of the `mysqldump` command. The `MYSQL_PASSWORD` variable refers to the value of the secret, which is already used for the database Pod. Like this we ensure that the dump is performed with the same credentials.
 

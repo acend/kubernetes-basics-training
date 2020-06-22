@@ -13,9 +13,16 @@ After we've familiarized ourselves with the platform, we are going to have a loo
 
 First, we are going to directly start a new Pod:
 
+{{< onlyWhenNot mobi >}}
 ```bash
 kubectl run nginx --image=nginx --port=80 --restart=Never --namespace <namespace>
 ```
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+```bash
+kubectl run nginx --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx:stable --port=80 --restart=Never --namespace <namespace>
+```
+{{< /onlyWhen >}}
 
 Use `kubectl get pods --namespace <namespace>` in order to show the running Pod:
 
@@ -47,9 +54,16 @@ In some use cases it makes sense to start a single Pod but has its downsides and
 
 With the following command we can create a Deployment inside our already created namespace:
 
+{{< onlyWhenNot mobi >}}
 ```bash
 kubectl create deployment example-web-go --image=acend/example-web-go --namespace <namespace>
 ```
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+```bash
+kubectl create deployment example-web-go --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --namespace <namespace>
+```
+{{< /onlyWhen >}}
 
 The output should be:
 
@@ -115,6 +129,7 @@ which gives you an output similar to this:
 NAME                              READY   STATUS    RESTARTS   AGE
 example-web-go-69b658f647-xnm94   1/1     Running   0          39s
 ```
+
 
 The deployment defines that one replica should be deployed---which is running as we can see in the output. This Pod is not yet reachable from outside of the cluster.
 

@@ -20,6 +20,7 @@ using our lab environment.
 {{% /alert %}}
 
 {{< onlyWhen rancher >}}
+{{< onlyWhenNot mobi >}}
 Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cloudscale.ch) (a swiss IaaS Provider) and has been provisioned with [Rancher](https://rancher.com/). You can login into the cluster with a Rancher user.
 
 {{% alert title="Tip" color="warning" %}}
@@ -44,7 +45,21 @@ vim ~/.kube-techlab/config
 # set KUBECONFIG Environment Variable to the correct file
 export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 ```
+{{< /onlyWhenNot >}}
+{{< /onlyWhen >}}
 
+{{< onlyWhen mobi >}}
+We are using the Mobi `kubedev` Kubrnets Cluster. With:
+
+```bash
+kubectl config use-context dev
+```
+
+you choose the correct kubernetes cluster to work with.
+
+{{% alert title="Tip" color="warning" %}}
+Make sure you have setup your `kube.config` file correctly. Check your [CWIKI](https://cwiki.mobicorp.ch/confluence/display/ITContSol/Set+up+Kubectl) for instructions on how to configure the cli client.
+{{% /alert %}}
 {{< /onlyWhen >}}
 
 
@@ -59,9 +74,15 @@ A namespace is the logical design used in Kubernetes to organize and separate yo
 Additionally, Rancher does know the concept of a [project](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple namespaces.
 {{% /alert %}}
 
-In the Rancher WebGUI you can now choose your Project called `techlab`
+In the Rancher WebGUI you can now choose your Project.
 
+{{< onlyWhen mobi >}}
+We use the project `kubernetes-techlab` on the `kubedev` cluster.
+{{< /onlyWhen >}}
+
+{{< onlyWhenNot mobi >}}
 ![Rancher Project](chooseproject.png)
+{{< /onlyWhenNot >}}
 
 {{< /onlyWhen >}}
 

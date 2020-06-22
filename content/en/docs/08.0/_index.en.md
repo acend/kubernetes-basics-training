@@ -66,6 +66,7 @@ As we had seen in the earlier labs, all resources like Deployments, Services, Se
 In our case we want to create a deployment including a Service for our MySQL database.
 Save this snippet as `mysql.yaml`:
 
+{{< onlyWhenNot mobi >}}
 
 ```yaml
 ---
@@ -125,6 +126,67 @@ spec:
         - containerPort: 3306
           name: mysql
 ```
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+```yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: mysql
+---
+apiVersion: apps/v1 # for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mysql:5.6
+        name: mysql
+        args:
+        - "--ignore-db-dir=lost+found"
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-root-password
+              key: password
+        - name: MYSQL_DATABASE
+          value: example
+        - name: MYSQL_USER
+          value: example
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-password
+              key: password
+        livenessProbe:
+          tcpSocket:
+            port: 3306
+        ports:
+        - containerPort: 3306
+          name: mysql
+```
+{{< /onlyWhen >}}
 
 Execute it with:
 
