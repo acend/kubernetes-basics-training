@@ -62,13 +62,13 @@ exit
 Single commands inside a container can also be executed with `kubectl exec`:
 
 ```bash
-kubectl exec <pod> --namespace <namespace> env
+kubectl exec <pod> --namespace <namespace> -- env
 ```
 
 Example:
 
 ```bash
-$ kubectl exec example-web-python-69b658f647-xnm94 --namespace <namespace> env
+$ kubectl exec example-web-python-69b658f647-xnm94 --namespace <namespace> -- env
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=example-web-python-xnm94
 KUBERNETES_SERVICE_PORT_DNS_TCP=53
