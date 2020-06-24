@@ -84,20 +84,13 @@ Basically, a Deployment has to be extended with the following config:
 Here is a complete example Deployment of a sample Java app:
 
 ```yaml
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: "8"
-  creationTimestamp: 2018-10-15T13:53:08Z
-  generation: 8
   labels:
     app: spring-boot-example
   name: spring-boot-example
   namespace: <namespace>
-  resourceVersion: "3990918"
-  selfLink: /apis/extensions/v1beta1/namespaces/philipona/deployments/spring-boot-example
-  uid: a5c2f455-d081-11e8-a406-42010a840034
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -112,7 +105,6 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: spring-boot-example
         date: "1539788777"
