@@ -82,7 +82,7 @@ example-web-python-86d9d584f8-qg499   1/1     Running   0          31s
 
 ```
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
 {{% /alert %}}
 
@@ -126,7 +126,7 @@ Scaling of Pods within a Service is fast, as Kubernetes simply creates a new con
 
 You can check the availability of your Service while you scale the number of replicas up and down in your browser: `http://<node-ip>:<node-port>`.
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Check the [previous lab](../05.0) on how to get the `<node-ip>` and `<node-port>` or how to use an Ingress instead.
 {{% /alert %}}
 
@@ -178,7 +178,7 @@ The requests get distributed amongst the three Pods. As soon as you scale down t
 What happens if you start a new Deployment while our request generator is still running?
 
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Warning" color="secondary" %}}
 On Windows, execute the following command in Git Bash; PowerShell seems not to work.
 {{% /alert %}}
 

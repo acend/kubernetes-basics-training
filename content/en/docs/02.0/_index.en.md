@@ -18,7 +18,7 @@ As the client is written in Go, you can run the single binary on the following o
 * Linux
 
 {{< onlyWhen rancher >}}
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 In Rancher you can also use `kubectl` directly within your browser. As soon as you are loggend in Rancher WebGUI, click on "Launch kubectl" (or use the ° key) and you get a console with `kubectl` installed and configured.
 {{% /alert %}}
 {{< /onlyWhen >}}
@@ -80,7 +80,7 @@ The `PATH` can be set in Windows in the advanced system settings. It depends on 
 * [Windows 8](http://www.itechtics.com/customize-windows-environment-variables/)
 * [Windows 10](http://techmixx.de/windows-10-umgebungsvariablen-bearbeiten/)
 
-{{% alert title="Windows Quick Hack" color="warning" %}}
+{{% alert title="Note: Windows Quick Hack" color="primary" %}}
 Copy the `kubectl` binary directly into the folder `C:\Windows`.
 {{% /alert %}}
 
@@ -102,7 +102,7 @@ Client Version: version.Info{Major:"1", Minor:"18", GitVersion:"v1.18.0", GitCom
 
 If you don't see a similar out, possibly there are issues with the `PATH` variable.
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Warning" color="secondary" %}}
 Make sure to use at least version 1.16.x for your `kubectl`
 {{% /alert %}}
 

@@ -49,7 +49,7 @@ The string at `.data.password` is Base64 encoded and can easily be decoded:
 echo "bXlzcWxwYXNzd29yZA=="| base64 -d
 ```
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 By default, Secrets by are not encrypted! Kubernetes 1.13 [offers this capability](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/). Another option would be the use of a secrets management solution like [Vault by HashiCorp](https://www.vaultproject.io/).
 {{% /alert %}}
 
@@ -250,7 +250,7 @@ kubectl edit deployment example-web-python --namespace <namespace>
 In order to find out if the change worked we can either look at the container's logs (`kubectl logs <pod>`).
 Or we could register some "Hellos" in the application, delete the Pod, wait for the new Pod to be started and check if they are still there.
 
-{{% alert title="Attention" color="warning" %}}
+{{% alert title="Note" color="primrary" %}}
 This does not work if we delete the database Pod as its data is not yet persisted.
 {{% /alert %}}
 
