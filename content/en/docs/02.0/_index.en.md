@@ -19,7 +19,7 @@ As the client is written in Go, you can run the single binary on the following o
 
 {{< onlyWhen rancher >}}
 {{% alert title="Note" color="primary" %}}
-In Rancher you can also use `kubectl` directly within your browser. As soon as you are loggend in Rancher WebGUI, click on "Launch kubectl" (or use the ° key) and you get a console with `kubectl` installed and configured.
+In Rancher you can also use `kubectl` directly within your browser. As soon as you are loggend in Rancher Web console, click on "Launch kubectl" (or use the ° key) and you get a console with `kubectl` installed and configured.
 {{% /alert %}}
 {{< /onlyWhen >}}
 

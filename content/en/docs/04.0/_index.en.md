@@ -146,5 +146,5 @@ The deployment defines that one replica should be deployed---which is running as
 
 ## Task {{% param sectionnumber %}}.3: Verify the Deployment in the Rancher web console
 
-Try to display the logs from the example application via the Rancher WebGui.
+Try to display the logs from the example application via the Rancher Web console.
 {{% /onlyWhen %}}

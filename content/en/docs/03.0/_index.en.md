@@ -27,7 +27,7 @@ Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cl
 For details about your credentials to log in, ask your teacher.
 {{% /alert %}}
 
-Login into the Rancher WebGUI choose the desired cluster.
+Login into the Rancher Web console choose the desired cluster.
 
 On the cluster dashboard you find top right a button with `Kubeconfig File`. Save the config file into your homedirectory `.kube/config`. Verify afterwards if `kubectl` works correctly e.g. with `kubectl version`
 
@@ -75,7 +75,7 @@ A namespace is the logical design used in Kubernetes to organize and separate yo
 Additionally, Rancher does know the concept of a [project](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple namespaces.
 {{% /alert %}}
 
-In the Rancher WebGUI you can now choose your Project.
+In the Rancher Web console you can now choose your Project.
 
 {{< onlyWhen mobi >}}
 We use the project `kubernetes-techlab` on the `kubedev` cluster.
@@ -111,7 +111,7 @@ kubectl create namespace <namespace>
 
 {{< onlyWhen rancher >}}
 {{% alert title="Note" color="primary" %}}
-Namespaces created via `kubectl`, have to be assigned to your Rancher project in order to be seen inside the Rancher WebGUI. Ask your teacher for the assignement. Or you can create the namespace directlly within the Rancher WebGui
+Namespaces created via `kubectl`, have to be assigned to your Rancher project in order to be seen inside the Rancher Web console. Ask your teacher for the assignement. Or you can create the namespace directlly within the Rancher Web console
 {{% /alert %}}
 {{< /onlyWhen >}}
 
