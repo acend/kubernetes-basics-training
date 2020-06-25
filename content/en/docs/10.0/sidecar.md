@@ -31,6 +31,7 @@ kubectl edit deployment mysql --namespace <namespace>
 ```
 
 And add a new (sidecar) container into your Deployment:
+{{< onlyWhenNot mobi >}}
 
 ```yaml
 containers:
@@ -48,6 +49,26 @@ name: mysqld-exporter
 ...
 ```
 
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
+```yaml
+containers:
+...
+- env:
+- name: DATA_SOURCE_NAME
+    value: root:$MYSQL_ROOT_PASSWORD@(localhost:3306)/
+- name: MYSQL_ROOT_PASSWORD
+    valueFrom:
+    secretKeyRef:
+        key: password
+        name: mysql-root-password
+image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mysqld-exporter:v0.12.1
+name: mysqld-exporter
+...
+```
+
+{{< /onlyWhen >}}
 Your Pod does now have two running containers. Verify this with:
 
 ```bash

@@ -26,6 +26,7 @@ kubectl edit deplyoment example-web-python --namespace <namespace>
 ```
 
 Add the init container into the existing Deployment:
+{{< onlyWhenNot mobi >}}
 
 ```yaml
 ...
@@ -37,6 +38,20 @@ spec:
 ...
 ```
 
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
+```yaml
+...
+spec:
+  initContainers:
+  - name: wait-for-db
+    image: docker-registry.mobicorp.ch/cop/curl-and-provide:latest
+    command: ['sh', '-c', "until nslookup mysql.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
+...
+```
+
+{{< /onlyWhen >}}
 {{% alert title="Note" color="warning" %}}
 This obviously only checks if there is a DNS Record for your MySQL Service and not if the database is ready. But you get the idea, right?
 {{% /alert %}}
