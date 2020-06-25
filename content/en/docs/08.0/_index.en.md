@@ -82,7 +82,7 @@ spec:
   selector:
     app: mysql
 ---
-apiVersion: apps/v1 # for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
@@ -193,7 +193,7 @@ spec:
 Execute it with:
 
 ```bash
-kubectl apply -f mysql.yaml --namespace <namespace>
+kubectl create -f mysql.yaml --namespace <namespace>
 ```
 
 As soon as the container image for `mysql:5.7` has been pulled, you will see a new Pod using `kubectl get pods`.
@@ -229,18 +229,21 @@ You could also do the changes by directly editing the Deployment:
 kubectl edit deployment example-web-python --namespace <namespace>
 ```
 
-```bash
-kubectl get deployment example-web-python --namespace <namespace>
-```
-
 ```yaml
 ...
-      - env:
+    spec:
+      containers:
+      - # start to copy here
+        env:
         - name: MYSQL_URI
           valueFrom:
             secretKeyRef:
-              name: mysql-uri
               key: MYSQL_URI
+              name: mysql-uri
+        # stop to copy here
+        image: acend/example-web-python
+        imagePullPolicy: Always
+        name: example-web-python
 ...
 ```
 
@@ -356,7 +359,15 @@ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD example < /tmp/dump.sql
 A database dump can be created as follows:
 
 ```bash
+kubectl exec -it mysql-f845ccdb7-hf2x5 -- /bin/bash
+```
+
+```bash
 mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD example > /tmp/dump.sql
+```
+
+```bash
+kubectl cp mysql-f845ccdb7-hf2x5:/tmp/dump.sql /tmp/dump.sql
 ```
 
 {{% /alert %}}

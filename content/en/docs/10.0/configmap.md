@@ -85,7 +85,7 @@ Here is a complete example Deployment of a sample Java app:
 {{< onlyWhenNot mobi >}}
 
 ```yaml
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -106,7 +106,6 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: spring-boot-example
     spec:
