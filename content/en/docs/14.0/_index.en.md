@@ -37,10 +37,10 @@ It can only be accessed from a client who executed the `kubectl port-forward` co
 
 ## Task {{% param sectionnumber %}}.3: Find your workload
 
-After opening the Web UI on your local client, you should see ... nothing. Why is that? 
+After opening the Web UI on your local client, you should see ... nothing. Why is that?
 As mentioned before, the Web UI is limited to your Namespace. So find the search field in the head of the page and type in your Namespace.
 
-Now you should see all your deployments in your Namespace. 
+Now you should see all your deployments in your Namespace.
 
 
 ## Task {{% param sectionnumber %}}.4: Scale your workload
@@ -55,3 +55,4 @@ This Lab is just a small demonstration of an working Web UI for Kubernetes. To g
 * [GitHub Repo (kubeview)](https://github.com/benc-uk/kubeview)
 * [Official Web UI](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
 * [Another Web UI](https://kube-web-view.readthedocs.io/en/latest/)
+
