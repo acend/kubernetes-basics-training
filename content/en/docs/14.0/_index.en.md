@@ -5,7 +5,9 @@ sectionnumber: 14
 ---
 
 
-The [Web UI](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/) is a project from the [Kubernetes Special Interest Groups (SIGs)](https://kubernetes.io/community/) to manage complex Kubernetes configurations.
+To make Kubernetes workload visible there are many options. In our limited namespace we are not allowed to create a read-only user who can access more than your own namespace. Therefore we are using a small Web UI which can be installed in your Namespace und make your workload visible.
+
+The [Web UI](http://kubeview.benco.io/) we are using is a small project to make some Kubernetes ressources visible manage complex Kubernetes configurations.
 In this lab we will deploy the Web UI to our Namespace.
 
 
@@ -13,34 +15,43 @@ In this lab we will deploy the Web UI to our Namespace.
 
 To install the Web UI into your existing Namespace you have to execute the following
 
-```
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml --namespace <namespace>
+```bash
+kubectl apply -f https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/14.0/dashboard.yaml --namespace <namespace>
 ```
 
 
 ## Task {{% param sectionnumber %}}.2: Access the Web UI
 
-The Web UI will not deploy a Service or an Ingress for you.
-We will use the `kubectl proxy` function to access the Web UI in the Browser.
+The Web UI will not deploy an Ingress for you.
+We will use the `kubectl port-forward` function to access the Web UI in the Browser.
 
-By executing the following, `kubectl` will act as an [proxy](https://en.wikipedia.org/wiki/Proxy_server) and you have direct access to the Kubernetes API from your client
+By executing the following, `kubectl` will act as an [proxy](https://en.wikipedia.org/wiki/Proxy_server) and forward the port from the service to your local client.
 
+```bash
+kubectl port-forward service/kubeview 8080:80 --namespace <namespace>
 ```
-kubectl proxy
-```
 
-Now click on this link to access the Web UI: <http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/.>
-It can only be accessed from a client who executed the `kubectl proxy` command
+Now click on this link to access the Web UI: <http://localhost:8080>
+It can only be accessed from a client who executed the `kubectl port-forward` command
 
 
-## Task {{% param sectionnumber %}}.3: Find your container logs
+## Task {{% param sectionnumber %}}.3: Find your workload
 
-You should have open the Web UI and see some information from the Kubernetes Cluster. As your user may be limited to see just some ressources you may get some error messages about missing ressources.
+After opening the Web UI on your local client, you should see ... nothing. Why is that? 
+As mentioned before, the Web UI is limited to your Namespace. So find the search field in the head of the page and type in your Namespace.
 
-Navigate to your former deployed containers and check if you are able to get the logfiles from them via the Web UI.
+Now you should see all your deployments in your Namespace. 
+
+
+## Task {{% param sectionnumber %}}.4: Scale your workload
+
+After you have completed the Labs before you should now be able to scale parts of your workload. You will see how the Web UI changes after refreshing the page. Let's do it!
 
 
 ## Additional informations
 
-* [Official documentation](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/#using-dashboard)
-* [GitHub Repo](https://github.com/kubernetes/dashboard)
+This Lab is just a small demonstration of an working Web UI for Kubernetes. To get an idea of other Dashboards check the following links for more informations.
+
+* [GitHub Repo (kubeview)](https://github.com/benc-uk/kubeview)
+* [Official Web UI](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
+* [Another Web UI](https://kube-web-view.readthedocs.io/en/latest/)
