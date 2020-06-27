@@ -14,7 +14,7 @@ The [Web Console](http://kubeview.benco.io/) which will be used, is a small proj
 
 ## Task {{% param sectionnumber %}}.1: Install the Web Console
 
-To install the Web Console into our existing Namespace we have to execute the following
+To install the Web Console into our existing Namespace we have to execute the following:
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/14.0/dashboard.yaml --namespace <namespace>
@@ -39,7 +39,7 @@ It can only be accessed from a client who executed the `kubectl port-forward` co
 ## Task {{% param sectionnumber %}}.3: Find your workload
 
 After opening the Web Console on our browser, we will see ... nothing. But why is that?
-As mentioned before, the Web Console is limited to our Namespace. Find the search field in the head of the page and type in our Namespace. 
+As mentioned before, the Web Console is limited to our Namespace. Find the search field in the head of the page and type in our Namespace.
 
 Now we see all our deployments in our Namespace.
 
