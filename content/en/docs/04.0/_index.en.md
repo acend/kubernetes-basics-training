@@ -13,9 +13,20 @@ After we've familiarized ourselves with the platform, we are going to have a loo
 
 First, we are going to directly start a new Pod:
 
+{{< onlyWhenNot mobi >}}
+
 ```bash
 kubectl run nginx --image=nginx --port=80 --restart=Never --namespace <namespace>
 ```
+
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
+```bash
+kubectl run nginx --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx:stable --port=80 --restart=Never --namespace <namespace>
+```
+
+{{< /onlyWhen >}}
 
 Use `kubectl get pods --namespace <namespace>` in order to show the running Pod:
 
@@ -46,11 +57,21 @@ kubectl delete pod nginx --namespace <namespace>
 In some use cases it makes sense to start a single Pod but has its downsides and is not really a common practice. Let's look at another Kubernetes concept which is tightly coupled with the Pod: the so-called _Deployment_. A Deployment makes sure a Pod is monitored and the Deployment also checks that the number of running Pods corresponds to the number of requested Pods.
 
 With the following command we can create a Deployment inside our already created namespace:
+{{< onlyWhenNot mobi >}}
 
 ```bash
 kubectl create deployment example-web-go --image=acend/example-web-go --namespace <namespace>
 ```
 
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
+```bash
+kubectl create deployment example-web-go --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --namespace <namespace>
+
+```
+
+{{< /onlyWhen >}}
 The output should be:
 
 ```
@@ -70,7 +91,7 @@ kubectl get pods -w --namespace <namespace>
 
 This process can last for some time depending on your Internet connection and if the image is already available locally.
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 If you want to create your own container images and use them with Kubernetes, you definitely should have a look at [these best practices](https://docs.openshift.com/container-platform/4.4/openshift_images/create-images.html) and apply them. This image creation guide may be from OpenShift, however it also applies to Kubernetes and other container platforms.
 {{% /alert %}}
 
@@ -116,6 +137,7 @@ NAME                              READY   STATUS    RESTARTS   AGE
 example-web-go-69b658f647-xnm94   1/1     Running   0          39s
 ```
 
+
 The deployment defines that one replica should be deployed---which is running as we can see in the output. This Pod is not yet reachable from outside of the cluster.
 
 
@@ -124,5 +146,5 @@ The deployment defines that one replica should be deployed---which is running as
 
 ## Task {{% param sectionnumber %}}.3: Verify the Deployment in the Rancher web console
 
-Try to display the logs from the example application via the Rancher WebGui.
+Try to display the logs from the example application via the Rancher Web console.
 {{% /onlyWhen %}}

@@ -67,6 +67,7 @@ The controllable and predictable behaviour can be a perfect match for applicatio
 ### StatefulSets
 
 Create a StatefulSets based on the YAML file `nginx-sfs.yaml`:
+{{< onlyWhenNot mobi >}}
 
 ```YAML
 apiVersion: apps/v1
@@ -92,6 +93,34 @@ spec:
           name: nginx
 ```
 
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
+```YAML
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx-cluster
+spec:
+  serviceName: "nginx"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx:1.12
+        ports:
+        - containerPort: 80
+          name: nginx
+```
+
+{{< /onlyWhen >}}
 Start the StatefulSet:
   
 ```bash
@@ -124,11 +153,20 @@ kubectl get pods -l app=nginx -w --namespace <namespace>
 ```
 
 Set the image version to `latest` in the StatefulSet:
+{{< onlyWhenNot mobi >}}
 
 ```bash
 kubectl set image statefulset nginx-cluster nginx=nginx:latest --namespace <namespace>
 ```
 
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
+```bash
+kubectl set image statefulset nginx-cluster nginx=docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx:latest --namespace <namespace>
+```
+
+{{< /onlyWhen >}}
 Rollback the software:
 
 ```bash

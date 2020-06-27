@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   annotations:
     keel.sh/policy: force
+    keel.sh/match-tag: true 
   labels:
     app: kubernetes-techlab
   name: kubernetes-techlab
