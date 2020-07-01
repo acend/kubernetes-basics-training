@@ -50,7 +50,7 @@ As we've already seen, compute ResourceQuotas limit the amount of memory and CPU
 
 Limits and requests on a Pod, or rather on a container in a Pod, define how much memory and CPU this container wants to consume at least (request) and at most (limit). Requests mean that the container will be guaranteed to get at least this amount of resources, limits represent the upper boundary which cannot be crossed. Defining these values helps Kubernetes in determining on which Node to schedule the Pod, because it knows how many resources should be available for it.
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Containers using more CPU time than what their limit allows will be throttled.
 Containers using more memory than what they are allowed to use will be killed.
 {{% /alert %}}
@@ -92,7 +92,7 @@ Setting limits and requests on containers has yet another effect: It might chang
 The Guaranteed QoS class is applied to Pods that define both limits and requests for both memory and CPU resources on all their containers. The most important part is that each request has the same value as the limit.
 Pods that belong to this QoS class will never be killed by the scheduler because of resources running out on a Node.
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 If a container only defines its limits, Kubernetes automatically assigns a request that matches the limit.
 {{% /alert %}}
 
@@ -186,7 +186,7 @@ Create a Pod using the polinux/stress image:
 kubectl run stress2much --image=polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 You have to actively terminate the following command pressing `CTRL+c` on your keyboard.
 {{% /alert %}}
 
@@ -256,7 +256,7 @@ kubectl delete pod stress --namespace <namespace>
 kubectl run stress --image=polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Remember, if you'd only set the limit, the request would be set to the same value.
 {{% /alert %}}
 
