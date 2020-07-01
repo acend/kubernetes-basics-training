@@ -4,18 +4,6 @@ weight: 105
 sectionnumber: 10.5
 ---
 
-FIXMEs:
-
-* [x] Introduction to quotas and description of lab
-* [x] Explanation of what types of quotas exist
-* [x] Explanation and common reason for default LimitRanges
-
-* [ ] Task: Create Namespace with ResourceQuotas and LimitRange
-* [ ] Task: Create a Deployment without requests and limits, analyse problems with too
-* [ ] Task: Create a Deployment with requests too high to fit into Quota
-
----
-
 In this lab, we are going to look at ResourceQuotas and LimitRanges. As Kubernetes users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.
 
 
@@ -128,7 +116,7 @@ The possibility of enforcing minimum and maximum resources and defining Resource
 ## Task {{% param sectionnumber %}}.1: Namespace
 
 {{< onlyWhen rancher >}}
-Make sure you're logged in to the cluster. Choose the appropriate cluster, click on __Projects/Namespaces__ and then click on __Add Namespace__.
+Make sure you're logged in to the cluster. Choose the appropriate cluster and click on __Projects/Namespaces__. Under the Project kubernetes-techlab click on __Add Namespace__.
 
 Choose a name for your Namespace in the form of `<yourname>`-quota-lab, expand the __Container Default Resource Limit__ view and set the following values:
 
