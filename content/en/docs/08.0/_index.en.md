@@ -250,7 +250,7 @@ kubectl edit deployment example-web-python --namespace <namespace>
 In order to find out if the change worked we can either look at the container's logs (`kubectl logs <pod>`).
 Or we could register some "Hellos" in the application, delete the Pod, wait for the new Pod to be started and check if they are still there.
 
-{{% alert title="Note" color="primrary" %}}
+{{% alert title="Note" color="primary" %}}
 This does not work if we delete the database Pod as its data is not yet persisted.
 {{% /alert %}}
 
@@ -317,7 +317,7 @@ show tables;
 
 Our task is now to import this [dump.sql](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/08.0/dump.sql) into the MySQL database running as a Pod. Use the `mysql` command line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 You can also copy local files into a Pod using `kubectl cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the Pod and use `curl -O <url>`.
 {{% /alert %}}
 
@@ -355,7 +355,7 @@ Import a dump:
 mysql -u$MYSQL_USER -p$MYSQL_PASSWORD example < /tmp/dump.sql
 ```
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 A database dump can be created as follows:
 
 ```bash
