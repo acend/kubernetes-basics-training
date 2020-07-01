@@ -90,7 +90,7 @@ kubectl get pods -w --namespace <namespace>
 ```
 
 {{% alert title="Note" color="primary" %}}
-Instead of using the `-w` parameter you can also use the `watch` command which should be available for most Linux distributions:
+Instead of using the `-w` parameter you can also use the `watch` command which should be available on most Linux distributions:
 
 ```bash
 watch kubectl get pods --namespace <namespace>
