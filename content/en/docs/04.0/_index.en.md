@@ -89,6 +89,15 @@ Use the command `kubectl get` with the `-w` parameter in order to get the reques
 kubectl get pods -w --namespace <namespace>
 ```
 
+{{% alert title="Note" color="primary" %}}
+Instead of using the `-w` parameter you can also use the `watch` command which should be available for most Linux distributions:
+
+```bash
+watch kubectl get pods --namespace <namespace>
+```
+{{% /alert %}}
+
+
 This process can last for some time depending on your Internet connection and if the image is already available locally.
 
 {{% alert title="Note" color="primary" %}}
