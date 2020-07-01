@@ -95,8 +95,8 @@ Instead of using the `-w` parameter you can also use the `watch` command which s
 ```bash
 watch kubectl get pods --namespace <namespace>
 ```
-{{% /alert %}}
 
+{{% /alert %}}
 
 This process can last for some time depending on your Internet connection and if the image is already available locally.
 
