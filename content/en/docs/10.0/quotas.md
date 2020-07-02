@@ -19,13 +19,13 @@ Defining ResourceQuotas makes sense when the cluster administrators want to have
 
 In order to check for defined quotas in your Namespace, simply see if there are any of type ResourceQuota:
 
-```bash
+```
 kubectl get resourcequota
 ```
 
 To show in detail what kinds of limits the quota imposes:
 
-```bash
+```
 kubectl describe resourcequota <quota-name> --namespace <namespace>
 ```
 
@@ -45,7 +45,7 @@ Containers using more memory than what they are allowed to use will be killed.
 
 Defining limits and requests on a Pod that has one container looks like this:
 
-```yaml
+```
 apiVersion: v1
 kind: Pod
 metadata:
@@ -138,7 +138,7 @@ kubectl describe limitrange --namespace <namespace>
 
 Above command should output this (name and Namespace will vary):
 
-```bash
+```
 Name:       ce01a1b6-a162-479d-847c-4821255cc6db
 Namespace:  eltony-quota-lab
 Type        Resource  Min  Max  Default Request  Default Limit  Max Limit/Request Ratio
@@ -156,13 +156,13 @@ kubectl describe quota --namespace <namespace>
 
 Above command should output this (name and Namespace will vary):
 
-```bash
-Name:          lab-quota
-Namespace:     eltony-quota-lab
-Resource       Used  Hard
---------       ----  ----
-limits.cpu     0     100m
-limits.memory  0     100Mi
+```
+Name:            lab-quota
+Namespace:       eltony-quota-lab
+Resource         Used  Hard
+--------         ----  ----
+requests.cpu     0     100m
+requests.memory  0     100Mi
 ```
 
 
@@ -186,7 +186,7 @@ kubectl get pods --watch --namespace <namespace>
 
 You should see something like the following:
 
-```bash
+```
 NAME          READY   STATUS              RESTARTS   AGE
 stress2much   0/1     ContainerCreating   0          1s
 stress2much   0/1     ContainerCreating   0          2s
@@ -196,15 +196,15 @@ stress2much   0/1     OOMKilled           1          9s
 stress2much   0/1     CrashLoopBackOff    1          20s
 ```
 
-The `stress2much` Pod was OOM (out of memory) killed. We can see this in the `STATUS` field. Another way to find out why a Pod was killed is by checking its status. Output at the Pod's YAML definition:
+The `stress2much` Pod was OOM (out of memory) killed. We can see this in the `STATUS` field. Another way to find out why a Pod was killed is by checking its status. Output the Pod's YAML definition:
 
 ```bash
-kubectl get pod stress2much --namespace <namespace>
+kubectl get pod stress2much --output yaml --namespace <namespace>
 ```
 
 Near the end of the output you can find the relevant status part:
 
-```yaml
+```
   containerStatuses:
   - containerID: docker://da2473f1c8ccdffbb824d03689e9fe738ed689853e9c2643c37f206d10f93a73
     image: docker-registry.mobicorp.ch/polinux/stress:latest
@@ -218,12 +218,12 @@ Near the end of the output you can find the relevant status part:
 So let's look at the numbers to verify the container really had too little memory. We started the `stress` command using parameter `--vm-bytes 85M` which means the process wants to allocate 85 megabytes of memory. Again looking at the Pod's YAML definition with:
 
 ```bash
-kubectl get pod stress2much -o yaml --namespace <namespace>
+kubectl get pod stress2much --output yaml --namespace <namespace>
 ```
 
 reveals the following values:
 
-```yaml
+```
 ...
     resources:
       limits:
@@ -240,7 +240,7 @@ These are the values from the LimitRange, and the defined limit of 32 MiB of mem
 Let's fix this by recreating the Pod and explicitly setting the memory request to 85 MB:
 
 ```bash
-kubectl delete pod stress --namespace <namespace>
+kubectl delete pod stress2much --namespace <namespace>
 kubectl run stress --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
@@ -250,7 +250,7 @@ Remember, if you'd only set the limit, the request would be set to the same valu
 
 You should now see that the Pod is successfully running:
 
-```bash
+```
 NAME     READY   STATUS    RESTARTS   AGE
 stress   1/1     Running   0          25s
 ```
@@ -266,7 +266,7 @@ kubectl run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --name
 
 We are immediately confronted with an error message:
 
-```bash
+```
 Error from server (Forbidden): pods "overbooked" is forbidden: exceeded quota: lab-quota, requested: memory=16Mi, used: memory=85Mi, limited: memory=100Mi
 ```
 
@@ -275,12 +275,12 @@ The default request value of 16 MiB of memory that was automatically set on the 
 Let's have a closer look at the quota with:
 
 ```bash
-kubectl get quota -o yaml --namespace <namespace>
+kubectl get quota --output yaml --namespace <namespace>
 ```
 
 which should output the following YAML definition:
 
-```yaml
+```
 ...
   status:
     hard:
@@ -294,10 +294,10 @@ which should output the following YAML definition:
 
 The most interesting part is the quota's status which reveals that we cannot use more than 100 MiB of memory and that 80 MiB are already used.
 
-Fortunately our application can live with less memory than what the LimitRange sets. Let's set the request to the required 10 MiB:
+Fortunately our application can live with less memory than what the LimitRange sets. Let's set the request to the remaining 10 MiB:
 
 ```bash
-kubectl run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace ba-k8s-techlab-quotas --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+kubectl run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
 
 Even though the limits of both Pods combined overstretch the quota, the requests do not and so the Pods are allowed to run.
