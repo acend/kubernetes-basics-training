@@ -45,7 +45,7 @@ Containers using more memory than what they are allowed to use will be killed.
 
 Defining limits and requests on a Pod that has one container looks like this:
 
-```yaml
+```
 apiVersion: v1
 kind: Pod
 metadata:
