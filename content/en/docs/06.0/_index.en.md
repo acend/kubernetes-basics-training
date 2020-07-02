@@ -20,7 +20,7 @@ kubectl create deployment example-web-python --image=acend/example-web-python --
 {{< onlyWhen mobi >}}
 
 ```bash
-kubectl create deployment example-web-python --image=docker-registry.mobicorp.ch/puzzle/k8s/example-web-python --namespace <namespace>
+kubectl create deployment example-web-python --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-python --namespace <namespace>
 ```
 
 {{< /onlyWhen >}}
