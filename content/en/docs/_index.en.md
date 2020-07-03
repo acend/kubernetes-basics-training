@@ -6,13 +6,13 @@ menu:
     weight: 1
 ---
 
-The goal of these labs is to create some hands-on tasks for people. By using the Kubernetes(k8s) platform you find an easy way to deploy and deliver your software packaged in container.
+The purpose of these labs is to convey Kubernetes basics by providing hands-on tasks for people. Kubernetes (K8s) will allow you to deploy and deliver your software packaged as containers in an easy, straight-forward way.
 
-Goal of these labs:
+Goals of these labs:
 
-* Having an easy start with this modern technology
-* Understand the basic concepts
-* Deploy applications on kubernetes
+* Help you get started with this modern technology
+* Explain to you the basic concepts
+* Show you how to deploy your first applications on Kubernetes
 
 
 ## Additional Docs
