@@ -178,7 +178,9 @@ kubectl run stress2much --image=polinux/stress --namespace <namespace> --command
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
 
+```bash
 kubectl run stress2much --image=docker-registry.mobicorp.ch/polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+```
 
 {{< /onlyWhen >}}
 
@@ -257,8 +259,10 @@ kubectl run stress --image=polinux/stress --limits=memory=100Mi --requests=memor
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
 
+```bash
 kubectl delete pod stress2much --namespace <namespace>
 kubectl run stress --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+```
 
 {{< /onlyWhen >}}
 
@@ -287,7 +291,9 @@ kubectl run overbooked --image=polinux/stress --namespace <namespace> --command 
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
 
+```bash
 kubectl run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+```
 
 {{< /onlyWhen >}}
 
@@ -332,7 +338,9 @@ kubectl run overbooked --image=polinux/stress --limits=memory=16Mi --requests=me
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
 
+```bash
 kubectl run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+```
 
 {{< /onlyWhen >}}
 
