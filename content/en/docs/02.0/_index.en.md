@@ -18,7 +18,7 @@ As the client is written in Go, you can run the single binary on the following o
 * Linux
 
 {{< onlyWhen rancher >}}
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 In Rancher you can also use `kubectl` directly within your browser. As soon as you are logged in in the Rancher web console, click on **Launch kubectl** (or use the ° key) and you get a console with `kubectl` installed and configured.
 {{% /alert %}}
 {{< /onlyWhen >}}
@@ -77,7 +77,7 @@ The `PATH` can be set in Windows in the advanced system settings. It depends on 
 * [Windows 8](http://www.itechtics.com/customize-windows-environment-variables/)
 * [Windows 10](http://techmixx.de/windows-10-umgebungsvariablen-bearbeiten/)
 
-{{% alert title="Windows quick hack" color="warning" %}}
+{{% alert title="Note: Windows Quick Hack" color="primary" %}}
 Copy the `kubectl` binary directly into the folder `C:\Windows`.
 {{% /alert %}}
 
@@ -99,8 +99,8 @@ Client Version: version.Info{Major:"1", Minor:"18", GitVersion:"v1.18.0", GitCom
 
 If you don't see a similar output, possibly there are issues with the `PATH` variable.
 
-{{% alert title="Note" color="warning" %}}
-Make sure to use at least version 1.16.x for your `kubectl`.
+{{% alert title="Warning" color="secondary" %}}
+Make sure to use at least version 1.16.x for your `kubectl`
 {{% /alert %}}
 
 
@@ -158,8 +158,7 @@ curl https://raw.githubusercontent.com/ahmetb/kubectx/master/kubens -o ~/bin/kub
 chmod +x ~/bin/kubectx ~/bin/kubens
 ```
 
-`kube-ps1` is another helpful shell script which adds the current context and namespace to the shell prompt:
-<https://github.com/jonmosco/kube-ps1>
+`kube-ps1` is another helpful shell script which adds the current context and namespace to the shell prompt: <https://github.com/jonmosco/kube-ps1>
 
 `fzf` is yet another handy helper tool when you have to deal with a lot of contexts or namespaces by adding an interactive menu to `kubectx`and `kubens`: <https://github.com/junegunn/fzf>
 

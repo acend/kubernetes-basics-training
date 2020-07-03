@@ -62,7 +62,7 @@ Namespaces in Kubernetes represent a logical segregation of unique names for ent
 
 Permissions and roles can be bound on a per-namespace basis. This way, a user can control his own resources inside a namespace.
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Some resources are valid cluster-wise and cannot be set and controlled on a namespace basis.
 {{% /alert %}}
 

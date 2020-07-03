@@ -10,11 +10,20 @@ In this lab, we are going to show you how to scale applications on Kubernetes. F
 ## Task {{% param sectionnumber %}}.1: Scale the example application
 
 Create a new Deployment in your namespace:
+{{< onlyWhenNot mobi >}}
 
 ```bash
 kubectl create deployment example-web-python --image=acend/example-web-python --namespace <namespace>
 ```
 
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
+```bash
+kubectl create deployment example-web-python --image=docker-registry.mobicorp.ch/puzzle/k8s/example-web-python --namespace <namespace>
+```
+
+{{< /onlyWhen >}}
 If we want to scale our example application, we have to tell the Deployment that we want to have three running replicas instead of one.
 Let's have a closer look at the existing ReplicaSet:
 
@@ -28,6 +37,7 @@ Which will give you an output similar to this:
 NAME                            DESIRED   CURRENT   READY   AGE
 example-web-python-86d9d584f8   1         1         1       110s
 ```
+
 
 Or for even more details:
 
@@ -72,7 +82,7 @@ example-web-python-86d9d584f8-qg499   1/1     Running   0          31s
 
 ```
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
 {{% /alert %}}
 
@@ -80,6 +90,7 @@ Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-appl
 ## Check for uninterruptible Deployments
 
 Now we create a new Service of type `NodePort`:
+
 
 ```bash
 kubectl expose deployment example-web-python --type="NodePort" --name="example-web-python" --port=5000 --target-port=5000 --namespace <namespace>
@@ -110,11 +121,12 @@ Events:
   ----    ------                ----  ----                -------
 ```
 
+
 Scaling of Pods within a Service is fast, as Kubernetes simply creates a new container.
 
 You can check the availability of your Service while you scale the number of replicas up and down in your browser: `http://<node-ip>:<node-port>`.
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Check the [previous lab](../05.0) on how to get the `<node-ip>` and `<node-port>` or how to use an Ingress instead.
 {{% /alert %}}
 
@@ -166,13 +178,14 @@ The requests get distributed amongst the three Pods. As soon as you scale down t
 What happens if you start a new Deployment while our request generator is still running?
 
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Warning" color="secondary" %}}
 On Windows, execute the following command in Git Bash; PowerShell seems not to work.
 {{% /alert %}}
 
 ```bash
 kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
 ```
+
 
 During a short period we won't get a response:
 
@@ -421,7 +434,7 @@ kubectl get pods -w --namespace <namespace>
 Now delete a Pod (in another terminal) with the following command:
 
 ```bash
-kubectl delete pod example-web-python-3-788j5 --namespace <namespace>
+kubectl delete pod <pod> --namespace <namespace>
 ```
 
 Observe how Kubernetes instantly creates a new Pod in order to fulfill the desired number of running instances.

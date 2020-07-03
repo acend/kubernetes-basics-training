@@ -4,18 +4,6 @@ weight: 105
 sectionnumber: 10.5
 ---
 
-FIXMEs:
-
-* [x] Introduction to quotas and description of lab
-* [x] Explanation of what types of quotas exist
-* [x] Explanation and common reason for default LimitRanges
-
-* [ ] Task: Create Namespace with ResourceQuotas and LimitRange
-* [ ] Task: Create a Deployment without requests and limits, analyse problems with too
-* [ ] Task: Create a Deployment with requests too high to fit into Quota
-
----
-
 In this lab, we are going to look at ResourceQuotas and LimitRanges. As Kubernetes users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.
 
 
@@ -31,13 +19,13 @@ Defining ResourceQuotas makes sense when the cluster administrators want to have
 
 In order to check for defined quotas in your Namespace, simply see if there are any of type ResourceQuota:
 
-```bash
+```
 kubectl get resourcequota
 ```
 
 To show in detail what kinds of limits the quota imposes:
 
-```bash
+```
 kubectl describe resourcequota <quota-name> --namespace <namespace>
 ```
 
@@ -50,14 +38,14 @@ As we've already seen, compute ResourceQuotas limit the amount of memory and CPU
 
 Limits and requests on a Pod, or rather on a container in a Pod, define how much memory and CPU this container wants to consume at least (request) and at most (limit). Requests mean that the container will be guaranteed to get at least this amount of resources, limits represent the upper boundary which cannot be crossed. Defining these values helps Kubernetes in determining on which Node to schedule the Pod, because it knows how many resources should be available for it.
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Containers using more CPU time than what their limit allows will be throttled.
 Containers using more memory than what they are allowed to use will be killed.
 {{% /alert %}}
 
 Defining limits and requests on a Pod that has one container looks like this:
 
-```yaml
+```
 apiVersion: v1
 kind: Pod
 metadata:
@@ -92,7 +80,7 @@ Setting limits and requests on containers has yet another effect: It might chang
 The Guaranteed QoS class is applied to Pods that define both limits and requests for both memory and CPU resources on all their containers. The most important part is that each request has the same value as the limit.
 Pods that belong to this QoS class will never be killed by the scheduler because of resources running out on a Node.
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 If a container only defines its limits, Kubernetes automatically assigns a request that matches the limit.
 {{% /alert %}}
 
@@ -128,7 +116,7 @@ The possibility of enforcing minimum and maximum resources and defining Resource
 ## Task {{% param sectionnumber %}}.1: Namespace
 
 {{< onlyWhen rancher >}}
-Make sure you're logged in to the cluster. Choose the appropriate cluster, click on __Projects/Namespaces__ and then click on __Add Namespace__.
+Make sure you're logged in to the cluster. Choose the appropriate cluster and click on __Projects/Namespaces__. Under the Project kubernetes-quotalab click on __Add Namespace__.
 
 Choose a name for your Namespace in the form of `<yourname>`-quota-lab, expand the __Container Default Resource Limit__ view and set the following values:
 
@@ -150,7 +138,7 @@ kubectl describe limitrange --namespace <namespace>
 
 Above command should output this (name and Namespace will vary):
 
-```bash
+```
 Name:       ce01a1b6-a162-479d-847c-4821255cc6db
 Namespace:  eltony-quota-lab
 Type        Resource  Min  Max  Default Request  Default Limit  Max Limit/Request Ratio
@@ -168,25 +156,35 @@ kubectl describe quota --namespace <namespace>
 
 Above command should output this (name and Namespace will vary):
 
-```bash
-Name:       lab-quota
-Namespace:  eltony-quota-lab
-Resource    Used  Hard
---------    ----  ----
-cpu         0     100m
-memory      0     100Mi
+```
+Name:            lab-quota
+Namespace:       eltony-quota-lab
+Resource         Used  Hard
+--------         ----  ----
+requests.cpu     0     100m
+requests.memory  0     100Mi
 ```
 
 
 ## Task {{% param sectionnumber %}}.2: Default memory limit
 
 Create a Pod using the polinux/stress image:
+{{< onlyWhenNot mobi >}}
 
 ```bash
 kubectl run stress2much --image=polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
-{{% alert title="Note" color="warning" %}}
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
+```bash
+kubectl run stress2much --image=docker-registry.mobicorp.ch/polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+```
+
+{{< /onlyWhen >}}
+
+{{% alert title="Note" color="primary" %}}
 You have to actively terminate the following command pressing `CTRL+c` on your keyboard.
 {{% /alert %}}
 
@@ -198,7 +196,7 @@ kubectl get pods --watch --namespace <namespace>
 
 You should see something like the following:
 
-```bash
+```
 NAME          READY   STATUS              RESTARTS   AGE
 stress2much   0/1     ContainerCreating   0          1s
 stress2much   0/1     ContainerCreating   0          2s
@@ -208,15 +206,15 @@ stress2much   0/1     OOMKilled           1          9s
 stress2much   0/1     CrashLoopBackOff    1          20s
 ```
 
-The `stress2much` Pod was OOM (out of memory) killed. We can see this in the `STATUS` field. Another way to find out why a Pod was killed is by checking its status. Output at the Pod's YAML definition:
+The `stress2much` Pod was OOM (out of memory) killed. We can see this in the `STATUS` field. Another way to find out why a Pod was killed is by checking its status. Output the Pod's YAML definition:
 
 ```bash
-kubectl get pod stress2much --namespace <namespace>
+kubectl get pod stress2much --output yaml --namespace <namespace>
 ```
 
 Near the end of the output you can find the relevant status part:
 
-```yaml
+```
   containerStatuses:
   - containerID: docker://da2473f1c8ccdffbb824d03689e9fe738ed689853e9c2643c37f206d10f93a73
     image: polinux/stress:latest
@@ -230,12 +228,12 @@ Near the end of the output you can find the relevant status part:
 So let's look at the numbers to verify the container really had too little memory. We started the `stress` command using parameter `--vm-bytes 85M` which means the process wants to allocate 85 megabytes of memory. Again looking at the Pod's YAML definition with:
 
 ```bash
-kubectl get pod stress2much -o yaml --namespace <namespace>
+kubectl get pod stress2much --output yaml --namespace <namespace>
 ```
 
 reveals the following values:
 
-```yaml
+```
 ...
     resources:
       limits:
@@ -251,18 +249,30 @@ These are the values from the LimitRange, and the defined limit of 32 MiB of mem
 
 Let's fix this by recreating the Pod and explicitly setting the memory request to 85 MB:
 
+{{< onlyWhenNot mobi >}}
+
 ```bash
-kubectl delete pod stress --namespace <namespace>
+kubectl delete pod stress2much --namespace <namespace>
 kubectl run stress --image=polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
-{{% alert title="Note" color="warning" %}}
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
+```bash
+kubectl delete pod stress2much --namespace <namespace>
+kubectl run stress --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+```
+
+{{< /onlyWhen >}}
+
+{{% alert title="Note" color="primary" %}}
 Remember, if you'd only set the limit, the request would be set to the same value.
 {{% /alert %}}
 
 You should now see that the Pod is successfully running:
 
-```bash
+```
 NAME     READY   STATUS    RESTARTS   AGE
 stress   1/1     Running   0          25s
 ```
@@ -272,13 +282,24 @@ stress   1/1     Running   0          25s
 
 Create another Pod, again using the `polinux/stress` image. This time our application is less demanding and only needs 10 MB of memory (`--vm-bytes 10M`):
 
+{{< onlyWhenNot mobi >}}
+
 ```bash
 kubectl run overbooked --image=polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
 
-We are immediately confronted with an error message:
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
 
 ```bash
+kubectl run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+```
+
+{{< /onlyWhen >}}
+
+We are immediately confronted with an error message:
+
+```
 Error from server (Forbidden): pods "overbooked" is forbidden: exceeded quota: lab-quota, requested: memory=16Mi, used: memory=85Mi, limited: memory=100Mi
 ```
 
@@ -287,12 +308,12 @@ The default request value of 16 MiB of memory that was automatically set on the 
 Let's have a closer look at the quota with:
 
 ```bash
-kubectl get quota -o yaml --namespace <namespace>
+kubectl get quota --output yaml --namespace <namespace>
 ```
 
 which should output the following YAML definition:
 
-```yaml
+```
 ...
   status:
     hard:
@@ -306,10 +327,21 @@ which should output the following YAML definition:
 
 The most interesting part is the quota's status which reveals that we cannot use more than 100 MiB of memory and that 80 MiB are already used.
 
-Fortunately our application can live with less memory than what the LimitRange sets. Let's set the request to the required 10 MiB:
+Fortunately our application can live with less memory than what the LimitRange sets. Let's set the request to the remaining 10 MiB:
+
+{{< onlyWhenNot mobi >}}
 
 ```bash
-kubectl run overbooked --image=polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace ba-k8s-techlab-quotas --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+kubectl run overbooked --image=polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
+
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
+```bash
+kubectl run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+```
+
+{{< /onlyWhen >}}
 
 Even though the limits of both Pods combined overstretch the quota, the requests do not and so the Pods are allowed to run.

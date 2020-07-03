@@ -16,7 +16,7 @@ Running containers should be treated as immutable infrastructure and should ther
 
 With Kubernetes you can open a remote shell into a Pod without installing SSH by using the command `kubectl exec`. The command can be used to execute anything in a Pod. With the parameter `-it` you can leave an open connection.
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 On Windows, you can use Git Bash and `winpty`.
 {{% /alert %}}
 
@@ -27,7 +27,7 @@ Choose a Pod with `kubectl get pods --namespace <namespace>` and execute the fol
 kubectl exec -it <pod> --namespace <namespace> -- /bin/bash
 ```
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 If Bash is not available in the Pod you can fallback to `-- sh` instead of `-- /bin/bash`.
 {{% /alert %}}
 
@@ -62,13 +62,13 @@ exit
 Single commands inside a container can also be executed with `kubectl exec`:
 
 ```bash
-kubectl exec <pod> --namespace <namespace> env
+kubectl exec <pod> --namespace <namespace> -- env
 ```
 
 Example:
 
 ```bash
-$ kubectl exec example-web-python-69b658f647-xnm94 --namespace <namespace> env
+$ kubectl exec example-web-python-69b658f647-xnm94 --namespace <namespace> -- env
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=example-web-python-xnm94
 KUBERNETES_SERVICE_PORT_DNS_TCP=53
@@ -114,6 +114,10 @@ Then execute the port forwarding with this name:
 kubectl port-forward example-web-python-1-xj1df 5000:5000 --namespace <namespace>
 ```
 
+{{% alert title="Note" color="primary" %}}
+Use the additional parameter `--address 0.0.0.0` if you want to access the forwarded port from outside.  
+{{% /alert %}}
+
 The output of the command should look like this:
 
 ```
@@ -129,14 +133,10 @@ The application is now available with the following link: <http://localhost:5000
 curl localhost:5000
 ```
 
-{{% alert title="Tip" color="warning" %}}
-Use the additional parameter `--address 0.0.0.0` if you want to access the forwarded port from outside.  
-{{% /alert %}}
-
 With the same concept you can access databases from your local client or connect your local development environment via remote debugging to your application in the Pod.
 
 With the following link you find more information about port forwarding: <https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/>
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 The `kubectl port-forward` process runs as long as it is not terminated by the user. So when done, stop it with `CTRL-c`.
 {{% /alert %}}

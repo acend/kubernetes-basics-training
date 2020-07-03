@@ -1,0 +1,122 @@
+---
+# Source: kubeview/templates/service-account.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kubeview
+---
+# Source: kubeview/templates/service-account.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: kubeview
+rules:
+  - apiGroups: ["extensions"]
+    resources:
+      - ingresses
+    verbs: ["get", "list"]
+  - apiGroups: ["apps"]
+    resources:
+      - deployments
+      - replicasets
+      - daemonsets
+      - statefulsets
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources:
+      - pods
+      - ingresses
+      - configmaps
+      - secrets
+      - events
+      - endpoints
+      - namespaces
+      - nodes
+      - persistentvolumes
+      - persistentvolumeclaims
+      - resourcequotas
+      - services
+    verbs: ["get", "list"]
+---
+# Source: kubeview/templates/service-account.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: kubeview
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: kubeview
+subjects:
+  - kind: ServiceAccount
+    name: kubeview
+---
+# Source: kubeview/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubeview
+  labels:
+    app.kubernetes.io/name: kubeview
+    app.kubernetes.io/instance: kubeview
+    app.kubernetes.io/version: "0.1.15"
+spec:
+  ports:
+    - port: 80
+      targetPort: 8000
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: kubeview
+    app.kubernetes.io/instance: kubeview
+---
+# Source: kubeview/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubeview
+  labels:
+    app.kubernetes.io/name: kubeview
+    app.kubernetes.io/instance: kubeview
+    app.kubernetes.io/version: "0.1.15"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kubeview
+      app.kubernetes.io/instance: kubeview
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kubeview
+        app.kubernetes.io/instance: kubeview
+    spec:
+      serviceAccountName: kubeview
+      containers:
+        - name: kubeview
+          image: "bencuk/kubeview:0.1.15"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: IN_CLUSTER
+              value: "true"
+              #- name: NAMESPACE_SCOPE
+              #  value: dashboard
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi

@@ -71,13 +71,13 @@ Add both parts `volumeMounts` and `volumes`
 ...
 ```
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Because we just changed the Deployment a new Pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
 {{% /alert %}}
 
 Our application automatically creates the database schema at startup time.
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 If you want to force a redeployment of a Pod, you could use this:
 
 ```bash
@@ -111,7 +111,7 @@ Check the logs from the container and search for the error.
 kubectl logs mysql-f845ccdb7-hf2x5 --namespace <namespace>
 ```
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 If the container won't start because the data directory has files in it then mount the volume at a different location in the Pod and check the content. Remove it if necessary.
 {{% /alert %}}
 

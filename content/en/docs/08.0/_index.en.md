@@ -49,7 +49,7 @@ The string at `.data.password` is Base64 encoded and can easily be decoded:
 echo "bXlzcWxwYXNzd29yZA=="| base64 -d
 ```
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 By default, Secrets by are not encrypted! Kubernetes 1.13 [offers this capability](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/). Another option would be the use of a secrets management solution like [Vault by HashiCorp](https://www.vaultproject.io/).
 {{% /alert %}}
 
@@ -66,6 +66,7 @@ As we had seen in the earlier labs, all resources like Deployments, Services, Se
 In our case we want to create a deployment including a Service for our MySQL database.
 Save this snippet as `mysql.yaml`:
 
+{{< onlyWhenNot mobi >}}
 
 ```yaml
 ---
@@ -81,7 +82,7 @@ spec:
   selector:
     app: mysql
 ---
-apiVersion: apps/v1 # for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
@@ -126,10 +127,73 @@ spec:
           name: mysql
 ```
 
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
+```yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: mysql
+---
+apiVersion: apps/v1 # for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mysql:5.6
+        name: mysql
+        args:
+        - "--ignore-db-dir=lost+found"
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-root-password
+              key: password
+        - name: MYSQL_DATABASE
+          value: example
+        - name: MYSQL_USER
+          value: example
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-password
+              key: password
+        livenessProbe:
+          tcpSocket:
+            port: 3306
+        ports:
+        - containerPort: 3306
+          name: mysql
+```
+
+{{< /onlyWhen >}}
 Execute it with:
 
 ```bash
-kubectl apply -f mysql.yaml --namespace <namespace>
+kubectl create -f mysql.yaml --namespace <namespace>
 ```
 
 As soon as the container image for `mysql:5.7` has been pulled, you will see a new Pod using `kubectl get pods`.
@@ -165,25 +229,28 @@ You could also do the changes by directly editing the Deployment:
 kubectl edit deployment example-web-python --namespace <namespace>
 ```
 
-```bash
-kubectl get deployment example-web-python --namespace <namespace>
-```
-
 ```yaml
 ...
-      - env:
+    spec:
+      containers:
+      - # start to copy here
+        env:
         - name: MYSQL_URI
           valueFrom:
             secretKeyRef:
-              name: mysql-uri
               key: MYSQL_URI
+              name: mysql-uri
+        # stop to copy here
+        image: acend/example-web-python
+        imagePullPolicy: Always
+        name: example-web-python
 ...
 ```
 
 In order to find out if the change worked we can either look at the container's logs (`kubectl logs <pod>`).
 Or we could register some "Hellos" in the application, delete the Pod, wait for the new Pod to be started and check if they are still there.
 
-{{% alert title="Attention" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 This does not work if we delete the database Pod as its data is not yet persisted.
 {{% /alert %}}
 
@@ -250,7 +317,7 @@ show tables;
 
 Our task is now to import this [dump.sql](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/08.0/dump.sql) into the MySQL database running as a Pod. Use the `mysql` command line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 You can also copy local files into a Pod using `kubectl cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the Pod and use `curl -O <url>`.
 {{% /alert %}}
 
@@ -288,11 +355,19 @@ Import a dump:
 mysql -u$MYSQL_USER -p$MYSQL_PASSWORD example < /tmp/dump.sql
 ```
 
-{{% alert title="Note" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 A database dump can be created as follows:
 
 ```bash
+kubectl exec -it mysql-f845ccdb7-hf2x5 -- /bin/bash
+```
+
+```bash
 mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD example > /tmp/dump.sql
+```
+
+```bash
+kubectl cp mysql-f845ccdb7-hf2x5:/tmp/dump.sql /tmp/dump.sql
 ```
 
 {{% /alert %}}

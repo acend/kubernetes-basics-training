@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx-public
+    kubernetes.io/tls-acme: "true"
+  labels:
+    app: kubernetes-techlab-mobi
+  name: kubernetes-techlab-acend-mobi
+  namespace: dreng-kubernetestechlab-prod
+spec:
+  rules:
+  - host: kubernetes-mobi.k8s.puzzle.ch
+    http:
+      paths:
+      - backend:
+          serviceName: kubernetes-techlab-mobi
+          servicePort: 8080
+  tls:
+
+  - hosts:
+      - kubernetes-mobi.k8s.puzzle.ch
