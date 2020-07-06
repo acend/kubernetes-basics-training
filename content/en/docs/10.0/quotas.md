@@ -213,6 +213,7 @@ kubectl get pod stress2much --output yaml --namespace <namespace>
 ```
 
 Near the end of the output you can find the relevant status part:
+{{< onlyWhenNot mobi >}}
 
 ```
   containerStatuses:
@@ -225,6 +226,22 @@ Near the end of the output you can find the relevant status part:
         ...
 ```
 
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
+
+```
+  containerStatuses:
+  - containerID: docker://da2473f1c8ccdffbb824d03689e9fe738ed689853e9c2643c37f206d10f93a73
+    image: docker-registry.mobicorp.ch/polinux/stress:latest
+    lastState:
+      terminated:
+        ...
+        reason: OOMKilled
+        ...
+```
+
+{{< /onlyWhen >}}
 So let's look at the numbers to verify the container really had too little memory. We started the `stress` command using parameter `--vm-bytes 85M` which means the process wants to allocate 85 megabytes of memory. Again looking at the Pod's YAML definition with:
 
 ```bash
