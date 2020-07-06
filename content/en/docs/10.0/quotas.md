@@ -169,10 +169,20 @@ requests.memory  0     100Mi
 ## Task {{% param sectionnumber %}}.2: Default memory limit
 
 Create a Pod using the polinux/stress image:
+{{< onlyWhenNot mobi >}}
 
 ```bash
 kubectl run stress2much --image=docker-registry.mobicorp.ch/polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
+
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
+```bash
+kubectl run stress2much --image=docker-registry.mobicorp.ch/polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+```
+
+{{< /onlyWhen >}}
 
 {{% alert title="Note" color="primary" %}}
 You have to actively terminate the following command pressing `CTRL+c` on your keyboard.
@@ -239,10 +249,22 @@ These are the values from the LimitRange, and the defined limit of 32 MiB of mem
 
 Let's fix this by recreating the Pod and explicitly setting the memory request to 85 MB:
 
+{{< onlyWhenNot mobi >}}
+
+```bash
+kubectl delete pod stress2much --namespace <namespace>
+kubectl run stress --image=polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+```
+
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
 ```bash
 kubectl delete pod stress2much --namespace <namespace>
 kubectl run stress --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
+
+{{< /onlyWhen >}}
 
 {{% alert title="Note" color="primary" %}}
 Remember, if you'd only set the limit, the request would be set to the same value.
@@ -260,9 +282,20 @@ stress   1/1     Running   0          25s
 
 Create another Pod, again using the `polinux/stress` image. This time our application is less demanding and only needs 10 MB of memory (`--vm-bytes 10M`):
 
+{{< onlyWhenNot mobi >}}
+
+```bash
+kubectl run overbooked --image=polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+```
+
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
 ```bash
 kubectl run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
+
+{{< /onlyWhen >}}
 
 We are immediately confronted with an error message:
 
@@ -296,8 +329,19 @@ The most interesting part is the quota's status which reveals that we cannot use
 
 Fortunately our application can live with less memory than what the LimitRange sets. Let's set the request to the remaining 10 MiB:
 
+{{< onlyWhenNot mobi >}}
+
+```bash
+kubectl run overbooked --image=polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+```
+
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+
 ```bash
 kubectl run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
+
+{{< /onlyWhen >}}
 
 Even though the limits of both Pods combined overstretch the quota, the requests do not and so the Pods are allowed to run.
