@@ -172,7 +172,7 @@ Create a Pod using the polinux/stress image:
 {{< onlyWhenNot mobi >}}
 
 ```bash
-kubectl run stress2much --image=docker-registry.mobicorp.ch/polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+kubectl run stress2much --image=polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
 {{< /onlyWhenNot >}}
