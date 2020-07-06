@@ -44,7 +44,6 @@ If you decide to not use the default kubeconfig location at `~/.kube/config` the
 export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 ```
 
-{{< /onlyWhenNot >}}
 {{< /onlyWhen >}}
 
 {{< onlyWhen mobi >}}
