@@ -77,7 +77,7 @@ Because we just changed the Deployment a new Pod was automatically redeployed. T
 
 Our application automatically creates the database schema at startup time.
 
-{{% alert title="Tip" color="primary" %}}
+{{% alert title="Note" color="primary" %}}
 If you want to force a redeployment of a Pod, you could use this:
 
 ```bash

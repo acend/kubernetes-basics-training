@@ -85,7 +85,7 @@ kubectl get svc --namespace <namespace> --watch
 nginx is now available at the given port number indicated by the `NodePort` and should display a welcome page when accessing it with `curl` or your browser of choice.
 
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Use `kubectl get node -o wide` to get a node ip address. Remember, [NodePort's](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport) are open on any kubernetes node
 {{% /alert %}}
 

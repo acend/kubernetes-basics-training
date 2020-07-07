@@ -22,7 +22,7 @@ That leads to a now-obvious security issue: escalation of privileges. Suddenly, 
 
 With the v3 release, Helm got rid of Tiller.
 
-{{% alert title="Tip" color="warning" %}}
+{{% alert title="Note" color="primary" %}}
 Check out the [Helm Documentation](https://helm.sh/docs/topics/v2_v3_migration/) for more details about changes between v2 and v3.
 {{% /alert %}}
 
@@ -43,7 +43,7 @@ Install the `helm` cli on your system:
 1. Find the helm binary in the unpacked directory and move it to its desired destination (e.g. `mv linux-amd64/helm /usr/local/bin/`)
     * The desired destination should be listed in your $PATH environment variable (`echo $PATH`)
 
-{{% alert title="Windows Users" color="warning" %}}
+{{% alert title="Note for Windows users" color="primary" %}}
 Please make sure to select the [Windows version](https://get.helm.sh/helm-v3.1.2-windows-amd64.zip). Put the binary into your working directory or make sure the directory containing the `helm.exe` binary is in your `Path` environment variable.
 {{% /alert %}}
 

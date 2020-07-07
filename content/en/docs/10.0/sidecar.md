@@ -37,15 +37,15 @@ And add a new (sidecar) container into your Deployment:
 containers:
 ...
 - env:
-- name: DATA_SOURCE_NAME
+  - name: DATA_SOURCE_NAME
     value: root:$MYSQL_ROOT_PASSWORD@(localhost:3306)/
-- name: MYSQL_ROOT_PASSWORD
+  - name: MYSQL_ROOT_PASSWORD
     valueFrom:
     secretKeyRef:
-        key: password
-        name: mysql-root-password
-image: prom/mysqld-exporter
-name: mysqld-exporter
+      key: password
+      name: mysql-root-password
+  image: prom/mysqld-exporter
+  name: mysqld-exporter
 ...
 ```
 
@@ -56,9 +56,9 @@ name: mysqld-exporter
 containers:
 ...
 - env:
-- name: DATA_SOURCE_NAME
+  - name: DATA_SOURCE_NAME
     value: root:$MYSQL_ROOT_PASSWORD@(localhost:3306)/
-- name: MYSQL_ROOT_PASSWORD
+  - name: MYSQL_ROOT_PASSWORD
     valueFrom:
     secretKeyRef:
         key: password
