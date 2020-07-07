@@ -4,7 +4,7 @@ weight: 8
 sectionnumber: 8
 ---
 
-Numerous applications are stateful lin some way and want to save data persistently---be it in a database or as files on a filesystem or in an object store. During this lab, we are going to create a MySQL Service and attach it to our application so that application Pods can access the same database.
+Numerous applications are stateful in some way and want to save data persistently--- be it in a database or as files on a filesystem or in an object store. During this lab, we are going to create a MySQL Service and attach it to our application so that application Pods can access the same database.
 
 
 ## Task {{% param sectionnumber %}}.1: Create the MySQL Service
