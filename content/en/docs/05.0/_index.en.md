@@ -7,7 +7,7 @@ sectionnumber: 5
 In this lab, we are going to make the freshly deployed application from the last lab available online.
 
 
-## Task {{% param sectionnumber %}}.1: Create an ClusterIP Service with an Ingress
+## Task {{% param sectionnumber %}}.1: Create a ClusterIP Service with an Ingress
 
 The command `kubectl create deployment` from the last lab creates a Pod but no Service. A Kubernetes Service is an abstract way to expose an application running on a set of Pods as a network service. For some parts of your application (for example, frontends) you may want to expose a Service onto an external IP address, that's outside of your cluster.
 
