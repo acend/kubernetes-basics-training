@@ -248,7 +248,7 @@ Additionally, [container health checks](https://kubernetes.io/docs/tasks/configu
 Basically, there are two different kinds of checks that can be implemented:
 
 * Liveness probes are used to find out if an application is still running
-* Readiness probes tell us if the application es ready to receive requests (which is especially relevant for above-mentioned rolling updates)
+* Readiness probes tell us if the application is ready to receive requests (which is especially relevant for above-mentioned rolling updates)
 
 These probes can be implemented as HTTP checks, container execution checks (the execution of a command or script inside a container), or TCP socket checks.
 
