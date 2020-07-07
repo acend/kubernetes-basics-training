@@ -44,6 +44,22 @@ If you decide to not use the default kubeconfig location at `~/.kube/config` the
 export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 ```
 
+{{% alert title="Note" color="primary" %}} When using PowerShell on a Windows Computer use the following command, you'll have to replace `<user>` with your actual user
+
+```
+$Env:KUBECONFIG = "C:\Users\<user>\.kube-techlab\config"
+```
+
+To set the environment variable (`KUBECONFIG` = `C:\Users\<user>\.kube-techlab\config`) permenantly, check the following documentation:
+
+The `PATH` can be set in Windows in the advanced system settings. It depends on the version:
+
+* [Windows 7](http://geekswithblogs.net/renso/archive/2009/10/21/how-to-set-the-windows-path-in-windows-7.aspx)
+* [Windows 8](http://www.itechtics.com/customize-windows-environment-variables/)
+* [Windows 10](http://techmixx.de/windows-10-umgebungsvariablen-bearbeiten/)
+
+{{% /alert %}}
+
 {{< /onlyWhen >}}
 
 {{< onlyWhen mobi >}}
