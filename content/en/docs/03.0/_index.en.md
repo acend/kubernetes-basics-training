@@ -49,6 +49,7 @@ export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 ```
 $Env:KUBECONFIG = "C:\Users\<user>\.kube-techlab\config"
 ```
+
 To set the environment variable (`KUBECONFIG` = `C:\Users\<user>\.kube-techlab\config`) permenantly, check the following documentation:
 
 The `PATH` can be set in Windows in the advanced system settings. It depends on the version:
