@@ -412,6 +412,16 @@ URL=http://<node-ip>:<node-port>
 while true; do sleep 1; curl -s $URL/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
+Windows PowerShell:
+
+```bash
+while(1) {
+  Start-Sleep -s 1
+  Invoke-RestMethod http://[URL]/pod/
+  Get-Date -Uformat "+ TIME: %H:%M:%S,%3N"
+}
+```
+
 Start a new deployment by editing it (the so-called _ConfigChange_ trigger creates the new Deployment automatically):
 
 ```bash
