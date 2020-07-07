@@ -201,10 +201,10 @@ kubectl create -f ingress.yaml --namespace <namespace>
 ```
 
 {{< onlyWhenNot mobi >}}
-Afterwards, we are able to access our freshly created Ingress at `http://web-go-<namespace>.<domain>`
+Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<domain>`
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
-Afterwards, we are able to access our freshly created Ingress at `http://web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
+Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
 {{< /onlyWhen >}}
 
 
