@@ -122,14 +122,14 @@ The possibility of enforcing minimum and maximum resources and defining Resource
 {{< onlyWhen rancher >}}
 Make sure you're logged in to the cluster. Choose the appropriate cluster and click on __Projects/Namespaces__. Under the Project kubernetes-quotalab click on __Add Namespace__.
 
-Choose a name for your Namespace in the form of `<yourname>`-quota-lab, expand the __Container Default Resource Limit__ view and set the following values:
+Choose a name for your Namespace in the form of `<namespace>`-quota, expand the __Container Default Resource Limit__ view and set the following values:
 
 * __CPU Limit__: 100
 * __CPU Reservation__: 10
 * __Memory Limit__: 32
 * __Memory Reservation__: 16
 
-![Quota lab namespace creation](create_quotalab_namespace.png)
+![Quota lab namespace creation](../create_quotalab_namespace.png)
 
 Finally, click on __Create__.
 {{< /onlyWhen >}}
@@ -158,7 +158,7 @@ Check whether a ResourceQuota exists in your Namespace:
 kubectl describe quota --namespace <namespace>
 ```
 
-Above command should output this (name and Namespace will vary):
+Above command could (must not) output this (name and Namespace will vary):
 
 ```
 Name:            lab-quota
