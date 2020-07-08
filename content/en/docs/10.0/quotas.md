@@ -118,7 +118,7 @@ The possibility of enforcing minimum and maximum resources and defining Resource
 {{< onlyWhen rancher >}}
 Make sure you're logged in to the cluster. Choose the appropriate cluster and click on __Projects/Namespaces__. Under the Project kubernetes-quotalab click on __Add Namespace__.
 
-Choose a name for your Namespace in the form of `<yourname>`-quota-lab, expand the __Container Default Resource Limit__ view and set the following values:
+Choose a name for your Namespace in the form of `<namespace>`-quota, expand the __Container Default Resource Limit__ view and set the following values:
 
 * __CPU Limit__: 100
 * __CPU Reservation__: 10
@@ -143,8 +143,8 @@ Name:       ce01a1b6-a162-479d-847c-4821255cc6db
 Namespace:  eltony-quota-lab
 Type        Resource  Min  Max  Default Request  Default Limit  Max Limit/Request Ratio
 ----        --------  ---  ---  ---------------  -------------  -----------------------
-Container   memory    -    -    16Mi             32Mi           -
-Container   cpu       -    -    10m              100m           -
+Container   memory    -    -    16Mi             -              -
+Container   cpu       -    -    10m              -              -
 ```
 
 
