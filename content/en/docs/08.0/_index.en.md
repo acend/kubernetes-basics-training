@@ -205,7 +205,7 @@ The environment variables defined in the deployment configure the MySQL Pod and 
 
 By default, our `example-web-python` application uses a SQLite memory database. However, this can be changed by defining the following environment variables to use the newly created MySQL Service:
 
-```bash
+```
 MYSQL_URI=mysql://example:mysqlpassword@mysql/example
 ```
 
