@@ -87,7 +87,7 @@ Note the `Ready` column which shows you 2 ready container.
 You can observe the logs from the mysqld-exporter with:
 
 ```bash
-kubectl logs <mysql-65559644c9-cdjjk> -c mysqld-exporter
+kubectl get logs <pod> -c mysqld-exporter
 ```
 
 which gives you an output similar to this:
