@@ -91,7 +91,6 @@ metadata:
   labels:
     app: spring-boot-example
   name: spring-boot-example
-  namespace: <namespace>
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
