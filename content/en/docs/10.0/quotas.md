@@ -19,13 +19,13 @@ Defining ResourceQuotas makes sense when the cluster administrators want to have
 
 In order to check for defined quotas in your Namespace, simply see if there are any of type ResourceQuota:
 
-```
+```bash
 kubectl get resourcequota
 ```
 
 To show in detail what kinds of limits the quota imposes:
 
-```
+```bash
 kubectl describe resourcequota <quota-name> --namespace <namespace>
 ```
 
@@ -45,7 +45,7 @@ Containers using more memory than what they are allowed to use will be killed.
 
 Defining limits and requests on a Pod that has one container looks like this:
 
-```
+```bash
 apiVersion: v1
 kind: Pod
 metadata:
