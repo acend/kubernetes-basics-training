@@ -143,8 +143,8 @@ Name:       ce01a1b6-a162-479d-847c-4821255cc6db
 Namespace:  eltony-quota-lab
 Type        Resource  Min  Max  Default Request  Default Limit  Max Limit/Request Ratio
 ----        --------  ---  ---  ---------------  -------------  -----------------------
-Container   memory    -    -    16Mi             -              -
-Container   cpu       -    -    10m              -              -
+Container   memory    -    -    16Mi             32Mi           -
+Container   cpu       -    -    10m              100m           -
 ```
 
 
@@ -154,7 +154,7 @@ Check whether a ResourceQuota exists in your Namespace:
 kubectl describe quota --namespace <namespace>
 ```
 
-Above command should output this (name and Namespace will vary):
+Above command could (must not) output this (name and Namespace will vary):
 
 ```
 Name:            lab-quota
