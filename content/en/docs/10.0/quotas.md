@@ -125,7 +125,7 @@ Choose a name for your Namespace in the form of `<yourname>`-quota-lab, expand t
 * __Memory Limit__: 32
 * __Memory Reservation__: 16
 
-![Quota lab namespace creation](create_quotalab_namespace.png)
+![Quota lab namespace creation](../create_quotalab_namespace.png)
 
 Finally, click on __Create__.
 {{< /onlyWhen >}}
