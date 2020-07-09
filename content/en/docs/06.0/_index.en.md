@@ -300,6 +300,7 @@ kubectl edit deployment example-web-python -o json --namespace <namespace>
 },
 ...
 ```
+
 {{% /alert %}}
 
 Now insert the readiness probe at `.spec.template.spec.containers` above the `resources: {}` line:
