@@ -127,10 +127,10 @@ A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deploym
   * ImagePullPolicy
 * The number of Pods/Replicas that should be deployed
 
-By using the `-o` (or `--output`) parameter we get a lot more information about the deployment itself:
+By using the `-o` (or `--output`) parameter we get a lot more information about the deployment itself. You can choose between YAML and JSON formatting by indicating `-o yaml` or `-o json`. In this training we are going to use YAML, but please feel free to replace `yaml` with `json` if you prefer.
 
 ```bash
-kubectl get deployment example-web-go -o json --namespace <namespace>
+kubectl get deployment example-web-go -o yaml --namespace <namespace>
 ```
 
 After the image has been pulled, Kubernetes deploys a Pod according to the Deployment:

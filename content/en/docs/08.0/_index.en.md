@@ -9,7 +9,6 @@ Numerous applications are stateful in some way and want to save data persistentl
 
 ## Task {{% param sectionnumber %}}.1: Create the MySQL Service
 
-
 We are first going to create a so-called _Secret_ in which we write the password for accessing the database.
 
 ```bash
@@ -19,28 +18,27 @@ kubectl create secret generic mysql-password --from-literal=password=mysqlpasswo
 The Secret will neither be shown with `kubectl get` nor with `kubectl describe`:
 
 ```bash
-kubectl get secret mysql-password -o json --namespace <namespace>
+kubectl get secret mysql-password -o yaml --namespace <namespace>
 ```
 
 Which gives you an output similar to this:
 
-```json
-{
-    "apiVersion": "v1",
-    "data": {
-        "password": "bXlzcWxwYXNzd29yZA=="
-    },
-    "kind": "Secret",
-    "metadata": {
-        "creationTimestamp": "2018-10-16T13:36:15Z",
-        "name": "mysql-password",
-        "namespace": "<namespace>",
-        "resourceVersion": "3156527",
-        "selfLink": "/api/v1/namespaces/<namespace>/secrets/mysql-password",
-        "uid": "74a7f030-d148-11e8-a406-42010a840034"
-    },
-    "type": "Opaque"
-}
+```
+apiVersion: v1
+data:
+  password: bXlzcWxwYXNzd29yZA==
+kind: Secret
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"password":"bXlzcWxwYXNzd29yZA=="},"kind":"Secret","metadata":{"annotations":{},"creationTimestamp":"2018-10-16T13:36:15Z","name":"mysql-password","namespace":"\u003cnamespace\u003e","resourceVersion":"3156527","selfLink":"/api/v1/namespaces/\u003cnamespace\u003e/secrets/mysql-password","uid":"74a7f030-d148-11e8-a406-42010a840034"},"type":"Opaque"}
+  creationTimestamp: "2018-10-16T13:36:15Z"
+  name: mysql-password
+  namespace: <namespace>
+  resourceVersion: "3156527"
+  selfLink: /api/v1/namespaces/<namespace>/secrets/mysql-password
+  uid: 74a7f030-d148-11e8-a406-42010a840034
+type: Opaque
 ```
 
 The string at `.data.password` is Base64 encoded and can easily be decoded:
