@@ -279,7 +279,7 @@ spec:
 ...
 ```
 
-
+{{% alert title="Note" color="primary" %}}
 If you prefer JSON formatting to YAML, use the corresponding `--output`/`-o` parameter to edit the resource in JSON:
 
 ```bash
@@ -300,10 +300,9 @@ kubectl edit deployment example-web-python -o json --namespace <namespace>
 },
 ...
 ```
+{{% /alert %}}
 
 Now insert the readiness probe at `.spec.template.spec.containers` above the `resources: {}` line:
-
-**YAML:**
 
 ```yaml
 ...
@@ -324,33 +323,7 @@ Now insert the readiness probe at `.spec.template.spec.containers` above the `re
 ...
 ```
 
-**JSON:**
-
-```json
-...
-                        "image": "acend/example-web-python",
-                        "imagePullPolicy": "Always",
-                        "name": "example-web-python",
-                        // start to copy here
-                        "readinessProbe": {
-                            "httpGet": {
-                                "path": "/health",
-                                "port": 5000,
-                                "scheme": "HTTP"
-                            },
-                            "initialDelaySeconds": 10,
-                            "periodSeconds": 10,
-                            "timeoutSeconds": 1
-                        },
-                        // stop to copy here
-                        "resources": {},
-...
-```
-
-
 The `containers` configuration then looks like:
-
-**YAML:**
 
 ```yaml
 ...
@@ -371,35 +344,6 @@ The `containers` configuration then looks like:
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
-...
-```
-
-**JSON:**
-
-```json
-...
-                "containers": [
-                    {
-                        "image": "acend/example-web-python",
-                        "imagePullPolicy": "Always",
-                        "name": "example-web-python",
-                        "readinessProbe": {
-                            "failureThreshold": 3,
-                            "httpGet": {
-                                "path": "/health",
-                                "port": 5000,
-                                "scheme": "HTTP"
-                            },
-                            "initialDelaySeconds": 10,
-                            "periodSeconds": 10,
-                            "successThreshold": 1,
-                            "timeoutSeconds": 1
-                        },
-                        "resources": {},
-                        "terminationMessagePath": "/dev/termination-log",
-                        "terminationMessagePolicy": "File"
-                    }
-                ],
 ...
 ```
 
