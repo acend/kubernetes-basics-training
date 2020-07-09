@@ -42,7 +42,7 @@ example-web-python-86d9d584f8   1         1         1       110s
 Or for even more details:
 
 ```bash
-kubectl get replicaset <replicaset> -o json --namespace <namespace>
+kubectl get replicaset <replicaset> -o yaml --namespace <namespace>
 ```
 
 The ReplicaSet shows how many instances of a Pod that are desired, current and ready.
@@ -265,39 +265,16 @@ You can directly edit the deployment (or any resource) with:
 kubectl edit deployment example-web-python --namespace <namespace>
 ```
 
+Look for the following section and change the value for `maxUnavailable` to 0:
 
-**YAML:**
-
-```yaml
+```
 ...
 spec:
   strategy:
     rollingUpdate:
       maxSurge: 25%
-      maxUnavailable: 0 # <- change this line
+      maxUnavailable: 0
     type: RollingUpdate
-...
-```
-
-{{% alert title="Note" color="primary" %}}
-If you prefer JSON formatting to YAML, use the corresponding `--output`/`-o` parameter to edit the resource in JSON:
-
-```bash
-kubectl edit deployment example-web-python -o json --namespace <namespace>
-```
-
-
-**JSON:**
-
-```json
-...
-"strategy": {
-    "rollingUpdate": {
-        "maxSurge": "25%",
-        "maxUnavailable": "0" // <- change this line
-    },
-    "type": "RollingUpdate"
-},
 ...
 ```
 
@@ -326,7 +303,7 @@ Now insert the readiness probe at `.spec.template.spec.containers` above the `re
 
 The `containers` configuration then looks like:
 
-```yaml
+```
 ...
       containers:
       - image: acend/example-web-python

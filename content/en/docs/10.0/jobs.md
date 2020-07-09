@@ -123,7 +123,7 @@ kubectl get pods --namespace <namespace>
 To show all Pods belonging to a Job in a human-readable format, the following command can be used:
 
 ```bash
-kubectl get pods --selector=job-name=mysql-dump --output=jsonpath={.items..metadata.name} --namespace <namespace>
+kubectl get pods --selector=job-name=mysql-dump --output=go-template='{{range .items}}{{.metadata.name}}{{end}}' --namespace <namespace>
 ```
 
 
