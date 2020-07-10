@@ -278,8 +278,6 @@ spec:
 ...
 ```
 
-{{% /alert %}}
-
 Now insert the readiness probe at `.spec.template.spec.containers` above the `resources: {}` line:
 
 ```yaml
