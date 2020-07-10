@@ -52,7 +52,7 @@ javaconfiguration   1      7s
 The content can also be displayed with
 
 ```bash
-kubectl get configmap javaconfiguration -o json --namespace <namespace>
+kubectl get configmap javaconfiguration -o yaml --namespace <namespace>
 ```
 
 
