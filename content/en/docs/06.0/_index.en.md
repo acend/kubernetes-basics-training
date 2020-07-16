@@ -127,7 +127,7 @@ Scaling of Pods within a Service is fast, as Kubernetes simply creates a new con
 You can check the availability of your Service while you scale the number of replicas up and down in your browser: `http://<node-ip>:<node-port>`.
 
 {{% alert title="Note" color="primary" %}}
-Check the [previous lab](../05.0) on how to get the `<node-ip>` and `<node-port>` or how to use an Ingress instead.
+Check the [previous lab](../05.0/) on how to get the `<node-ip>` and `<node-port>` or how to use an Ingress instead.
 {{% /alert %}}
 
 Now, execute the corresponding loop command for your operating system in another console.
