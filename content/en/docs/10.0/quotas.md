@@ -6,6 +6,17 @@ sectionnumber: 10.5
 
 In this lab, we are going to look at ResourceQuotas and LimitRanges. As Kubernetes users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.
 
+{{< onlyWhen rancher >}}
+In order for this lab to work correctly we need to create a new namespace (eg. `<namespace>-quota`) in a specific rancher project. Create the new namespace `kubectl create namespace <namespace>` and inform the trainer. The namespace needs to be moved into the rancher project `kubernetes-quotalab`
+
+As a next step you need to create the resource quota object. Download the [quota.yaml](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/10.0/quota.yaml) and apply it with
+
+```bash
+kubectl apply -f quota.yaml --namespace <namespace>
+```
+
+{{< /onlyWhen >}}
+
 
 ## ResourceQuotas
 
@@ -20,7 +31,7 @@ Defining ResourceQuotas makes sense when the cluster administrators want to have
 In order to check for defined quotas in your Namespace, simply see if there are any of type ResourceQuota:
 
 ```
-kubectl get resourcequota
+kubectl get resourcequota --namespace <namespace>
 ```
 
 To show in detail what kinds of limits the quota imposes:
@@ -116,18 +127,25 @@ The possibility of enforcing minimum and maximum resources and defining Resource
 ## Task {{% param sectionnumber %}}.1: Namespace
 
 {{< onlyWhen rancher >}}
-Make sure you're logged in to the cluster. Choose the appropriate cluster and click on __Projects/Namespaces__. Under the Project kubernetes-quotalab click on __Add Namespace__.
+Make sure you're logged in to the cluster. Choose the appropriate cluster and click on __Projects/Namespaces__. Under the Project kubernetes-quotalab edit your Namespace by clicking on __edit__.
 
-Choose a name for your Namespace in the form of `<yourname>`-quota-lab, expand the __Container Default Resource Limit__ view and set the following values:
+Expand the __Container Default Resource Limit__ view and set the following values:
 
 * __CPU Limit__: 100
 * __CPU Reservation__: 10
 * __Memory Limit__: 32
 * __Memory Reservation__: 16
 
-![Quota lab namespace creation](create_quotalab_namespace.png)
+![Quota lab namespace creation](../edit_quotalab_namespace.png)
 
-Finally, click on __Create__.
+Finally, click on __Save__.
+
+You can also create the limitrange resource using the cli. Download the [limitrange.yaml](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/10.0/limitrange.yaml) and apply it with
+
+```bash
+kubectl apply -f limitrange.yaml --namespace <namespace>
+```
+
 {{< /onlyWhen >}}
 
 Check whether your Namespace contains a LimitRange:
@@ -154,7 +172,7 @@ Check whether a ResourceQuota exists in your Namespace:
 kubectl describe quota --namespace <namespace>
 ```
 
-Above command should output this (name and Namespace will vary):
+Above command could (must not) output this (name and Namespace will vary):
 
 ```
 Name:            lab-quota

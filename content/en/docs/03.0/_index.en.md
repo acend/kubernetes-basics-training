@@ -46,6 +46,22 @@ If you decide to not use the default kubeconfig location at `~/.kube/config` the
 export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 ```
 
+{{% alert title="Note" color="primary" %}} When using PowerShell on a Windows Computer use the following command, you'll have to replace `<user>` with your actual user
+
+```
+$Env:KUBECONFIG = "C:\Users\<user>\.kube-techlab\config"
+```
+
+To set the environment variable (`KUBECONFIG` = `C:\Users\<user>\.kube-techlab\config`) permenantly, check the following documentation:
+
+The `PATH` can be set in Windows in the advanced system settings. It depends on the version:
+
+* [Windows 7](http://geekswithblogs.net/renso/archive/2009/10/21/how-to-set-the-windows-path-in-windows-7.aspx)
+* [Windows 8](http://www.itechtics.com/customize-windows-environment-variables/)
+* [Windows 10](http://techmixx.de/windows-10-umgebungsvariablen-bearbeiten/)
+
+{{% /alert %}}
+
 {{< /onlyWhen >}}
 
 {{< onlyWhen mobi >}}
@@ -68,7 +84,6 @@ As a first step on the cluster we are going to create a new Namespace.
 A Namespace is the logical design used in Kubernetes to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). Authorized users inside a namespace are able to manage those resources. Namespace names have to be unique in your cluster.
 
 {{< onlyWhen rancher >}}
-<<<<<<< HEAD
 {{% alert title="Note" color="primary" %}}
 Additionally, Rancher knows the concept of a [*Project*](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple Namespaces.
 {{% /alert %}}

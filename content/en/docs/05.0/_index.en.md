@@ -7,7 +7,7 @@ sectionnumber: 5
 In this lab, we are going to make the freshly deployed application from the last lab available online.
 
 
-## Task {{% param sectionnumber %}}.1: Create an ClusterIP Service with an Ingress
+## Task {{% param sectionnumber %}}.1: Create a ClusterIP Service with an Ingress
 
 The command `kubectl create deployment` from the last lab creates a Pod but no Service. A Kubernetes Service is an abstract way to expose an application running on a set of Pods as a network service. For some parts of your application (for example, frontends) you may want to expose a Service onto an external IP address, that's outside of your cluster.
 
@@ -48,80 +48,73 @@ example-web-go   ClusterIP  10.43.91.62   <none>        5000/TCP
 Service IP (CLUSTER-IP) addresses stay the same for the duration of the Service's lifespan.
 {{% /alert %}}
 
-You get additional information by executing the following command:
+By executing the following command:
 
 ```bash
-kubectl get service example-web-go -o json --namespace <namespace>
+kubectl get service example-web-go -o yaml --namespace <namespace>
 ```
 
+You get additional information:
+
 ```
-{
-    "apiVersion": "v1",
-    "kind": "Service",
-    "metadata": {
-        "creationTimestamp": "2019-06-21T06:25:38Z",
-        "labels": {
-            "app": "example-web-go"
-        },
-        "name": "example-web-go",
-        "namespace": "team1-dockerimage",
-        "resourceVersion": "102747",
-        "selfLink": "/api/v1/namespaces/team1-dockerimage/services/example-web-go",
-        "uid": "62ce2e59-93ed-11e9-b6c9-5a4205669108"
-    },
-    "spec": {
-        "clusterIP": "10.43.91.62",
-        "externalTrafficPolicy": "Cluster",
-        "ports": [
-            {
-                "port": 5000,
-                "protocol": "TCP",
-                "targetPort": 5000
-            }
-        ],
-        "selector": {
-            "app": "example-web-go"
-        },
-        "sessionAffinity": "None",
-        "type": "ClusterIP"
-    },
-    "status": {
-        "loadBalancer": {}
-    }
-}
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"creationTimestamp":"2019-06-21T06:25:38Z","labels":{"app":"example-web-go"},"name":"example-web-go","namespace":"team1-dockerimage","resourceVersion":"102747","selfLink":"/api/v1/namespaces/team1-dockerimage/services/example-web-go","uid":"62ce2e59-93ed-11e9-b6c9-5a4205669108"},"spec":{"clusterIP":"10.43.91.62","externalTrafficPolicy":"Cluster","ports":[{"port":5000,"protocol":"TCP","targetPort":5000}],"selector":{"app":"example-web-go"},"sessionAffinity":"None","type":"ClusterIP"},"status":{"loadBalancer":{}}}
+  creationTimestamp: "2019-06-21T06:25:38Z"
+  labels:
+    app: example-web-go
+  name: example-web-go
+  namespace: team1-dockerimage
+  resourceVersion: "102747"
+  selfLink: /api/v1/namespaces/team1-dockerimage/services/example-web-go
+  uid: 62ce2e59-93ed-11e9-b6c9-5a4205669108
+spec:
+  clusterIP: 10.43.91.62
+  externalTrafficPolicy: Cluster
+  ports:
+  - port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: example-web-go
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
 ```
 
 The Service's `selector` defines, which Pods are being used as Endpoints. This happens based on labels. Look at the configuration of Service and Pod in order to find out what maps to what:
 
 ```bash
-kubectl get service example-web-go -o json --namespace <namespace>
+kubectl get service example-web-go -o yaml --namespace <namespace>
 ```
 
 ```
 ...
-"selector": {
-    "app": "example-web-go",
-},
+  selector:
+    app: example-web-go
 ...
 ```
 
 With the following command you get details from the Pod:
 
 {{% alert title="Note" color="primary" %}}
-First, get all Pod names from your namespace with (`kubectl get pods --namespace <namespace>`) and then replace \<pod\> it in the following command. If you have installed the bash completion, you can also press TAB key for autocompletion of the Pods name.
+First, get all Pod names from your namespace with (`kubectl get pods --namespace <namespace>`) and then replace \<pod\> in the following command. If you have installed the bash completion, you can also press TAB key for autocompletion of the Pods name.
 {{% /alert %}}
 
 ```bash
-kubectl get pod <pod> -o json --namespace <namespace>
+kubectl get pod <pod> -o yaml --namespace <namespace>
 ```
 
-Let's have a look at the label section of the Pod and verify that the Service selector matches with the Pod's labels:
+Let's have a look at the label section of the Pod and verify that the Service selector matches the Pod's labels:
 
 ```
 ...
-"labels": {
-    "app": "example-web-go",
-},
+  labels:
+    app: example-web-go
 ...
 ```
 
@@ -174,7 +167,7 @@ spec:
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
 
-```yaml
+```
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
@@ -201,10 +194,10 @@ kubectl create -f ingress.yaml --namespace <namespace>
 ```
 
 {{< onlyWhenNot mobi >}}
-Afterwards, we are able to access our freshly created Ingress at `http://web-go-<namespace>.<domain>`
+Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<domain>`
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
-Afterwards, we are able to access our freshly created Ingress at `http://web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
+Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
 {{< /onlyWhen >}}
 
 
@@ -291,7 +284,7 @@ kubectl describe <resource> <name> --namespace <namespace>
 ```
 
 ```bash
-kubectl get <resource> <name> -o json --namespace <namespace>
+kubectl get <resource> <name> -o yaml --namespace <namespace>
 ```
 
 

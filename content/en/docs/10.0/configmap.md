@@ -52,7 +52,7 @@ javaconfiguration   1      7s
 The content can also be displayed with
 
 ```bash
-kubectl get configmap javaconfiguration -o json --namespace <namespace>
+kubectl get configmap javaconfiguration -o yaml --namespace <namespace>
 ```
 
 
@@ -91,7 +91,6 @@ metadata:
   labels:
     app: spring-boot-example
   name: spring-boot-example
-  namespace: <namespace>
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -112,13 +111,13 @@ spec:
       containers:
       - env:
         - name: SPRING_DATASOURCE_USERNAME
-          value: springboot
+          value: example
         - name: SPRING_DATASOURCE_PASSWORD
           value: mysqlpassword
         - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
           value: com.mysql.jdbc.Driver
         - name: SPRING_DATASOURCE_URL
-          value: jdbc:mysql://springboot-mysql/springboot?autoReconnect=true
+          value: jdbc:mysql://mysql/example?autoReconnect=true
         image: appuio/example-spring-boot
         imagePullPolicy: Always
         name: example-spring-boot
