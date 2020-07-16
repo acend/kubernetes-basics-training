@@ -4,11 +4,10 @@ weight: 8
 sectionnumber: 8
 ---
 
-Numerous applications are stateful lin some way and want to save data persistently---be it in a database or as files on a filesystem or in an object store. During this lab, we are going to create a MySQL Service and attach it to our application so that application Pods can access the same database.
+Numerous applications are stateful in some way and want to save data persistently--- be it in a database or as files on a filesystem or in an object store. During this lab, we are going to create a MySQL Service and attach it to our application so that application Pods can access the same database.
 
 
 ## Task {{% param sectionnumber %}}.1: Create the MySQL Service
-
 
 We are first going to create a so-called _Secret_ in which we write the password for accessing the database.
 
@@ -19,28 +18,27 @@ kubectl create secret generic mysql-password --from-literal=password=mysqlpasswo
 The Secret will neither be shown with `kubectl get` nor with `kubectl describe`:
 
 ```bash
-kubectl get secret mysql-password -o json --namespace <namespace>
+kubectl get secret mysql-password -o yaml --namespace <namespace>
 ```
 
 Which gives you an output similar to this:
 
-```json
-{
-    "apiVersion": "v1",
-    "data": {
-        "password": "bXlzcWxwYXNzd29yZA=="
-    },
-    "kind": "Secret",
-    "metadata": {
-        "creationTimestamp": "2018-10-16T13:36:15Z",
-        "name": "mysql-password",
-        "namespace": "<namespace>",
-        "resourceVersion": "3156527",
-        "selfLink": "/api/v1/namespaces/<namespace>/secrets/mysql-password",
-        "uid": "74a7f030-d148-11e8-a406-42010a840034"
-    },
-    "type": "Opaque"
-}
+```
+apiVersion: v1
+data:
+  password: bXlzcWxwYXNzd29yZA==
+kind: Secret
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"password":"bXlzcWxwYXNzd29yZA=="},"kind":"Secret","metadata":{"annotations":{},"creationTimestamp":"2018-10-16T13:36:15Z","name":"mysql-password","namespace":"\u003cnamespace\u003e","resourceVersion":"3156527","selfLink":"/api/v1/namespaces/\u003cnamespace\u003e/secrets/mysql-password","uid":"74a7f030-d148-11e8-a406-42010a840034"},"type":"Opaque"}
+  creationTimestamp: "2018-10-16T13:36:15Z"
+  name: mysql-password
+  namespace: <namespace>
+  resourceVersion: "3156527"
+  selfLink: /api/v1/namespaces/<namespace>/secrets/mysql-password
+  uid: 74a7f030-d148-11e8-a406-42010a840034
+type: Opaque
 ```
 
 The string at `.data.password` is Base64 encoded and can easily be decoded:
@@ -205,7 +203,7 @@ The environment variables defined in the deployment configure the MySQL Pod and 
 
 By default, our `example-web-python` application uses a SQLite memory database. However, this can be changed by defining the following environment variables to use the newly created MySQL Service:
 
-```bash
+```
 MYSQL_URI=mysql://example:mysqlpassword@mysql/example
 ```
 

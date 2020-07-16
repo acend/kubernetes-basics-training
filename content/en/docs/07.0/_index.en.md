@@ -111,7 +111,7 @@ kubectl get pod --namespace <namespace>
 Then execute the port forwarding with this name:
 
 ```bash
-kubectl port-forward example-web-python-1-xj1df 5000:5000 --namespace <namespace>
+kubectl port-forward <pod> 5000:5000 --namespace <namespace>
 ```
 
 {{% alert title="Note" color="primary" %}}

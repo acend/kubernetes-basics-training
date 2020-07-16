@@ -42,7 +42,7 @@ example-web-python-86d9d584f8   1         1         1       110s
 Or for even more details:
 
 ```bash
-kubectl get replicaset <replicaset> -o json --namespace <namespace>
+kubectl get replicaset <replicaset> -o yaml --namespace <namespace>
 ```
 
 The ReplicaSet shows how many instances of a Pod that are desired, current and ready.
@@ -248,7 +248,7 @@ Additionally, [container health checks](https://kubernetes.io/docs/tasks/configu
 Basically, there are two different kinds of checks that can be implemented:
 
 * Liveness probes are used to find out if an application is still running
-* Readiness probes tell us if the application es ready to receive requests (which is especially relevant for above-mentioned rolling updates)
+* Readiness probes tell us if the application is ready to receive requests (which is especially relevant for above-mentioned rolling updates)
 
 These probes can be implemented as HTTP checks, container execution checks (the execution of a command or script inside a container), or TCP socket checks.
 
@@ -265,45 +265,20 @@ You can directly edit the deployment (or any resource) with:
 kubectl edit deployment example-web-python --namespace <namespace>
 ```
 
+Look for the following section and change the value for `maxUnavailable` to 0:
 
-**YAML:**
-
-```yaml
+```
 ...
 spec:
   strategy:
     rollingUpdate:
       maxSurge: 25%
-      maxUnavailable: 0 # <- change this line
+      maxUnavailable: 0
     type: RollingUpdate
 ...
 ```
 
-
-If you prefer JSON formatting to YAML, use the corresponding `--output`/`-o` parameter to edit the resource in JSON:
-
-```bash
-kubectl edit deployment example-web-python -o json --namespace <namespace>
-```
-
-
-**JSON:**
-
-```json
-...
-"strategy": {
-    "rollingUpdate": {
-        "maxSurge": "25%",
-        "maxUnavailable": "0" // <- change this line
-    },
-    "type": "RollingUpdate"
-},
-...
-```
-
 Now insert the readiness probe at `.spec.template.spec.containers` above the `resources: {}` line:
-
-**YAML:**
 
 ```yaml
 ...
@@ -324,35 +299,9 @@ Now insert the readiness probe at `.spec.template.spec.containers` above the `re
 ...
 ```
 
-**JSON:**
-
-```json
-...
-                        "image": "acend/example-web-python",
-                        "imagePullPolicy": "Always",
-                        "name": "example-web-python",
-                        // start to copy here
-                        "readinessProbe": {
-                            "httpGet": {
-                                "path": "/health",
-                                "port": 5000,
-                                "scheme": "HTTP"
-                            },
-                            "initialDelaySeconds": 10,
-                            "periodSeconds": 10,
-                            "timeoutSeconds": 1
-                        },
-                        // stop to copy here
-                        "resources": {},
-...
-```
-
-
 The `containers` configuration then looks like:
 
-**YAML:**
-
-```yaml
+```
 ...
       containers:
       - image: acend/example-web-python
@@ -374,35 +323,6 @@ The `containers` configuration then looks like:
 ...
 ```
 
-**JSON:**
-
-```json
-...
-                "containers": [
-                    {
-                        "image": "acend/example-web-python",
-                        "imagePullPolicy": "Always",
-                        "name": "example-web-python",
-                        "readinessProbe": {
-                            "failureThreshold": 3,
-                            "httpGet": {
-                                "path": "/health",
-                                "port": 5000,
-                                "scheme": "HTTP"
-                            },
-                            "initialDelaySeconds": 10,
-                            "periodSeconds": 10,
-                            "successThreshold": 1,
-                            "timeoutSeconds": 1
-                        },
-                        "resources": {},
-                        "terminationMessagePath": "/dev/termination-log",
-                        "terminationMessagePolicy": "File"
-                    }
-                ],
-...
-```
-
 We are now going to verify that a redeployment of the application does not lead to an interruption.
 
 Set up the loop to periodically check the application's response:
@@ -410,6 +330,16 @@ Set up the loop to periodically check the application's response:
 ```bash
 URL=http://<node-ip>:<node-port>
 while true; do sleep 1; curl -s $URL/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+```
+
+Windows PowerShell:
+
+```bash
+while(1) {
+  Start-Sleep -s 1
+  Invoke-RestMethod http://[URL]/pod/
+  Get-Date -Uformat "+ TIME: %H:%M:%S,%3N"
+}
 ```
 
 Start a new deployment by editing it (the so-called _ConfigChange_ trigger creates the new Deployment automatically):

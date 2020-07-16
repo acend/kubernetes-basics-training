@@ -22,7 +22,7 @@ In [lab 8](../../08.0/) you created the `example-web-python` application. In thi
 Edit your existing `example-web-python` deployment with:
 
 ```bash
-kubectl edit deplyoment example-web-python --namespace <namespace>
+kubectl edit deployment example-web-python --namespace <namespace>
 ```
 
 Add the init container into the existing Deployment:
