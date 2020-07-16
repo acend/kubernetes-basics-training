@@ -6,17 +6,6 @@ sectionnumber: 10.5
 
 In this lab, we are going to look at ResourceQuotas and LimitRanges. As Kubernetes users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.
 
-{{< onlyWhen rancher >}}
-In order for this lab to work correctly we need to create a new namespace (eg. `<namespace>-quota`) in a specific rancher project. Create the new namespace `kubectl create namespace <namespace>` and inform the trainer. The namespace needs to be moved into the rancher project `kubernetes-quotalab`
-
-As a next step you need to create the resource quota object. Download the [quota.yaml](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/10.0/quota.yaml) and apply it with
-
-```bash
-kubectl apply -f quota.yaml --namespace <namespace>
-```
-
-{{< /onlyWhen >}}
-
 
 ## ResourceQuotas
 
