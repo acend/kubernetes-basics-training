@@ -116,25 +116,24 @@ The possibility of enforcing minimum and maximum resources and defining Resource
 ## Task {{% param sectionnumber %}}.1: Namespace
 
 {{< onlyWhen rancher >}}
-Make sure you're logged in to the cluster. Choose the appropriate cluster and click on __Projects/Namespaces__. Under the Project kubernetes-quotalab edit your Namespace by clicking on __edit__.
+Make sure you're logged in to the cluster. Choose the appropriate cluster and click on __Projects/Namespaces__. Under the Project kubernetes-quotalab click on __Add Namespace__.
 
-Expand the __Container Default Resource Limit__ view and set the following values:
+Choose a name for your Namespace in the form of `<namespace>`-quota, expand the __Container Default Resource Limit__ view and set the following values:
 
 * __CPU Limit__: 100
 * __CPU Reservation__: 10
 * __Memory Limit__: 32
 * __Memory Reservation__: 16
 
-![Quota lab namespace creation](../edit_quotalab_namespace.png)
+![Quota lab namespace creation](../create_quotalab_namespace.png)
 
-Finally, click on __Save__.
+Finally, click on __Create__.
 
-You can also create the limitrange resource using the cli. Download the [limitrange.yaml](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/10.0/limitrange.yaml) and apply it with
+You can alternatively create the LimitRange using `kubectl`. Download the [limitrange.yaml file](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/10.0/limitrange.yaml) and create it:
 
 ```bash
 kubectl apply -f limitrange.yaml --namespace <namespace>
 ```
-
 {{< /onlyWhen >}}
 
 Check whether your Namespace contains a LimitRange:
