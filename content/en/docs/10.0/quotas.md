@@ -161,7 +161,7 @@ Check whether a ResourceQuota exists in your Namespace:
 kubectl describe quota --namespace <namespace>
 ```
 
-Above command could (must not) output this (name and Namespace will vary):
+Above command should output this (name and Namespace will vary):
 
 ```
 Name:            lab-quota
