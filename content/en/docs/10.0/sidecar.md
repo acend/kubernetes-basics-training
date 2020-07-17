@@ -63,8 +63,8 @@ containers:
     secretKeyRef:
         key: password
         name: mysql-root-password
-image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mysqld-exporter:v0.12.1
-name: mysqld-exporter
+  image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mysqld-exporter:v0.12.1
+  name: mysqld-exporter
 ...
 ```
 
