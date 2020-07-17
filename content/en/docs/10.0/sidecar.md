@@ -87,7 +87,7 @@ Note the `Ready` column which shows you 2 ready container.
 You can observe the logs from the mysqld-exporter with:
 
 ```bash
-kubectl logs <pod> -c mysqld-exporter
+kubectl logs <pod> -c mysqld-exporter --namespace <namespace>
 ```
 
 which gives you an output similar to this:
@@ -108,7 +108,7 @@ time="2020-05-10T11:31:02Z" level=info msg="Listening on :9104" source="mysqld_e
 and by using `kubectl port-forward ...` you can even have a look at the prometheus metrics using your browser:
 
 ```bash
-kubectl port-forward <pod> 9104
+kubectl port-forward <pod> 9104 --namespace <namespace>
 ```
 
 And then open <http://localhost:9104/metrics> in your browser.
