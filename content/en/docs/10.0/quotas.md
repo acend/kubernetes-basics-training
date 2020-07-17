@@ -22,13 +22,6 @@ Choose a name for your Namespace, e.g. in the form of `<yourname>`-quota, expand
 ![Quota lab namespace creation](../create_quotalab_namespace.png)
 
 Finally, click on __Create__.
-
-You can alternatively create the LimitRange using `kubectl`. Download the [limitrange.yaml file](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/10.0/limitrange.yaml) and create it:
-
-```bash
-kubectl apply -f limitrange.yaml --namespace <namespace>
-```
-
 {{< /onlyWhen >}}
 
 
