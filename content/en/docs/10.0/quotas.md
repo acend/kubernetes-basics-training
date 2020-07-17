@@ -6,13 +6,27 @@ sectionnumber: 10.5
 
 In this lab, we are going to look at ResourceQuotas and LimitRanges. As Kubernetes users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.
 
-{{< onlyWhen rancher >}}
-In order for this lab to work correctly we need to create a new namespace (eg. `<namespace>-quota`) in a specific rancher project. Create the new namespace `kubectl create namespace <namespace>` and inform the trainer. The namespace needs to be moved into the rancher project `kubernetes-quotalab`
 
-As a next step you need to create the resource quota object. Download the [quota.yaml](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/10.0/quota.yaml) and apply it with
+## Task {{% param sectionnumber %}}.1: Namespace creation
+
+{{< onlyWhen rancher >}}
+Make sure you're logged in on the Rancher web console. Choose the appropriate cluster and click on __Projects/Namespaces__. Under the Project kubernetes-quotalab click on __Add Namespace__.
+
+Choose a name for your Namespace, e.g. in the form of `<yourname>`-quota, expand the __Container Default Resource Limit__ view and set the following values:
+
+* __CPU Limit__: 100
+* __CPU Reservation__: 10
+* __Memory Limit__: 32
+* __Memory Reservation__: 16
+
+![Quota lab namespace creation](../create_quotalab_namespace.png)
+
+Finally, click on __Create__.
+
+You can alternatively create the LimitRange using `kubectl`. Download the [limitrange.yaml file](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/10.0/limitrange.yaml) and create it:
 
 ```bash
-kubectl apply -f quota.yaml --namespace <namespace>
+kubectl apply -f limitrange.yaml --namespace <namespace>
 ```
 
 {{< /onlyWhen >}}
@@ -28,7 +42,7 @@ ResourceQuotas among other things limit the amount of resources Pods can use in 
 
 Defining ResourceQuotas makes sense when the cluster administrators want to have better control over consumed resources. A typical use case are public offerings where users pay for a certain guaranteed amount of resources which must not be exceeded.
 
-In order to check for defined quotas in your Namespace, simply see if there are any of type ResourceQuota:
+In order to check for defined quotas in your Namespace, simply see if there are any resources of type ResourceQuota:
 
 ```
 kubectl get resourcequota --namespace <namespace>
@@ -40,7 +54,27 @@ To show in detail what kinds of limits the quota imposes:
 kubectl describe resourcequota <quota-name> --namespace <namespace>
 ```
 
-For more details, have look into [Kubernetes' documentation about resource quotas](https://kubernetes.io/docs/concepts/policy/resource-quotas/#requests-vs-limits).
+
+### Task {{% param sectionnumber %}}.2: Quota check
+
+Check whether a ResourceQuota exists in your Namespace and what kinds of limits it imposes:
+
+```bash
+kubectl describe quota --namespace <namespace>
+```
+
+Above command should output this (name and Namespace will vary):
+
+```
+Name:            lab-quota
+Namespace:       eltony-quota-lab
+Resource         Used  Hard
+--------         ----  ----
+requests.cpu     0     100m
+requests.memory  0     100Mi
+```
+
+For more details, have look at [Kubernetes' documentation about resource quotas](https://kubernetes.io/docs/concepts/policy/resource-quotas/#requests-vs-limits).
 
 
 ## Requests and limits
@@ -124,29 +158,7 @@ If for example a container did not define any requests or limits and there was a
 The possibility of enforcing minimum and maximum resources and defining ResourceQuotas per Namespace allows for many combinations of resource control.
 
 
-## Task {{% param sectionnumber %}}.1: Namespace
-
-{{< onlyWhen rancher >}}
-Make sure you're logged in to the cluster. Choose the appropriate cluster and click on __Projects/Namespaces__. Under the Project kubernetes-quotalab edit your Namespace by clicking on __edit__.
-
-Expand the __Container Default Resource Limit__ view and set the following values:
-
-* __CPU Limit__: 100
-* __CPU Reservation__: 10
-* __Memory Limit__: 32
-* __Memory Reservation__: 16
-
-![Quota lab namespace creation](../edit_quotalab_namespace.png)
-
-Finally, click on __Save__.
-
-You can also create the limitrange resource using the cli. Download the [limitrange.yaml](https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/10.0/limitrange.yaml) and apply it with
-
-```bash
-kubectl apply -f limitrange.yaml --namespace <namespace>
-```
-
-{{< /onlyWhen >}}
+### Task {{% param sectionnumber %}}.3: LimitRange check
 
 Check whether your Namespace contains a LimitRange:
 
@@ -154,7 +166,7 @@ Check whether your Namespace contains a LimitRange:
 kubectl describe limitrange --namespace <namespace>
 ```
 
-Above command should output this (name and Namespace will vary):
+Above command should output something like this (name and Namespace will vary):
 
 ```
 Name:       ce01a1b6-a162-479d-847c-4821255cc6db
@@ -166,25 +178,7 @@ Container   cpu       -    -    10m              100m           -
 ```
 
 
-Check whether a ResourceQuota exists in your Namespace:
-
-```bash
-kubectl describe quota --namespace <namespace>
-```
-
-Above command could (must not) output this (name and Namespace will vary):
-
-```
-Name:            lab-quota
-Namespace:       eltony-quota-lab
-Resource         Used  Hard
---------         ----  ----
-requests.cpu     0     100m
-requests.memory  0     100Mi
-```
-
-
-## Task {{% param sectionnumber %}}.2: Default memory limit
+## Task {{% param sectionnumber %}}.4: Default memory limit
 
 Create a Pod using the polinux/stress image:
 {{< onlyWhenNot mobi >}}
@@ -203,7 +197,7 @@ kubectl run stress2much --image=docker-registry.mobicorp.ch/polinux/stress --nam
 {{< /onlyWhen >}}
 
 {{% alert title="Note" color="primary" %}}
-You have to actively terminate the following command pressing `CTRL+c` on your keyboard.
+You have to actively terminate the following command by pressing `CTRL+c` on your keyboard.
 {{% /alert %}}
 
 Watch the Pod's creation with:
@@ -313,7 +307,7 @@ stress   1/1     Running   0          25s
 ```
 
 
-## Task {{% param sectionnumber %}}.3: Hitting the quota
+## Task {{% param sectionnumber %}}.5: Hitting the quota
 
 Create another Pod, again using the `polinux/stress` image. This time our application is less demanding and only needs 10 MB of memory (`--vm-bytes 10M`):
 
