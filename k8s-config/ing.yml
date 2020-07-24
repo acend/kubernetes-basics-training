@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx-public
+    kubernetes.io/tls-acme: "true"
   labels:
     app: kubernetes-basics-training
   name: kubernetes-basics-training
