@@ -5,14 +5,13 @@ metadata:
     keel.sh/policy: force
     keel.sh/match-tag: true 
   labels:
-    app: kubernetes-techlab-mobi
-  name: kubernetes-techlab-mobi
-  namespace: dreng-kubernetestechlab-prod
+    app: kubernetes-basics-training-mobi
+  name: kubernetes-basics-training-mobi
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kubernetes-techlab-mobi
+      app: kubernetes-basics-training-mobi
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -21,10 +20,10 @@ spec:
   template:
     metadata:
       labels:
-        app: kubernetes-techlab-mobi
+        app: kubernetes-basics-training-mobi
     spec:
       containers:
-      - image: acend/kubernetes-techlab:mobi
+      - image: acend/kubernetes-basics-training:mobi
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3

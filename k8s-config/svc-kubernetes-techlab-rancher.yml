@@ -2,15 +2,14 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: kubernetes-techlab-rancher
-  name: kubernetes-techlab-rancher
-  namespace: dreng-kubernetestechlab-prod
+    app: kubernetes-basics-training-rancher
+  name: kubernetes-basics-training-rancher
 spec:
   ports:
   - port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
-    app: kubernetes-techlab-rancher
+    app: kubernetes-basics-training-rancher
   sessionAffinity: None
   type: ClusterIP
