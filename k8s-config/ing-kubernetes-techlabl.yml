@@ -4,17 +4,25 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx-public
   labels:
-    app: kubernetes-techlab
-  name: kubernetes-techlab
-  namespace: dreng-kubernetestechlab-prod
+    app: kubernetes-basics-training
+  name: kubernetes-basics-training
 spec:
   rules:
-  - host: kubernetes-techlab.k8s.puzzle.ch
+  - host: kubernetes-basics.k8s.puzzle.ch
     http:
       paths:
       - backend:
-          serviceName: kubernetes-techlab
+          serviceName: kubernetes-basics-training
+          servicePort: 8080
+  - host: kubernetes-basics.labs.acend.ch
+    http:
+      paths:
+      - backend:
+          serviceName: kubernetes-basics-training
           servicePort: 8080
   tls:
   - hosts:
-    - kubernetes-techlab.k8s.puzzle.ch
+    - kubernetes-basics.k8s.puzzle.ch
+  - hosts:
+      - kubernetes-basics.labs.acend.ch
+    secretName: kubernetes-basics-labs-acend-ch

@@ -5,18 +5,16 @@ metadata:
     kubernetes.io/ingress.class: nginx-public
     kubernetes.io/tls-acme: "true"
   labels:
-    app: kubernetes-techlab-mobi
-  name: kubernetes-techlab-acend-mobi
-  namespace: dreng-kubernetestechlab-prod
+    app: kubernetes-basics-training-mobi
+  name: kubernetes-basics-training-mobi
 spec:
   rules:
-  - host: kubernetes-mobi.k8s.puzzle.ch
+  - host: kubernetes-basics-mobi.k8s.puzzle.ch
     http:
       paths:
       - backend:
-          serviceName: kubernetes-techlab-mobi
+          serviceName: kubernetes-basics-training-mobi
           servicePort: 8080
   tls:
-
   - hosts:
-      - kubernetes-mobi.k8s.puzzle.ch
+      - kubernetes-basics-mobi.k8s.puzzle.ch
