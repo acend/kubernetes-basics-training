@@ -2,8 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    keel.sh/policy: force
-    keel.sh/match-tag: true 
+    keel.sh/policy: "force"
+    keel.sh/match-tag: "true"
   labels:
     app: kubernetes-basics-training-mobi
   name: kubernetes-basics-training-mobi
