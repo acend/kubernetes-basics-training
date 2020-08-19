@@ -144,7 +144,7 @@ The `kubectl port-forward` process runs as long as it is not terminated by the u
 
 ## Events
 
-Kubernetes maintains an event log with high-level information on what's going on in the cluster. 
+Kubernetes maintains an event log with high-level information on what's going on in the cluster.
 It's possible that everything looks okay at first glance but somehow something seems stuck.
 Make sure to have a look at the events because they can give you more information if something is not working as expected.
 
