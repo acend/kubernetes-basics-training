@@ -5,143 +5,210 @@ sectionnumber: 13
 ---
 
 
-[kustomize](https://github.com/kubernetes-sigs/kustomize) is a project from the [Kubernetes Special Interest Groups (SIGs)](https://kubernetes.io/community/) to manage complex Kubernetes configurations.
-In this lab we deploy a configuration into a integration and a production environment via kustomize
+[Kustomize](https://kustomize.io/) is a tool to manage YAML configurations for Kubernetes objects in a declarative and reusable manner.
+In this lab, we will use Kustomize to deploy the same app for two different environments.
 
 
-## Task {{% param sectionnumber %}}.1: Install kustomize
+## Installation
 
-For this lab, we need the kustomize client. Check the [documentation](https://github.com/kubernetes-sigs/kustomize/blob/master/docs/INSTALL.md) on how to install.
+Kustomize can be used in two different ways:
+
+* A standalone `kustomize` binary can be downloaded from here: <https://kubernetes-sigs.github.io/kustomize/installation/>
+* It is included in `kubectl`
 
 
-## Task {{% param sectionnumber %}}.2: Understand kustomize
+## Usage
+
+The main purpose of Kustomize is to build configurations from a predefined file structure (which will be introduced in the next section):
+
+```bash
+kustomize build <dir>
+```
+
+The same can be achieved with `kubectl`:
+
+```bash
+kubectl kustomize <dir>
+```
+
+The next step is to apply this configuration to the Kubernetes cluster:
+
+```bash
+kustomize build <dir> | kubectl apply -f -
+```
+
+Or in one command with the parameter `-k` instead of `-f`
+
+```bash
+kubectl apply -k <dir>
+```
+
+{{% alert title="Note" color="primary" %}}
+The standalone version of Kustomize and the one built-in `kubectl` may behave differently because different major versions are
+in place. The standalone version is typically newer.
+{{% /alert %}}
+
+
+## Task {{% param sectionnumber %}}.1: Prepare our Kustomize config
 
 We are going to deploy a simple application:
 
-* The deployment starts an nginx
-* A service exposes the deployment
-* The application will be deployed into a integratin and into a production environment
+* The Deployment starts an application based on nginx
+* A Service exposes the deployment
+* The application will be deployed for two different example environments: integration and production
 
-Kustomize allowes to to inherit kubertenes configurations. We are going to use this, to create a base and then inherit the configuration for the integration and production environment.
-
-
-Habe a look at chapter _1)_ und _2)_ in [kustomize-Readme](https://github.com/kubernetes-sigs/kustomize/blob/master/README.md). Our base configuration represents the  _base_, integration and production environment will be realizes as _overlay_.
-
-In den [Dateien zu diesem Lab](./12_data) befindet sich die kustomize-Konfiguration für Basis und Umgebungen. Eine gültige kubernetes-Konfiguration für die Integrationsumgebung generiert man daraus wie folgt:
-
-```
-kustomize build ./labs/12_data/overlays/integration
-```
-
-Diese Konfiguration lässt sich mittels einer Pipe an `kubectl apply` weitergeben um die Konfiguration anzuwenden. Das ist unser nächster Schritt.
+Kustomize allows inheriting Kubernetes configurations. We are going to use this to create a base configuration and then
+override the configuration for the integration and production environment. Note that Kustomize does not use templating.
+Instead, smart patch and extension mechanisms are used on plain YAML manifests to keep things as simple as possible.
 
 
-## Task {{% param sectionnumber %}}.3: Umgebungen deployen
+### File structure
 
-Lege erst zwei Namespaces für die Applikationsumgebungen an:
+The structure of a Kustomize configuration typically looks like this:
 
-```
-user=[Dein Techlab-Username]
-
-kubectl create namespace $user-lab-12-integration
-kubectl create namespace $user-lab-12-production
-```
-
-Deploye dann die Integration...
-
-```
-kustomize build ./labs/12_data/overlays/integration | kubectl apply -n $user-lab-12-integration -f -
+```text
+.
+├── base
+│   ├── deployment.yaml
+│   ├── kustomization.yaml
+│   └── service.yaml
+└── overlays
+    ├── production
+    │   ├── deployment-patch.yaml
+    │   ├── kustomization.yaml
+    │   └── service-patch.yaml
+    └── staging
+        ├── deployment-patch.yaml
+        ├── kustomization.yaml
+        └── service-patch.yaml
 ```
 
-und die Produktion:
+
+### Base
+
+Let's have a look at the `base` directory first which contains the base configuration. It contains a `deployment.yaml`
+with the following content:
+
+{{< highlight yaml >}}{{< readfile file="content/en/docs/13.0/kustomize/base/deployment.yaml" >}}{{< /highlight >}}
+
+There's also a Service for our Deployment in the corresponding `base/service.yaml`:
+
+{{< highlight yaml >}}{{< readfile file="content/en/docs/13.0/kustomize/base/service.yaml" >}}{{< /highlight >}}
+
+And there's an additional `base/kustomization.yaml` which is used to configure Kustomize:
+
+{{< highlight yaml >}}{{< readfile file="content/en/docs/13.0/kustomize/base/kustomization.yaml" >}}{{< /highlight >}}
+
+It references the previous manifests `service.yaml` and `deployment.yaml` and makes them part of our base configuration.
+
+
+### Overlays
+
+Now let's have a look at the other directory which is called `overlays`. It contains two sub-directories `staging` and
+`production` which both contain a `kustomization.yaml` with almost the same content.
+
+`overlays/staging/kustomization.yaml`:
+
+{{< highlight yaml >}}{{< readfile file="content/en/docs/13.0/kustomize/overlays/staging/kustomization.yaml" >}}{{< /highlight >}}
+
+`overlays/production/kustomization.yaml`:
+
+{{< highlight yaml >}}{{< readfile file="content/en/docs/13.0/kustomize/overlays/production/kustomization.yaml" >}}{{< /highlight >}}
+
+Only the first key `nameSuffix` differs.
+
+In both cases, the `kustomization.yaml` references our base configuration. However, the two directories contain two different `deployment-patch.yaml` files which patch
+the `deployment.yaml` from our base configuration.
+
+`overlays/staging/deployment-patch.yaml`:
+
+{{< highlight yaml >}}{{< readfile file="content/en/docs/13.0/kustomize/overlays/staging/deployment-patch.yaml" >}}{{< /highlight >}}
+
+`overlays/production/deployment-patch.yaml`:
+
+{{< highlight yaml >}}{{< readfile file="content/en/docs/13.0/kustomize/overlays/production/deployment-patch.yaml" >}}{{< /highlight >}}
+
+The main difference here is that the environment variable `APPLICATION_NAME` is set differently.
+The `app` label also differs because we are going to deploy both Deployments into the same Namespace.
+
+The same applies to our Service. It also comes in two customizations so that it matches the corresponding Deployment in the same Namespace.
+
+`overlays/staging/service-patch.yaml`:
+
+{{< highlight yaml >}}{{< readfile file="content/en/docs/13.0/kustomize/overlays/staging/service-patch.yaml" >}}{{< /highlight >}}
+
+`overlays/production/service-patch.yaml`:
+
+{{< highlight yaml >}}{{< readfile file="content/en/docs/13.0/kustomize/overlays/production/service-patch.yaml" >}}{{< /highlight >}}
+
+{{% alert title="Note" color="primary" %}}
+All files mentioned above are also directly accessible from [GitHub](https://github.com/acend/kubernetes-basics-training/tree/master/content/en/docs/13.0/kustomize).
+{{% /alert %}}
+
+Prepare the files as described above in a local directory of choice.
+
+
+## Task {{% param sectionnumber %}}.2: Deploy with Kustomize
+
+We are now ready to deploy both apps for the two different environments. For simplicity, we will use the same Namespace.
+
+```bash
+kubectl apply -k overlays/staging --namespace <namespace>
+```
 
 ```
-kustomize build ./labs/12_data/overlays/production | kubectl apply -n $user-lab-12-production -f -
+service/kustomize-app-staging created
+deployment.apps/kustomize-app-staging created
 ```
 
-Eine entsprechende Abfage zeigt, dass in beiden Umgebungen Pods starten:
-
-```
-kubectl get pod -n $user-lab-12-integration
-kubectl get pod -n $user-lab-12-production
+```bash
+kubectl apply -k overlays/production --namespace <namespace>
 ```
 
-Nach einer Weile zeigt `kubectl get service -n $user-lab-12-integration -w` (abbrechen mit Ctrl + C), welche externe IP dem Service zugewiesen wurde.
-
-Rufe mittels `curl http://[EXTERNAL_IP]` oder Webbrowser die deployte Applikation auf.
-
-Prüfe analog, ob auch die Produktion läuft. Falls ja: Gratulation! Zwei identische Applikationsumgebungen sind deployt.
-Im nächsten Schritt verwenden wir kustomize, um umgebungsspezifische Anpassungen vorzunehmen.
-
-
-## Task {{% param sectionnumber %}}.4: Ressourcenlimits setzen
-
-Unser Kubernetes-Cluster hat beschränkte Ressourcen. Wir verhindern nun mittels [Ressourcenlimits](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#resource-requests-and-limits-of-pod-and-container), dass eine Umgebung der andern alle CPU-Power oder den Arbeitsspeicher stehlen kann.
-
-Die Applikation soll in der Integrationsumgebung maximal 10% einer CPU und 50MB RAM verwenden können, in der Produktionsumgebung aber das doppelte zur Verfügung haben, um den zu erwartenden Ansturm von Besuchern zu bewältigen.
-
-Der folgende Befehl erstellt einen kustomize-Patch, in welchem diese Anpassung für die Integrationsumgebung spezifiziert wird:
-
-```
-cat > labs/12_data/overlays/integration/ressource-quotas.yaml <<EOF
-apiVersion: apps/v1beta2
-kind: Deployment
-metadata:
-  name: app
-spec:
-  template:
-    spec:
-      containers:
-        - name: app
-          resources:
-            limits:
-              cpu: 100m
-              memory: 50Mi
-EOF
+```bash
+service/kustomize-app-production created
+deployment.apps/kustomize-app-production created
 ```
 
-Damit der Patch angewendet wird, muss `labs/12_data/overlays/integration/kustomization.yaml` wie folgt angepasst werden:
+As you can see, we now have two deployments and services deployed. Both of them use the same base configuration.
+However, they have a specific configuration on their own as well.
 
-```
-bases:
-- ../../base
-patches:
-- ressource-quotas.yaml
-```
+Let's verify this. Our app writes a corresponding log entry that we can use for analysis:
 
-Die Änderungen können danach wie im letzten Abschnitt gelernt angewendet werden:
-
-```
-user=[Dein Techlab-Username]
-kustomize build ./labs/12_data/overlays/integration | kubectl apply -n $user-lab-12-integration -f -
+```bash
+kubectl get pods --namespace <namespace>
 ```
 
-Nach einer Weile zeigt `kubectl get svc -n $user-lab-12-integration -w` (abbrechen mit Ctrl + C), dass ein neuer Pod angelegt wurde und läuft.
-
-Die Deploymentkonfiguration zeigt, dass neu ein Limit für CPU und Memory gilt:
-
 ```
-kubectl -n $user-lab-12-integration describe deployment app
+NAME                                       READY   STATUS    RESTARTS   AGE
+kustomize-app-production-74c7bdb7d-8cccd   1/1     Running   0          2m1s
+kustomize-app-staging-7967885d5b-qp6l8     1/1     Running   0          5m33s
 ```
 
-Übrigens: Kustomize patcht ziemlich clever, es verwendet [strategic merges](https://github.com/kubernetes/community/blob/master/contributors/devel/sig-api-machinery/strategic-merge-patch.md). Für dich heisst das: Wenn du neue Werte für YAML-Arrays (z.B. Umgebungsvariabeln, Container eines Pods oder tief verschachtelte Optionen) angibst, führt kustomize die Objeke richtig zusammen und ersetzt sie nicht einfach mit den Inhalten deines Patches.
+```bash
+kubectl logs kustomize-app-staging-7967885d5b-qp6l8
+```
 
-Konfiguriere nun analog die höheren Limits für die Produktion und freue dich darüber, wie DRY, aber doch flexibel, die Konfiguration ist ;)
+```
+My name is kustomize-app-staging
+```
+
+```bash
+kubectl logs kustomize-app-production-74c7bdb7d-8cccd
+```
+
+```
+My name is kustomize-app-production
+```
+
+We could also send a test request to the service which would return a similar answer as shown in the logs.
 
 
-## Task {{% param sectionnumber %}}.4: Umgebungsvariabeln setzen
+## Further information
 
-Dir ist sicher aufgefallen, dass deine Applikation meldet, ihr Name sei "Test-Applikation"". Diesen Namen kriegt sie über die im Deployment gesetzte Umgebungsvariable `APPLICATION_NAME`.
+Kustomize has more features of which we just covered a couple. Please refer to the docs for more information.
 
-* Ändere den Namen in einer der Umgebungen. Der Name steht stellvertretend für die vielen Konfigurationsoptionen verschiedenster Container, welche via Umgebungsvariable gesetzt werden können und mitunter nicht in jeder Applikationsumgebung gleich lauten.
-* Bleibe ordentlich. Du könntest das natürlich im oben angelegten Ressource-Quota-Patch tun, solltest aber eine Lösung finden, um diesen Aspekt deiner Konfiguration in einem separaten Patch abzulegen.
-
-
-## Weitere Infos
-
-kustomize hat weitere hilfreiche Features.
-
-* Verwende mehrere _bases_, um verschiedene Komponenten zu einer Konfiguration zu vereinen.
-* Füge automatisch Labels zu den Ressourcen oder prefixe deren Namen.
-* Erbe in deinen _overlays_ von andern _overlays_
-* Und viel mehr, siehe die [Beispiele](https://github.com/kubernetes-sigs/kustomize/tree/master/examples) oder diese [kustomization.yaml](https://github.com/kubernetes-sigs/kustomize/blob/master/docs/glossary.md#kustomization), welche viele der vorhandenen Features nutzt und erklärt.
+* Kustomize documentation: <https://kubernetes-sigs.github.io/kustomize/>
+* API reference: <https://kubernetes-sigs.github.io/kustomize/api-reference/>
+* Another `kustomization.yaml` reference: <https://kubectl.docs.kubernetes.io/pages/reference/kustomize.html>
+* Examples: <https://github.com/kubernetes-sigs/kustomize/tree/master/examples>

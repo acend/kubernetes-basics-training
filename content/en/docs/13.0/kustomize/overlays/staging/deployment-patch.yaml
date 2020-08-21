@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kustomize-app
+spec:
+  selector:
+    matchLabels:
+      app: kustomize-app-staging
+  template:
+    metadata:
+      labels:
+        app: kustomize-app-staging
+    spec:
+      containers:
+        - name: kustomize-app
+          env:
+            - name: APPLICATION_NAME
+              value: kustomize-app-staging

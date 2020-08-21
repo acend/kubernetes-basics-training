@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kustomize-app
+spec:
+  selector:
+    matchLabels:
+      app: kustomize-app
+  template:
+    metadata:
+      labels:
+        app: kustomize-app
+    spec:
+      containers:
+        - name: kustomize-app
+          image: nginx
+          command:
+            - bash
+            - -c
+            - |-
+              set -e
+              sed -i \
+                "s/Welcome to nginx/Hello, my name is $APPLICATION_NAME/" \
+                /usr/share/nginx/html/index.html
+              echo "My name is $APPLICATION_NAME"
+              nginx -g "daemon off;"
+          env:
+            - name: APPLICATION_NAME
+              value: app-base
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
