@@ -60,11 +60,11 @@ containers:
     value: root:$MYSQL_ROOT_PASSWORD@(localhost:3306)/
   - name: MYSQL_ROOT_PASSWORD
     valueFrom:
-    secretKeyRef:
+      secretKeyRef:
         key: password
         name: mysql-root-password
-image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mysqld-exporter:v0.12.1
-name: mysqld-exporter
+  image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mysqld-exporter:v0.12.1
+  name: mysqld-exporter
 ...
 ```
 

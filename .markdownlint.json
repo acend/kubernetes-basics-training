@@ -16,6 +16,7 @@
   "MD035": {
     "style": "---"
   },
+  "MD034": false,
   "MD040": false,
   "MD048": {
     "style": "backtick"
