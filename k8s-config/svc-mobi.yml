@@ -2,15 +2,14 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: kubernetes-techlab
-  name: kubernetes-techlab
-  namespace: dreng-kubernetestechlab-prod
+    app: kubernetes-basics-training-mobi
+  name: kubernetes-basics-training-mobi
 spec:
   ports:
   - port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
-    app: kubernetes-techlab
+    app: kubernetes-basics-training-mobi
   sessionAffinity: None
   type: ClusterIP

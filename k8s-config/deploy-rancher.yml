@@ -2,17 +2,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    keel.sh/policy: force
-    keel.sh/match-tag: true 
+    keel.sh/policy: "force"
+    keel.sh/match-tag: "true"
   labels:
-    app: kubernetes-techlab
-  name: kubernetes-techlab
-  namespace: dreng-kubernetestechlab-prod
+    app: kubernetes-basics-training-rancher
+  name: kubernetes-basics-training-rancher
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kubernetes-techlab
+      app: kubernetes-basics-training-rancher
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -21,10 +20,10 @@ spec:
   template:
     metadata:
       labels:
-        app: kubernetes-techlab
+        app: kubernetes-basics-training-rancher
     spec:
       containers:
-      - image: acend/kubernetes-techlab:latest
+      - image: acend/kubernetes-basics-training:rancher
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3

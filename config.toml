@@ -67,7 +67,7 @@ url = "https://www.puzzle.ch"
 [params]
 
 copyright = "Puzzle ITC GmbH"
-github_repo = "https://github.com/acend/kubernetes-techlab"
+github_repo = "https://github.com/acend/kubernetes-basics-training"
 
 
 enabledModule = "base"
