@@ -9,6 +9,10 @@ Sometimes your application has to be stateful.
 For example, if your application needs the same hostname every time it starts or if you have a clustered application with a strict start/stop order of all cluster services (e.g., RabbitMQ).
 These features are implemented as StatefulSets.
 
+{{% alert title="Note" color="primary" %}}
+This lab does not depend on other labs.
+{{% /alert %}}
+
 
 ## Consistent hostnames
 
@@ -29,7 +33,7 @@ When scaling up from 3 to 5 replicas in a Deployment, two additional Pods could 
 
 Example with RabbitMQ:
 
-1. Scale `kubectl scale deployment rabbitmq --replicas=5 --namespace [USER]`
+1. Scale `kubectl scale deployment rabbitmq --replicas=5 --namespace <namespace>`
 1. `rabbitmq-3` is started
 1. When `rabbitmq-3` is done starting up (State: "Ready", take a look at the readiness probe), `rabbitmq-4` follows with the start procedure
 
@@ -67,60 +71,15 @@ The controllable and predictable behaviour can be a perfect match for applicatio
 ### StatefulSets
 
 Create a StatefulSets based on the YAML file `nginx-sfs.yaml`:
+
 {{< onlyWhenNot mobi >}}
-
-```YAML
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: nginx-cluster
-spec:
-  serviceName: "nginx"
-  replicas: 1
-  selector:
-    matchLabels:
-      app: nginx
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - name: nginx
-        image: nginx:1.12
-        ports:
-        - containerPort: 80
-          name: nginx
-```
-
+{{< highlight yaml >}}{{< readfile file="content/en/docs/10.0/statefulset/nginx-sts.yaml" >}}{{< /highlight >}}
 {{< /onlyWhenNot >}}
+
 {{< onlyWhen mobi >}}
-
-```YAML
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: nginx-cluster
-spec:
-  serviceName: "nginx"
-  replicas: 1
-  selector:
-    matchLabels:
-      app: nginx
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - name: nginx
-        image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx:1.12
-        ports:
-        - containerPort: 80
-          name: nginx
-```
-
+{{< highlight yaml >}}{{< readfile file="content/en/docs/10.0/statefulset/nginx-sts-mobi.yaml" >}}{{< /highlight >}}
 {{< /onlyWhen >}}
+
 Start the StatefulSet:
   
 ```bash

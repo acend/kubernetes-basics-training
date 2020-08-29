@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-web-go
+spec:
+  selector:
+    matchLabels:
+      app: example-web-go
+  template:
+    metadata:
+      labels:
+        app: example-web-go
+    spec:
+      containers:
+        - name: example-web-go
+          image: acend/example-web-go

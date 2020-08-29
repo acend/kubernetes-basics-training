@@ -21,21 +21,7 @@ In a second step, the PVC from before is going to be attached to the right Pod. 
 The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size.  
 Save it to `pvc.yaml`:
 
-```yaml
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mysql-pv-claim
-  labels:
-    app: mysql
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-```
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09.0/pvc.yaml" >}}{{< /highlight >}}
 
 And create it with:
 
@@ -127,3 +113,13 @@ Repeat [task 8.4](../08.0/#task-84-import-a-database-dump).
 ### Test
 
 Scale your MySQL Pod to 0 replicas and back to 1. Observe that the new Pod didn't loose any data.
+
+
+## Save point
+
+You should now have the following resources in place:
+
+* [pvc.yaml](pvc.yaml)
+* {{< onlyWhenNot mobi >}}[mysql.yaml](mysql.yaml){{< /onlyWhenNot >}}
+  {{< onlyWhen mobi >}}[mysql-mobi.yaml](mysql-mobi.yaml){{< /onlyWhen >}}
+* [example-web-python.yaml](../08.0/example-web-python.yaml) (from lab 8)

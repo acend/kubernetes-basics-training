@@ -65,129 +65,13 @@ In our case we want to create a deployment including a Service for our MySQL dat
 Save this snippet as `mysql.yaml`:
 
 {{< onlyWhenNot mobi >}}
-
-```yaml
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql
-  labels:
-    app: mysql
-spec:
-  ports:
-    - port: 3306
-  selector:
-    app: mysql
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: mysql
-  labels:
-    app: mysql
-spec:
-  selector:
-    matchLabels:
-      app: mysql
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        app: mysql
-    spec:
-      containers:
-      - image: mysql:5.7
-        name: mysql
-        args:
-        - "--ignore-db-dir=lost+found"
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-root-password
-              key: password
-        - name: MYSQL_DATABASE
-          value: example
-        - name: MYSQL_USER
-          value: example
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-password
-              key: password
-        livenessProbe:
-          tcpSocket:
-            port: 3306
-        ports:
-        - containerPort: 3306
-          name: mysql
-```
-
+{{< highlight yaml >}}{{< readfile file="content/en/docs/08.0/mysql.yaml" >}}{{< /highlight >}}
 {{< /onlyWhenNot >}}
+
 {{< onlyWhen mobi >}}
-
-```yaml
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql
-  labels:
-    app: mysql
-spec:
-  ports:
-    - port: 3306
-  selector:
-    app: mysql
----
-apiVersion: apps/v1 # for k8s versions before 1.9.0 use apps/v1beta2  and before 1.8.0 use extensions/v1beta1
-kind: Deployment
-metadata:
-  name: mysql
-  labels:
-    app: mysql
-spec:
-  selector:
-    matchLabels:
-      app: mysql
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        app: mysql
-    spec:
-      containers:
-      - image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mysql:5.6
-        name: mysql
-        args:
-        - "--ignore-db-dir=lost+found"
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-root-password
-              key: password
-        - name: MYSQL_DATABASE
-          value: example
-        - name: MYSQL_USER
-          value: example
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-password
-              key: password
-        livenessProbe:
-          tcpSocket:
-            port: 3306
-        ports:
-        - containerPort: 3306
-          name: mysql
-```
-
+{{< highlight yaml >}}{{< readfile file="content/en/docs/08.0/mysql-mobi.yaml" >}}{{< /highlight >}}
 {{< /onlyWhen >}}
+
 Execute it with:
 
 ```bash
@@ -369,3 +253,13 @@ kubectl cp mysql-f845ccdb7-hf2x5:/tmp/dump.sql /tmp/dump.sql
 ```
 
 {{% /alert %}}
+
+
+## Save point
+
+You should now have the following resources in place:
+
+* [mysql-secrets.yaml](mysql-secrets.yaml)
+* {{< onlyWhenNot mobi >}}[mysql.yaml](mysql.yaml){{< /onlyWhenNot >}}
+  {{< onlyWhen mobi >}}[mysql-mobi.yaml](mysql-mobi.yaml){{< /onlyWhen >}}
+* [example-web-python.yaml](example-web-python.yaml)

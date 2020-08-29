@@ -17,7 +17,7 @@ Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-c
 
 ## Task {{% param sectionnumber %}}.1: Add init Container to our example-web-python application
 
-In [lab 8](../../08.0/) you created the `example-web-python` application. In this task, you are going to add an init container which checks if the MySQL database is ready to be used before actually starting your python application.
+In [lab 8](../../../08.0/) you did the last modification of the `example-web-python` Deployment. In this task, you are going to add an init container which checks if the MySQL database is ready to be used before actually starting your python application.
 
 Edit your existing `example-web-python` deployment with:
 
@@ -107,3 +107,11 @@ Address 1: 10.43.0.10 kube-dns.kube-system.svc.cluster.local
 Name:      mysql.spl.svc.cluster.local
 Address 1: 10.43.243.105 mysql.spl.svc.cluster.local
 ```
+
+
+## Save point
+
+You should now have the following resources in place:
+
+* {{< onlyWhenNot mobi >}}[example-web-python.yaml](../example-web-python.yaml){{< /onlyWhenNot >}}
+  {{< onlyWhen mobi >}}[example-web-python-mobi.yaml](../example-web-python-mobi.yaml){{< /onlyWhen >}}

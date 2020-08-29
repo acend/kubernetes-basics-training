@@ -1,5 +1,5 @@
 ---
-title: "10.2  DaemonSet"
+title: "10.2 DaemonSet"
 weight: 102
 sectionnumber: 10.2
 ---

@@ -6,6 +6,10 @@ sectionnumber: 6
 
 In this lab, we are going to show you how to scale applications on Kubernetes. Further, we show you how Kubernetes makes sure that the number of requested Pods is up and running and how an application can tell the platform that it is ready to receive requests.
 
+{{% alert title="Note" color="primary" %}}
+This lab does not depend on previous labs. You can start with an empty Namespace.
+{{% /alert %}}
+
 
 ## Task {{% param sectionnumber %}}.1: Scale the example application
 
@@ -368,3 +372,10 @@ kubectl delete pod <pod> --namespace <namespace>
 ```
 
 Observe how Kubernetes instantly creates a new Pod in order to fulfill the desired number of running instances.
+
+
+## Save point
+
+You should now have the following resources in place:
+
+* [example-web-python.yaml](example-web-python.yaml)
