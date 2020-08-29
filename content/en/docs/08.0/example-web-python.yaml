@@ -1,0 +1,56 @@
+# Secrets are stored in the same file as the Deployment for demo purposes. Don't do this for production workloads!
+---
+apiVersion: v1
+data:
+  MYSQL_URI: bXlzcWw6Ly9leGFtcGxlOm15c3FscGFzc3dvcmRAbXlzcWwvZXhhbXBsZQ==
+kind: Secret
+metadata:
+  name: mysql-uri
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-web-python
+spec:
+  type: NodePort
+  selector:
+    app: example-web-python
+  ports:
+    - port: 5000
+      targetPort: 5000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-web-python
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-web-python
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: example-web-python
+    spec:
+      containers:
+        - name: example-web-python
+          image: acend/example-web-python
+          env:
+            - name: MYSQL_URI
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_URI
+                  name: mysql-uri
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 1

@@ -145,44 +145,14 @@ Events:
 
 The `Endpoints` shows the IP addresses of all currently matched Pods.
 
-With the ClusterIP Service ready, we can now create the Ingress resource. In order to create the Ingress resource, we first need to create the file `ingress.yaml` and change the host variable to match your environment.
+With the ClusterIP Service ready, we can now create the Ingress resource. In order to create the Ingress resource, we first need to create the file `ingress.yaml` and change the `host` entry to match your environment:
+
 {{< onlyWhenNot mobi >}}
-
-```yaml
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: example-web-go
-spec:
-  rules:
-  - host: example-web-go-<namespace>.<domain>
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: example-web-go
-          servicePort: 5000
-```
-
+{{< highlight yaml >}}{{< readfile file="content/en/docs/05.0/ingress.template.yaml" >}}{{< /highlight >}}
 {{< /onlyWhenNot >}}
+
 {{< onlyWhen mobi >}}
-
-```
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: example-web-go
-spec:
-  rules:
-  - host: example-web-go-<namespace>.phoenix.mobicorp.test
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: example-web-go
-          servicePort: 5000
-```
-
+{{< highlight yaml >}}{{< readfile file="content/en/docs/05.0/ingress-mobi.template.yaml" >}}{{< /highlight >}}
 {{< /onlyWhen >}}
 
 As you see in the resource definition at `spec.rules[0].http.paths[0].backend.serviceName` we use the previously created `example-web-go` ClusterIP Service.
@@ -286,6 +256,16 @@ kubectl describe <resource> <name> --namespace <namespace>
 ```bash
 kubectl get <resource> <name> -o yaml --namespace <namespace>
 ```
+
+
+## Save point
+
+You should now have the following resources in place:
+
+* [deployment.yaml](../04.0/deployment.yaml) (from lab 4)
+* [service.yaml](service.yaml)
+* {{< onlyWhenNot mobi >}}[ingress.template.yaml](ingress.template.yaml){{< /onlyWhenNot >}}
+  {{< onlyWhen mobi >}}[ingress-mobi.template.yaml](ingress-mobi.template.yaml){{< /onlyWhen >}}
 
 
 ## Task {{% param sectionnumber %}}.4: Clean up

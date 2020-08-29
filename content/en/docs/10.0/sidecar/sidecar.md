@@ -22,7 +22,7 @@ In a sidecar pattern, the functionality of the main container is extended or enh
 
 ## Task {{% param sectionnumber %}}.1: Add a Prometheus MySQL Exporter as a sidecar
 
-In [lab 8](../../08.0/) you have created a MySQL Deployment. In this task, you are going to add the [Prometheus MySQL exporter](https://github.com/prometheus/mysqld_exporter) to the existing Deployment.
+In [lab 9](../../../09.0/) you did the last modification of the `mysql` Deployment. In this task, you are going to add the [Prometheus MySQL exporter](https://github.com/prometheus/mysqld_exporter) to the existing Deployment.
 
 Change the existing `mysql` Deployment using:
 
@@ -35,8 +35,10 @@ And add a new (sidecar) container into your Deployment:
 
 ```yaml
 containers:
-...
-- env:
+- ...
+- image: prom/mysqld-exporter
+  name: mysqld-exporter
+  env:
   - name: DATA_SOURCE_NAME
     value: root:$MYSQL_ROOT_PASSWORD@(localhost:3306)/
   - name: MYSQL_ROOT_PASSWORD
@@ -44,8 +46,6 @@ containers:
       secretKeyRef:
         key: password
         name: mysql-root-password
-  image: prom/mysqld-exporter
-  name: mysqld-exporter
 ...
 ```
 
@@ -54,8 +54,10 @@ containers:
 
 ```yaml
 containers:
-...
-- env:
+- ...
+- image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mysqld-exporter:v0.12.1
+  name: mysqld-exporter
+  env:
   - name: DATA_SOURCE_NAME
     value: root:$MYSQL_ROOT_PASSWORD@(localhost:3306)/
   - name: MYSQL_ROOT_PASSWORD
@@ -63,8 +65,6 @@ containers:
       secretKeyRef:
         key: password
         name: mysql-root-password
-  image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mysqld-exporter:v0.12.1
-  name: mysqld-exporter
 ...
 ```
 
@@ -112,3 +112,11 @@ kubectl port-forward <pod> 9104 --namespace <namespace>
 ```
 
 And then open <http://localhost:9104/metrics> in your browser.
+
+
+## Save point
+
+You should now have the following resources in place:
+
+* {{< onlyWhenNot mobi >}}[mysql.yaml](../mysql.yaml){{< /onlyWhenNot >}}
+  {{< onlyWhen mobi >}}[mysql-mobi.yaml](../mysql-mobi.yaml){{< /onlyWhen >}}

@@ -6,10 +6,11 @@ sectionnumber: 10.5
 
 In this lab, we are going to look at ResourceQuotas and LimitRanges. As Kubernetes users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.
 
-
-## Task {{% param sectionnumber %}}.1: Namespace creation
-
 {{< onlyWhen rancher >}}
+
+
+## Namespace creation
+
 Make sure you're logged in on the Rancher web console. Choose the appropriate cluster and click on __Projects/Namespaces__. Under the Project kubernetes-quotalab click on __Add Namespace__.
 
 Choose a name for your Namespace, e.g. in the form of `<yourname>`-quota, expand the __Container Default Resource Limit__ view and set the following values:
@@ -48,7 +49,7 @@ kubectl describe resourcequota <quota-name> --namespace <namespace>
 ```
 
 
-### Task {{% param sectionnumber %}}.2: Quota check
+### Task {{% param sectionnumber %}}.1: Quota check
 
 Check whether a ResourceQuota exists in your Namespace and what kinds of limits it imposes:
 
@@ -151,7 +152,7 @@ If for example a container did not define any requests or limits and there was a
 The possibility of enforcing minimum and maximum resources and defining ResourceQuotas per Namespace allows for many combinations of resource control.
 
 
-### Task {{% param sectionnumber %}}.3: LimitRange check
+### Task {{% param sectionnumber %}}.2: LimitRange check
 
 Check whether your Namespace contains a LimitRange:
 
@@ -171,7 +172,7 @@ Container   cpu       -    -    10m              100m           -
 ```
 
 
-## Task {{% param sectionnumber %}}.4: Default memory limit
+## Task {{% param sectionnumber %}}.3: Default memory limit
 
 Create a Pod using the polinux/stress image:
 {{< onlyWhenNot mobi >}}
@@ -300,7 +301,7 @@ stress   1/1     Running   0          25s
 ```
 
 
-## Task {{% param sectionnumber %}}.5: Hitting the quota
+## Task {{% param sectionnumber %}}.4: Hitting the quota
 
 Create another Pod, again using the `polinux/stress` image. This time our application is less demanding and only needs 10 MB of memory (`--vm-bytes 10M`):
 
