@@ -4,6 +4,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx-public
     kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: acend-letsencrypt
   labels:
     app: kubernetes-basics-training
   name: kubernetes-basics-training-acend
