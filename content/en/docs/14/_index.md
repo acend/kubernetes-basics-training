@@ -17,7 +17,7 @@ The [Web Console](http://kubeview.benco.io/) which will be used, is a small proj
 To install the Web Console into our existing Namespace we have to execute the following:
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/14.0/dashboard.yaml --namespace <namespace>
+kubectl apply -f https://raw.githubusercontent.com/acend/kubernetes-techlab/master/content/en/docs/14/dashboard.yaml --namespace <namespace>
 ```
 
 
