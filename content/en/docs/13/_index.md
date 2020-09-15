@@ -142,7 +142,7 @@ The same applies to our Service. It also comes in two customizations so that it 
 {{< highlight yaml >}}{{< readfile file="content/en/docs/13/kustomize/overlays/production/service-patch.yaml" >}}{{< /highlight >}}
 
 {{% alert title="Note" color="primary" %}}
-All files mentioned above are also directly accessible from [GitHub](https://github.com/acend/kubernetes-basics-training/tree/master/content/en/docs/13.0/kustomize).
+All files mentioned above are also directly accessible from [GitHub](https://github.com/acend/kubernetes-basics-training/tree/master/content/en/docs/13/kustomize).
 {{% /alert %}}
 
 Prepare the files as described above in a local directory of choice.
