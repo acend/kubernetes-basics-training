@@ -269,6 +269,11 @@ You can directly edit the deployment (or any resource) with:
 kubectl edit deployment example-web-python --namespace <namespace>
 ```
 
+{{% alert title="Note" color="primary" %}}
+If you're not comfortable with `vi` then you can switch to another editor by setting the environment variable `EDITOR`
+or `KUBE_EDITOR`, e.g. `export EDITOR=nano`.
+{{% /alert %}}
+
 Look for the following section and change the value for `maxUnavailable` to 0:
 
 ```
