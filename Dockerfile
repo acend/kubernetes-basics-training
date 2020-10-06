@@ -11,7 +11,7 @@ WORKDIR /opt/app/src
 
 COPY . /opt/app/src
 
-RUN npm install -D --save autoprefixer postcss-cli
+RUN npm install -D --save autoprefixer postcss postcss-cli
 
 RUN hugo --theme ${HUGO_THEME:-docsy} --minify
 
