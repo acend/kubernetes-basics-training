@@ -1,3 +1,4 @@
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -7,7 +8,7 @@ metadata:
     cert-manager.io/cluster-issuer: acend-letsencrypt
   labels:
     app: kubernetes-basics-training
-  name: kubernetes-basics-training-acend
+  name: kubernetes-basics-labs-acend
 spec:
   rules:
   - host: kubernetes-basics.labs.acend.ch
@@ -20,3 +21,27 @@ spec:
   - hosts:
       - kubernetes-basics.labs.acend.ch
     secretName: kubernetes-basics-labs-acend-ch
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx-public
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: acend-letsencrypt
+  labels:
+    app: kubernetes-basics-training
+  name: kubernetes-basics-training-acend
+spec:
+  rules:
+  - host: kubernetes-basics.training.acend.ch
+    http:
+      paths:
+      - backend:
+          serviceName: kubernetes-basics-training
+          servicePort: 8080
+  tls:
+  - hosts:
+      - kubernetes-basics.training.acend.ch
+    secretName: kubernetes-basics-training-acend-ch
