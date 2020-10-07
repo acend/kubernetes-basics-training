@@ -55,8 +55,8 @@ weight = 1
 
 [[Languages.en.menu.main]]
 weight = 3
-name = "Puzzle ITC GmbH"
-url = "https://www.puzzle.ch"
+name = "acend gmbh"
+url = "https://www.acend.ch"
 
 [markup]
   [markup.goldmark]
@@ -66,9 +66,8 @@ url = "https://www.puzzle.ch"
 
 [params]
 
-copyright = "Puzzle ITC GmbH"
+copyright = "acend gmbh"
 github_repo = "https://github.com/acend/kubernetes-basics-training"
-
 
 enabledModule = "base rancher mobi"
 
@@ -97,9 +96,9 @@ url = "https://github.com/acend/kubernetes-techlab"
 [[params.links.user]]
 name = "Twitter"
 icon = "fab fa-twitter"
-url = "https://twitter.com/puzzleitc"
+url = "https://twitter.com/acendch"
   
 [[params.links.user]]
 name = "LinkedIn"
 icon = "fab fa-linkedin-in"
-url = "https://linkedin.com/company/puzzle-itc"
+url = "https://linkedin.com/company/acendch/"
