@@ -1,5 +1,5 @@
 {
-  "name": "kubernetes-techlab",
+  "name": "kubernetes-basics-training",
   "devDependencies": {
     "markdownlint-cli": "^0.23.1"
   }
