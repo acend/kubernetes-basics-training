@@ -13,7 +13,8 @@ COPY . /opt/app/src
 
 RUN npm install -D --save autoprefixer postcss postcss-cli
 
-RUN hugo --theme ${HUGO_THEME:-docsy} --minify
+# --minify breaks our logo.svg somehow...
+RUN hugo --theme ${HUGO_THEME:-docsy}
 
 FROM nginxinc/nginx-unprivileged:alpine
 
