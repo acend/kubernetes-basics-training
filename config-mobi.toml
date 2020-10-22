@@ -9,6 +9,9 @@ languageCode = "en-us"
 
 contentDir = "content/en"
 
+[minify]
+disableSVG = true
+
 # default content language
 defaultContentLanguage = "en"
 defaultContentLanguageInSubdir = false
