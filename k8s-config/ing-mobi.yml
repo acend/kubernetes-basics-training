@@ -41,3 +41,4 @@ spec:
   tls:
   - hosts:
     - kubernetes-basics-mobi.training.acend.ch
+    secretName: kubernetes-basics-mobi-training
