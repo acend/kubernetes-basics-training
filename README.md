@@ -1,6 +1,6 @@
 # Kubernetes Basics Training
 
-In this guided hands-on training, we show the participants the basics of Kubernetes.
+In this guided hands-on training, we show the participants the basics of Kubernetes and select Kubernetes distributions.
 
 
 ## Content Sections

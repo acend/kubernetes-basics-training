@@ -9,6 +9,7 @@ menu:
 
 {{< blocks/section color="light">}}
 
+{{< onlyWhenNot openshift >}}
 {{% blocks/feature icon="fa-chalkboard-teacher" url="https://drive.google.com/uc?export=download&id=1-SQRUoPllLj5ceet00GUk2WiNzzd0EGt" title="Kubernetes Basics" %}}
 {{% /blocks/feature %}}
 
@@ -17,5 +18,9 @@ menu:
 
 {{% blocks/feature icon="fa-chalkboard-teacher" url="https://drive.google.com/uc?export=download&id=1T0ciPLHYj8NXp0dzBiwmqDg0VLyw_OH_" title="Kubernetes Developer Tools" %}}
 {{% /blocks/feature %}}
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+
+{{< /onlyWhen >}}
 
 {{< /blocks/section >}}

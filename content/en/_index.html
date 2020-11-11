@@ -1,10 +1,22 @@
 +++
+{{< onlyWhenNot openshift >}}
 title = "Kubernetes Basics Training"
 linkTitle = "Kubernetes Basics Training"
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+title = "OpenShift Basics Training"
+linkTitle = "OpenShift Basics Training"
+{{< /onlyWhen >}}
 
 +++
 
+{{< onlyWhenNot openshift >}}
 {{< blocks/cover title="Welcome to the Kubernetes Basics Training" image_anchor="top" height="full" color="primary" >}}
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+{{< blocks/cover title="Welcome to the OpenShift Basics Training" image_anchor="top" height="full" color="primary" >}}
+{{< /onlyWhen >}}
+
 <div class="mx-auto">
 	<a class="btn btn-lg btn-primary mr-3 mb-4" href="{{< relref "/docs" >}}">
 		Labs <i class="fas fa-flask ml-2"></i>
@@ -19,7 +31,12 @@ linkTitle = "Kubernetes Basics Training"
 
 
 {{% blocks/lead color="dark" %}}
+{{< onlyWhenNot openshift >}}
 [Kubernetes (K8s)](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/) is an open-source system for automating deployment, scaling, and management of containerized applications.
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+[OpenShift](https://www.openshift.com/learn/what-is-openshift) is a hybrid cloud, enterprise Kubernetes application platform.
+{{< /onlyWhen >}}
 
 {{% /blocks/lead %}}
 
