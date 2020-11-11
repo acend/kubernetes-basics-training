@@ -24,19 +24,27 @@ Goals of these labs:
 ## Additional Docs
 
 {{< onlyWhenNot openshift >}}
+
 * [Kubernetes Docs](https://kubernetes.io/docs/home/?path=users&persona=app-developer&level=foundational)
 * [Helm Docs](https://docs.helm.sh/)
+
 {{< /onlyWhenNot >}}
 {{< onlyWhen openshift >}}
+
 * [OpenShift Docs](https://docs.openshift.com/)
+
 {{< /onlyWhen >}}
 
 
 ## Additional Tutorials
 
 {{< onlyWhenNot openshift >}}
+
 * [Official Kubernetes Tutorial](https://kubernetes.io/docs/tutorials/)
+
 {{< /onlyWhenNot >}}
 {{< onlyWhen openshift >}}
+
 * [OpenShift Interactive Learning Portal](https://learn.openshift.com/)
+
 {{< /onlyWhen >}}
