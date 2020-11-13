@@ -39,7 +39,7 @@ spec:
   initContainers:
   - name: wait-for-db
     image: busybox:1.28
-    command: ['sh', '-c', "until nslookup mysql.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
+    command: ['sh', '-c', "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
 ...
 ```
 
@@ -52,7 +52,7 @@ spec:
   initContainers:
   - name: wait-for-db
     image: docker-registry.mobicorp.ch/cop/curl-and-provide:latest
-    command: ['sh', '-c', "until nslookup mysql.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
+    command: ['sh', '-c', "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
 ...
 ```
 

@@ -1,3 +1,18 @@
+# Secrets are stored in the same file as the Deployment for demo purposes. Don't do this for production workloads!
+---
+apiVersion: v1
+data:
+  password: bXlzcWxwYXNzd29yZA==
+kind: Secret
+metadata:
+  name: mysql-password
+---
+apiVersion: v1
+data:
+  password: bXlzcWxyb290cGFzc3dvcmQ=
+kind: Secret
+metadata:
+  name: mysql-root-password
 ---
 apiVersion: v1
 kind: Service
@@ -29,7 +44,7 @@ spec:
         app: mysql
     spec:
       containers:
-        - image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mysql:5.6
+        - image: mariadb:5.7
           name: mysql
           args:
             - "--ignore-db-dir=lost+found"
@@ -54,3 +69,10 @@ spec:
           ports:
             - containerPort: 3306
               name: mysql
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim

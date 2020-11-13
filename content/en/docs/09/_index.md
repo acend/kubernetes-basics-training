@@ -62,12 +62,12 @@ Add both parts `volumeMounts` and `volumes`
         terminationMessagePolicy: File
         # start to copy here
         volumeMounts:
-        - name: mysql-persistent-storage
+        - name: mariadb-persistent-storage
           mountPath: /var/lib/mysql
       volumes:
-      - name: mysql-persistent-storage
+      - name: mariadb-persistent-storage
         persistentVolumeClaim:
-          claimName: mysql-pv-claim
+          claimName: mariadb-data
       # stop to copy here
       dnsPolicy: ClusterFirst
       restartPolicy: Always
@@ -100,7 +100,7 @@ Which gives you an output similar to this:
 
 ```
 NAME             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-mysql-pv-claim   Bound    pvc-2cb78deb-d157-11e8-a406-42010a840034   1Gi        RWO            standard       11s
+mariadb-data     Bound    pvc-2cb78deb-d157-11e8-a406-42010a840034   1Gi        RWO            standard       11s
 ```
 
 The two columns `STATUS` and `VOLUME` show us that our claim has been bound to the PersistentVolume `pvc-2cb78deb-d157-11e8-a406-42010a840034`.
@@ -129,7 +129,7 @@ Repeat [task 8.4](../08.0/#task-84-import-a-database-dump).
 
 ### Test
 
-Scale your MySQL Pod to 0 replicas and back to 1. Observe that the new Pod didn't loose any data.
+Scale your MariaDB Pod to 0 replicas and back to 1. Observe that the new Pod didn't loose any data.
 
 
 ## Save point
@@ -137,6 +137,6 @@ Scale your MySQL Pod to 0 replicas and back to 1. Observe that the new Pod didn'
 You should now have the following resources in place:
 
 * [pvc.yaml](pvc.yaml)
-* {{< onlyWhenNot mobi >}}[mysql.yaml](mysql.yaml){{< /onlyWhenNot >}}
-  {{< onlyWhen mobi >}}[mysql-mobi.yaml](mysql-mobi.yaml){{< /onlyWhen >}}
+* {{< onlyWhenNot mobi >}}[mariadb.yaml](mariadb.yaml){{< /onlyWhenNot >}}
+  {{< onlyWhen mobi >}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{< /onlyWhen >}}
 * [example-web-python.yaml](../08/example-web-python.yaml) (from lab 8)
