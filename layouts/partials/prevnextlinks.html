@@ -33,14 +33,14 @@
     <div class="col-sm">
         {{with ($.Scratch.Get "prevPage")}}
         <a href="{{.URL | absURL}}" data-toggle="tooltip" title="{{.Title}}">
-            <i class="fa fa-arrow-circle-left"></i> Previous
+            <i class="fa fa-arrow-circle-left"></i>&nbsp;Previous
         </a>
         {{end}}
     </div>
     <div class="col-sm text-right">
         {{with ($.Scratch.Get "nextPage")}}
         <a href="{{.URL | absURL}}" data-toggle="tooltip" title="{{.Title}}">
-            Next <i class="fa fa-arrow-circle-right"></i>
+            Next&nbsp;<i class="fa fa-arrow-circle-right"></i>
         </a>
         {{end}}
     </div>
