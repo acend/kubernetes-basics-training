@@ -12,11 +12,10 @@ In this lab, we are going to deploy our first pre-built container image and look
 After we've familiarized ourselves with the platform, we are going to have a look at deploying a pre-built container image from Docker Hub or any other public container registry.
 
 First, we are going to directly start a new Pod:
-{{< onlyWhenNot openshift >}}
 {{< onlyWhenNot mobi >}}
 
 ```bash
-kubectl run nginx --image=nginx --port=80 --restart=Never --namespace <namespace>
+{{% param cliToolName %}} run nginx --image=nginx --port=8080 --restart=Never --namespace <namespace>
 ```
 
 {{< /onlyWhenNot >}}
@@ -28,26 +27,13 @@ kubectl run nginx --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx:stab
 
 {{< /onlyWhen >}}
 
-Use `kubectl get pods --namespace <namespace>` in order to show the running Pod:
+
+Use `{{% param cliToolName %}} get pods --namespace <namespace>` in order to show the running Pod:
 
 ```bash
-kubectl get pods --namespace <namespace>
+{{% param cliToolName %}} get pods --namespace <namespace>
 ```
 
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
-
-```bash
-oc run nginx --image=nginx --port=8080 --restart=Never --namespace <namespace>
-```
-
-Use `oc get pods --namespace <namespace>` in order to show the running Pod:
-
-```bash
-oc get pods --namespace <namespace>
-```
-
-{{< /onlyWhen >}}
 Which gives you an output similar to this:
 
 ```
@@ -64,21 +50,9 @@ Have a look at your nginx Pod inside the OpenShift web console.
 
 Now delete the newly created Pod:
 
-
-{{< onlyWhenNot openshift >}}
-
 ```bash
-kubectl delete pod nginx --namespace <namespace>
+{{% param cliToolName %}} delete pod nginx --namespace <namespace>
 ```
-
-{{% /onlyWhenNot %}}
-{{< onlyWhen openshift >}}
-
-```bash
-oc delete pod nginx --namespace <namespace>
-```
-
-{{% /onlyWhen %}}
 
 
 ## Task {{% param sectionnumber %}}.2: Create a Deployment
@@ -86,11 +60,10 @@ oc delete pod nginx --namespace <namespace>
 In some use cases it makes sense to start a single Pod but has its downsides and is not really a common practice. Let's look at another concept which is tightly coupled with the Pod: the so-called _Deployment_. A Deployment makes sure a Pod is monitored and the Deployment also checks that the number of running Pods corresponds to the number of requested Pods.
 
 With the following command we can create a Deployment inside our already created namespace:
-{{< onlyWhenNot openshift >}}
 {{< onlyWhenNot mobi >}}
 
 ```bash
-kubectl create deployment example-web-go --image=acend/example-web-go --namespace <namespace>
+{{% param cliToolName %}} create deployment example-web-go --image=acend/example-web-go --namespace <namespace>
 ```
 
 {{< /onlyWhenNot >}}
@@ -102,14 +75,6 @@ kubectl create deployment example-web-go --image=docker-registry.mobicorp.ch/puz
 ```
 
 {{< /onlyWhen >}}
-{{% /onlyWhenNot %}}
-{{< onlyWhen openshift >}}
-
-```bash
-oc create deployment example-web-go --image=acend/example-web-go --namespace <namespace>
-```
-
-{{% /onlyWhen %}}
 The output should be:
 
 ```
