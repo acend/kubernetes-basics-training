@@ -5,51 +5,48 @@ sectionnumber: 10.4
 ---
 
 Similar to environment variables, _ConfigsMaps_ allow you to separate the configuration for an application from the image. Pods can access those variables at runtime which allows maximum portability for applications running in containers.
-In this lab, you learn how to create and use ConfigMaps.
+In this lab, you will learn how to create and use ConfigMaps.
 
 
-## Creating ConfigMaps
+## ConfigMap creation
 
-Use the following command to create a ConfigMap:
+A ConfigMap can be created using the `{{% param cliToolName %}} create configmap` command as follows:
 
 ```bash
-kubectl create configmap <name> <data-source> --namespace <namespace>
+{{% param cliToolName %}} create configmap <name> <data-source> --namespace <namespace>
 ```
 
-The `<data-source>` can be a file, a directory, or a command line input.
+Where the `<data-source>` can be a file, directory, or command line input.
 
 
-## Task {{% param sectionnumber %}}.1: Create a ConfigMap from Java properties
+## Task {{% param sectionnumber %}}.1: Java properties as ConfigMap
 
 A classic example for ConfigMaps are properties files of Java applications which can't be configured with environment variables.
 
-You can create a ConfigMap based on a local file:
-
-```bash
-kubectl create configmap javaconfig --from-file=./java.properties --namespace <namespace>
-```
-
-The content of `java.properties` should be:
+First, create a file called `java.properties` with the following content:
 
 {{< highlight text >}}{{< readfile file="content/en/docs/10/04/java.properties" >}}{{< /highlight >}}
-
-With
+Now you can create a ConfigMap based on that file:
 
 ```bash
-kubectl get configmaps --namespace <namespace>
+{{% param cliToolName %}} create configmap javaconfiguration --from-file=./java.properties --namespace <namespace>
 ```
 
-you can verify, if the ConfigMap was created successfully:
+Verify that the the ConfigMap was created successfully:
+
+```bash
+oc get configmaps --namespace <namespace>
+```
 
 ```
 NAME                DATA   AGE
-javaconfig   1      7s
+javaconfiguration   1      7s
 ```
 
-The content can also be displayed with
+Have a look at its content:
 
 ```bash
-kubectl get configmap javaconfig -o yaml --namespace <namespace>
+{{% param cliToolName %}} get configmap javaconfiguration -o yaml --namespace <namespace>
 ```
 
 Which should yield output similar to this one:
@@ -57,31 +54,47 @@ Which should yield output similar to this one:
 {{< highlight yaml >}}{{< readfile file="content/en/docs/10/04/javaconfig.yaml" >}}{{< /highlight >}}
 
 
-## Task {{% param sectionnumber %}}.2: Attach a ConfigMap to a Pod
+## Taks {{% param sectionnumber %}}.2: Attach the ConfigMap to a Container
 
-Next, we want to make a ConfigMap accessible for a Pod.
+Next, we want to make a ConfigMap accessible for a Container. There are basically the following possibilities to achieve {{< onlyWhenNot openshift >}}[this](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){{< /onlyWhenNot >}}{{< onlyWhen openshift >}}[this](https://docs.openshift.com/container-platform/latest/builds/builds-configmaps.html#builds-configmaps-consuming-configmap-in-pods){{< /onlyWhen >}}.
 
-Basically, there are the following possibilities to achieve [this](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
-
-* ConfigMap properties as environment variables in a deployment
-* Commandline arguments via environment variables
+* ConfigMap properties as environment variables in a Deployment
+* Command line arguments via environment variables
 * Mounted as volumes in the container
 
-In this example, we want the file to be mounted as a volume in the container.
+In this example, we want the file to be mounted as a volume inside the Container.
+{{< onlyWhen openshift >}}
+As in [lab 9](../09.0/), we can use the `oc set volume` command to achieve this:
+
+```bash
+oc set volume deploy/example-web-python --add --configmap-name=javaconfiguration --mount-path=/etc/config --name=config-volume --type configmap --namespace <namespace>
+```
+
+{{% alert title="Note" color="primary" %}}
+This task doesn't have any effect on the Python application inside the Container. It is for demonstration purposes only.
+{{% /alert %}}
+
+This results in the addition of the following parts to the Deployment (check with `oc get deploy awesome-app -o yaml`):
+
+{{< /onlyWhen >}}
+{{< onlyWhenNot openshift >}}
 Basically, a Deployment has to be extended with the following config:
+{{< /onlyWhenNot >}}
 
 ```yaml
-...
+      ...
+        volumeMounts:
         - mountPath: /etc/config
           name: config-volume
       ...
+      volumes:
       - configMap:
           defaultMode: 420
           name: javaconfiguration
         name: config-volume
-...
+      ...
 ```
-
+{{< onlyWhenNot openshift >}}
 Here is a complete example Deployment of a sample Java app:
 
 {{< onlyWhenNot mobi >}}
@@ -91,18 +104,29 @@ Here is a complete example Deployment of a sample Java app:
 {{< onlyWhen mobi >}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/10/04/spring-boot-example-mobi.yaml" >}}{{< /highlight >}}
 {{< /onlyWhen >}}
+{{< /onlyWhenNot >}}
 
-After that, it's possible for the container to access the values in the ConfigMap in `/etc/config/java.properties`
 
+This means that the Container should now be able to access the ConfigMap's content in `/etc/config/java.properties`. Let's check:
+
+
+{{< onlyWhen openshift >}}
+```bash
+oc exec <pod name> --namespace <namespace> -- cat /etc/config/java.properties
+```
+{{< /onlyWhen >}}
+{{< onlyWhenNot openshift >}}
 ```bash
 kubectl exec -it <pod> --namespace <namespace> -- cat /etc/config/java.properties
 ```
+{{< /onlyWhenNot >}}
+
 
 {{< highlight text >}}{{< readfile file="content/en/docs/10/04/java.properties" >}}{{< /highlight >}}
 
-Like this, the property file can be read and used by the Java application in the container. The image stays portable to other environments.
+Like this, the property file can be read and used by the application inside the Container. The image stays portable to other environments.
 
 
 ## Task {{% param sectionnumber %}}.3: ConfigMap Data Sources
 
-Create a ConfigMap and use the other kinds of [data sources](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
+Create a ConfigMap and use the other kinds of {{< onlyWhenNot openshift >}}[data sources](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){{< /onlyWhenNot >}}{{< onlyWhen openshift >}}[data sources](https://docs.openshift.com/container-platform/latest/builds/builds-configmaps.html#builds-configmap-create_builds-configmaps){{< /onlyWhen >}}
