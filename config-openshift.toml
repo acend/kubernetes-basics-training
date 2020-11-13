@@ -78,6 +78,7 @@ github_repo = "https://github.com/acend/kubernetes-basics-training"
 
 enabledModule = "base openshift"
 distroName = "OpenShift"
+cliToolName = "oc"
 
 # Enable Lunr.js offline search
 offlineSearch = true
