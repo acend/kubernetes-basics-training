@@ -144,7 +144,7 @@ Events:
 
 The `Endpoints` shows the IP addresses of all currently matched Pods.
 
-With the ClusterIP Service ready, we can now create the {{< onlyWhenNot openshift >}}Ingress{{< /onlyWhen >}}{{< onlyWhen openshift >}}Route{{< /onlyWhen >}} resource. 
+With the ClusterIP Service ready, we can now create the {{< onlyWhenNot openshift >}}Ingress{{< /onlyWhen >}}{{< onlyWhen openshift >}}Route{{< /onlyWhen >}} resource.
 {{< onlyWhenNot openshift >}}
 In order to create the Ingress resource, we first need to create the file `ingress.yaml` and change the `host` entry to match your environment:
 
