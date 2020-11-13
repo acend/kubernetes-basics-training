@@ -5,7 +5,7 @@ sectionnumber: 3
 ---
 
 
-In this lab, we will interact with the Kubernetes cluster for the first time.
+In this lab, we will interact with the {{% param distroName %}} cluster for the first time.
 
 {{% alert title="Warning" color="secondary" %}}
 Please make sure you completed [lab 2](../02/) before you continue with this lab.
@@ -14,6 +14,7 @@ Please make sure you completed [lab 2](../02/) before you continue with this lab
 
 ## Login and choose a Kubernetes cluster
 
+{{< onlyWhenNot openshift >}}
 {{% alert title="Note" color="primary" %}}
 Authentication depends on the specific Kubernetes cluster environment. You may need special instructions if you're not using our lab environment.
 {{% /alert %}}
@@ -159,4 +160,102 @@ kubectl get pod -n <namespace>
 ```
 
 With the command `kubectl get` you can display all kinds of resources.
+{{< /onlyWhen >}}
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+
+
+## Login
+
+
+### Login on the Web Console
+
+{{% alert title="Note" color="primary" %}}
+Your teacher will provide you with the credentials to log in.
+{{% /alert %}}
+
+Open your browser, open the OpenShift cluster URL and log in using the provided credentials.
+
+
+### Login on the shell
+
+In order to log in on the shell, you can copy the login command from the Web Console and then paste it on the shell.
+
+To do that, open the Web Console and click on your username you see at the top right, then choose **Copy Login Command**.
+
+![oc-login](login-ocp.png)
+
+A new tab or window opens in your browser.
+
+{{% alert title="Note" color="primary" %}}
+You might need to login again.
+{{% /alert %}}
+
+The page now displays a link **Display token**.
+Click it and copy the command under **Log in with this token**.
+
+Now paste the copied command in your shell.
+
+
+### Verify login
+
+If you now execute `oc version` you should see something like this (version numbers may vary):
+
+```
+Client Version: 4.5.7
+Server Version: 4.5.7
+Kubernetes Version: v1.18.3+2cf11e2
+```
+
+
+## Project
+
+As a first step on the cluster we are going to create a new Project.
+
+A Project is the logical design used in OpenShift to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis.
+Authorized users inside a Project are able to manage those resources. Project names have to be unique in your cluster.
+
+
+### Task {{% param sectionnumber %}}.1: Create a Project
+
+Create a new Project in the lab environment. The `oc help` output can help you figure out the right command.
+
+{{% alert title="Note" color="primary" %}}
+Please choose an identifying name for your Project, e.g. your initials or name as a prefix. We are going to use `<project>` as a placeholder for your created Project.
+{{% /alert %}}
+
+
+### Solution
+
+To create a new Project on your cluster use the following command:
+
+```bash
+oc new-project <project>
+```
+
+{{% alert title="Note" color="primary" %}}
+Some prefer to explicitly select the Project for each `oc` command by adding `--namespace <project>` or `-n <project>`.
+
+By using the following command, you can switch into another Project instead of specifying it for each `oc` command.
+
+```bash
+oc project <project>
+```
+
+{{% /alert %}}
+
+
+## Task {{% param sectionnumber %}}.2: Discover the OpenShift web console
+
+Discover the different menu entries in the two views, the **Developer** and the **Administrator** view.
+
+Display all existing Pods in the previously created Project with `oc` (there shouldn't yet be any):
+
+```bash
+oc get pod -n <project>
+```
+
+{{% alert title="Note" color="primary" %}}
+With the command `oc get` you can display all kinds of resources.
+{{% /alert %}}
 {{< /onlyWhen >}}
