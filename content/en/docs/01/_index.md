@@ -93,15 +93,18 @@ Layer example for a Tomcat application:
 1. Install App
 
 The pre-built images under version control can be saved in an image registry and can then be used by the container platform.
-
-
 {{< onlyWhenNot openshift >}}
+
+
 ### Namespaces
+
 {{< /onlyWhenNot >}}
 {{< onlyWhen openshift >}}
-### Namespaces and Projects
-{{< /onlyWhen >}}
 
+
+### Namespaces and Projects
+
+{{< /onlyWhen >}}
 Namespaces in Kubernetes represent a logical segregation of unique names for entities (Pods, Services, Deployments, ConfigMaps, etc.).
 {{< onlyWhen openshift >}}
 In OpenShift, users do not directly create Namespaces, they create Projects. A Project is a Namespace with additional annotations.
