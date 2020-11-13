@@ -4,7 +4,14 @@ weight: 105
 sectionnumber: 10.5
 ---
 
-In this lab, we are going to look at ResourceQuotas and LimitRanges. As Kubernetes users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.
+In this lab, we are going to look at ResourceQuotas and LimitRanges. As {{% param distroName %}} users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.
+
+{{< onlyWhen openshift >}}
+{{% alert title="Note" color="primary" %}}
+Use the existing Namespace `<username>-resources` for this lab.
+{{% /alert %}}
+{{< /onlyWhen >}}
+
 
 {{< onlyWhen rancher >}}
 
@@ -28,7 +35,7 @@ Finally, click on __Create__.
 
 ## ResourceQuotas
 
-ResourceQuotas among other things limit the amount of resources Pods can use in a Namespace. They can also be used to limit the total number of a certain resource type in a Namespace. In more detail, there are these kinds of quotas:
+ResourceQuotas among other things limit the amount of resources Pods can use in a Namespace. They can also be used to limit the total number of a certain resource type in a {{< onlyWhenNot openshift >}}Namespace{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}Project{{< /onlyWhen >}}. In more detail, there are these kinds of quotas:
 
 * _Compute ResourceQuotas_ can be used to limit the amount of memory and CPU
 * _Storage ResourceQuotas_ can be used to limit the total amount of storage and the number of PersistentVolumeClaims, generally or specific to a StorageClass
@@ -36,46 +43,31 @@ ResourceQuotas among other things limit the amount of resources Pods can use in 
 
 Defining ResourceQuotas makes sense when the cluster administrators want to have better control over consumed resources. A typical use case are public offerings where users pay for a certain guaranteed amount of resources which must not be exceeded.
 
-In order to check for defined quotas in your Namespace, simply see if there are any resources of type ResourceQuota:
+In order to check for defined quotas in your Namespace, simply see if there are any of type ResourceQuota:
 
 ```
-kubectl get resourcequota --namespace <namespace>
+{{% param cliToolName %}} get resourcequota --namespace <namespace>
 ```
 
 To show in detail what kinds of limits the quota imposes:
 
 ```
-kubectl describe resourcequota <quota-name> --namespace <namespace>
+{{% param cliToolName %}} describe resourcequota <quota-name> --namespace <namespace>
 ```
 
-
-### Task {{% param sectionnumber %}}.1: Quota check
-
-Check whether a ResourceQuota exists in your Namespace and what kinds of limits it imposes:
-
-```bash
-kubectl describe quota --namespace <namespace>
-```
-
-Above command should output this (name and Namespace will vary):
-
-```
-Name:            lab-quota
-Namespace:       eltony-quota-lab
-Resource         Used  Hard
---------         ----  ----
-requests.cpu     0     100m
-requests.memory  0     100Mi
-```
-
+{{< onlyWhenNot openshift >}}
 For more details, have look at [Kubernetes' documentation about resource quotas](https://kubernetes.io/docs/concepts/policy/resource-quotas/#requests-vs-limits).
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+For more details, have look into [OpenShift's documentation about resource quotas](https://docs.openshift.com/container-platform/latest/applications/quotas/quotas-setting-per-project.html).
+{{< /onlyWhen >}}
 
 
 ## Requests and limits
 
-As we've already seen, compute ResourceQuotas limit the amount of memory and CPU we can use in a Namespace. Only defining a ResourceQuota, however is not going to have an effect on Pods that don't define the amount of resources they want to use. This is where the concept of limits and requests comes into play.
+As we've already seen, compute ResourceQuotas limit the amount of memory and CPU we can use in a {{< onlyWhenNot openshift >}}Namespace{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}Project{{< /onlyWhen >}}. Only defining a ResourceQuota, however is not going to have an effect on Pods that don't define the amount of resources they want to use. This is where the concept of limits and requests comes into play.
 
-Limits and requests on a Pod, or rather on a container in a Pod, define how much memory and CPU this container wants to consume at least (request) and at most (limit). Requests mean that the container will be guaranteed to get at least this amount of resources, limits represent the upper boundary which cannot be crossed. Defining these values helps Kubernetes in determining on which Node to schedule the Pod, because it knows how many resources should be available for it.
+Limits and requests on a Pod, or rather on a container in a Pod, define how much memory and CPU this container wants to consume at least (request) and at most (limit). Requests mean that the container will be guaranteed to get at least this amount of resources, limits represent the upper boundary which cannot be crossed. Defining these values helps {{% param distroName %}} in determining on which Node to schedule the Pod, because it knows how many resources should be available for it.
 
 {{% alert title="Note" color="primary" %}}
 Containers using more CPU time than what their limit allows will be throttled.
@@ -120,7 +112,7 @@ The Guaranteed QoS class is applied to Pods that define both limits and requests
 Pods that belong to this QoS class will never be killed by the scheduler because of resources running out on a Node.
 
 {{% alert title="Note" color="primary" %}}
-If a container only defines its limits, Kubernetes automatically assigns a request that matches the limit.
+If a container only defines its limits, {{% param distroName %}} automatically assigns a request that matches the limit.
 {{% /alert %}}
 
 The Burstable QoS class means that limits and requests on a container are set, but they are different. It is enough to define limits and requests on one container of a Pod even though there might be more, and it also only has to define limits and requests on memory or CPU, not necessarily both.
@@ -128,7 +120,9 @@ The Burstable QoS class means that limits and requests on a container are set, b
 The BestEffort QoS class applies to Pods that do not define any limits and requests at all on any containers.
 As its class name suggests, these are the kinds of Pods that will be killed by the scheduler first if a Node runs out of memory or CPU. As you might have already guessed by now, if there are no BestEffort QoS Pods, the scheduler will begin to kill Pods belonging to the class of _Burstable_. A Node hosting only Pods of class Guaranteed will (theoretically) never run out of resources.
 
+{{< onlyWhenNot openshift >}}
 For more examples have a look at the [Kubernetes documentation about Quality of Service](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/).
+{{< /onlyWhenNot >}}
 
 
 ## LimitRanges
@@ -152,15 +146,15 @@ If for example a container did not define any requests or limits and there was a
 The possibility of enforcing minimum and maximum resources and defining ResourceQuotas per Namespace allows for many combinations of resource control.
 
 
-### Task {{% param sectionnumber %}}.2: LimitRange check
+### Task {{% param sectionnumber %}}.1: Namespace
 
 Check whether your Namespace contains a LimitRange:
 
 ```bash
-kubectl describe limitrange --namespace <namespace>
+{{% param cliToolName %}} describe limitrange --namespace <namespace>
 ```
 
-Above command should output something like this (name and Namespace will vary):
+Above command should output this (name and Namespace will vary):
 
 ```
 Name:       ce01a1b6-a162-479d-847c-4821255cc6db
@@ -172,32 +166,46 @@ Container   cpu       -    -    10m              100m           -
 ```
 
 
-## Task {{% param sectionnumber %}}.3: Default memory limit
+Check whether a ResourceQuota exists in your Namespace:
+
+```bash
+{{% param cliToolName %}} describe quota --namespace <namespace>
+```
+
+Above command could (must not) output this (name and Namespace will vary):
+
+```
+Name:            lab-quota
+Namespace:       eltony-quota-lab
+Resource         Used  Hard
+--------         ----  ----
+requests.cpu     0     100m
+requests.memory  0     100Mi
+```
+
+
+## Task {{% param sectionnumber %}}.2: Default memory limit
 
 Create a Pod using the polinux/stress image:
 {{< onlyWhenNot mobi >}}
-
 ```bash
-kubectl run stress2much --image=polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+{{% param cliToolName %}} run stress2much --image=polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
-
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
-
 ```bash
 kubectl run stress2much --image=docker-registry.mobicorp.ch/polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
-
 {{< /onlyWhen >}}
 
 {{% alert title="Note" color="primary" %}}
-You have to actively terminate the following command by pressing `CTRL+c` on your keyboard.
+You have to actively terminate the following command pressing `CTRL+c` on your keyboard.
 {{% /alert %}}
 
 Watch the Pod's creation with:
 
 ```bash
-kubectl get pods --watch --namespace <namespace>
+{{% param cliToolName %}} get pods --watch --namespace <namespace>
 ```
 
 You should see something like the following:
@@ -215,7 +223,7 @@ stress2much   0/1     CrashLoopBackOff    1          20s
 The `stress2much` Pod was OOM (out of memory) killed. We can see this in the `STATUS` field. Another way to find out why a Pod was killed is by checking its status. Output the Pod's YAML definition:
 
 ```bash
-kubectl get pod stress2much --output yaml --namespace <namespace>
+{{% param cliToolName %}} get pod stress2much --output yaml --namespace <namespace>
 ```
 
 Near the end of the output you can find the relevant status part:
@@ -251,7 +259,7 @@ Near the end of the output you can find the relevant status part:
 So let's look at the numbers to verify the container really had too little memory. We started the `stress` command using parameter `--vm-bytes 85M` which means the process wants to allocate 85 megabytes of memory. Again looking at the Pod's YAML definition with:
 
 ```bash
-kubectl get pod stress2much --output yaml --namespace <namespace>
+{{% param cliToolName %}} get pod stress2much --output yaml --namespace <namespace>
 ```
 
 reveals the following values:
@@ -275,16 +283,16 @@ Let's fix this by recreating the Pod and explicitly setting the memory request t
 {{< onlyWhenNot mobi >}}
 
 ```bash
-kubectl delete pod stress2much --namespace <namespace>
-kubectl run stress --image=polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+{{% param cliToolName %}} delete pod stress2much --namespace <namespace>
+{{% param cliToolName %}} run stress --image=polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
 
 ```bash
-kubectl delete pod stress2much --namespace <namespace>
-kubectl run stress --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+{{% param cliToolName %}} delete pod stress2much --namespace <namespace>
+{{% param cliToolName %}} run stress --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
 {{< /onlyWhen >}}
@@ -301,23 +309,19 @@ stress   1/1     Running   0          25s
 ```
 
 
-## Task {{% param sectionnumber %}}.4: Hitting the quota
+## Task {{% param sectionnumber %}}.3: Hitting the quota
 
 Create another Pod, again using the `polinux/stress` image. This time our application is less demanding and only needs 10 MB of memory (`--vm-bytes 10M`):
 
 {{< onlyWhenNot mobi >}}
-
 ```bash
-kubectl run overbooked --image=polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+{{% param cliToolName %}} run overbooked --image=polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
-
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
-
 ```bash
-kubectl run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+{{% param cliToolName %}} run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
-
 {{< /onlyWhen >}}
 
 We are immediately confronted with an error message:
@@ -331,7 +335,7 @@ The default request value of 16 MiB of memory that was automatically set on the 
 Let's have a closer look at the quota with:
 
 ```bash
-kubectl get quota --output yaml --namespace <namespace>
+{{% param cliToolName %}} get quota --output yaml --namespace <namespace>
 ```
 
 which should output the following YAML definition:
@@ -353,18 +357,14 @@ The most interesting part is the quota's status which reveals that we cannot use
 Fortunately our application can live with less memory than what the LimitRange sets. Let's set the request to the remaining 10 MiB:
 
 {{< onlyWhenNot mobi >}}
-
 ```bash
-kubectl run overbooked --image=polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+{{% param cliToolName %}} run overbooked --image=polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
-
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
-
 ```bash
-kubectl run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+{{% param cliToolName %}} run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
-
 {{< /onlyWhen >}}
 
 Even though the limits of both Pods combined overstretch the quota, the requests do not and so the Pods are allowed to run.
