@@ -1,31 +1,36 @@
 ---
-title: "10.6 Init container"
+title: "10.6 Init Containers"
 weight: 106
 sectionnumber: 10.6
 ---
 
 
-A Pod can have multiple containers running apps within it, but it can also have one or more *init containers*, which are run before the app containers are started.
+A Pod can have multiple Containers running apps within it, but it can also have one or more *Init Containers*, which are run before the app Containers are started.
 
-Init containers are exactly like regular containers, except:
+Init Containers are exactly like regular Containers, except:
 
-* Init containers always run to completion.
-* Each init container must complete successfully before the next one starts.
-  
+* Init Containers always run to completion.
+* Each Init Container must complete successfully before the next one starts.
+
+{{< onlyWhenNot openshift >}}
 Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes documentation for more details.
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+Check out the [Init Containers documentation](https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-init.html) for more details.
+{{< /onlyWhen >}}
 
 
-## Task {{% param sectionnumber %}}.1: Add init Container to our example-web-python application
+## Task {{% param sectionnumber %}}.1: Add an Init Container
 
-In [lab 8](../../08/) you did the last modification of the `example-web-python` Deployment. In this task, you are going to add an init container which checks if the MySQL database is ready to be used before actually starting your python application.
+In [lab 8](../../08.0/) you created the `example-web-python` application. In this task, you are going to add an Init Container which checks if the MariaDB database is ready to be used before actually starting your Python application.
 
-Edit your existing `example-web-python` deployment with:
+Edit your existing `example-web-python` Deployment with:
 
 ```bash
-kubectl edit deployment example-web-python --namespace <namespace>
+{{% param cliToolName %}} edit deployment example-web-python --namespace <namespace>
 ```
 
-Add the init container into the existing Deployment:
+Add the Init Container into the existing Deployment:
 {{< onlyWhenNot mobi >}}
 
 ```yaml
@@ -53,35 +58,35 @@ spec:
 
 {{< /onlyWhen >}}
 {{% alert title="Note" color="primary" %}}
-This obviously only checks if there is a DNS Record for your MySQL Service and not if the database is ready. But you get the idea, right?
+This obviously only checks if there is a DNS Record for your MariaDB Service and not if the database is ready. But you get the idea, right?
 {{% /alert %}}
 
-Let's see what has changed by analyzing your `example-web-python` Pod with the following command (use `kubectl get pod` or auto-completion to get the Pod name):
+Let's see what has changed by analyzing your `example-web-python` Pod with the following command (use `{{% param cliToolName %}} get pod` or auto-completion to get the Pod name):
 
 ```bash
-kubectl describe pod <pod> --namespace <namespace>
+{{% param cliToolName %}} describe pod <pod> --namespace <namespace>
 ```
 
-You see the new init container with the name `wait-for-db`:
+You see the new Init Container with the name `wait-for-db`:
 
 ```
 ...
 Init Containers:
   wait-for-db:
     Container ID:  docker://77e6e309c88cfe62d03ed97e8fae20704bbf547a1e717a8f699ba79d9879cca2
-    Image:         busybox:1.28
+    Image:         busybox
     Image ID:      docker-pullable://busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
     Port:          <none>
     Host Port:     <none>
     Command:
       sh
       -c
-      until nslookup mysql.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done
+      until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done
     State:          Terminated
       Reason:       Completed
       Exit Code:    0
-      Started:      Sun, 10 May 2020 13:00:14 +0200
-      Finished:     Sun, 10 May 2020 13:00:14 +0200
+      Started:      Tue, 10 Nov 2020 21:00:24 +0100
+      Finished:     Tue, 10 Nov 2020 21:02:52 +0100
     Ready:          True
     Restart Count:  0
     Environment:    <none>
@@ -90,23 +95,37 @@ Init Containers:
 ...
 ```
 
-The init container has `State: Terminated` and an `Exit Code: 0` which means it was successful. That's what we wanted, the init container was successfully executed before our main application.
+The Init Container has `State: Terminated` and an `Exit Code: 0` which means it was successful. That's what we wanted, the Init Container was successfully executed before our main application.
 
-You can also check the logs of the init container with:
+You can also check the logs of the Init Container with:
 
 ```bash
-kubectl logs -c wait-for-db <pod> --namespace <namespace>
+{{% param cliToolName %}} logs -c wait-for-db <pod> --namespace <namespace>
 ```
 
-Which should give you something similar to (the `nslookup` output from the command in the init container):
+Which should give you something similar to:
 
 ```
 Server:    10.43.0.10
 Address 1: 10.43.0.10 kube-dns.kube-system.svc.cluster.local
 
-Name:      mysql.spl.svc.cluster.local
-Address 1: 10.43.243.105 mysql.spl.svc.cluster.local
+Name:      mariadb.acend-test.svc.cluster.local
+Address 1: 10.43.243.105 mariadb.acend-test.svc.cluster.local
 ```
+
+{{< onlyWhenNot openshift >}}
+Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes documentation for more details.
+{{< /onlyWhenNot >}}
+
+{{< onlyWhenNot openshift >}}
+
+
+## Deployment hooks on OpenShift
+
+A similar concepts are the so called pre and post deployment hooks. Those hooks basically give the possibility to execute pods during before and after a deployment is in progress
+
+Check out the [official documentation](https://docs.openshift.com/container-platform/4.6/applications/deployments/deployment-strategies.html) for further information.
+{{< /onlyWhenNot >}}
 
 
 ## Save point
