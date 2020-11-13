@@ -93,8 +93,8 @@ The straight-forward way to installing `oc` on your system is to install by down
 This is what we are going to do step by step.
 Choose the tab appropriate to your operating system.
 
-{{< tabs name="oc_installation" >}}
-{{% tab name="Windows" %}}
+
+### oc on Windows
 
 1. First, download `oc`. The following URL directly points to the latest stable `oc` version:
 
@@ -111,9 +111,9 @@ Choose the tab appropriate to your operating system.
    ```
 
    {{% /alert %}}
-{{% /tab %}}
 
-{{% tab name="macOS" %}}
+
+### macOS
 
 1. First, download `oc`. The following URL directly points to the latest stable `oc` version:
 
@@ -135,9 +135,9 @@ Choose the tab appropriate to your operating system.
    ```
 
    {{% /alert %}}
-{{% /tab %}}
 
-{{% tab name="Linux" %}}
+
+### Linux
 
 1. First, download `oc`. The following URL directly points to the latest stable `oc` version:
 
@@ -159,8 +159,6 @@ Choose the tab appropriate to your operating system.
    ```
 
    {{% /alert %}}
-{{% /tab %}}
-{{< /tabs >}}
 {{< /onlyWhen >}}
 
 
