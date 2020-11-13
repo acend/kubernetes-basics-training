@@ -1,13 +1,13 @@
 ---
-title: "10.1 StatefulSet"
+title: "10.1 StatefulSets"
 weight: 101
 sectionnumber: 10.1
 ---
 
 Stateless applications or applications with a stateful backend can be described as Deployments.
-Sometimes your application has to be stateful.
-For example, if your application needs the same hostname every time it starts or if you have a clustered application with a strict start/stop order of all cluster services (e.g., RabbitMQ).
-These features are implemented as StatefulSets.
+However, sometimes your application has to be stateful.
+Examples would be an application that needs a static, non-changing hostname every time it starts or a clustered application with a strict start/stop order of its services (e.g. RabbitMQ).
+These features are offered by StatefulSets.
 
 {{% alert title="Note" color="primary" %}}
 This lab does not depend on other labs.
@@ -16,8 +16,8 @@ This lab does not depend on other labs.
 
 ## Consistent hostnames
 
-While in normal Deployments a hash based name of the Pods (represented also as Hostname inside the Pod) is generated, StatefulSets create Pods with preconfigured names.
-Example of a RabbitMQ cluster with three instances (Pods):
+While in normal Deployments a hash based name of the Pods (also represented as the hostname inside the Pod) is generated, StatefulSets create Pods with preconfigured names.
+An example of a RabbitMQ cluster with three instances (Pods) could look like this:
 
 ```
 rabbitmq-0
@@ -29,35 +29,37 @@ rabbitmq-2
 ## Scaling
 
 Scaling is handled differently in StatefulSets.
-When scaling up from 3 to 5 replicas in a Deployment, two additional Pods could be started at the same time (based on the configuration). Using the StatefulSet it seems to be more "in control".
+When scaling up from 3 to 5 replicas in a Deployment, two additional Pods are started at the same time (based on the configuration).
+Using a StatefulSet, scaling is done serially:
 
-Example with RabbitMQ:
+Let's use our RabbitMQ example again:
 
-1. Scale `kubectl scale deployment rabbitmq --replicas=5 --namespace <namespace>`
+1. The StatefulSet is scaled up using: `{{% param cliToolName %}} scale deployment rabbitmq --replicas=5 --namespace <namespace>`
 1. `rabbitmq-3` is started
-1. When `rabbitmq-3` is done starting up (State: "Ready", take a look at the readiness probe), `rabbitmq-4` follows with the start procedure
+1. As soon as Pod `rabbitmq-3` is in `Ready` state the same procedure starts for `rabbitmq-4`
 
-On downscaling, the order is vice versa. The "youngest" Pod will be stopped in the first place, and it needs to be finished before the "second youngest" Pod is stopped.
-Order for scaling down: `rabbitmq-4`, `rabbitmq-3`, etc.
+When scaling down the order is inverted. The highest-numbered Pod will be stopped first.
+As soon as it has finished terminating the now highest-numbered Pod is stopped.
+This procedure is repeated as long as the desired number of replicas has not been reached.
 
 
 ## Update procedure
 
-During an update of an application with a StatefulSet the "youngest" Pod will be the first to be updated and only after a successful start the next Pod will follow.
+During an update of an application with a StatefulSet the highest-numbered Pod will be the first to be updated and only after a successful start the next Pod follows.
 
-1. Youngest Pod will be stopped
-1. New Pod with new image version is started
-1. Having a successful readiness probe, the second youngest Pod will be stopped
-1. And so on...
+1. Highest-numbered Pod is stopped
+1. New Pod (with new image tag) is started
+1. If the new Pod successfully starts, the procedure is repeated for the second highest-numbered Pod
+1. And so on
 
-If the start of a new Pod fails the update will be interrupted so that the architecture of your application won't break.
+If the start of a new Pod fails, the update will be interrupted so that the architecture of your application won't break.
 
 
-## Trivia
+## Dedicated persistent volumes
 
-As StatefulSets have predictable names---which are reused---you can integrate PVCs into the sets from a configured StorageClass. They will also be used on scaling up!
-As names are predictable a 1-to-1 relation is given.
-By setting a _partition_ updates can be splitted into two steps.
+A very convenient feature is that unlike a Deployment a StatefulSet makes it possible to attach a different, dedicated persistent volume to each of its Pods.
+This is done using a so-called _VolumeClaimTemplate_.
+This spares you from defining identical Deployments with 1 replica each but different volumes.
 
 
 ## Conclusion
@@ -65,77 +67,78 @@ By setting a _partition_ updates can be splitted into two steps.
 The controllable and predictable behaviour can be a perfect match for applications such as RabbitMQ or etcd, as you need unique names for such application clusters.
 
 
-## Tasks
+## Task {{% param sectionnumber %}}.1: Create a StatefulSet
 
-
-### StatefulSets
-
-Create a StatefulSets based on the YAML file `nginx-sfs.yaml`:
+Create a file named `sts_nginx-cluster.yaml` with the following definition of a StatefulSet:
 
 {{< onlyWhenNot mobi >}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/10/01/nginx-sts.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="sts_nginx-cluster.yaml" >}}{{< /highlight >}}
 {{< /onlyWhenNot >}}
-
 {{< onlyWhen mobi >}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/10/01/nginx-sts-mobi.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="sts_nginx-cluster_mobi.yaml" >}}{{< /highlight >}}
 {{< /onlyWhen >}}
 
-Start the StatefulSet:
+Create the StatefulSet:
   
 ```bash
-kubectl create -f nginx-sfs.yaml --namespace <namespace>
+{{% param cliToolName %}} create -f sts_nginx-cluster.yaml --namespace <namespace>
 ```
 
-
-### Scale the StatefulSet
-
-To watch the progress, open a second console and list the StatefulSet and watch the Pods:
+To watch the pods' progress, open a second console and execute the watch command:
 
 ```bash
-kubectl get statefulset --namespace <namespace>
-kubectl get pods -l app=nginx -w --namespace <namespace>
+{{% param cliToolName %}} get pods --selector app=nginx -w --namespace <namespace>
 ```
+
+{{% alert title="Note" color="primary" %}}
+Friendly reminder that the `{{% param cliToolName %}} get -w` command will never end unless you terminate it with `CTRL-c`.
+{{% /alert %}}
+
+
+## Task {{% param sectionnumber %}}.2: Scale the StatefulSet
 
 Scale the StatefulSet up:
 
 ```bash
-kubectl scale statefulset nginx-cluster --replicas=3 --namespace <namespace>
+{{% param cliToolName %}} scale statefulset nginx-cluster --replicas=3 --namespace <namespace>
 ```
 
+You can again watch the pods' progress like you did in the first task.
 
-### Update the StatefulSet
 
-To watch the changes of the Pods, please open a second window and execute the command:
+## Task {{% param sectionnumber %}}.3: Update the StatefulSet
 
-```bash
-kubectl get pods -l app=nginx -w --namespace <namespace>
-```
+In order to update the image tag in use in a StatefulSet, you can use the `{{% param cliToolName %}} set image` command.
+Set the StatefulSet's image tag to `latest`:
 
-Set the image version to `latest` in the StatefulSet:
 {{< onlyWhenNot mobi >}}
-
 ```bash
-kubectl set image statefulset nginx-cluster nginx=nginx:latest --namespace <namespace>
+{{% param cliToolName %}} set image statefulset nginx-cluster nginx=nginx:latest --namespace <namespace>
 ```
-
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
-
 ```bash
 kubectl set image statefulset nginx-cluster nginx=docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx:latest --namespace <namespace>
 ```
-
 {{< /onlyWhen >}}
-Rollback the software:
+
+
+## Task {{% param sectionnumber %}}.4: Rollback
+
+Imagine you just realized that switching to the `latest` image tag was a really bad idea (because it is generally not advisable).
+Rollback the change:
 
 ```bash
-kubectl rollout undo statefulset nginx-cluster --namespace <namespace>
+{{% param cliToolName %}} rollout undo statefulset nginx-cluster --namespace <namespace>
 ```
 
-Clean up:
+
+## Task {{% param sectionnumber %}}.5: Cleanup
+
+As with every other {{% param distroName %}} resource you can delete the StatefulSet with:
 
 ```bash
-kubectl delete statefulset nginx-cluster --namespace <namespace>
+{{% param cliToolName %}} delete statefulset nginx-cluster --namespace <namespace>
 ```
 
-Further Information can be found at the [Kubernetes StatefulSet Dokumentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or at this [published article](https://opensource.com/article/17/2/stateful-applications).
+Further information can be found in [Kubernetes' StatefulSet documentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or this [published article](https://opensource.com/article/17/2/stateful-applications).
