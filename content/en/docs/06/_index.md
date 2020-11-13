@@ -4,7 +4,7 @@ weight: 6
 sectionnumber: 6
 ---
 
-In this lab, we are going to show you how to scale applications on Kubernetes. Further, we show you how Kubernetes makes sure that the number of requested Pods is up and running and how an application can tell the platform that it is ready to receive requests.
+In this lab, we are going to show you how to scale applications on {{% param distroName %}}. Further, we show you how {{% param distroName %}} makes sure that the number of requested Pods is up and running and how an application can tell the platform that it is ready to receive requests.
 
 {{% alert title="Note" color="primary" %}}
 This lab does not depend on previous labs. You can start with an empty Namespace.
@@ -13,11 +13,11 @@ This lab does not depend on previous labs. You can start with an empty Namespace
 
 ## Task {{% param sectionnumber %}}.1: Scale the example application
 
-Create a new Deployment in your namespace:
+Create a new Deployment in your Namespace:
 {{< onlyWhenNot mobi >}}
 
 ```bash
-kubectl create deployment example-web-python --image=acend/example-web-python --namespace <namespace>
+{{% param cliToolName %}} create deployment example-web-python --image=acend/example-web-python --namespace <namespace>
 ```
 
 {{< /onlyWhenNot >}}
@@ -32,7 +32,7 @@ If we want to scale our example application, we have to tell the Deployment that
 Let's have a closer look at the existing ReplicaSet:
 
 ```bash
-kubectl get replicasets --namespace <namespace>
+{{% param cliToolName %}} get replicasets --namespace <namespace>
 ```
 
 Which will give you an output similar to this:
@@ -46,7 +46,7 @@ example-web-python-86d9d584f8   1         1         1       110s
 Or for even more details:
 
 ```bash
-kubectl get replicaset <replicaset> -o yaml --namespace <namespace>
+{{% param cliToolName %}} get replicaset <replicaset> -o yaml --namespace <namespace>
 ```
 
 The ReplicaSet shows how many instances of a Pod that are desired, current and ready.
@@ -55,13 +55,13 @@ The ReplicaSet shows how many instances of a Pod that are desired, current and r
 Now we scale our application to three replicas:
 
 ```bash
-kubectl scale deployment example-web-python --replicas=3 --namespace <namespace>
+{{% param cliToolName %}} scale deployment example-web-python --replicas=3 --namespace <namespace>
 ```
 
 Check the number of desired, current and ready replicas:
 
 ```bash
-kubectl get replicasets --namespace <namespace>
+{{% param cliToolName %}} get replicasets --namespace <namespace>
 ```
 
 ```
@@ -73,7 +73,7 @@ example-web-python-86d9d584f8   3         3         1       4m33s
 Look at how many Pods there are:
 
 ```bash
-kubectl get pods --namespace <namespace>
+{{% param cliToolName %}} get pods --namespace <namespace>
 ```
 
 Which gives you an output similar to this:
@@ -85,30 +85,53 @@ example-web-python-86d9d584f8-hbvlv   1/1     Running   0          31s
 example-web-python-86d9d584f8-qg499   1/1     Running   0          31s
 
 ```
-
+{{< onlyWhenNot openshift >}}
 {{% alert title="Note" color="primary" %}}
 Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
 {{% /alert %}}
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+{{% alert title="Note" color="primary" %}}
+OpenShift supports [horizontal](https://docs.openshift.com/container-platform/latest/nodes/pods/nodes-pods-autoscaling.html) and [vertical autoscaling](https://docs.openshift.com/container-platform/latest/nodes/pods/nodes-pods-vertical-autoscaler.html).
+{{% /alert %}}
+{{< /onlyWhen >}}
 
 
 ## Check for uninterruptible Deployments
 
+{{< onlyWhenNot openshift >}}
 Now we create a new Service of type `NodePort`:
 
 
 ```bash
 kubectl expose deployment example-web-python --type="NodePort" --name="example-web-python" --port=5000 --target-port=5000 --namespace <namespace>
 ```
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+Now we expose our application to the internet by creating a service and a route.
+
+First the Service:
+
+```bash
+oc expose deployment example-web-python --name="example-web-python" --port=5000 --namespace <namespace>
+```
+
+Then the Route:
+
+```bash
+oc expose service example-web-python --namespace <namespace>
+```
+{{< /onlyWhen >}}
 
 Let's look at our Service. We should see all three corresponding Endpoints:
 
 ```bash
-kubectl describe service example-web-python --namespace <namespace>
+{{% param cliToolName %}} describe service example-web-python --namespace <namespace>
 ```
-
+{{< onlyWhenNot openshift >}}
 ```
 Name:                     example-web-python
-Namespace:                philipona-scale
+Namespace:                acend-scale
 Labels:                   app=example-web-python
 Annotations:              <none>
 Selector:                 app=example-web-python
@@ -124,14 +147,35 @@ Events:
   Type    Reason                Age   From                Message
   ----    ------                ----  ----                -------
 ```
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+```
+Name:              example-web-python
+Namespace:         acend-test
+Labels:            app=example-web-python
+Annotations:       <none>
+Selector:          app=example-web-python
+Type:              ClusterIP
+IP:                172.30.177.212
+Port:              <unset>  5000/TCP
+TargetPort:        5000/TCP
+Endpoints:         10.124.4.137:5000
+Session Affinity:  None
+Events:            <none>
+```
+{{< /onlyWhen >}}
 
+Scaling of Pods is fast as {{% param distroName %}} simply creates new containers.
 
-Scaling of Pods within a Service is fast, as Kubernetes simply creates a new container.
-
-You can check the availability of your Service while you scale the number of replicas up and down in your browser: `http://<node-ip>:<node-port>`.
+You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{< onlyWhenNot openshift >}}http://<node-ip>:<node-port>{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}http://<route hostname>{{< /onlyWhen >}}`.
 
 {{% alert title="Note" color="primary" %}}
+{{< onlyWhenNot openshift >}}
 Check the [previous lab](../05/) on how to get the `<node-ip>` and `<node-port>` or how to use an Ingress instead.
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+You can find out the route's hostname by looking at the output of `oc get route`.
+{{< /onlyWhen >}}
 {{% /alert %}}
 
 Now, execute the corresponding loop command for your operating system in another console.
@@ -139,8 +183,13 @@ Now, execute the corresponding loop command for your operating system in another
 Linux:
 
 ```bash
-URL=http://<node-ip>:<node-port>
-while true; do sleep 1; curl -s $URL/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+{{< onlyWhenNot openshift >}}
+URL=$(oc get routes example-web-python -o go-template='{{ .spec.host }}' --namespace <NAMESPACE>) # replace the namespace placeholder here
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+URL=node-ip>:<node-port>
+{{< /onlyWhen >}}
+while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
 Windows PowerShell:
@@ -153,7 +202,7 @@ while(1) {
 }
 ```
 
-Scale from 3 replicas to 1 replica.
+Scale from 3 replicas to 1.
 The output shows which Pod is still alive and is responding to requests:
 
 ```
@@ -179,17 +228,21 @@ POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:26,513
 ```
 
 The requests get distributed amongst the three Pods. As soon as you scale down to one Pod, there should be only one remaining Pod that responds.
-What happens if you start a new Deployment while our request generator is still running?
 
+Let's make another test: What happens if you start a new Deployment while our request generator is still running?
 
 {{% alert title="Warning" color="secondary" %}}
 On Windows, execute the following command in Git Bash; PowerShell seems not to work.
 {{% /alert %}}
 
 ```bash
+{{< onlyWhenNot openshift >}}
 kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+oc rollout restart deployment example-web-python --namespace <namespace>
+{{< /onlyWhen >}}
 ```
-
 
 During a short period we won't get a response:
 
@@ -245,22 +298,23 @@ In the following chapter we are going to look at how a Service can be configured
 
 ## Uninterruptible Deployments
 
-The [rolling](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/) update strategy makes it possible to deploy Pods without interruption. The rolling update strategy means that the new version of an application gets deployed and started. As soon as the application says it is ready, Kubernetes forwards requests to the new instead of the old version of the Pod, and the old Pod gets terminated.
+The [rolling update strategy](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/) makes it possible to deploy Pods without interruption. The rolling update strategy means that the new version of an application gets deployed and started. As soon as the application says it is ready, {{% param distroName %}} forwards requests to the new instead of the old version of the Pod, and the old Pod gets terminated.
 
-Additionally, [container health checks](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/) help Kubernetes to precisely determine what state the application is in.
+Additionally, [container health checks](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/) help {{% param distroName %}} to precisely determine what state the application is in.
 
 Basically, there are two different kinds of checks that can be implemented:
 
 * Liveness probes are used to find out if an application is still running
 * Readiness probes tell us if the application is ready to receive requests (which is especially relevant for above-mentioned rolling updates)
 
-These probes can be implemented as HTTP checks, container execution checks (the execution of a command or script inside a container), or TCP socket checks.
+These probes can be implemented as HTTP checks, container execution checks (the execution of a command or script inside a container) or TCP socket checks.
 
-In our example, we want the application to tell Kubernetes that it is ready for requests with an appropriate readiness probe. Our example application has a health check context named health: `http://<node-ip>:<node-port>/health`
+In our example, we want the application to tell {{% param distroName %}} that it is ready for requests with an appropriate readiness probe. Our example application has a health check context named health: `{{< onlyWhenNot openshift >}}http://<node-ip>:<node-port>/health{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}http://${URL}/health{{< /onlyWhen >}}`
 
 
 ## Task {{% param sectionnumber %}}.2: Availability during Deployment
 
+{{< onlyWhenNot openshift >}}
 In our deployment configuration inside the rolling update strategy section we define that our application has to be always be available during an update: `maxUnavailable: 0`
 
 You can directly edit the deployment (or any resource) with:
@@ -331,14 +385,45 @@ The `containers` configuration then looks like:
         terminationMessagePolicy: File
 ...
 ```
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+Define the readiness probe on the Deployment using the following command:
+
+```bash
+oc set probe deploy/example-web-python --readiness --get-url=http://:5000/health --initial-delay-seconds=10 --timeout-seconds=1 --namespace <namespace>
+```
+
+Above command results in the following `readinessProbe` snippet being inserted into the Deployment:
+
+```yaml
+...
+     containers:
+      - image: acend/example-web-python
+        imagePullPolicy: Always
+        name: example-web-python
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+            scheme: HTTP
+          initialDelaySeconds: 10
+          timeoutSeconds: 1
+...
+```
+{{< /onlyWhen >}}
 
 We are now going to verify that a redeployment of the application does not lead to an interruption.
 
-Set up the loop to periodically check the application's response:
+Set up the loop again to periodically check the application's response (you don't have to set the `$URL` variable again if it is still defined):
 
 ```bash
-URL=http://<node-ip>:<node-port>
-while true; do sleep 1; curl -s $URL/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+{{< onlyWhenNot openshift >}}
+URL=$(oc get routes example-web-python -o go-template='{{ .spec.host }}' --namespace <NAMESPACE>) # replace the namespace placeholder here
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+URL=<node-ip>:<node-port>
+{{< /onlyWhen >}}
+while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
 Windows PowerShell:
@@ -351,32 +436,43 @@ while(1) {
 }
 ```
 
+
+{{< onlyWhenNot openshift >}}
 Start a new deployment by editing it (the so-called _ConfigChange_ trigger creates the new Deployment automatically):
 
 ```bash
 kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
 ```
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+Start a new deployment:
+
+```bash
+oc rollout restart deployment example-web-python --namespace <namespace>
+```
+{{< /onlyWhen >}}
+```
 
 
 ## Self healing
 
-Via ReplicaSet we told Kubernetes how many replicas we want. So what happens if we simply delete a Pod?
+Via the {{< onlyWhenNot openshift >}}Replicaset{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}Deployment definitiion{{< /onlyWhen >}} we told {{% param distroName %}} how many replicas we want. So what happens if we simply delete a Pod?
 
-Look for a running Pod (status `RUNNING`) that you can bear to kill via `kubectl get pods`.
+Look for a running Pod (status `RUNNING`) that you can bear to kill via `{{% param cliToolName %}} get pods`.
 
 Show all Pods and watch for changes:
 
 ```bash
-kubectl get pods -w --namespace <namespace>
+{{% param cliToolName %}} get pods -w --namespace <namespace>
 ```
 
 Now delete a Pod (in another terminal) with the following command:
 
 ```bash
-kubectl delete pod <pod> --namespace <namespace>
+{{% param cliToolName %}} delete pod <pod> --namespace <namespace>
 ```
 
-Observe how Kubernetes instantly creates a new Pod in order to fulfill the desired number of running instances.
+Observe how {{% param distroName %}} instantly creates a new Pod in order to fulfill the desired number of running instances.
 
 
 ## Save point
