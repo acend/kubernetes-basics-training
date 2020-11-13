@@ -267,7 +267,7 @@ Have a closer look at the resources created in your namespace `<namespace>` with
 ```
 
 ```bash
-kube{{% param cliToolName %}}ctl get <resource> <name> -o yaml --namespace <namespace>
+{{% param cliToolName %}} get <resource> <name> -o yaml --namespace <namespace>
 ```
 
 
