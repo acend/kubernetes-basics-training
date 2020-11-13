@@ -94,7 +94,7 @@ This is what we are going to do step by step.
 Choose the tab appropriate to your operating system.
 
 
-### oc on Windows
+### Windows
 
 1. First, download `oc`. The following URL directly points to the latest stable `oc` version:
 
