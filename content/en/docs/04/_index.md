@@ -203,7 +203,7 @@ Try to display the logs from the example application via the Rancher Web console
 
 {{% alert title="Note" color="primary" %}}
 What's a save point? Save points are intermediate results which you can use if you are stuck. You can compare them with
-your existing resources. Or you can apply the provided manifests with `kubectl apply -f <manifest.yaml>`.
+your existing resources. Or you can apply the provided manifests with `{{% param cliToolName %}} apply -f <manifest.yaml>`.
 {{% /alert %}}
 
 You should now have the following resources in place:
