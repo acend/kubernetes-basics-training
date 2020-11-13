@@ -29,9 +29,20 @@
 {{ end }}
 {{ end }}
 
-{{with ($.Scratch.Get "prevPage")}}
-<a class="nav nav-prev" href="{{.URL | absURL}}"><i class="ti-arrow-left mr-2"></i>{{.Title}}</a>
-{{end}}
-{{with ($.Scratch.Get "nextPage")}}
-<a class="nav nav-next" href="{{.URL | absURL}}">{{.Title}}<i class="ti-arrow-right ml-2"></i></a>
-{{end}}
+<div class="row">
+    <div class="col-sm">
+        {{with ($.Scratch.Get "prevPage")}}
+        <a href="{{.URL | absURL}}" data-toggle="tooltip" title="{{.Title}}">
+            <i class="fa fa-arrow-circle-left"></i> Previous
+        </a>
+        {{end}}
+    </div>
+    <div class="col-sm text-right">
+        {{with ($.Scratch.Get "nextPage")}}
+        <a href="{{.URL | absURL}}" data-toggle="tooltip" title="{{.Title}}">
+            Next <i class="fa fa-arrow-circle-right"></i>
+        </a>
+        {{end}}
+    </div>
+</div>
+
