@@ -4,20 +4,38 @@ weight: 9
 sectionnumber: 9
 ---
 
-By default, data in Pods is not persistent which was the case in [lab 8](../08/). This means that data that was written in a Pod is lost as soon as that Pod does not exist anymore. We want to prevent this from happening. One possible solution to this problem is to use persistent storage.
+By default, data in containers is not persistent as was the case e.g. in [lab 8](../08.0/). This means that data that was written in a container is lost as soon as it does not exist anymore. We want to prevent this from happening. One possible solution to this problem is to use persistent storage.
 
 
 ## Request storage
 
-Attaching persistent storage to a Pod happens in two steps. The first step includes the creation of a so-called _PersistentVolumeClaim_ (PVC) in our namespace. This claim defines amongst others what name and size we would like to get.
+Attaching persistent storage to a Pod happens in two steps. The first step includes the creation of a so-called _PersistentVolumeClaim_ (PVC) in our namespace. This claim defines amongst other things what size we would like to get.
 
-The PersistentVolumeClaim only represents a request but not the storage itself. It is automatically going to be bound to a _PersistentVolume_ by Kubernetes, one that has at least the requested size. If only volumes exist that have a larger size than was requested, one of these volumes is going to be used. The claim will automatically be updated with the new size. If there are only smaller volumes available, the claim will not be bound as long as no volume the exact same or larger size is created.
+The PersistentVolumeClaim only represents a request but not the storage itself. It is automatically going to be bound to a _PersistentVolume_ by {{% param distroName %}}, one that has at least the requested size. If only volumes exist that have a bigger size than was requested, one of these volumes is going to be used. The claim will automatically be updated with the new size. If there are only smaller volumes available, the claim cannot be fulfilled as long as no volume the exact same or larger size is created.
 
 
 ## Attaching a volume to a Pod
 
-In a second step, the PVC from before is going to be attached to the right Pod. In [lab 6](../06/) we edited the deployment configuration in order to insert a readiness probe. We are now going to do the same for inserting the persistent volume.
+In a second step, the PVC from before is going to be attached to the Pod. In [lab 6](../06.0/) we used `{{% param cliToolName %}} set` to add a readiness probe to the Deployment. We are now going to do the same and insert the PersistentVolume.
 
+
+## Task {{% param sectionnumber %}}.1: Add a PersistentVolume
+
+{{< onlyWhen openshift >}}
+The `oc set volume` command makes it possible to create a PVC and attach it to a Deployment in one fell swoop:
+
+```bash
+oc set volume dc/mariadb --add --name=mariadb-data --claim-name=mariadb-data --type persistentVolumeClaim --mount-path=/var/lib/mysql --claim-size=1G --overwrite --namespace <namespace>
+```
+
+With above instruction we create a PVC named `mariadb-data` of 1Gi in size, attach it to the DeploymentConfig `mariadb` and mount it at `/var/lib/mysql`. This is where the MariaDB process writes its data by default so after we make this change, the database will not even notice that it is writing in a PersistentVolume.
+
+{{% alert title="Note" color="primary" %}}
+Because we just changed the DeploymentConfig with the `oc set` command, a new Pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
+{{% /alert %}}
+{{< /onlyWhen >}}
+
+{{< onlyWhenNot openshift >}}
 The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size.  
 Save it to `pvc.yaml`:
 
@@ -61,24 +79,24 @@ Add both parts `volumeMounts` and `volumes`
 Because we just changed the Deployment a new Pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
 {{% /alert %}}
 
-Our application automatically creates the database schema at startup time.
-
 {{% alert title="Note" color="primary" %}}
 If you want to force a redeployment of a Pod, you could use this:
 
 ```bash
 kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
 ```
+{{< /onlyWhenNot >}}
+
+Our application automatically creates the database schema at startup time.
 
 {{% /alert %}}
-
-Using the command `kubectl get persistentvolumeclaim` or `kubectl get pvc`, we can display the freshly created PersistentVolumeClaim:
+Using the command `{{% param cliToolName %}} get persistentvolumeclaim` or `{{% param cliToolName %}} get pvc`, we can display the freshly created PersistentVolumeClaim:
 
 ```bash
-kubectl get pvc --namespace <namespace>
+{{% param cliToolName %}} get pvc --namespace <namespace>
 ```
 
-Wich gives you an output similar to this:
+Which gives you an output similar to this:
 
 ```
 NAME             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
@@ -94,20 +112,19 @@ If the container is not able to start it is the right moment to debug it!
 Check the logs from the container and search for the error.
 
 ```bash
-kubectl logs mysql-f845ccdb7-hf2x5 --namespace <namespace>
+{{% param cliToolName %}} logs mysql-f845ccdb7-hf2x5 --namespace <namespace>
 ```
 
 {{% alert title="Note" color="primary" %}}
-If the container won't start because the data directory has files in it then mount the volume at a different location in the Pod and check the content. Remove it if necessary.
-{{% /alert %}}
+If the container won't start because the data directory already has files in it, use the `{{< onlyWhenNot openshift >}}kubectl exec{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}oc debug{{< /onlyWhen >}}` command mentioned in [lab 7](../07.0/) to check its content and remove it if necessary.{{% /alert %}}
 
 
-## Task {{% param sectionnumber %}}.1: Persistence check
+## Task {{% param sectionnumber %}}.2: Persistence check
 
 
 ### Restore data
 
-Repeat [task 8.4](../08/#task-84-import-a-database-dump).
+Repeat [task 8.4](../08.0/#task-84-import-a-database-dump).
 
 
 ### Test
