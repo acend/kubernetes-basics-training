@@ -1,18 +1,18 @@
 ---
-title: "4. Deploy a Docker image"
+title: "4. Deploy a container image"
 weight: 4
 sectionnumber: 4
 ---
 
-In this lab, we are going to deploy our first pre-built container image and look at the Kubernetes concepts Pod, Service, and Deployment.
+In this lab, we are going to deploy our first pre-built container image and look at the v concepts Pod, Service, and Deployment.
 
 
 ## Task {{% param sectionnumber %}}.1: Start and stop a single Pod
 
-After we've familiarized ourselves with the platform, we are going to have a look at deploying a pre-built container image from Docker Hub or any other public Container registry.
+After we've familiarized ourselves with the platform, we are going to have a look at deploying a pre-built container image from Docker Hub or any other public container registry.
 
 First, we are going to directly start a new Pod:
-
+{{< onlyWhenNot openshift >}}
 {{< onlyWhenNot mobi >}}
 
 ```bash
@@ -34,6 +34,20 @@ Use `kubectl get pods --namespace <namespace>` in order to show the running Pod:
 kubectl get pods --namespace <namespace>
 ```
 
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+
+```bash
+oc run nginx --image=nginx --port=8080 --restart=Never --namespace <namespace>
+```
+
+Use `oc get pods --namespace <namespace>` in order to show the running Pod:
+
+```bash
+oc get pods --namespace <namespace>
+```
+
+{{< /onlyWhen >}}
 Which gives you an output similar to this:
 
 ```
@@ -44,19 +58,35 @@ nginx     1/1       Running   0          1m
 {{% onlyWhen rancher %}}
 Have a look at your nginx Pod inside the Rancher web console under **Workloads**.
 {{% /onlyWhen %}}
+{{< onlyWhen openshift >}}
+Have a look at your nginx Pod inside the OpenShift web console.
+{{% /onlyWhen %}}
 
 Now delete the newly created Pod:
+
+
+{{< onlyWhenNot openshift >}}
 
 ```bash
 kubectl delete pod nginx --namespace <namespace>
 ```
 
+{{% /onlyWhenNot %}}
+{{< onlyWhen openshift >}}
+
+```bash
+oc delete pod nginx --namespace <namespace>
+```
+
+{{% /onlyWhen %}}
+
 
 ## Task {{% param sectionnumber %}}.2: Create a Deployment
 
-In some use cases it makes sense to start a single Pod but has its downsides and is not really a common practice. Let's look at another Kubernetes concept which is tightly coupled with the Pod: the so-called _Deployment_. A Deployment makes sure a Pod is monitored and the Deployment also checks that the number of running Pods corresponds to the number of requested Pods.
+In some use cases it makes sense to start a single Pod but has its downsides and is not really a common practice. Let's look at another concept which is tightly coupled with the Pod: the so-called _Deployment_. A Deployment makes sure a Pod is monitored and the Deployment also checks that the number of running Pods corresponds to the number of requested Pods.
 
 With the following command we can create a Deployment inside our already created namespace:
+{{< onlyWhenNot openshift >}}
 {{< onlyWhenNot mobi >}}
 
 ```bash
@@ -72,50 +102,61 @@ kubectl create deployment example-web-go --image=docker-registry.mobicorp.ch/puz
 ```
 
 {{< /onlyWhen >}}
+{{% /onlyWhenNot %}}
+{{< onlyWhen openshift >}}
+
+```bash
+oc create deployment example-web-go --image=acend/example-web-go --namespace <namespace>
+```
+
+{{% /onlyWhen %}}
 The output should be:
 
 ```
 deployment.apps/example-web-go created
 ```
 
-We're using an example from us (a simple Go application), which you can find on [Docker Hub](https://hub.docker.com/r/acend/example-web-go/) and [GitHub (Source)](https://github.com/acend/awesome-apps).
+We're using an example from us (a simple Go application), which you can find on [Docker Hub](https://hub.docker.com/r/acend/example-web-go/) and [GitHub (source)](https://github.com/acend/awesome-apps).
 
-Kubernetes creates the defined and necessary resources, pulls the container image (in this case from Docker Hub) and deploys the Pod.
+{{% param distroName %}} creates the defined and necessary resources, pulls the container image (in this case from Docker Hub) and deploys the Pod.
 
-Use the command `kubectl get` with the `-w` parameter in order to get the requested resources and afterwards watch for changes. (This command will never end unless you terminate it with `CTRL-c`):
+Use the command `{{% param cliToolName %}} get` with the `-w` parameter in order to get the requested resources and afterwards watch for changes.
 
+{{% alert title="Note" color="primary" %}}
+The `{{% param cliToolName %}} get -w` command will never end unless you terminate it with `CTRL-c`.
+{{% /alert %}}
 
 ```bash
-kubectl get pods -w --namespace <namespace>
+{{% param cliToolName %}} get pods -w --namespace <namespace>
 ```
 
 {{% alert title="Note" color="primary" %}}
 Instead of using the `-w` parameter you can also use the `watch` command which should be available on most Linux distributions:
 
 ```bash
-watch kubectl get pods --namespace <namespace>
+watch {{% param cliToolName %}} get pods --namespace <namespace>
 ```
 
 {{% /alert %}}
 
-This process can last for some time depending on your Internet connection and if the image is already available locally.
+This process can last for some time depending on your internet connection and if the image is already available locally.
 
 {{% alert title="Note" color="primary" %}}
-If you want to create your own container images and use them with Kubernetes, you definitely should have a look at [these best practices](https://docs.openshift.com/container-platform/4.4/openshift_images/create-images.html) and apply them. This image creation guide may be from OpenShift, however it also applies to Kubernetes and other container platforms.
+If you want to create your own container images and use them with {{% param distroName %}}, you definitely should have a look at [these best practices](https://docs.openshift.com/container-platform/4.4/openshift_images/create-images.html) and apply them. This image creation guide may be from OpenShift, however it also applies to Kubernetes and other container platforms.
 {{% /alert %}}
 
 
 ## Viewing the created resources
 
-When we executed the command `kubectl create deployment example-web-go --image=acend/example-web-go --namespace <namespace>`, Kubernetes created a deployment resource.
+When we executed the command `{{% param cliToolName %}} create deployment example-web-go --image=acend/example-web-go --namespace <namespace>`, Kubernetes created a deployment resource.
 
 
 ### Deployment
 
-Display the created deployment using the following command:
+Display the created Deployment using the following command:
 
 ```bash
-kubectl get deployments --namespace <namespace>
+{{% param cliToolName %}} get deployments --namespace <namespace>
 ```
 
 A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) defines the following facts:
@@ -130,13 +171,13 @@ A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deploym
 By using the `-o` (or `--output`) parameter we get a lot more information about the deployment itself. You can choose between YAML and JSON formatting by indicating `-o yaml` or `-o json`. In this training we are going to use YAML, but please feel free to replace `yaml` with `json` if you prefer.
 
 ```bash
-kubectl get deployment example-web-go -o yaml --namespace <namespace>
+{{% param cliToolName %}} get deployment example-web-go -o yaml --namespace <namespace>
 ```
 
-After the image has been pulled, Kubernetes deploys a Pod according to the Deployment:
+After the image has been pulled, {{% param distroName %}} deploys a Pod according to the Deployment:
 
 ```bash
-kubectl get pods --namespace <namespace>
+{{% param cliToolName %}} get pods --namespace <namespace>
 ```
 
 which gives you an output similar to this:
@@ -145,7 +186,6 @@ which gives you an output similar to this:
 NAME                              READY   STATUS    RESTARTS   AGE
 example-web-go-69b658f647-xnm94   1/1     Running   0          39s
 ```
-
 
 The deployment defines that one replica should be deployed---which is running as we can see in the output. This Pod is not yet reachable from outside of the cluster.
 
