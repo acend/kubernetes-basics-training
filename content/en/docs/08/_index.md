@@ -6,9 +6,11 @@ sectionnumber: 8
 
 Numerous applications are stateful in some way and want to save data persistently, be it in a database, as files on a filesystem or in an object store. In this lab, we are going to create a MariaDB database and configure our application to store its data in it.
 
+{{< onlyWhen openshift >}}
 {{% alert title="Warning" color="secondary" %}}
 Please make sure you completed labs [3 (Project creation)](../03.0/), [4 (Deployment creation)](../04.0/) and [5 (Service and Route creation)](../05.0/) before you continue with this lab.
 {{% /alert %}}
+{{< /onlyWhen >}}
 
 
 ## Task {{% param sectionnumber %}}.1: Instantiate a MariaDB database
