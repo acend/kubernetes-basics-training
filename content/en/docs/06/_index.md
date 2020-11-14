@@ -465,7 +465,6 @@ oc rollout restart deployment example-web-python --namespace <namespace>
 {{< /onlyWhen >}}
 
 
-
 ## Self healing
 
 Via the {{< onlyWhenNot openshift >}}Replicaset{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}Deployment definitiion{{< /onlyWhen >}} we told {{% param distroName %}} how many replicas we want. So what happens if we simply delete a Pod?
