@@ -78,6 +78,7 @@ github_repo = "https://github.com/acend/kubernetes-basics-training"
 
 enabledModule = "base rancher"
 distroName = "Kubernetes"
+cliToolName = "kubectl"
 
 # Enable Lunr.js offline search
 offlineSearch = true

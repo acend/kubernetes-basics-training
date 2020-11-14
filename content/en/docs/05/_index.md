@@ -9,9 +9,9 @@ In this lab, we are going to make the freshly deployed application from the last
 
 ## Task {{% param sectionnumber %}}.1: Create a ClusterIP Service with an Ingress
 
-The command `kubectl create deployment` from the last lab creates a Pod but no Service. A Kubernetes Service is an abstract way to expose an application running on a set of Pods as a network service. For some parts of your application (for example, frontends) you may want to expose a Service onto an external IP address, that's outside of your cluster.
+The command `{{% param cliToolName %}} create deployment` from the last lab creates a Pod but no Service. A {{% param distroName %}} Service is an abstract way to expose an application running on a set of Pods as a network service. For some parts of your application (for example, frontends) you may want to expose a Service onto an external IP address, that's outside of your cluster.
 
-Kubernetes `ServiceTypes` allow you to specify what kind of Service you want. The default is `ClusterIP`.
+{{% param distroName %}} `ServiceTypes` allow you to specify what kind of Service you want. The default is `ClusterIP`.
 
 `Type` values and their behaviors are:
 
@@ -23,18 +23,20 @@ Kubernetes `ServiceTypes` allow you to specify what kind of Service you want. Th
 
 * `ExternalName`: Maps the Service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. No proxying of any kind is set up.
 
-You can also use Ingress to expose your Service. Ingress is not a Service type, but it acts as the entry point for your cluster. [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) exposes HTTP and HTTPS routes from outside the cluster to services within the cluster. Traffic routing is controlled by rules defined on the Ingress resource. An Ingress may be configured to give Services externally-reachable URLs, load balance traffic, terminate SSL / TLS, and offer name based virtual hosting. An Ingress controller is responsible for fulfilling the Ingress, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic.
+You can also use Ingress to expose your Service. Ingress is not a Service type, but it acts as the entry point for your cluster. [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.
+Traffic routing is controlled by rules defined on the {{< onlyWhenNot openshift >}}Ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}Route{{< /onlyWhen >}} resource. {{< onlyWhenNot openshift >}}An Ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}A Route{{< /onlyWhen >}} may be configured to give Services externally-reachable URLs, load balance traffic, terminate SSL / TLS, and offer name based virtual hosting. An Ingress controller is responsible for fulfilling the route, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic.
 
-In order to use an Ingress, we first need to create a Service of type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types). We're going to do this with the command `kubectl expose`:
+In order to create {{< onlyWhenNot openshift >}}an ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}a route{{< /onlyWhen >}}, we first need to create a Service of type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types).
+We're going to do this with the command `{{% param cliToolName %}} expose`:
 
 ```bash
-kubectl expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace <namespace>
+{{% param cliToolName %}} expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace <namespace>
 ```
 
 Let's have a more detailed look at our Service:
 
 ```bash
-kubectl get services --namespace <namespace>
+{{% param cliToolName %}} get services --namespace <namespace>
 ```
 
 Which gives you an output similar to this:
@@ -51,7 +53,7 @@ Service IP (CLUSTER-IP) addresses stay the same for the duration of the Service'
 By executing the following command:
 
 ```bash
-kubectl get service example-web-go -o yaml --namespace <namespace>
+{{% param cliToolName %}} get service example-web-go -o yaml --namespace <namespace>
 ```
 
 You get additional information:
@@ -60,17 +62,14 @@ You get additional information:
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"creationTimestamp":"2019-06-21T06:25:38Z","labels":{"app":"example-web-go"},"name":"example-web-go","namespace":"team1-dockerimage","resourceVersion":"102747","selfLink":"/api/v1/namespaces/team1-dockerimage/services/example-web-go","uid":"62ce2e59-93ed-11e9-b6c9-5a4205669108"},"spec":{"clusterIP":"10.43.91.62","externalTrafficPolicy":"Cluster","ports":[{"port":5000,"protocol":"TCP","targetPort":5000}],"selector":{"app":"example-web-go"},"sessionAffinity":"None","type":"ClusterIP"},"status":{"loadBalancer":{}}}
-  creationTimestamp: "2019-06-21T06:25:38Z"
+  ...
   labels:
     app: example-web-go
+  managedFields:
+    ...
   name: example-web-go
-  namespace: team1-dockerimage
-  resourceVersion: "102747"
-  selfLink: /api/v1/namespaces/team1-dockerimage/services/example-web-go
-  uid: 62ce2e59-93ed-11e9-b6c9-5a4205669108
+  namespace: <namespace>
+  ...
 spec:
   clusterIP: 10.43.91.62
   externalTrafficPolicy: Cluster
@@ -86,10 +85,10 @@ status:
   loadBalancer: {}
 ```
 
-The Service's `selector` defines, which Pods are being used as Endpoints. This happens based on labels. Look at the configuration of Service and Pod in order to find out what maps to what:
+The Service's `selector` defines which Pods are being used as Endpoints. This happens based on labels. Look at the configuration of Service and Pod in order to find out what maps to what:
 
 ```bash
-kubectl get service example-web-go -o yaml --namespace <namespace>
+{{% param cliToolName %}} get service example-web-go -o yaml --namespace <namespace>
 ```
 
 ```
@@ -102,11 +101,11 @@ kubectl get service example-web-go -o yaml --namespace <namespace>
 With the following command you get details from the Pod:
 
 {{% alert title="Note" color="primary" %}}
-First, get all Pod names from your namespace with (`kubectl get pods --namespace <namespace>`) and then replace \<pod\> in the following command. If you have installed the bash completion, you can also press TAB key for autocompletion of the Pods name.
+First, get all Pod names from your namespace with (`{{% param cliToolName %}} get pods --namespace <namespace>`) and then replace \<pod\> in the following command. If you have installed and configured the bash completion, you can also press the TAB key for autocompletion of the Pods' name.
 {{% /alert %}}
 
 ```bash
-kubectl get pod <pod> -o yaml --namespace <namespace>
+{{% param cliToolName %}} get pod <pod> -o yaml --namespace <namespace>
 ```
 
 Let's have a look at the label section of the Pod and verify that the Service selector matches the Pod's labels:
@@ -118,16 +117,16 @@ Let's have a look at the label section of the Pod and verify that the Service se
 ...
 ```
 
-This link between Service and Pod can also be displayed in an easier fashion with the `kubectl describe` command:
+This link between Service and Pod can also be displayed in an easier fashion with the `{{% param cliToolName %}} describe` command:
 
 
 ```bash
-kubectl describe service example-web-go --namespace <namespace>
+{{% param cliToolName %}} describe service example-web-go --namespace <namespace>
 ```
 
 ```
 Name:                     example-web-go
-Namespace:                philipona
+Namespace:                example-ns
 Labels:                   app=example-web-go
 Annotations:              <none>
 Selector:                 app=example-web-go
@@ -145,7 +144,9 @@ Events:
 
 The `Endpoints` shows the IP addresses of all currently matched Pods.
 
-With the ClusterIP Service ready, we can now create the Ingress resource. In order to create the Ingress resource, we first need to create the file `ingress.yaml` and change the `host` entry to match your environment:
+With the ClusterIP Service ready, we can now create the {{< onlyWhenNot openshift >}}Ingress{{< /onlyWhen >}}{{< onlyWhen openshift >}}Route{{< /onlyWhen >}} resource.
+{{< onlyWhenNot openshift >}}
+In order to create the Ingress resource, we first need to create the file `ingress.yaml` and change the `host` entry to match your environment:
 
 {{< onlyWhenNot mobi >}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress.template.yaml" >}}{{< /highlight >}}
@@ -169,6 +170,17 @@ Afterwards, we are able to access our freshly created Ingress at `http://example
 {{< onlyWhen mobi >}}
 Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
 {{< /onlyWhen >}}
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+
+```bash
+oc expose service example-web-go
+```
+
+We are now able to access our app via the freshly created route at `http://example-web-go-<namespace>.<appdomain>`
+{{< /onlyWhen >}}
+
+{{< onlyWhenNot openshift >}}
 
 
 ## Task {{% param sectionnumber %}}.2: Expose as NodePort
@@ -235,26 +247,27 @@ You can also use the Rancher web console to open the exposed application in your
 Or go to the **Service Discovery** tab and look for your Service name. The link there looks the same and is right below the Service name.
 {{% /alert %}}
 {{% /onlyWhen %}}
+{{< /onlyWhenNot >}}
 
 
-## Task {{% param sectionnumber %}}.3 (optional): For fast learners
+## Task {{% param sectionnumber %}}.2 (optional): For fast learners
 
 Have a closer look at the resources created in your namespace `<namespace>` with the following commands and try to understand them:
 
 ```bash
-kubectl describe namespace <namespace>
+{{% param cliToolName %}} describe namespace <namespace>
 ```
 
 ```bash
-kubectl get all --namespace <namespace>
+{{% param cliToolName %}} get all --namespace <namespace>
 ```
 
 ```bash
-kubectl describe <resource> <name> --namespace <namespace>
+{{% param cliToolName %}} describe <resource> <name> --namespace <namespace>
 ```
 
 ```bash
-kubectl get <resource> <name> -o yaml --namespace <namespace>
+{{% param cliToolName %}} get <resource> <name> -o yaml --namespace <namespace>
 ```
 
 
@@ -264,8 +277,9 @@ You should now have the following resources in place:
 
 * [deployment.yaml](../04/deployment.yaml) (from lab 4)
 * [service.yaml](service.yaml)
-* {{< onlyWhenNot mobi >}}[ingress.template.yaml](ingress.template.yaml){{< /onlyWhenNot >}}
-  {{< onlyWhen mobi >}}[ingress-mobi.template.yaml](ingress-mobi.template.yaml){{< /onlyWhen >}}
+* {{< onlyWhenNot openshift >}}{{< onlyWhenNot mobi >}}[ingress.template.yaml](ingress.template.yaml){{< /onlyWhenNot >}}
+  {{< onlyWhen mobi >}}[ingress-mobi.template.yaml](ingress-mobi.template.yaml){{< /onlyWhen >}}{{< /onlyWhenNot >}}
+  {{< onlyWhen openshift >}}An exposed Route{{< /onlyWhen >}}
 
 
 ## Task {{% param sectionnumber %}}.4: Clean up
@@ -275,17 +289,17 @@ As a last step, clean up the remaining resources so that we have a clean namespa
 Delete the Deployment:
 
 ```bash
-kubectl delete deployment example-web-go --namespace <namespace>
+{{% param cliToolName %}} delete deployment example-web-go --namespace <namespace>
 ```
 
 Delete the Service:
 
 ```bash
-kubectl delete service example-web-go --namespace <namespace>
+{{% param cliToolName %}} delete service example-web-go --namespace <namespace>
 ```
 
-Delete the Ingress:
+Delete the {{< onlyWhenNot openshift >}}Ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}Route{{< /onlyWhen >}}:
 
 ```bash
-kubectl delete ingress example-web-go --namespace <namespace>
+{{% param cliToolName %}} delete {{< onlyWhenNot openshift >}}ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}route{{< /onlyWhen >}} example-web-go --namespace <namespace>
 ```
