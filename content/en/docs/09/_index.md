@@ -52,7 +52,7 @@ And create it with:
 kubectl create -f pvc.yaml --namespace <namespace>
 ```
 
-We now have to insert the volume definition in the correct section of the MySQL deployment:
+We now have to insert the volume definition in the correct section of the MariaDB deployment:
 
 ```bash
 kubectl edit deployment mariadb --namespace <namespace>
@@ -86,7 +86,7 @@ Because we just changed the Deployment a new Pod was automatically redeployed. T
 {{< /onlyWhenNot >}}
 
 {{% alert title="Note" color="primary" %}}
-We need to redeploy the application pod, which will create the new database schema.
+We need to redeploy the application pod, our application automatically creates the database schema at startup time.
 
 {{< onlyWhenNot openshift >}}
 If you want to force a redeployment of a Pod, you could use this:
@@ -99,8 +99,6 @@ kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metad
 oc rollout restart deployment example-web-python --namespace <namespace>
 ```
 {{< /onlyWhen >}}
-
-Our application automatically creates the database schema at startup time.
 
 {{% /alert %}}
 Using the command `{{% param cliToolName %}} get persistentvolumeclaim` or `{{% param cliToolName %}} get pvc`, we can display the freshly created PersistentVolumeClaim:
@@ -125,7 +123,7 @@ If the container is not able to start it is the right moment to debug it!
 Check the logs from the container and search for the error.
 
 ```bash
-{{% param cliToolName %}} logs mysql-f845ccdb7-hf2x5 --namespace <namespace>
+{{% param cliToolName %}} logs mariadb-f845ccdb7-hf2x5 --namespace <namespace>
 ```
 
 {{% alert title="Note" color="primary" %}}

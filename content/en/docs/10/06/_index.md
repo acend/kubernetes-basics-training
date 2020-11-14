@@ -117,7 +117,7 @@ Address 1: 10.43.243.105 mariadb.acend-test.svc.cluster.local
 Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes documentation for more details.
 {{< /onlyWhenNot >}}
 
-{{< onlyWhenNot openshift >}}
+{{< onlyWhen openshift >}}
 
 
 ## Deployment hooks on OpenShift
@@ -125,7 +125,7 @@ Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-c
 A similar concepts are the so called pre and post deployment hooks. Those hooks basically give the possibility to execute pods during before and after a deployment is in progress
 
 Check out the [official documentation](https://docs.openshift.com/container-platform/4.6/applications/deployments/deployment-strategies.html) for further information.
-{{< /onlyWhenNot >}}
+{{< /onlyWhen >}}
 
 
 ## Save point

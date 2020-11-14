@@ -182,15 +182,19 @@ Now, execute the corresponding loop command for your operating system in another
 
 Linux:
 
-```bash
-{{< onlyWhenNot openshift >}}
-URL=$(oc get routes example-web-python -o go-template='{{ .spec.host }}' --namespace <NAMESPACE>) # replace the namespace placeholder here
-{{< /onlyWhenNot >}}
+
 {{< onlyWhen openshift >}}
-URL=node-ip>:<node-port>
-{{< /onlyWhen >}}
+```bash
+URL=$(oc get routes example-web-python -o go-template='{{ .spec.host }}' --namespace <NAMESPACE>) # replace the namespace placeholder here
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
+{{< /onlyWhen >}}
+{{< onlyWhenNot openshift >}}
+```bash
+URL=<node-ip>:<node-port>
+while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+```
+{{< /onlyWhenNot >}}
 
 Windows PowerShell:
 
@@ -235,14 +239,17 @@ Let's make another test: What happens if you start a new Deployment while our re
 On Windows, execute the following command in Git Bash; PowerShell seems not to work.
 {{% /alert %}}
 
-```bash
+
 {{< onlyWhenNot openshift >}}
+```bash
 kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
-oc rollout restart deployment example-web-python --namespace <namespace>
-{{< /onlyWhen >}}
 ```
+{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}
+```bash
+oc rollout restart deployment example-web-python --namespace <namespace>
+```
+{{< /onlyWhen >}}
+
 
 During a short period we won't get a response:
 
@@ -416,15 +423,20 @@ We are now going to verify that a redeployment of the application does not lead 
 
 Set up the loop again to periodically check the application's response (you don't have to set the `$URL` variable again if it is still defined):
 
-```bash
-{{< onlyWhenNot openshift >}}
-URL=$(oc get routes example-web-python -o go-template='{{ .spec.host }}' --namespace <NAMESPACE>) # replace the namespace placeholder here
-{{< /onlyWhenNot >}}
+
 {{< onlyWhen openshift >}}
-URL=<node-ip>:<node-port>
-{{< /onlyWhen >}}
+```bash
+URL=$(oc get routes example-web-python -o go-template='{{ .spec.host }}' --namespace <NAMESPACE>) # replace the namespace placeholder here
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
+{{< /onlyWhen >}}
+{{< onlyWhenNot openshift >}}
+```bash
+URL=<node-ip>:<node-port>
+while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+```
+{{< /onlyWhenNot >}}
+
 
 Windows PowerShell:
 
@@ -451,7 +463,7 @@ Start a new deployment:
 oc rollout restart deployment example-web-python --namespace <namespace>
 ```
 {{< /onlyWhen >}}
-```
+
 
 
 ## Self healing
