@@ -1,96 +1,72 @@
 ---
-title: "10.7 Sidecar"
+title: "10.7 Sidecar containers"
 weight: 107
 sectionnumber: 10.7
 ---
 
-Let's first check again what a Pod is, from [Pods](https://kubernetes.io/docs/concepts/workloads/pods/pod/) on the Kubernetes documentation page:
+Let's first have a look again at the Pod's description [on the Kubernetes documentation page](https://kubernetes.io/docs/concepts/workloads/pods/pod/):
 
 > A Pod (as in a pod of whales or pea pod) is a group of one or more containers (such as Docker containers), with shared storage/network, and a specification for how to run the containers. A Pod’s contents are always co-located and co-scheduled, and run in a shared context. A Pod models an application-specific “logical host” - it contains one or more application containers which are relatively tightly coupled — in a pre-container world, being executed on the same physical or virtual machine would mean being executed on the same logical host.
 > The shared context of a Pod is a set of Linux namespaces, cgroups, and potentially other facets of isolation - the same things that isolate a Docker container. Within a Pod’s context, the individual applications may have further sub-isolations applied.
 
-A sidecar is a utility container in the Pod and its purpose is to support the main container. It is important to note that standalone sidecar does not serve any purpose, it must be paired with one or more main containers. Generally, sidecar container is reusable and can be paired with numerous type of main containers.
+A sidecar container is a utility container in the Pod. Its purpose is to support the main container. It is important to note that the standalone sidecar container does not serve any purpose, it must be paired with one or more main containers. Generally, sidecar containers are reusable and can be paired with numerous types of main containers.
 
-In a sidecar pattern, the functionality of the main container is extended or enhanced by a sidecar container without strong coupling between two. Although it is always possible to build sidecar container functionality into the main container, there are several benefits with this pattern,
+In a sidecar pattern, the functionality of the main container is extended or enhanced by a sidecar container without strong coupling between the two. Although it is always possible to build sidecar container functionality into the main container, there are several benefits with this pattern:
 
-* different resource profiles i.e., independent resource accounting and allocation
-* clear separation of concerns at packaging level i.e., no strong coupling between containers
-* reusability i.e., sidecar containers can be paired with numerous different "main" containers
-* failure containment boundary, making it possible for the overall system to degrade gracefully
-* independent testing, packaging, upgrade, deployment and if necessary roll back
+* Different resource profiles, i.e. independent resource accounting and allocation
+* Clear separation of concerns at packaging level, i.e. no strong coupling between containers
+* Reusability, i.e. sidecar containers can be paired with numerous different "main" containers
+* Failure containment boundary, making it possible for the overall system to degrade gracefully
+* Independent testing, packaging, upgrade, deployment and if necessary rollback
 
 
-## Task {{% param sectionnumber %}}.1: Add a Prometheus MySQL Exporter as a sidecar
+## Task {{% param sectionnumber %}}.1: Add a Prometheus MySQL exporter as a sidecar
 
-In [lab 9](../../09/) you did the last modification of the `mysql` Deployment. In this task, you are going to add the [Prometheus MySQL exporter](https://github.com/prometheus/mysqld_exporter) to the existing Deployment.
+In [lab 9](../../09/) you created a MariaDB deployment. In this task you are going to add the [Prometheus MySQL exporter](https://github.com/prometheus/mysqld_exporter) to it.
 
-Change the existing `mysql` Deployment using:
+{{< onlyWhenNot openshift >}}
+Change the existing `mariadb` Deployment using:
 
 ```bash
 kubectl edit deployment mysql --namespace <namespace>
 ```
 
 And add a new (sidecar) container into your Deployment:
-{{< onlyWhenNot mobi >}}
-
-```yaml
-containers:
-- ...
-- image: prom/mysqld-exporter
-  name: mysqld-exporter
-  env:
-  - name: DATA_SOURCE_NAME
-    value: root:$MYSQL_ROOT_PASSWORD@(localhost:3306)/
-  - name: MYSQL_ROOT_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        key: password
-        name: mysql-root-password
-...
-```
-
 {{< /onlyWhenNot >}}
-{{< onlyWhen mobi >}}
-
-```yaml
-containers:
-- ...
-- image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mysqld-exporter:v0.12.1
-  name: mysqld-exporter
-  env:
-  - name: DATA_SOURCE_NAME
-    value: root:$MYSQL_ROOT_PASSWORD@(localhost:3306)/
-  - name: MYSQL_ROOT_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        key: password
-        name: mysql-root-password
-...
-```
-
-{{< /onlyWhen >}}
-Your Pod does now have two running containers. Verify this with:
+{{< onlyWhen openshift >}}
+Change the existing `mariadb` DeploymentConfig using:
 
 ```bash
-kubectl get pod --namespace <namespace>
+oc edit dc mariadb --namespace <namespace>
+```
+
+And add a new (sidecar) container into your DeploymentConfig:
+{{< /onlyWhen >}}
+
+{{< highlight yaml >}}{{< readfile file="content/en/docs/10/07/deploy_mariadb-sidecar.yaml" >}}{{< /highlight >}}
+
+Your Pod now has two running containers. Verify this with:
+
+```bash
+{{% param cliToolName %}} get pod --namespace <namespace>
 ```
 
 The output should look similar to this:
 
 ```
-NAME                     READY   STATUS    RESTARTS   AGE
-mysql-65559644c9-cdjjk   2/2     Running   0          5m35s
+NAME                       READY   STATUS    RESTARTS   AGE
+mariadb-65559644c9-cdjjk   2/2     Running   0          5m35s
 ```
 
-Note the `Ready` column which shows you 2 ready container.
+Note the `READY` column which shows you 2 ready containers.
 
-You can observe the logs from the mysqld-exporter with:
+You can get the logs from the mysqld-exporter with:
 
 ```bash
-kubectl logs <pod> -c mysqld-exporter --namespace <namespace>
+{{% param cliToolName %}} logs <pod> -c mysqld-exporter --namespace <namespace>
 ```
 
-which gives you an output similar to this:
+Which gives you an output similar to this:
 
 ```
 time="2020-05-10T11:31:02Z" level=info msg="Starting mysqld_exporter (version=0.12.1, branch=HEAD, revision=48667bf7c3b438b5e93b259f3d17b70a7c9aff96)" source="mysqld_exporter.go:257"
@@ -105,18 +81,19 @@ time="2020-05-10T11:31:02Z" level=info msg=" --collect.info_schema.innodb_cmpmem
 time="2020-05-10T11:31:02Z" level=info msg="Listening on :9104" source="mysqld_exporter.go:283"
 ```
 
-and by using `kubectl port-forward ...` you can even have a look at the prometheus metrics using your browser:
+By using the `port-forward` subcommand, you can even have a look at the Prometheus metrics using your browser:
 
 ```bash
-kubectl port-forward <pod> 9104 --namespace <namespace>
+{{% param cliToolName %}} port-forward <pod> 9104 --namespace <namespace>
 ```
 
-And then open <http://localhost:9104/metrics> in your browser.
+Now open <http://localhost:9104/metrics> in your browser.
 
 
 ## Save point
 
 You should now have the following resources in place:
 
-* {{< onlyWhenNot mobi >}}[mysql.yaml](mysql.yaml){{< /onlyWhenNot >}}
-  {{< onlyWhen mobi >}}[mysql-mobi.yaml](mysql-mobi.yaml){{< /onlyWhen >}}
+// FIXME
+* {{< onlyWhenNot openshift }}[mariadb.yaml](mariadb.yaml){{< /onlyWhenNot >}}
+  {{< onlyWhen openshift >}}[mariadb.yaml](mariadb_openshift.yaml){{< /onlyWhenNot >}}
