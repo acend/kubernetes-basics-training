@@ -2,6 +2,7 @@
 title: "14. Web Console"
 weight: 14
 sectionnumber: 14
+onlyWhenNot: openshift
 ---
 
 
