@@ -16,7 +16,12 @@ The PersistentVolumeClaim only represents a request but not the storage itself. 
 
 ## Attaching a volume to a Pod
 
-In a second step, the PVC from before is going to be attached to the Pod. In [lab 6](../06.0/) we used `{{% param cliToolName %}} set` to add a readiness probe to the Deployment. We are now going to do the same and insert the PersistentVolume.
+{{< onlyWhenNot openshift >}}
+In a second step, the PVC from before is going to be attached to the Pod. In [lab 6](../06/) we edited the deployment configuration in order to insert a readiness probe. We are now going to do the same for inserting the persistent volume.
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+In a second step, the PVC from before is going to be attached to the Pod. In [lab 6](../06/) we used `{{% param cliToolName %}} set` to add a readiness probe to the Deployment. We are now going to do the same and insert the PersistentVolume.
+{{< /onlyWhen >}}
 
 
 ## Task {{% param sectionnumber %}}.1: Add a PersistentVolume
@@ -50,7 +55,7 @@ kubectl create -f pvc.yaml --namespace <namespace>
 We now have to insert the volume definition in the correct section of the MySQL deployment:
 
 ```bash
-kubectl edit deployment mysql --namespace <namespace>
+kubectl edit deployment mariadb --namespace <namespace>
 ```
 
 Add both parts `volumeMounts` and `volumes`
@@ -78,14 +83,22 @@ Add both parts `volumeMounts` and `volumes`
 {{% alert title="Note" color="primary" %}}
 Because we just changed the Deployment a new Pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
 {{% /alert %}}
+{{< /onlyWhenNot >}}
 
 {{% alert title="Note" color="primary" %}}
-If you want to force a redeployment of a Pod, you could use this:
+We need to redeploy the application pod, which will create the new database schema.
 
+{{< onlyWhenNot openshift >}}
+If you want to force a redeployment of a Pod, you could use this:
 ```bash
 kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
 ```
 {{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
+```bash
+oc rollout restart deployment example-web-python --namespace <namespace>
+```
+{{< /onlyWhen >}}
 
 Our application automatically creates the database schema at startup time.
 
