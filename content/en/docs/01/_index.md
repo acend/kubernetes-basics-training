@@ -1,6 +1,5 @@
 ---
 title: "1. Quick tour of Kubernetes"
-#title: "1. Quick tour of OpenShift"
 weight: 1
 sectionnumber: 1
 ---

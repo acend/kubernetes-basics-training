@@ -27,7 +27,7 @@
 {{ $sid := $s.RelPermalink | anchorize }}
 <ul class="td-sidebar-nav__section pr-md-3">
   <li class="td-sidebar-nav__section-title">
-    <a  href="{{ $s.RelPermalink }}" class="align-left pl-0 pr-2{{ if not $show }} collapsed{{ end }}{{ if $active}} active{{ end }} td-sidebar-link td-sidebar-link__section">{{ $s.LinkTitle }}</a>
+    <a  href="{{ $s.RelPermalink }}" class="align-left pl-0 pr-2{{ if not $show }} collapsed{{ end }}{{ if $active}} active{{ end }} td-sidebar-link td-sidebar-link__section">{{ replace $s.LinkTitle "Kubernetes" $p.Site.Params.distroName }}</a>
   </li>
   <ul>
     <li class="collapse {{ if $show }}show{{ end }}" id="{{ $sid }}">
@@ -40,7 +40,7 @@
           {{ if .IsPage }}
             {{ $mid := printf "m-%s" (.RelPermalink | anchorize) }}
             {{ $active := eq . $p }}
-            <a class="td-sidebar-link td-sidebar-link__page {{ if and (not $shouldDelayActive) $active }} active{{ end }}" id="{{ $mid }}" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+            <a class="td-sidebar-link td-sidebar-link__page {{ if and (not $shouldDelayActive) $active }} active{{ end }}" id="{{ $mid }}" href="{{ .RelPermalink }}">{{ replace .LinkTitle "Kubernetes" .Site.Params.distroName }}</a>
           {{ else }}
             {{ template "section-tree-nav-section" (dict "page" $p "section" .) }}
           {{ end }}
