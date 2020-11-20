@@ -5,16 +5,19 @@ sectionnumber: 13
 ---
 
 
-[Kustomize](https://kustomize.io/) is a tool to manage YAML configurations for Kubernetes objects in a declarative and reusable manner.
-In this lab, we will use Kustomize to deploy the same app for two different environments.
+[Kustomize](https://kustomize.io/) is a tool to manage YAML configurations for Kubernetes objects in a declarative and reusable manner. In this lab, we will use Kustomize to deploy the same app for two different environments.
 
 
 ## Installation
 
 Kustomize can be used in two different ways:
 
-* A standalone `kustomize` binary can be downloaded from here: <https://kubernetes-sigs.github.io/kustomize/installation/>
-* It is included in `kubectl`
+* As a standalone `kustomize` binary, downloadable from [here](https://kubernetes-sigs.github.io/kustomize/installation/)
+* With the parameter `--kustomize` or `-k` in certain `{{% param cliToolName %}}` subcommands such as `apply` or `create`
+
+{{% alert title="Note" color="primary" %}}
+You might get different behaviour depending on which variant you use. The reason for this is that the version built into `{{% param cliToolName %}}` is usually older than the standalone binary.
+{{% /alert %}}
 
 
 ## Usage
@@ -25,41 +28,35 @@ The main purpose of Kustomize is to build configurations from a predefined file 
 kustomize build <dir>
 ```
 
-The same can be achieved with `kubectl`:
+The same can be achieved with `{{% param cliToolName %}}`:
 
 ```bash
-kubectl kustomize <dir>
+{{% param cliToolName %}} kustomize <dir>
 ```
 
-The next step is to apply this configuration to the Kubernetes cluster:
+The next step is to apply this configuration to the {{% param distroName %}} cluster:
 
 ```bash
-kustomize build <dir> | kubectl apply -f -
+kustomize build <dir> | {{% param cliToolName %}} apply -f -
 ```
 
-Or in one command with the parameter `-k` instead of `-f`
+Or in one `{{% param cliToolName %}}` command with the parameter `-k` instead of `-f`:
 
 ```bash
-kubectl apply -k <dir>
+{{% param cliToolName %}} apply -k <dir>
 ```
 
-{{% alert title="Note" color="primary" %}}
-The standalone version of Kustomize and the one built-in `kubectl` may behave differently because different major versions are
-in place. The standalone version is typically newer.
-{{% /alert %}}
 
-
-## Task {{% param sectionnumber %}}.1: Prepare our Kustomize config
+## Task {{% param sectionnumber %}}.1: Prepare a Kustomize config
 
 We are going to deploy a simple application:
 
 * The Deployment starts an application based on nginx
-* A Service exposes the deployment
-* The application will be deployed for two different example environments: integration and production
+* A Service exposes the Deployment
+* The application will be deployed for two different example environments, integration and production
 
-Kustomize allows inheriting Kubernetes configurations. We are going to use this to create a base configuration and then
-override the configuration for the integration and production environment. Note that Kustomize does not use templating.
-Instead, smart patch and extension mechanisms are used on plain YAML manifests to keep things as simple as possible.
+Kustomize allows inheriting Kubernetes configurations. We are going to use this to create a base configuration and then override it for the different environments.
+Note that Kustomize does not use templating. Instead, smart patch and extension mechanisms are used on plain YAML manifests to keep things as simple as possible.
 
 
 ### File structure
@@ -86,8 +83,7 @@ The structure of a Kustomize configuration typically looks like this:
 
 ### Base
 
-Let's have a look at the `base` directory first which contains the base configuration. It contains a `deployment.yaml`
-with the following content:
+Let's have a look at the `base` directory first which contains the base configuration. There's a `deployment.yaml` with the following content:
 
 {{< highlight yaml >}}{{< readfile file="content/en/docs/13/kustomize/base/deployment.yaml" >}}{{< /highlight >}}
 
@@ -104,8 +100,7 @@ It references the previous manifests `service.yaml` and `deployment.yaml` and ma
 
 ### Overlays
 
-Now let's have a look at the other directory which is called `overlays`. It contains two sub-directories `staging` and
-`production` which both contain a `kustomization.yaml` with almost the same content.
+Now let's have a look at the other directory which is called `overlays`. It contains two subdirectories `staging` and `production` which both contain a `kustomization.yaml` with almost the same content.
 
 `overlays/staging/kustomization.yaml`:
 
@@ -117,8 +112,7 @@ Now let's have a look at the other directory which is called `overlays`. It cont
 
 Only the first key `nameSuffix` differs.
 
-In both cases, the `kustomization.yaml` references our base configuration. However, the two directories contain two different `deployment-patch.yaml` files which patch
-the `deployment.yaml` from our base configuration.
+In both cases, the `kustomization.yaml` references our base configuration. However, the two directories contain two different `deployment-patch.yaml` files which patch the `deployment.yaml` from our base configuration.
 
 `overlays/staging/deployment-patch.yaml`:
 
@@ -128,8 +122,7 @@ the `deployment.yaml` from our base configuration.
 
 {{< highlight yaml >}}{{< readfile file="content/en/docs/13/kustomize/overlays/production/deployment-patch.yaml" >}}{{< /highlight >}}
 
-The main difference here is that the environment variable `APPLICATION_NAME` is set differently.
-The `app` label also differs because we are going to deploy both Deployments into the same Namespace.
+The main difference here is that the environment variable `APPLICATION_NAME` is set differently. The `app` label also differs because we are going to deploy both Deployments into the same Namespace.
 
 The same applies to our Service. It also comes in two customizations so that it matches the corresponding Deployment in the same Namespace.
 
@@ -145,7 +138,7 @@ The same applies to our Service. It also comes in two customizations so that it 
 All files mentioned above are also directly accessible from [GitHub](https://github.com/acend/kubernetes-basics-training/tree/master/content/en/docs/13/kustomize).
 {{% /alert %}}
 
-Prepare the files as described above in a local directory of choice.
+Prepare the files as described above in a local directory of your choice.
 
 
 ## Task {{% param sectionnumber %}}.2: Deploy with Kustomize
@@ -153,7 +146,7 @@ Prepare the files as described above in a local directory of choice.
 We are now ready to deploy both apps for the two different environments. For simplicity, we will use the same Namespace.
 
 ```bash
-kubectl apply -k overlays/staging --namespace <namespace>
+{{% param cliToolName %}} apply -k overlays/staging --namespace <namespace>
 ```
 
 ```
@@ -162,7 +155,7 @@ deployment.apps/kustomize-app-staging created
 ```
 
 ```bash
-kubectl apply -k overlays/production --namespace <namespace>
+{{% param cliToolName %}} apply -k overlays/production --namespace <namespace>
 ```
 
 ```bash
@@ -176,7 +169,7 @@ However, they have a specific configuration on their own as well.
 Let's verify this. Our app writes a corresponding log entry that we can use for analysis:
 
 ```bash
-kubectl get pods --namespace <namespace>
+{{% param cliToolName %}} get pods --namespace <namespace>
 ```
 
 ```
@@ -186,7 +179,7 @@ kustomize-app-staging-7967885d5b-qp6l8     1/1     Running   0          5m33s
 ```
 
 ```bash
-kubectl logs kustomize-app-staging-7967885d5b-qp6l8
+{{% param cliToolName %}} logs kustomize-app-staging-7967885d5b-qp6l8
 ```
 
 ```
@@ -194,14 +187,12 @@ My name is kustomize-app-staging
 ```
 
 ```bash
-kubectl logs kustomize-app-production-74c7bdb7d-8cccd
+{{% param cliToolName %}} logs kustomize-app-production-74c7bdb7d-8cccd
 ```
 
 ```
 My name is kustomize-app-production
 ```
-
-We could also send a test request to the service which would return a similar answer as shown in the logs.
 
 
 ## Further information

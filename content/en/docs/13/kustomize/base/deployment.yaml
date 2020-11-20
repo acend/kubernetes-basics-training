@@ -13,20 +13,17 @@ spec:
     spec:
       containers:
         - name: kustomize-app
-          image: nginx
+          image: acend/example-web-go
+          env:
+            - name: APPLICATION_NAME
+              value: app-base
           command:
             - bash
             - -c
             - |-
               set -e
-              sed -i \
-                "s/Welcome to nginx/Hello, my name is $APPLICATION_NAME/" \
-                /usr/share/nginx/html/index.html
-              echo "My name is $APPLICATION_NAME"
-              nginx -g "daemon off;"
-          env:
-            - name: APPLICATION_NAME
-              value: app-base
+              /bin/echo "My name is $APPLICATION_NAME"
+              /usr/local/bin/go
           ports:
             - name: http
               containerPort: 80
