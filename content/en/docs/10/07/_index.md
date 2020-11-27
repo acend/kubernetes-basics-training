@@ -43,7 +43,12 @@ oc edit dc mariadb --namespace <namespace>
 And add a new (sidecar) container into your DeploymentConfig:
 {{< /onlyWhen >}}
 
+{{< onlyWhenNot mobi >}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/10/07/deploy_mariadb-sidecar.yaml" >}}{{< /highlight >}}
+{{< /onlyWhenNot >}}
+{{< onlyWhen mobi >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/10/07/deploy_mariadb-sidecar_mobi.yaml" >}}{{< /highlight >}}
+{{< /onlyWhen >}}
 
 Your Pod now has two running containers. Verify this with:
 
@@ -94,5 +99,5 @@ Now open <http://localhost:9104/metrics> in your browser.
 
 You should now have the following resources in place:
 
-{{< onlyWhenNot openshift >}}* [mariadb.yaml](mariadb.yaml){{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}* [mariadb.yaml](mariadb_openshift.yaml){{< /onlyWhenNot >}}
+{{< onlyWhenNot openshift >}}[mariadb.yaml](mariadb.yaml){{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}[mariadb.yaml](mariadb_openshift.yaml){{< /onlyWhenNot >}}

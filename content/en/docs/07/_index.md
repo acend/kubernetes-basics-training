@@ -46,16 +46,11 @@ ls -l
 ```
 
 ```
-total 60
-drwxr-xr-x    2 root     root          4096 Jan 16 21:52 bin
-drwxr-xr-x    5 root     root           360 Apr  1 11:37 dev
-drwxr-xr-x    1 root     root          4096 Apr  1 11:37 etc
-drwxr-xr-x    1 root     root          4096 Mar 27 12:32 home
-drwxr-xr-x    5 root     root          4096 Jan 16 21:52 lib
-drwxr-xr-x    5 root     root          4096 Jan 16 21:52 media
-drwxr-xr-x    2 root     root          4096 Jan 16 21:52 mnt
-drwxr-xr-x    2 root     root          4096 Jan 16 21:52 opt
-
+total 12
+-rw-r--r--    1 10020700 root          8192 Nov 27 15:12 hellos.db
+-rwxrwsr-x    1 web      root          2454 Oct  5 08:55 run.py
+drwxrwsr-x    1 web      root            17 Oct  5 08:55 static
+drwxrwsr-x    1 web      root            63 Oct  5 08:55 templates
 ```
 
 With `exit` or `CTRL+d` you can leave the container and close the connection:

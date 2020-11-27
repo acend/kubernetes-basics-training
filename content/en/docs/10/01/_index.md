@@ -113,7 +113,7 @@ Set the StatefulSet's image tag to `latest`:
 
 {{< onlyWhenNot mobi >}}
 ```bash
-{{% param cliToolName %}} set image statefulset nginx-cluster nginx=nginx:latest --namespace <namespace>
+{{% param cliToolName %}} set image statefulset nginx-cluster nginx=nginxinc/nginx-unprivileged:latest --namespace <namespace>
 ```
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
