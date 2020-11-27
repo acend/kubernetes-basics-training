@@ -100,12 +100,33 @@ OpenShift supports [horizontal](https://docs.openshift.com/container-platform/la
 ## Check for uninterruptible Deployments
 
 {{< onlyWhenNot openshift >}}
-Now we create a new Service of type `NodePort`:
+Now we create a new Service of type `ClusterIP`:
 
 
 ```bash
-kubectl expose deployment example-web-python --type="NodePort" --name="example-web-python" --port=5000 --target-port=5000 --namespace <namespace>
+kubectl expose deployment example-web-python --type="ClusterIP" --name="example-web-python" --port=5000 --target-port=5000 --namespace <namespace>
 ```
+
+and we need to create an Ingress to access the application:
+
+```yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: example-web-python
+spec:
+  rules:
+    - host: example-web-python-<namespace>.<domain>
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: example-web-python
+              servicePort: 5000
+```
+
+Apply the this Ingress definition using e.g. `kubectl create -f ingress.yml --namespace <namespace>`
+
 {{< /onlyWhenNot >}}
 {{< onlyWhen openshift >}}
 Now we expose our application to the internet by creating a service and a route.
@@ -135,11 +156,10 @@ Namespace:                acend-scale
 Labels:                   app=example-web-python
 Annotations:              <none>
 Selector:                 app=example-web-python
-Type:                     NodePort
+Type:                     ClusterIP
 IP:                       10.39.245.205
 Port:                     <unset>  5000/TCP
 TargetPort:               5000/TCP
-NodePort:                 <unset>  32193/TCP
 Endpoints:                10.36.0.10:5000,10.36.0.11:5000,10.36.0.9:5000
 Session Affinity:         None
 External Traffic Policy:  Cluster
@@ -167,12 +187,9 @@ Events:            <none>
 
 Scaling of Pods is fast as {{% param distroName %}} simply creates new containers.
 
-You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{< onlyWhenNot openshift >}}http://<node-ip>:<node-port>{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}http://<route hostname>{{< /onlyWhen >}}`.
+You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{< onlyWhenNot openshift >}}http://example-web-python-<namespace>.<domain>{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}http://<route hostname>{{< /onlyWhen >}}`.
 
 {{% alert title="Note" color="primary" %}}
-{{< onlyWhenNot openshift >}}
-Check the [previous lab](../05/) on how to get the `<node-ip>` and `<node-port>` or how to use an Ingress instead.
-{{< /onlyWhenNot >}}
 {{< onlyWhen openshift >}}
 You can find out the route's hostname by looking at the output of `oc get route`.
 {{< /onlyWhen >}}
@@ -191,7 +208,7 @@ while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N";
 {{< /onlyWhen >}}
 {{< onlyWhenNot openshift >}}
 ```bash
-URL=<node-ip>:<node-port>
+URL=example-web-python-<namespace>.<domain>
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 {{< /onlyWhenNot >}}
@@ -432,7 +449,7 @@ while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N";
 {{< /onlyWhen >}}
 {{< onlyWhenNot openshift >}}
 ```bash
-URL=<node-ip>:<node-port>
+URL=example-web-python-<namespace>.<domain>
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 {{< /onlyWhenNot >}}
