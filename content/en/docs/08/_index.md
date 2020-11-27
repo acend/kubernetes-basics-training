@@ -303,7 +303,7 @@ oc rsh mariadb-f845ccdb7-hf2x5 --namespace <namespace>
 You are now able to connect to the database and display the tables. Login with:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD acend-example-db
+mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend-example-db
 ```
 
 ```
@@ -358,7 +358,7 @@ oc rsh mariadb-f845ccdb7-hf2x5 --namespace <namespace>
 This command shows how to drop the whole database:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD acend-example-db
+mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend-example-db
 ```
 
 ```bash
@@ -370,7 +370,7 @@ exit
 Import a dump:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD acend-example-db < /tmp/dump.sql
+mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend-example-db < /tmp/dump.sql
 ```
 
 {{% alert title="Note" color="primary" %}}
@@ -387,7 +387,7 @@ oc rsh mariadb-f845ccdb7-hf2x5 --namespace <namespace>
 {{< /onlyWhen >}}
 
 ```bash
-mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD acend-example-db > /tmp/dump.sql
+mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -hmariadb acend-example-db > /tmp/dump.sql
 ```
 
 ```bash
