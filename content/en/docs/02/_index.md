@@ -115,6 +115,10 @@ Choose the tab appropriate to your operating system.
 
 ### macOS
 
+{{% alert title="Note" color="primary" %}}
+With Homebrew, use `brew install openshift-cli`.
+{{% /alert %}}
+
 1. First, download `oc`. The following URL directly points to the latest stable `oc` version:
 
    <https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-mac.tar.gz>

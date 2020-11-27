@@ -97,7 +97,7 @@ CREATE TABLE `hello` (
 
 LOCK TABLES `hello` WRITE;
 /*!40000 ALTER TABLE `hello` DISABLE KEYS */;
-INSERT INTO `hello` VALUES (1,'Test',NULL,NULL),(2,'APPUiO','example-spring-boot-2-f2jsi','2016-05-17 00:10:46'),(3,'Puzzle','example-spring-boot-2-f2jsi','2016-05-17 00:10:52'),(4,'Bern','example-spring-boot-2-f2jsi','2016-05-17 00:10:58'),(5,'Zürich','example-spring-boot-2-f2jsi','2016-05-17 00:11:02'),(6,'CH','example-spring-boot-2-f2jsi','2016-05-17 00:11:06'),(7,'APPUiO','example-spring-boot-2-f2jsi','2016-05-17 00:11:38'),(8,'Puzzle','example-spring-boot-2-f2jsi','2016-05-17 00:12:00');
+INSERT INTO `hello` VALUES (1,'Benjamin','from-dump','2020-05-04 12:00:00'),(2,'Christoph','from-dump','2020-05-04 12:00:00'),(3,'Daniel','from-dump','2020-05-04 12:00:00'),(4,'Johann','from-dump','2020-05-04 12:00:00'),(5,'Marcel','from-dump','2020-05-04 12:00:00'),(6,'Philipp','from-dump','2020-05-04 12:00:00'),(7,'Sebastian','from-dump','2020-05-04 12:00:00'),(8,'Thomas','from-dump','2020-05-04 12:00:00'),(9,'Tobias','from-dump','2020-05-04 12:00:00');
 /*!40000 ALTER TABLE `hello` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
