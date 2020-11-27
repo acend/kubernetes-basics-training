@@ -6,8 +6,8 @@ spec:
   template:
     spec:
       containers:
-      - name: mysql
-        image: mysql:5.7
+      - name: mariadb
+        image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mariadb:10.3
         command:
         - 'bash'
         - '-eo'
@@ -21,16 +21,22 @@ spec:
           echo "Backup successful"; du -h /tmp/$FILENAME;
         env:
         - name: MYSQL_DATABASE
-          value: example
+          valueFrom:
+            secretKeyRef:
+              key: database-name
+              name: mariadb
         - name: MYSQL_USER
-          value: example
+          valueFrom:
+            secretKeyRef:
+              key: database-user
+              name: mariadb
         - name: MYSQL_HOST
-          value: mysql
+          value: mariadb
         - name: MYSQL_PORT
           value: "3306"
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql-password
-              key: password
+              key: database-password
+              name: mariadb
       restartPolicy: Never

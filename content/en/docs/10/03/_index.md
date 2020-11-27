@@ -27,63 +27,37 @@ Similar to [task 8.4](../../08.0/#task-84-import-a-database-dump), we now want t
 Let's first look at the Job resource that we want to create.
 
 {{< onlyWhenNot mobi >}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/10/03/job-mysql-dump.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/10/03/job-mariadb-dump.yaml" >}}{{< /highlight >}}
 {{< /onlyWhenNot >}}
 
 {{< onlyWhen mobi >}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/10/03/job-mysql-dump-mobi.yaml" >}}{{< /highlight >}}
-{{< /onlyWhen >}}
-
-{{< onlyWhen openshift >}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/10/03/job-mariadb-dump-openshift.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/10/03/job-mariadb-dump-mobi.yaml" >}}{{< /highlight >}}
 {{< /onlyWhen >}}
 
 The parameter `.spec.template.spec.containers[0].image` shows that we use the same image as the running database. In contrast to the database Pod, we don't start a database afterwards, but run a `mysqldump` command, specified with `.spec.template.spec.containers[0].command`. To perform the dump, we use the environment variables of the database deployment to set the hostname, user and password parameters of the `mysqldump` command. The `MYSQL_PASSWORD` variable refers to the value of the secret, which is already used for the database Pod. Like this we ensure that the dump is performed with the same credentials.
 
 Let's create our Job: Create a file named `job_database-dump.yaml` with the content above and execute the following command:
 
-{{< onlyWhenNot openshift >}}
 ```bash
-kubectl create -f ./job_database-dump.yaml --namespace <namespace>
+{{% param cliToolName %}} create -f ./job_database-dump.yaml --namespace <namespace>
 ```
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
-```bash
-oc create -f ./job_database-dump.yaml --namespace <namespace>
-```
-{{< /onlyWhen >}}
 
 Check if the Job was successful:
 
-{{< onlyWhenNot openshift >}}
 ```bash
-kubectl describe jobs/mysql-dump --namespace <namespace>
+{{% param cliToolName %}} describe jobs/database-dump --namespace <namespace>
 ```
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
-```bash
-oc describe jobs/database-dump --namespace <namespace>
-```
-{{< /onlyWhen >}}
 
 The executed Pod can be shown as follows:
 
-{{< onlyWhenNot openshift >}}
 ```bash
-kubectl get pods --namespace <namespace>
+{{% param cliToolName %}} get pods --namespace <namespace>
 ```
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
-```bash
-oc get pods --namespace <namespace>
-```
-{{< /onlyWhen >}}
 
 To show all Pods belonging to a Job in a human-readable format, the following command can be used:
 
 ```bash
-kubectl get pods --selector=job-name=mysql-dump --output=go-template='{{range .items}}{{.metadata.name}}{{end}}' --namespace <namespace>
-oc get pods --selector=job-name=mariadb-dump --output=go-template='{{range .items}}{{.metadata.name}}{{end}}' --namespace <namespace>
+{{% param cliToolName %}} get pods --selector=job-name=database-dump --output=go-template='{{range .items}}{{.metadata.name}}{{end}}' --namespace <namespace>
 ```
 
 
