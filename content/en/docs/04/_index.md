@@ -4,7 +4,7 @@ weight: 4
 sectionnumber: 4
 ---
 
-In this lab, we are going to deploy our first pre-built container image and look at the v concepts Pod, Service, and Deployment.
+In this lab, we are going to deploy our first pre-built container image and look at the concepts Pod, Service, and Deployment.
 
 
 ## Task {{% param sectionnumber %}}.1: Start and stop a single Pod
@@ -15,18 +15,17 @@ First, we are going to directly start a new Pod:
 {{< onlyWhenNot mobi >}}
 
 ```bash
-{{% param cliToolName %}} run nginx --image=nginx --port=8080 --restart=Never --namespace <namespace>
+{{% param cliToolName %}} run awesome-app --image=acend/example-web-go --restart=Never --namespace <namespace>
 ```
 
 {{< /onlyWhenNot >}}
 {{< onlyWhen mobi >}}
 
 ```bash
-kubectl run nginx --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx:stable --port=80 --restart=Never --namespace <namespace>
+kubectl run awesome-app --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --restart=Never --namespace <namespace>
 ```
 
 {{< /onlyWhen >}}
-
 
 Use `{{% param cliToolName %}} get pods --namespace <namespace>` in order to show the running Pod:
 
@@ -37,21 +36,21 @@ Use `{{% param cliToolName %}} get pods --namespace <namespace>` in order to sho
 Which gives you an output similar to this:
 
 ```
-NAME      READY     STATUS    RESTARTS   AGE
-nginx     1/1       Running   0          1m
+NAME          READY   STATUS    RESTARTS   AGE
+awesome-app   1/1     Running   0          1m24s
 ```
 
 {{% onlyWhen rancher %}}
-Have a look at your nginx Pod inside the Rancher web console under **Workloads**.
+Have a look at your awesome-app Pod inside the Rancher web console under **Workloads**.
 {{% /onlyWhen %}}
 {{< onlyWhen openshift >}}
-Have a look at your nginx Pod inside the OpenShift web console.
+Have a look at your awesome-app Pod inside the OpenShift web console.
 {{% /onlyWhen %}}
 
 Now delete the newly created Pod:
 
 ```bash
-{{% param cliToolName %}} delete pod nginx --namespace <namespace>
+{{% param cliToolName %}} delete pod awesome-app --namespace <namespace>
 ```
 
 
