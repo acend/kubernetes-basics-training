@@ -180,7 +180,7 @@ oc expose service example-web-go
 We are now able to access our app via the freshly created route at `http://example-web-go-<namespace>.<appdomain>`
 
 {{% alert title="Note" color="primary" %}}
-The `<appdomain>` the default domain under which your applications will be accessible and is provided by your trainer.
+The `<appdomain>` is the default domain under which your applications will be accessible and is provided by your trainer. You can also use `oc get route example-web-python` to see the exact value of the exposed route.
 {{% /alert %}}
 
 {{< /onlyWhen >}}
