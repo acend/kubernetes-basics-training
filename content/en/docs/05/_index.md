@@ -178,6 +178,11 @@ oc expose service example-web-go
 ```
 
 We are now able to access our app via the freshly created route at `http://example-web-go-<namespace>.<appdomain>`
+
+{{% alert title="Note" color="primary" %}}
+The `<appdomain>` the default domain under which your applications will be accessible and is provided by your trainer.
+{{% /alert %}}
+
 {{< /onlyWhen >}}
 
 {{< onlyWhenNot openshift >}}
