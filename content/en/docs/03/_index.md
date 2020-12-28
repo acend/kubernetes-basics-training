@@ -1,9 +1,8 @@
 ---
-title: "3. First steps in the lab environment"
+title: "3. First steps"
 weight: 3
 sectionnumber: 3
 ---
-
 
 In this lab, we will interact with the {{% param distroName %}} cluster for the first time.
 
@@ -12,7 +11,7 @@ Please make sure you completed [lab 2](../02/) before you continue with this lab
 {{% /alert %}}
 
 
-## Login and choose a Kubernetes cluster
+## Login
 
 {{< onlyWhenNot openshift >}}
 {{% alert title="Note" color="primary" %}}
@@ -21,7 +20,7 @@ Authentication depends on the specific Kubernetes cluster environment. You may n
 
 {{< onlyWhen rancher >}}
 {{< onlyWhenNot mobi >}}
-Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cloudscale.ch) (a Swiss IaaS provider) and has been provisioned with [Rancher](https://rancher.com/). You can log in into the cluster with a Rancher user.
+Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cloudscale.ch) (a Swiss IaaS provider) and has been provisioned with [Rancher](https://rancher.com/). You can log in to the cluster with a Rancher user.
 
 {{% alert title="Note" color="primary" %}}
 Your teacher will provide you with the credentials to log in.
@@ -165,9 +164,6 @@ With the command `kubectl get` you can display all kinds of resources.
 {{< onlyWhen openshift >}}
 
 
-## Login
-
-
 ### Login on the Web Console
 
 {{% alert title="Note" color="primary" %}}
@@ -177,7 +173,7 @@ Your teacher will provide you with the credentials to log in.
 Open your browser, open the OpenShift cluster URL and log in using the provided credentials.
 
 
-### Login on the shell
+### Login in the shell
 
 In order to log in on the shell, you can copy the login command from the Web Console and then paste it on the shell.
 
@@ -208,7 +204,7 @@ Kubernetes Version: v1.18.3+2cf11e2
 ```
 
 
-## Project
+## Projects
 
 As a first step on the cluster we are going to create a new Project.
 
