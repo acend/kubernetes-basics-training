@@ -13,7 +13,7 @@ COPY . /opt/app/src
 
 RUN npm install -D --save autoprefixer postcss postcss-cli
 
-RUN hugo --theme ${HUGO_THEME:-docsy} --minify
+RUN hugo --environment ${ENV:-default} --minify
 
 FROM nginxinc/nginx-unprivileged:alpine
 
