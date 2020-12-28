@@ -13,4 +13,4 @@ spec:
     spec:
       containers:
         - name: example-web-go
-          image: acend/example-web-go
+          image: quay.io/acend/example-web-go

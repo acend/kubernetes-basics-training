@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: kustomize-app
-          image: acend/example-web-go
+          image: quay.io/acend/example-web-go
           env:
             - name: APPLICATION_NAME
               value: app-base

@@ -15,7 +15,7 @@ First, we are going to directly start a new Pod:
 {{< onlyWhenNot mobi >}}
 
 ```bash
-{{% param cliToolName %}} run awesome-app --image=acend/example-web-go --restart=Never --namespace <namespace>
+{{% param cliToolName %}} run awesome-app --image=quay.io/acend/example-web-go --restart=Never --namespace <namespace>
 ```
 
 {{< /onlyWhenNot >}}
@@ -62,7 +62,7 @@ With the following command we can create a Deployment inside our already created
 {{< onlyWhenNot mobi >}}
 
 ```bash
-{{% param cliToolName %}} create deployment example-web-go --image=acend/example-web-go --namespace <namespace>
+{{% param cliToolName %}} create deployment example-web-go --image=quay.io/acend/example-web-go --namespace <namespace>
 ```
 
 {{< /onlyWhenNot >}}
@@ -80,7 +80,7 @@ The output should be:
 deployment.apps/example-web-go created
 ```
 
-We're using an example from us (a simple Go application), which you can find on [Docker Hub](https://hub.docker.com/r/acend/example-web-go/) and [GitHub (source)](https://github.com/acend/awesome-apps).
+We're using a simple sample application written in Go which you can find built as an image on [Quay.io](https://quay.io/repository/acend/example-web-go/) or its source on [GitHub](https://github.com/acend/awesome-apps).
 
 {{% param distroName %}} creates the defined and necessary resources, pulls the container image (in this case from Docker Hub) and deploys the Pod.
 
@@ -112,7 +112,7 @@ If you want to create your own container images and use them with {{% param dist
 
 ## Viewing the created resources
 
-When we executed the command `{{% param cliToolName %}} create deployment example-web-go --image=acend/example-web-go --namespace <namespace>`, Kubernetes created a deployment resource.
+When we executed the command `{{% param cliToolName %}} create deployment example-web-go --image=quay.io/acend/example-web-go --namespace <namespace>`, {{% param distroName %}} created a Deployment resource.
 
 
 ### Deployment
