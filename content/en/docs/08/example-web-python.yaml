@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
         - name: example-web-python
-          image: acend/example-web-python
+          image: quay.io/acend/example-web-python
           env:
           - name: MYSQL_DATABASE_NAME
             valueFrom:
