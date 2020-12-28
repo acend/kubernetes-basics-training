@@ -15,7 +15,7 @@ First, we are going to directly start a new Pod:
 {{< onlyWhenNot mobi >}}
 
 ```bash
-{{% param cliToolName %}} run awesome-app --image=quay.io/acend/example-web-go:latest --restart=Never --namespace <namespace>
+{{% param cliToolName %}} run awesome-app --image=quay.io/acend/example-web-go --restart=Never --namespace <namespace>
 ```
 
 {{< /onlyWhenNot >}}
@@ -62,7 +62,7 @@ With the following command we can create a Deployment inside our already created
 {{< onlyWhenNot mobi >}}
 
 ```bash
-{{% param cliToolName %}} create deployment example-web-go --image=quay.io/acend/example-web-go:latest --namespace <namespace>
+{{% param cliToolName %}} create deployment example-web-go --image=quay.io/acend/example-web-go --namespace <namespace>
 ```
 
 {{< /onlyWhenNot >}}
@@ -112,7 +112,7 @@ If you want to create your own container images and use them with {{% param dist
 
 ## Viewing the created resources
 
-When we executed the command `{{% param cliToolName %}} create deployment example-web-go --image=quay.io/acend/example-web-go:latest --namespace <namespace>`, {{% param distroName %}} created a Deployment resource.
+When we executed the command `{{% param cliToolName %}} create deployment example-web-go --image=quay.io/acend/example-web-go --namespace <namespace>`, {{% param distroName %}} created a Deployment resource.
 
 
 ### Deployment
