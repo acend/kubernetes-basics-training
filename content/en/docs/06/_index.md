@@ -218,7 +218,7 @@ Windows PowerShell:
 ```bash
 while(1) {
   Start-Sleep -s 1
-  Invoke-RestMethod http://[URL]/pod/
+  Invoke-RestMethod http://<URL>/pod/
   Get-Date -Uformat "+ TIME: %H:%M:%S,%3N"
 }
 ```
