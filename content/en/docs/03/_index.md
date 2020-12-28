@@ -144,7 +144,6 @@ kubectl config set-context %KUBE_CONTEXT% --namespace <namespace>
 Some prefer to explicitly select the Namespace for each `kubectl` command by adding `--namespace <namespace>` or `-n <namespace>`. Others prefer helper tools like `kubens` (see [lab 2](../02/)).
 {{% /alert %}}
 
-
 {{< onlyWhen rancher >}}
 
 
