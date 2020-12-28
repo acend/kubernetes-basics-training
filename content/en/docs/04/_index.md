@@ -4,12 +4,12 @@ weight: 4
 sectionnumber: 4
 ---
 
-In this lab, we are going to deploy our first pre-built container image and look at the concepts Pod, Service, and Deployment.
+In this lab, we are going to deploy our first container image and look at the concepts of Pods, Services, and Deployments.
 
 
 ## Task {{% param sectionnumber %}}.1: Start and stop a single Pod
 
-After we've familiarized ourselves with the platform, we are going to have a look at deploying a pre-built container image from Docker Hub or any other public container registry.
+After we've familiarized ourselves with the platform, we are going to have a look at deploying a pre-built container image from Quay.io or any other public container registry.
 
 First, we are going to directly start a new Pod:
 {{< onlyWhenNot mobi >}}
@@ -110,7 +110,7 @@ If you want to create your own container images and use them with {{% param dist
 {{% /alert %}}
 
 
-## Viewing the created resources
+## Task {{% param sectionnumber %}}.3: Viewing the created resources
 
 When we executed the command `{{% param cliToolName %}} create deployment example-web-go --image=acend/example-web-go --namespace <namespace>`, Kubernetes created a deployment resource.
 
@@ -151,16 +151,88 @@ NAME                              READY   STATUS    RESTARTS   AGE
 example-web-go-69b658f647-xnm94   1/1     Running   0          39s
 ```
 
-The deployment defines that one replica should be deployed---which is running as we can see in the output. This Pod is not yet reachable from outside of the cluster.
-
+The Deployment defines that one replica should be deployed --- which is running as we can see in the output. This Pod is not yet reachable from outside of the cluster.
 
 {{% onlyWhen rancher %}}
 
 
-## Task {{% param sectionnumber %}}.3: Verify the Deployment in the Rancher web console
+## Task {{% param sectionnumber %}}.4: Verify the Deployment in the Rancher web console
 
-Try to display the logs from the example application via the Rancher Web console.
+Try to display the logs from the example application in the Rancher web console.
 {{% /onlyWhen %}}
+
+{{< onlyWhen openshift >}}
+
+
+## Task {{% param sectionnumber %}}.4: Verify the Deployment in the OpenShift web console
+
+Try to display the logs from the example application via the OpenShift web console.
+
+
+## Task {{% param sectionnumber %}}.5: Build the image yourself
+
+Up until now, we've used pre-built images from Quay.io. OpenShift offers the ability to build images on the cluster itself using different [strategies](https://docs.openshift.com/container-platform/latest/builds/understanding-image-builds.html):
+
+* Docker build strategy
+* Source-to-image build strategy
+* Custom build strategy
+* Pipeline build strategy
+
+We are going to use the Docker build strategy. It expects:
+
+> [...] a repository with a Dockerfile and all required artifacts in it to produce a runnable image.
+
+All of these requirements are already fulfilled in the [sourcecode repository on GitHub](https://github.com/acend/awesome-apps/tree/master/go), so let's build the image!
+
+{{% alert title="Note" color="primary" %}}
+Have a look at [OpenShift's documentation](https://docs.openshift.com/container-platform/latest/builds/understanding-image-builds.html) to learn more about the other available build strategies.
+{{% /alert %}}
+
+First we clean up the already existing Deployment:
+
+```bash
+oc delete deployment example-web-go --namespace <namespace>
+```
+
+We are now ready to create the build and deployment, all in one command:
+
+```bash
+oc new-app --name example-web-go --context-dir go/ --strategy docker https://github.com/acend/awesome-apps.git --namespace <namespace>
+```
+
+Let's watch the image build's process:
+
+```bash
+oc logs bc/example-web-go --follow --namespace <namespace>
+```
+
+The message `Push successful` signifies the image's succesful build and push to OpenShift's internal image.
+
+In above command you discovered a new resource type `bc` which is the abbreviation for _BuildConfig_.
+A BuildConfig defines how a container images has to be built.
+
+A _Build_ resource represents the build process itself based upon the BuildConfig's definition.
+A build takes place in a Pod on OpenShift, so instead of referencing the BuildConfig in our `oc logs` command, we could have used the build Pod's log output.
+However, referencing the BuildConfig has the advantage that it can be reused each time a build is run.
+A build Pod changes its name with every build.
+
+Have a look at the new Deployment created by the `oc new-app` command:
+
+```bash
+oc get deployment example-web-go -o yaml --namespace <namespace>
+```
+
+It looks the same as before with the only essential exception that it uses the image we just built instead of the pre-built image from Quay.io:
+
+```
+    ...
+    spec:
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/baffolter-test/awesome-app@sha256:4cd671273a837453464f7264afe845b299297ebe032f940fd005cf9c40d1e76c
+      ...
+```
+
+{{< /onlyWhen >}}
 
 
 ## Save point
