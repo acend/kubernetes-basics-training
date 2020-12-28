@@ -15,11 +15,3 @@ jobs:
         with:
           dockerfile: ./Dockerfile
           push: false
-      - uses: docker/build-push-action@v1
-        with:
-          dockerfile: ./Dockerfile.mobi
-          push: false
-      - uses: docker/build-push-action@v1
-        with:
-          dockerfile: ./Dockerfile.rancher
-          push: false

@@ -1,0 +1,11 @@
+title = "OpenShift Basics Training"
+languageCode = "en-us"
+
+[Languages]
+[Languages.en]
+title = "Openshift Basics Training"
+
+[params]
+enabledModule = "base openshift"
+distroName = "OpenShift"
+cliToolName = "oc"
