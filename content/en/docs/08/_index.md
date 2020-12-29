@@ -109,7 +109,7 @@ There's also the `oc extract` command which can be used to extract the content o
 {{< /onlyWhen >}}
 
 {{% alert title="Note" color="primary" %}}
-By default, Secrets by are not encrypted!
+By default, Secrets are not encrypted!
 {{< onlyWhen openshift >}}OpenShift [offers this capability](https://docs.openshift.com/container-platform/latest/security/encrypting-etcd.html){{< /onlyWhen >}}
 {{< onlyWhenNot openshift >}}Kubernetes 1.13 [offers this capability](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/){{< /onlyWhenNot >}}. Another option would be the use of a secrets management solution like [Vault by HashiCorp](https://www.vaultproject.io/).
 {{% /alert %}}
