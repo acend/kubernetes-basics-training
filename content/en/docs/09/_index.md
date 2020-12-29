@@ -16,17 +16,17 @@ The PersistentVolumeClaim only represents a request but not the storage itself. 
 
 ## Attaching a volume to a Pod
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 In a second step, the PVC from before is going to be attached to the Pod. In [lab 6](../06/) we edited the deployment configuration in order to insert a readiness probe. We are now going to do the same for inserting the persistent volume.
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 In a second step, the PVC from before is going to be attached to the Pod. In [lab 6](../06/) we used `{{% param cliToolName %}} set` to add a readiness probe to the Deployment. We are now going to do the same and insert the PersistentVolume.
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Task {{% param sectionnumber %}}.1: Add a PersistentVolume
 
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 The `oc set volume` command makes it possible to create a PVC and attach it to a Deployment in one fell swoop:
 
 ```bash
@@ -38,9 +38,9 @@ With above instruction we create a PVC named `mariadb-data` of 1Gi in size, atta
 {{% alert title="Note" color="primary" %}}
 Because we just changed the DeploymentConfig with the `oc set` command, a new Pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
 {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size.  
 Save it to `pvc.yaml`:
 
@@ -83,22 +83,22 @@ Add both parts `volumeMounts` and `volumes`
 {{% alert title="Note" color="primary" %}}
 Because we just changed the Deployment a new Pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
 {{% /alert %}}
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
 {{% alert title="Note" color="primary" %}}
 We need to redeploy the application pod, our application automatically creates the database schema at startup time.
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 If you want to force a redeployment of a Pod, you could use this:
 ```bash
 kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
 ```
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 ```bash
 oc rollout restart deployment example-web-python --namespace <namespace>
 ```
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 {{% /alert %}}
 Using the command `{{% param cliToolName %}} get persistentvolumeclaim` or `{{% param cliToolName %}} get pvc`, we can display the freshly created PersistentVolumeClaim:
@@ -127,7 +127,7 @@ Check the logs from the container and search for the error.
 ```
 
 {{% alert title="Note" color="primary" %}}
-If the container won't start because the data directory already has files in it, use the `{{< onlyWhenNot openshift >}}kubectl exec{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}oc debug{{< /onlyWhen >}}` command mentioned in [lab 7](../07.0/) to check its content and remove it if necessary.{{% /alert %}}
+If the container won't start because the data directory already has files in it, use the `{{% onlyWhenNot openshift %}}kubectl exec{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}oc debug{{% /onlyWhen %}}` command mentioned in [lab 7](../07.0/) to check its content and remove it if necessary.{{% /alert %}}
 
 
 ## Task {{% param sectionnumber %}}.2: Persistence check
@@ -148,6 +148,6 @@ Scale your MariaDB Pod to 0 replicas and back to 1. Observe that the new Pod did
 You should now have the following resources in place:
 
 * [pvc.yaml](pvc.yaml)
-* {{< onlyWhenNot mobi >}}[mariadb.yaml](mariadb.yaml){{< /onlyWhenNot >}}
-  {{< onlyWhen mobi >}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{< /onlyWhen >}}
+* {{% onlyWhenNot mobi %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
+  {{% onlyWhen mobi %}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{% /onlyWhen %}}
 * [example-web-python.yaml](../08/example-web-python.yaml) (from lab 8)

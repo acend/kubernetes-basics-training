@@ -14,30 +14,30 @@ Running containers should be treated as immutable infrastructure and should ther
 
 ## Task {{% param sectionnumber %}}.1: Shell into Pod
 
-With {{% param distroName %}} you can open a remote shell into a Pod without installing SSH by using the command `{{< onlyWhenNot openshift >}}kubectl exec{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}oc rsh{{< /onlyWhen >}}`. The command can also be used to execute any command in a Pod.
-{{< onlyWhenNot openshift >}}With the parameter `-it` you can leave an open connection.{{< /onlyWhenNot >}}
+With {{% param distroName %}} you can open a remote shell into a Pod without installing SSH by using the command `{{% onlyWhenNot openshift %}}kubectl exec{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}oc rsh{{% /onlyWhen %}}`. The command can also be used to execute any command in a Pod.
+{{% onlyWhenNot openshift %}}With the parameter `-it` you can leave an open connection.{{% /onlyWhenNot %}}
 
 {{% alert title="Note" color="primary" %}}
 On Windows, you can use Git Bash and `winpty`.
 {{% /alert %}}
 
 Choose a Pod with `{{% param cliToolName %}} get pods --namespace <namespace>` and execute the following command:
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 ```bash
 kubectl exec -it <pod> --namespace <namespace> -- /bin/bash
 ```
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 ```bash
 oc rsh --namespace <namespace> <pod>
 ```
-{{< /onlyWhen >}}
-{{< onlyWhenNot openshift >}}
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
 {{% alert title="Note" color="primary" %}}
 If Bash is not available in the Pod you can fallback to `-- sh` instead of `-- /bin/bash`.
 {{% /alert %}}
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
 You now have a running shell session inside the container in which you can execute every binary available, e.g.:
 
@@ -62,7 +62,7 @@ exit
 
 ## Task {{% param sectionnumber %}}.2: Single commands
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 Single commands inside a container can also be executed with `kubectl exec`:
 
 ```bash
@@ -82,8 +82,8 @@ KUBERNETES_PORT_53_UDP_PROTO=udp
 KUBERNETES_PORT_53_TCP=tcp://172.30.0.1:53
 ...
 ```
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 Single commands inside a container can also be executed with `oc rsh`:
 
 ```bash
@@ -111,7 +111,7 @@ One of the disadvantages of using the `oc rsh` command is that it depends on the
 The `oc debug` command starts an interactive shell using the definition of a Deployment, Pod, DaemonSet, Job or even an ImageStreamTag. In OpenShift 4 it can also be used to open a shell on a Node to analyze it.
 
 The quick way of using it is `oc debug RESOURCE/NAME` but have a good look at its help page. There are some very interesting parameters like `--as-root` that give you (depending on your permissions on the cluster) a very powerful means of debugging a Pod.
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Watching log files
@@ -169,7 +169,7 @@ curl localhost:5000
 
 With the same concept you can access databases from your local workstation or connect your local development environment via remote debugging to your application in the Pod.
 
-{{< onlyWhenNot openshift >}}[This documentation page](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster){{< /onlyWhenNot >}}{{< onlyWhen openshift >}}[This documentation page](https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-port-forwarding.html){{< /onlyWhen >}} offers some more details about port forwarding.
+{{% onlyWhenNot openshift %}}[This documentation page](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster){{% /onlyWhenNot %}}{{% onlyWhen openshift %}}[This documentation page](https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-port-forwarding.html){{% /onlyWhen %}} offers some more details about port forwarding.
 
 {{% alert title="Note" color="primary" %}}
 The `{{% param cliToolName %}} port-forward` process runs as long as it is not terminated by the user. So when done, stop it with `CTRL-c`.

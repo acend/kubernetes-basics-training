@@ -24,9 +24,9 @@ The command `{{% param cliToolName %}} create deployment` from the last lab crea
 * `ExternalName`: Maps the Service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. No proxying of any kind is set up.
 
 You can also use Ingress to expose your Service. Ingress is not a Service type, but it acts as the entry point for your cluster. [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.
-Traffic routing is controlled by rules defined on the {{< onlyWhenNot openshift >}}Ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}Route{{< /onlyWhen >}} resource. {{< onlyWhenNot openshift >}}An Ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}A Route{{< /onlyWhen >}} may be configured to give Services externally-reachable URLs, load balance traffic, terminate SSL / TLS, and offer name based virtual hosting. An Ingress controller is responsible for fulfilling the route, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic.
+Traffic routing is controlled by rules defined on the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}} resource. {{% onlyWhenNot openshift %}}An Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}A Route{{% /onlyWhen %}} may be configured to give Services externally-reachable URLs, load balance traffic, terminate SSL / TLS, and offer name based virtual hosting. An Ingress controller is responsible for fulfilling the route, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic.
 
-In order to create {{< onlyWhenNot openshift >}}an Ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}a Route{{< /onlyWhen >}}, we first need to create a Service of type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types).
+In order to create {{% onlyWhenNot openshift %}}an Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}a Route{{% /onlyWhen %}}, we first need to create a Service of type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types).
 We're going to do this with the command `{{% param cliToolName %}} expose`:
 
 ```bash
@@ -144,17 +144,17 @@ Events:
 
 The `Endpoints` shows the IP addresses of all currently matched Pods.
 
-With the ClusterIP Service ready, we can now create the {{< onlyWhenNot openshift >}}Ingress{{< /onlyWhen >}}{{< onlyWhen openshift >}}Route{{< /onlyWhen >}} resource.
-{{< onlyWhenNot openshift >}}
+With the ClusterIP Service ready, we can now create the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhen %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}} resource.
+{{% onlyWhenNot openshift %}}
 In order to create the Ingress resource, we first need to create the file `ingress.yaml` and change the `host` entry to match your environment:
 
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress.template.yaml" >}}{{< /highlight >}}
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
-{{< onlyWhen mobi >}}
+{{% onlyWhen mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress-mobi.template.yaml" >}}{{< /highlight >}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 As you see in the resource definition at `spec.rules[0].http.paths[0].backend.serviceName` we use the previously created `example-web-go` ClusterIP Service.
 
@@ -164,14 +164,14 @@ Let's create the Ingress resource with:
 kubectl create -f <path to ingress.yaml> --namespace <namespace>
 ```
 
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<domain>`
-{{< /onlyWhenNot >}}
-{{< onlyWhen mobi >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
 Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
-{{< /onlyWhen >}}
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhen %}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 
 ```bash
 oc expose service example-web-go
@@ -183,9 +183,9 @@ We are now able to access our app via the freshly created route at `http://examp
 The `<appdomain>` is the default domain under which your applications will be accessible and is provided by your trainer. You can also use `oc get route example-web-python` to see the exact value of the exposed route.
 {{% /alert %}}
 
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 
 
 ## Task {{% param sectionnumber %}}.2: Expose as NodePort
@@ -252,7 +252,7 @@ You can also use the Rancher web console to open the exposed application in your
 Or go to the **Service Discovery** tab and look for your Service name. The link there looks the same and is right below the Service name.
 {{% /alert %}}
 {{% /onlyWhen %}}
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
 
 ## Task {{% param sectionnumber %}}.2 (optional): For fast learners
@@ -282,9 +282,9 @@ You should now have the following resources in place:
 
 * [deployment.yaml](../04/deployment.yaml) (from lab 4)
 * [service.yaml](service.yaml)
-* {{< onlyWhenNot openshift >}}{{< onlyWhenNot mobi >}}[ingress.template.yaml](ingress.template.yaml){{< /onlyWhenNot >}}
-  {{< onlyWhen mobi >}}[ingress-mobi.template.yaml](ingress-mobi.template.yaml){{< /onlyWhen >}}{{< /onlyWhenNot >}}
-  {{< onlyWhen openshift >}}An exposed Route{{< /onlyWhen >}}
+* {{% onlyWhenNot openshift %}}{{% onlyWhenNot mobi %}}[ingress.template.yaml](ingress.template.yaml){{% /onlyWhenNot %}}
+  {{% onlyWhen mobi %}}[ingress-mobi.template.yaml](ingress-mobi.template.yaml){{% /onlyWhen %}}{{% /onlyWhenNot %}}
+  {{% onlyWhen openshift %}}An exposed Route{{% /onlyWhen %}}
 
 
 ## Task {{% param sectionnumber %}}.4: Clean up
@@ -303,8 +303,8 @@ Delete the Service:
 {{% param cliToolName %}} delete service example-web-go --namespace <namespace>
 ```
 
-Delete the {{< onlyWhenNot openshift >}}Ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}Route{{< /onlyWhen >}}:
+Delete the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}}:
 
 ```bash
-{{% param cliToolName %}} delete {{< onlyWhenNot openshift >}}ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}route{{< /onlyWhen >}} example-web-go --namespace <namespace>
+{{% param cliToolName %}} delete {{% onlyWhenNot openshift %}}ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}route{{% /onlyWhen %}} example-web-go --namespace <namespace>
 ```

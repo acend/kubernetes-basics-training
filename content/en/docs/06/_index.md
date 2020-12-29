@@ -14,20 +14,20 @@ This lab does not depend on previous labs. You can start with an empty Namespace
 ## Task {{% param sectionnumber %}}.1: Scale the example application
 
 Create a new Deployment in your Namespace:
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 
 ```bash
 {{% param cliToolName %}} create deployment example-web-python --image=quay.io/acend/example-web-python --namespace <namespace>
 ```
 
-{{< /onlyWhenNot >}}
-{{< onlyWhen mobi >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
 
 ```bash
 kubectl create deployment example-web-python --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-python --namespace <namespace>
 ```
 
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 If we want to scale our example application, we have to tell the Deployment that we want to have three running replicas instead of one.
 Let's have a closer look at the existing ReplicaSet:
 
@@ -85,21 +85,21 @@ example-web-python-86d9d584f8-hbvlv   1/1     Running   0          31s
 example-web-python-86d9d584f8-qg499   1/1     Running   0          31s
 
 ```
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 {{% alert title="Note" color="primary" %}}
 Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
 {{% /alert %}}
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 {{% alert title="Note" color="primary" %}}
 OpenShift supports [horizontal](https://docs.openshift.com/container-platform/latest/nodes/pods/nodes-pods-autoscaling.html) and [vertical autoscaling](https://docs.openshift.com/container-platform/latest/nodes/pods/nodes-pods-vertical-autoscaler.html).
 {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Check for uninterruptible Deployments
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 Now we create a new Service of type `ClusterIP`:
 
 
@@ -127,8 +127,8 @@ spec:
 
 Apply the this Ingress definition using e.g. `kubectl create -f ingress.yml --namespace <namespace>`
 
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 Now we expose our application to the internet by creating a service and a route.
 
 First the Service:
@@ -142,14 +142,14 @@ Then the Route:
 ```bash
 oc expose service example-web-python --namespace <namespace>
 ```
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 Let's look at our Service. We should see all three corresponding Endpoints:
 
 ```bash
 {{% param cliToolName %}} describe service example-web-python --namespace <namespace>
 ```
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 ```
 Name:                     example-web-python
 Namespace:                acend-scale
@@ -167,8 +167,8 @@ Events:
   Type    Reason                Age   From                Message
   ----    ------                ----  ----                -------
 ```
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 ```
 Name:              example-web-python
 Namespace:         acend-test
@@ -183,16 +183,16 @@ Endpoints:         10.124.4.137:5000
 Session Affinity:  None
 Events:            <none>
 ```
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 Scaling of Pods is fast as {{% param distroName %}} simply creates new containers.
 
-You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{< onlyWhenNot openshift >}}http://example-web-python-<namespace>.<domain>{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}http://<route hostname>{{< /onlyWhen >}}`.
+You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{% onlyWhenNot openshift %}}http://example-web-python-<namespace>.<domain>{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://<route hostname>{{% /onlyWhen %}}`.
 
 {{% alert title="Note" color="primary" %}}
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 You can find out the route's hostname by looking at the output of `oc get route`.
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 {{% /alert %}}
 
 Now, execute the corresponding loop command for your operating system in another console.
@@ -200,18 +200,18 @@ Now, execute the corresponding loop command for your operating system in another
 Linux:
 
 
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 ```bash
 URL=$(oc get routes example-web-python -o go-template='{{ .spec.host }}' --namespace <namespace>)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
-{{< /onlyWhen >}}
-{{< onlyWhenNot openshift >}}
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
 ```bash
 URL=example-web-python-<namespace>.<domain>
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
 Windows PowerShell:
 
@@ -257,15 +257,15 @@ On Windows, execute the following command in Git Bash; PowerShell seems not to w
 {{% /alert %}}
 
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 ```bash
 kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
 ```
-{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}
 ```bash
 oc rollout restart deployment example-web-python --namespace <namespace>
 ```
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 During a short period we won't get a response:
@@ -333,12 +333,12 @@ Basically, there are two different kinds of checks that can be implemented:
 
 These probes can be implemented as HTTP checks, container execution checks (the execution of a command or script inside a container) or TCP socket checks.
 
-In our example, we want the application to tell {{% param distroName %}} that it is ready for requests with an appropriate readiness probe. Our example application has a health check context named health: `{{< onlyWhenNot openshift >}}http://<node-ip>:<node-port>/health{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}http://${URL}/health{{< /onlyWhen >}}`
+In our example, we want the application to tell {{% param distroName %}} that it is ready for requests with an appropriate readiness probe. Our example application has a health check context named health: `{{% onlyWhenNot openshift %}}http://<node-ip>:<node-port>/health{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://${URL}/health{{% /onlyWhen %}}`
 
 
 ## Task {{% param sectionnumber %}}.2: Availability during Deployment
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 In our deployment configuration inside the rolling update strategy section we define that our application has to be always be available during an update: `maxUnavailable: 0`
 
 You can directly edit the deployment (or any resource) with:
@@ -409,8 +409,8 @@ The `containers` configuration then looks like:
         terminationMessagePolicy: File
 ...
 ```
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 Define the readiness probe on the Deployment using the following command:
 
 ```bash
@@ -434,25 +434,25 @@ Above command results in the following `readinessProbe` snippet being inserted i
           timeoutSeconds: 1
 ...
 ```
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 We are now going to verify that a redeployment of the application does not lead to an interruption.
 
 Set up the loop again to periodically check the application's response (you don't have to set the `$URL` variable again if it is still defined):
 
 
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 ```bash
 URL=$(oc get routes example-web-python -o go-template='{{ .spec.host }}' --namespace <namespace>)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
-{{< /onlyWhen >}}
-{{< onlyWhenNot openshift >}}
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
 ```bash
 URL=example-web-python-<namespace>.<domain>
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
 
 Windows PowerShell:
@@ -466,25 +466,25 @@ while(1) {
 ```
 
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 Start a new deployment by editing it (the so-called _ConfigChange_ trigger creates the new Deployment automatically):
 
 ```bash
 kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
 ```
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 Start a new deployment:
 
 ```bash
 oc rollout restart deployment example-web-python --namespace <namespace>
 ```
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Self healing
 
-Via the {{< onlyWhenNot openshift >}}Replicaset{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}Deployment definitiion{{< /onlyWhen >}} we told {{% param distroName %}} how many replicas we want. So what happens if we simply delete a Pod?
+Via the {{% onlyWhenNot openshift %}}Replicaset{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Deployment definitiion{{% /onlyWhen %}} we told {{% param distroName %}} how many replicas we want. So what happens if we simply delete a Pod?
 
 Look for a running Pod (status `RUNNING`) that you can bear to kill via `{{% param cliToolName %}} get pods`.
 

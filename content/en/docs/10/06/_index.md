@@ -12,12 +12,12 @@ Init Containers are exactly like regular Containers, except:
 * Init Containers always run to completion.
 * Each Init Container must complete successfully before the next one starts.
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes documentation for more details.
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 Check out the [Init Containers documentation](https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-init.html) for more details.
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Task {{% param sectionnumber %}}.1: Add an Init Container
@@ -31,7 +31,7 @@ Edit your existing `example-web-python` Deployment with:
 ```
 
 Add the Init Container into the existing Deployment:
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 
 ```yaml
 ...
@@ -43,8 +43,8 @@ spec:
 ...
 ```
 
-{{< /onlyWhenNot >}}
-{{< onlyWhen mobi >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
 
 ```yaml
 ...
@@ -56,7 +56,7 @@ spec:
 ...
 ```
 
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 {{% alert title="Note" color="primary" %}}
 This obviously only checks if there is a DNS Record for your MariaDB Service and not if the database is ready. But you get the idea, right?
 {{% /alert %}}
@@ -113,11 +113,11 @@ Name:      mariadb.acend-test.svc.cluster.local
 Address 1: 10.43.243.105 mariadb.acend-test.svc.cluster.local
 ```
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes documentation for more details.
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 
 
 ## Deployment hooks on OpenShift
@@ -125,12 +125,12 @@ Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-c
 A similar concepts are the so called pre and post deployment hooks. Those hooks basically give the possibility to execute pods during before and after a deployment is in progress
 
 Check out the [official documentation](https://docs.openshift.com/container-platform/4.6/applications/deployments/deployment-strategies.html) for further information.
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Save point
 
 You should now have the following resources in place:
 
-* {{< onlyWhenNot mobi >}}[example-web-python.yaml](example-web-python.yaml){{< /onlyWhenNot >}}
-  {{< onlyWhen mobi >}}[example-web-python-mobi.yaml](example-web-python-mobi.yaml){{< /onlyWhen >}}
+* {{% onlyWhenNot mobi %}}[example-web-python.yaml](example-web-python.yaml){{% /onlyWhenNot %}}
+  {{% onlyWhen mobi %}}[example-web-python-mobi.yaml](example-web-python-mobi.yaml){{% /onlyWhen %}}

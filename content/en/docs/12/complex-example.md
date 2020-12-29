@@ -18,7 +18,7 @@ Check out [Helm Hub](https://hub.helm.sh/) where you'll find a huge number of di
 
 As this WordPress Helm chart is published in Bitnami's Helm repository, we're first going to add it to our local repo list:
 
-{{< onlyWhen mobi >}}
+{{% onlyWhen mobi %}}
 You have to set your `HTTP_PROXY` environment variable in order to access the bitnami helm repository:
 
 ```bash
@@ -40,7 +40,7 @@ $env:https_proxy="http://u...:PASSWORD@dirproxy.mobi.ch:80"
 ```
 
 Replace `u...:PASSWORD` with your account details. If you have specials chars in your password, you have to escape them with hexadecimal value according to [this](https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters)
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -77,7 +77,7 @@ mariadb:
 
 If you look inside the [requirements.yaml](https://github.com/bitnami/charts/blob/master/bitnami/wordpress/requirements.yaml) file of the WordPress chart you see a dependency to the [MariaDB Helm chart](https://github.com/bitnami/charts/tree/master/bitnami/mariadb). All the MariaDB values are used by this dependent Helm chart and the chart is automatically deployed when installing WordPress.
 
-{{< onlyWhen mobi >}}
+{{% onlyWhen mobi %}}
 The WordPress and MariaDB charts use (at the time of writing) the following container images:
 
 * `docker.io/bitnami/wordpress:5.4.0-debian-10-r6`
@@ -136,7 +136,7 @@ ingress:
 ...
 ```
 
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 The `requirements.yaml` file allows us to define dependencies on other charts. In our Wordpress chart we use the `requirements.yaml` to add a `mariadb` to store the WordPress data in.
 

@@ -71,12 +71,12 @@ The controllable and predictable behaviour can be a perfect match for applicatio
 
 Create a file named `sts_nginx-cluster.yaml` with the following definition of a StatefulSet:
 
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/10/01/sts_nginx-cluster.yaml" >}}{{< /highlight >}}
-{{< /onlyWhenNot >}}
-{{< onlyWhen mobi >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/10/01/sts_nginx-cluster_mobi.yaml" >}}{{< /highlight >}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 Create the StatefulSet:
   
@@ -111,16 +111,16 @@ You can again watch the pods' progress like you did in the first task.
 In order to update the image tag in use in a StatefulSet, you can use the `{{% param cliToolName %}} set image` command.
 Set the StatefulSet's image tag to `latest`:
 
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 ```bash
 {{% param cliToolName %}} set image statefulset nginx-cluster nginx=nginxinc/nginx-unprivileged:latest --namespace <namespace>
 ```
-{{< /onlyWhenNot >}}
-{{< onlyWhen mobi >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
 ```bash
 kubectl set image statefulset nginx-cluster nginx=docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx:latest --namespace <namespace>
 ```
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Task {{% param sectionnumber %}}.4: Rollback
