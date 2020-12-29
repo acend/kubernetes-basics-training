@@ -2,6 +2,8 @@ ARG HUGO_VERSION=0.76.5
 
 FROM acend/hugo:${HUGO_VERSION} AS builder
 
+ARG HUGO_ENV=default
+
 EXPOSE 8080
 
 RUN mkdir -p /opt/app/src/static && \
@@ -13,7 +15,7 @@ COPY . /opt/app/src
 
 RUN npm install -D --save autoprefixer postcss postcss-cli
 
-RUN hugo --environment ${ENV:-default} --minify
+RUN hugo --environment ${HUGO_ENV} --minify
 
 FROM nginxinc/nginx-unprivileged:alpine
 
