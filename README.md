@@ -66,7 +66,7 @@ docker run -i -p 8080:8080 acend/kubernetes-basics-training
 Build the image:
 
 ```bash
-buildah build-using-dockerfile -t acend/kubernetes-basics-training:latest .
+buildah build-using-dockerfile <--build-arg HUGO_ENV=...> -t acend/kubernetes-basics-training:latest .
 ```
 
 Run it locally with the following command. Beware that `--rmi` automatically removes the built image when the container stops, so you either have to rebuild it or remove the parameter from the command.
