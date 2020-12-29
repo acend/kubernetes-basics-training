@@ -12,20 +12,20 @@ In this lab, we are going to deploy our first container image and look at the co
 After we've familiarized ourselves with the platform, we are going to have a look at deploying a pre-built container image from Quay.io or any other public container registry.
 
 First, we are going to directly start a new Pod:
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 
 ```bash
 {{% param cliToolName %}} run awesome-app --image=quay.io/acend/example-web-go --restart=Never --namespace <namespace>
 ```
 
-{{< /onlyWhenNot >}}
-{{< onlyWhen mobi >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
 
 ```bash
 kubectl run awesome-app --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --restart=Never --namespace <namespace>
 ```
 
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 Use `{{% param cliToolName %}} get pods --namespace <namespace>` in order to show the running Pod:
 
@@ -43,7 +43,7 @@ awesome-app   1/1     Running   0          1m24s
 {{% onlyWhen rancher %}}
 Have a look at your awesome-app Pod inside the Rancher web console under **Workloads**.
 {{% /onlyWhen %}}
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 Have a look at your awesome-app Pod inside the OpenShift web console.
 {{% /onlyWhen %}}
 
@@ -59,21 +59,21 @@ Now delete the newly created Pod:
 In some use cases it makes sense to start a single Pod but has its downsides and is not really a common practice. Let's look at another concept which is tightly coupled with the Pod: the so-called _Deployment_. A Deployment makes sure a Pod is monitored and the Deployment also checks that the number of running Pods corresponds to the number of requested Pods.
 
 With the following command we can create a Deployment inside our already created namespace:
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 
 ```bash
 {{% param cliToolName %}} create deployment example-web-go --image=quay.io/acend/example-web-go --namespace <namespace>
 ```
 
-{{< /onlyWhenNot >}}
-{{< onlyWhen mobi >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
 
 ```bash
 kubectl create deployment example-web-go --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --namespace <namespace>
 
 ```
 
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 The output should be:
 
 ```
@@ -161,7 +161,7 @@ The Deployment defines that one replica should be deployed --- which is running 
 Try to display the logs from the example application in the Rancher web console.
 {{% /onlyWhen %}}
 
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 
 
 ## Task {{% param sectionnumber %}}.4: Verify the Deployment in the OpenShift web console
@@ -232,7 +232,7 @@ It looks the same as before with the only essential exception that it uses the i
       ...
 ```
 
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Save point

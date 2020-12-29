@@ -4,53 +4,53 @@ weight: 1
 sectionnumber: 1
 ---
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 In this lab, we will introduce the core concepts of Kubernetes.
 
 All explanations and resources used in this lab give only a quick and not detailed overview. Please check [the official documentation](https://kubernetes.io/docs/concepts/) to get further details.
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 In this lab, we will introduce the core concepts of OpenShift.
 
 All explanations and resources used in this lab give only a quick and not detailed overview.
 As OpenShift is based on Kubernetes, its concepts also apply to OpenShift which you find on [the official Kubernetes documentation](https://kubernetes.io/docs/concepts/).
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Core concepts
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 With the open source software Kubernetes, you get a platform to deploy your application in a container and operate it at the same time.
 Therefore, Kubernetes is also called a _Container Platform_ or the term _Container-as-a-Service_ (CaaS) is used.
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 With the open source software OpenShift, you get a platform to build and deploy your application in a container as well as operate it at the same time.
 Therefore, OpenShift is also called a _Container Platform_ or the term _Container-as-a-Service_ (CaaS) is used.
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 Depending on the configuration the term _Platform-as-a-Service_ (PaaS) works as well.
 
 
 ### Container engine
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 Kubernetes' underlying container engine most often is [Docker](https://www.docker.com/). There are other container engines that could be used with Kubernetes such as [CRI-O](https://cri-o.io/).
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 OpenShift's underlying container engine is [CRI-O](https://cri-o.io/). Earlier releases used [Docker](https://www.docker.com/).
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 Docker was originally created to help developers test their applications in their continuous integration environments. Nowadays also system admins use it.
 CRI-O doesn't exist as long as Docker does. It is a "lightweight container runtime for Kubernetes" and is fully [OCI-compliant](https://github.com/opencontainers/runtime-spec).
 
 
 ## Overview
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 Kubernetes consists of master and worker (minion, compute) nodes.
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 OpenShift basically consists of master and worker nodes.
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ### Master and worker nodes
@@ -65,12 +65,12 @@ The _control plane_ for the worker nodes is implemented in the master components
 
 ### Containers and images
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 The smallest entities in Kubernetes are Pods, which resemble your containerized application.
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 The smallest entities in Kubernetes and OpenShift are Pods, which resemble your containerized application.
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 Using container virtualization, processes on a Linux system can be isolated up to a level where only the predefined resources are available.
 Several containers can run on the same system without "seeing" each other (files, process IDs, network).
 One container should contain one application (web server, database, cache, etc.).
@@ -92,33 +92,33 @@ Layer example for a Tomcat application:
 1. Install App
 
 The pre-built images under version control can be saved in an image registry and can then be used by the container platform.
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 
 
 ### Namespaces
 
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 
 
 ### Namespaces and Projects
 
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 Namespaces in Kubernetes represent a logical segregation of unique names for entities (Pods, Services, Deployments, ConfigMaps, etc.).
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 In OpenShift, users do not directly create Namespaces, they create Projects. A Project is a Namespace with additional annotations.
 
 {{% alert title="Note" color="primary" %}}
 OpenShift's concept of a Project does not coincide with Rancher's.
 {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 Permissions and roles can be bound on a per-namespace basis. This way, a user can control his own resources inside a namespace.
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 Permissions and roles can be bound on a per-project basis. This way, a user can control his own resources inside a Project.
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 {{% alert title="Note" color="primary" %}}
 Some resources are valid cluster-wise and cannot be set and controlled on a namespace basis.
@@ -127,12 +127,12 @@ Some resources are valid cluster-wise and cannot be set and controlled on a name
 
 ### Pods
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 A Pod is the smallest entity in Kubernetes.
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 A Pod is the smallest entity in Kubernetes and OpenShift.
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 It represents one instance of your running application process.
 The Pod consists of at least two containers, one for your application itself and another one as part of the Kubernetes design, to keep the network namespace.
 The so called infrastructure container (or pause container) therefore is automatically added by Kubernetes.

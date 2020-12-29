@@ -13,19 +13,19 @@ Please make sure you completed [lab 2](../02/) before you continue with this lab
 
 ## Login
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 {{% alert title="Note" color="primary" %}}
 Authentication depends on the specific Kubernetes cluster environment. You may need special instructions if you're not using our lab environment.
 {{% /alert %}}
 
-{{< onlyWhen rancher >}}
-{{< onlyWhenNot mobi >}}
+{{% onlyWhen rancher %}}
+{{% onlyWhenNot mobi %}}
 Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cloudscale.ch) (a Swiss IaaS provider) and has been provisioned with [Rancher](https://rancher.com/). You can log in to the cluster with a Rancher user.
 
 {{% alert title="Note" color="primary" %}}
 Your teacher will provide you with the credentials to log in.
 {{% /alert %}}
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
 Log in to the Rancher web console and choose the desired cluster.
 
@@ -62,9 +62,9 @@ The `PATH` can be set in Windows in the advanced system settings. It depends on 
 
 {{% /alert %}}
 
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
-{{< onlyWhen mobi >}}
+{{% onlyWhen mobi %}}
 We are using the Mobi `kubedev` Kubernetes cluster. Use the following command to set the appropriate context:
 
 ```bash
@@ -74,7 +74,7 @@ kubectl config use-context kubedev
 {{% alert title="Warning" color="secondary" %}}
 Make sure you have setup your kubeconfig file correctly. Check your [CWIKI](https://cwiki.mobicorp.ch/confluence/display/ITContSol/Set+up+Kubectl) for instructions on how to configure it.
 {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Namespaces
@@ -83,22 +83,22 @@ As a first step on the cluster we are going to create a new Namespace.
 
 A Namespace is the logical design used in Kubernetes to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). Authorized users inside a namespace are able to manage those resources. Namespace names have to be unique in your cluster.
 
-{{< onlyWhen rancher >}}
+{{% onlyWhen rancher %}}
 {{% alert title="Note" color="primary" %}}
 Additionally, Rancher knows the concept of a [*Project*](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple Namespaces.
 {{% /alert %}}
 
 In the Rancher web console choose the Project called `techlab`.
 
-{{< onlyWhen mobi >}}
+{{% onlyWhen mobi %}}
 We use the project `kubernetes-techlab` on the `kubedev` cluster.
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 ![Rancher Project](chooseproject.png)
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ### Task {{% param sectionnumber %}}.1: Create a Namespace
@@ -118,11 +118,11 @@ To create a new Namespace on your cluster use the following command:
 kubectl create namespace <namespace>
 ```
 
-{{< onlyWhen rancher >}}
+{{% onlyWhen rancher %}}
 {{% alert title="Note" color="primary" %}}
 Namespaces created via `kubectl` have to be assigned to the correct Rancher Project in order to be visible in the Rancher web console. Please ask your teacher for this assignment. Or you can create the Namespace directly within the Rancher web console.
 {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 {{% alert title="Note" color="primary" %}}
 By using the following command, you can switch into another Namespace instead of specifying it for each `kubectl` command.
@@ -144,7 +144,7 @@ kubectl config set-context %KUBE_CONTEXT% --namespace <namespace>
 Some prefer to explicitly select the Namespace for each `kubectl` command by adding `--namespace <namespace>` or `-n <namespace>`. Others prefer helper tools like `kubens` (see [lab 2](../02/)).
 {{% /alert %}}
 
-{{< onlyWhen rancher >}}
+{{% onlyWhen rancher %}}
 
 
 ## Task {{% param sectionnumber %}}.2: Discover the Rancher web console
@@ -158,9 +158,9 @@ kubectl get pod -n <namespace>
 ```
 
 With the command `kubectl get` you can display all kinds of resources.
-{{< /onlyWhen >}}
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhen %}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 
 
 ### Login on the Web Console
@@ -253,4 +253,4 @@ oc get pod -n <project>
 {{% alert title="Note" color="primary" %}}
 With the command `oc get` you can display all kinds of resources.
 {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}

@@ -6,16 +6,16 @@ sectionnumber: 8
 
 Numerous applications are stateful in some way and want to save data persistently, be it in a database, as files on a filesystem or in an object store. In this lab, we are going to create a MariaDB database and configure our application to store its data in it.
 
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 {{% alert title="Warning" color="secondary" %}}
 Please make sure you completed labs [3 (Project creation)](../03.0/), [4 (Deployment creation)](../04.0/) and [5 (Service and Route creation)](../05.0/) before you continue with this lab.
 {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Task {{% param sectionnumber %}}.1: Instantiate a MariaDB database
 
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 We are going to use an OpenShift template to create the database. This can be done by either using the Web Console or the CLI. Both are going to be explained in this lab, so pick the one you are more comfortable with.
 
 
@@ -68,15 +68,15 @@ oc get templates -n openshift mariadb-ephemeral -o yaml
 ```
 
 The Template's content reveals a Secret, a Service and a DeploymentConfig.
-{{< /onlyWhen >}}
-{{< onlyWhenNot openshift >}}
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
 
 We are first going to create a so-called _Secret_ in which we store sensitive data like the databasename, the password, the rootpassword and the username. The secret will be used to access the database and also to create the initial database.
 
 ```bash
 kubectl create secret generic mariadb --from-literal=database-name=acendexampledb --from-literal=database-password=mysqlpassword --from-literal=database-root-password=mysqlrootpassword --from-literal=database-user=acend-user --namespace <namespace>
 ```
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
 The Secret contains the database name, user, passwort and the root password. However, these values will neither be shown with `{{% param cliToolName %}} get` nor with `{{% param cliToolName %}} describe`:
 
@@ -102,18 +102,18 @@ The reason is all the values in the `.data` section are base64 encoded. Even tho
 echo "YWNlbmQtZXhhbXBsZS1kYg==" | base64 -d
 ```
 
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 {{% alert title="Note" color="primary" %}}
 There's also the `oc extract` command which can be used to extract the content of Secrets and ConfigMaps into a local directory. Use `oc extract --help` to see how it works.
 {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 {{% alert title="Note" color="primary" %}}
 By default, Secrets are not encrypted!
-{{< onlyWhen openshift >}}OpenShift [offers this capability](https://docs.openshift.com/container-platform/latest/security/encrypting-etcd.html){{< /onlyWhen >}}
-{{< onlyWhenNot openshift >}}Kubernetes 1.13 [offers this capability](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/){{< /onlyWhenNot >}}. Another option would be the use of a secrets management solution like [Vault by HashiCorp](https://www.vaultproject.io/).
+{{% onlyWhen openshift %}}OpenShift [offers this capability](https://docs.openshift.com/container-platform/latest/security/encrypting-etcd.html){{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}Kubernetes 1.13 [offers this capability](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/){{% /onlyWhenNot %}}. Another option would be the use of a secrets management solution like [Vault by HashiCorp](https://www.vaultproject.io/).
 {{% /alert %}}
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 The interesting thing about Secrets is that they can be reused. We could extract all the plaintext values from the Secret but it's way easier to instead simply refer to its values inside the Deployment or DeploymentConfig (as in this lab):
 
 ```bash
@@ -173,8 +173,8 @@ status:
 ```
 
 Above DeploymentConfig is the output you get from the command before. Most parts have been cut out to focus on the relevant lines: The references to the `mariadb` Secret. As you can see, instead of directly defining environment variables you can refer to a specific key inside a Secret. We are going to make use of this concept for our own application.
-{{< /onlyWhen >}}
-{{< onlyWhenNot openshift >}}
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
 We are now going to create a Deployment and a Service. As a first example, we use a database without persistent storage. Only use an ephemeral database for testing purposes as a restart of the Pod leads to data loss. We are going to look at how to persist this data in a persistent volume later on.
 
 As we had seen in the earlier labs, all resources like Deployments, Services, Secrets and so on can be displayed in YAML or JSON format. It doesn't end there, capabilities also include the creation and exportation of resources using YAML or JSON files.
@@ -182,13 +182,13 @@ As we had seen in the earlier labs, all resources like Deployments, Services, Se
 In our case we want to create a deployment including a Service for our MySQL database.
 Save this snippet as `mariadb.yaml`:
 
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/08/mariadb.yaml" >}}{{< /highlight >}}
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
-{{< onlyWhen mobi >}}
+{{% onlyWhen mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/08/mariadb-mobi.yaml" >}}{{< /highlight >}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 Execute it with:
 
@@ -199,7 +199,7 @@ kubectl create -f mariadb.yaml --namespace <namespace>
 As soon as the container image for `mariadb:10.5` has been pulled, you will see a new Pod using `kubectl get pods`.
 
 The environment variables defined in the deployment configure the MariaDB Pod and how our frontend will be able to access it.
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
 
 ## Task {{% param sectionnumber %}}.2: Attach the database to the application
@@ -272,7 +272,7 @@ This does not work if we delete the database Pod as its data is not yet persiste
 
 ## Task {{% param sectionnumber %}}.3: Manual database connection
 
-As described in [lab 7](../07/) we can log into a Pod with {{< onlyWhenNot openshift >}}`kubectl exec -it <pod> -- /bin/bash`{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}`oc rsh <pod>`{{< /onlyWhen >}}.
+As described in [lab 7](../07/) we can log into a Pod with {{% onlyWhenNot openshift %}}`kubectl exec -it <pod> -- /bin/bash`{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}`oc rsh <pod>`{{% /onlyWhen %}}.
 
 Show all Pods:
 
@@ -290,15 +290,15 @@ mariadb-1-deploy                      0/1     Completed   0          11m
 ```
 
 Log into the MariaDB Pod:
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 ```bash
 kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
 ```
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 ```bash
 oc rsh mariadb-f845ccdb7-hf2x5 --namespace <namespace>
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 You are now able to connect to the database and display the tables. Login with:
 
@@ -345,15 +345,15 @@ curl -O https://raw.githubusercontent.com/acend/kubernetes-basics-training/maste
 
 This is how you log into the MySQL Pod:
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 ```bash
 kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
 ```
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 ```bash
 oc rsh mariadb-f845ccdb7-hf2x5 --namespace <namespace>
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 This command shows how to drop the whole database:
 
@@ -376,15 +376,15 @@ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acendexampledb < /tmp/dump.sql
 {{% alert title="Note" color="primary" %}}
 A database dump can be created as follows:
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 ```bash
 kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
 ```
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 ```bash
 oc rsh mariadb-f845ccdb7-hf2x5 --namespace <namespace>
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 ```bash
 mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -hmariadb acendexampledb > /tmp/dump.sql
@@ -402,6 +402,6 @@ mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -hmariadb acendexampledb
 You should now have the following resources in place:
 
 * [mariadb-secret.yaml](mariadb-secret.yaml)
-* {{< onlyWhenNot mobi >}}[mariadb.yaml](mariadb.yaml){{< /onlyWhenNot >}}
-  {{< onlyWhen mobi >}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{< /onlyWhen >}}
+* {{% onlyWhenNot mobi %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
+  {{% onlyWhen mobi %}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{% /onlyWhen %}}
 * [example-web-python.yaml](example-web-python.yaml)

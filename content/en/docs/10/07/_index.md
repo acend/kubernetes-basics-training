@@ -24,7 +24,7 @@ In a sidecar pattern, the functionality of the main container is extended or enh
 
 In [lab 9](../../09/) you created a MariaDB deployment. In this task you are going to add the [Prometheus MySQL exporter](https://github.com/prometheus/mysqld_exporter) to it.
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 Change the existing `mariadb` Deployment using:
 
 ```bash
@@ -32,8 +32,8 @@ kubectl edit deployment mysql --namespace <namespace>
 ```
 
 And add a new (sidecar) container into your Deployment:
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 Change the existing `mariadb` DeploymentConfig using:
 
 ```bash
@@ -41,14 +41,14 @@ oc edit dc mariadb --namespace <namespace>
 ```
 
 And add a new (sidecar) container into your DeploymentConfig:
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/10/07/deploy_mariadb-sidecar.yaml" >}}{{< /highlight >}}
-{{< /onlyWhenNot >}}
-{{< onlyWhen mobi >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/10/07/deploy_mariadb-sidecar_mobi.yaml" >}}{{< /highlight >}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 Your Pod now has two running containers. Verify this with:
 
@@ -99,5 +99,5 @@ Now open <http://localhost:9104/metrics> in your browser.
 
 You should now have the following resources in place:
 
-{{< onlyWhenNot openshift >}}[mariadb.yaml](mariadb.yaml){{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}[mariadb.yaml](mariadb_openshift.yaml){{< /onlyWhenNot >}}
+{{% onlyWhenNot openshift %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}[mariadb.yaml](mariadb_openshift.yaml){{% /onlyWhenNot %}}

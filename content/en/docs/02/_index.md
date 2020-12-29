@@ -17,13 +17,13 @@ As the client is written in Go, you can run the single binary on the following o
 * macOS
 * Linux
 
-{{< onlyWhen rancher >}}
+{{% onlyWhen rancher %}}
 {{% alert title="Note" color="primary" %}}
 In Rancher you can also use `kubectl` directly within your browser. As soon as you are logged in in the Rancher web console, click on **Launch kubectl** (or use the ° key) and you get a console with `kubectl` installed and configured.
 {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 
 
 ## Manual installation of kubectl
@@ -83,8 +83,8 @@ The `PATH` can be set in Windows in the advanced system settings. It depends on 
 Copy the `kubectl` binary directly into the folder `C:\Windows`.
 {{% /alert %}}
 
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 
 
 ## Installation of `oc`
@@ -163,7 +163,7 @@ With Homebrew, use `brew install openshift-cli`.
    ```
 
    {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Verify installation
@@ -176,32 +176,32 @@ You should now be able to execute `{{% param cliToolName %}}` in the command pro
 
 You should now see something like (the version number may vary):
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 
 ```
 Client Version: version.Info{Major:"1", Minor:"18", GitVersion:"v1.18.0", GitCommit:"9e991415386e4cf155a24b1da15becaa390438d8", GitTreeState:"clean", BuildDate:"2020-03-25T14:58:59Z", GoVersion:"go1.13.8", Compiler:"gc", Platform:"linux/amd64"}
 ...
 ```
 
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 
 ```
 Client Version: 4.5.7
 ...
 ```
 
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 If you don't see a similar output, possibly there are issues with the `PATH` variable.
 
 {{% alert title="Warning" color="secondary" %}}
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 Make sure to use at least version 1.16.x for your `kubectl`
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 Make sure to use at least `oc` version `4.5.x`.
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 {{% /alert %}}
 
@@ -240,7 +240,7 @@ Fedora:
 sudo dnf install bash-completion
 ```
 
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 
 
 ## First steps with oc
@@ -254,8 +254,8 @@ If you don't want to memorize all `oc` options then use the `oc` cheat sheet: <h
 
 * [CodeReady Containers](https://developers.redhat.com/products/codeready-containers/overview)
 * [CodeReady Workspaces](https://developers.redhat.com/products/codeready-workspaces/overview)
-{{< /onlyWhen >}}
-{{< onlyWhenNot openshift >}}
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
 
 
 ## First steps with kubectl
@@ -287,4 +287,4 @@ chmod +x ~/bin/kubectx ~/bin/kubens
 ## Other tools to work with Kubernetes
 
 * <https://github.com/lensapp/lens>
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}

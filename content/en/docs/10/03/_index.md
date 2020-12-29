@@ -8,12 +8,12 @@ Jobs are different from normal Deployments: Jobs execute a time-constrained oper
 
 For example, a Job is used to ensure that a Pod is run until its completion. If a Pod fails, for example because of a Node error, the Job starts a new one. A Job can also be used to start multiple Pods in parallel.
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 More detailed information can be retrieved from the [Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/).
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 More detailed information can be retrieved from the [OpenShift documentation](https://docs.openshift.com/container-platform/latest/nodes/jobs/nodes-nodes-jobs.html).
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 {{% alert title="Note" color="primary" %}}
 This lab depends on [lab 8](../../08/) or [lab 9](../../09/).
@@ -26,13 +26,13 @@ Similar to [task 8.4](../../08.0/#task-84-import-a-database-dump), we now want t
 
 Let's first look at the Job resource that we want to create.
 
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/10/03/job-mariadb-dump.yaml" >}}{{< /highlight >}}
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
-{{< onlyWhen mobi >}}
+{{% onlyWhen mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/10/03/job-mariadb-dump-mobi.yaml" >}}{{< /highlight >}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 The parameter `.spec.template.spec.containers[0].image` shows that we use the same image as the running database. In contrast to the database Pod, we don't start a database afterwards, but run a `mysqldump` command, specified with `.spec.template.spec.containers[0].command`. To perform the dump, we use the environment variables of the database deployment to set the hostname, user and password parameters of the `mysqldump` command. The `MYSQL_PASSWORD` variable refers to the value of the secret, which is already used for the database Pod. Like this we ensure that the dump is performed with the same credentials.
 
@@ -69,9 +69,9 @@ The CronJob's definition will remind you of the Deployment's structure, or reall
 
 {{< highlight yaml >}}{{< readfile file="content/en/docs/10/03/cronjob-mariadb-dump.yaml" >}}{{< /highlight >}}
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 Further information can be found in the [Kubernetes CronJob documentation](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/).
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 Further information can be found in the [OpenShift CronJob documentation](https://docs.openshift.com/container-platform/4.6/nodes/jobs/nodes-nodes-jobs.html).
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}

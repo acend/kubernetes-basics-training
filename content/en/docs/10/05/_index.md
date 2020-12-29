@@ -6,14 +6,14 @@ sectionnumber: 10.5
 
 In this lab, we are going to look at ResourceQuotas and LimitRanges. As {{% param distroName %}} users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.
 
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 {{% alert title="Note" color="primary" %}}
 Use the existing Namespace `<username>-resources` for this lab.
 {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
-{{< onlyWhen rancher >}}
+{{% onlyWhen rancher %}}
 
 
 ## Namespace creation
@@ -30,12 +30,12 @@ Choose a name for your Namespace, e.g. in the form of `<yourname>`-quota, expand
 ![Quota lab namespace creation](../create_quotalab_namespace.png)
 
 Finally, click on __Create__.
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## ResourceQuotas
 
-ResourceQuotas among other things limit the amount of resources Pods can use in a Namespace. They can also be used to limit the total number of a certain resource type in a {{< onlyWhenNot openshift >}}Namespace{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}Project{{< /onlyWhen >}}. In more detail, there are these kinds of quotas:
+ResourceQuotas among other things limit the amount of resources Pods can use in a Namespace. They can also be used to limit the total number of a certain resource type in a {{% onlyWhenNot openshift %}}Namespace{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Project{{% /onlyWhen %}}. In more detail, there are these kinds of quotas:
 
 * _Compute ResourceQuotas_ can be used to limit the amount of memory and CPU
 * _Storage ResourceQuotas_ can be used to limit the total amount of storage and the number of PersistentVolumeClaims, generally or specific to a StorageClass
@@ -55,17 +55,17 @@ To show in detail what kinds of limits the quota imposes:
 {{% param cliToolName %}} describe resourcequota <quota-name> --namespace <namespace>
 ```
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 For more details, have look at [Kubernetes' documentation about resource quotas](https://kubernetes.io/docs/concepts/policy/resource-quotas/#requests-vs-limits).
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 For more details, have look into [OpenShift's documentation about resource quotas](https://docs.openshift.com/container-platform/latest/applications/quotas/quotas-setting-per-project.html).
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Requests and limits
 
-As we've already seen, compute ResourceQuotas limit the amount of memory and CPU we can use in a {{< onlyWhenNot openshift >}}Namespace{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}Project{{< /onlyWhen >}}. Only defining a ResourceQuota, however is not going to have an effect on Pods that don't define the amount of resources they want to use. This is where the concept of limits and requests comes into play.
+As we've already seen, compute ResourceQuotas limit the amount of memory and CPU we can use in a {{% onlyWhenNot openshift %}}Namespace{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Project{{% /onlyWhen %}}. Only defining a ResourceQuota, however is not going to have an effect on Pods that don't define the amount of resources they want to use. This is where the concept of limits and requests comes into play.
 
 Limits and requests on a Pod, or rather on a container in a Pod, define how much memory and CPU this container wants to consume at least (request) and at most (limit). Requests mean that the container will be guaranteed to get at least this amount of resources, limits represent the upper boundary which cannot be crossed. Defining these values helps {{% param distroName %}} in determining on which Node to schedule the Pod, because it knows how many resources should be available for it.
 
@@ -120,9 +120,9 @@ The Burstable QoS class means that limits and requests on a container are set, b
 The BestEffort QoS class applies to Pods that do not define any limits and requests at all on any containers.
 As its class name suggests, these are the kinds of Pods that will be killed by the scheduler first if a Node runs out of memory or CPU. As you might have already guessed by now, if there are no BestEffort QoS Pods, the scheduler will begin to kill Pods belonging to the class of _Burstable_. A Node hosting only Pods of class Guaranteed will (theoretically) never run out of resources.
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 For more examples have a look at the [Kubernetes documentation about Quality of Service](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/).
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
 
 ## LimitRanges
@@ -187,16 +187,16 @@ requests.memory  0     100Mi
 ## Task {{% param sectionnumber %}}.2: Default memory limit
 
 Create a Pod using the polinux/stress image:
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 ```bash
 {{% param cliToolName %}} run stress2much --image=polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
-{{< /onlyWhenNot >}}
-{{< onlyWhen mobi >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
 ```bash
 kubectl run stress2much --image=docker-registry.mobicorp.ch/polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 {{% alert title="Note" color="primary" %}}
 You have to actively terminate the following command pressing `CTRL+c` on your keyboard.
@@ -227,7 +227,7 @@ The `stress2much` Pod was OOM (out of memory) killed. We can see this in the `ST
 ```
 
 Near the end of the output you can find the relevant status part:
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 
 ```
   containerStatuses:
@@ -240,8 +240,8 @@ Near the end of the output you can find the relevant status part:
         ...
 ```
 
-{{< /onlyWhenNot >}}
-{{< onlyWhen mobi >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
 
 
 ```
@@ -255,7 +255,7 @@ Near the end of the output you can find the relevant status part:
         ...
 ```
 
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 So let's look at the numbers to verify the container really had too little memory. We started the `stress` command using parameter `--vm-bytes 85M` which means the process wants to allocate 85 megabytes of memory. Again looking at the Pod's YAML definition with:
 
 ```bash
@@ -280,22 +280,22 @@ These are the values from the LimitRange, and the defined limit of 32 MiB of mem
 
 Let's fix this by recreating the Pod and explicitly setting the memory request to 85 MB:
 
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 
 ```bash
 {{% param cliToolName %}} delete pod stress2much --namespace <namespace>
 {{% param cliToolName %}} run stress --image=polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
-{{< /onlyWhenNot >}}
-{{< onlyWhen mobi >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
 
 ```bash
 {{% param cliToolName %}} delete pod stress2much --namespace <namespace>
 {{% param cliToolName %}} run stress --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 {{% alert title="Note" color="primary" %}}
 Remember, if you'd only set the limit, the request would be set to the same value.
@@ -313,16 +313,16 @@ stress   1/1     Running   0          25s
 
 Create another Pod, again using the `polinux/stress` image. This time our application is less demanding and only needs 10 MB of memory (`--vm-bytes 10M`):
 
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 ```bash
 {{% param cliToolName %}} run overbooked --image=polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
-{{< /onlyWhenNot >}}
-{{< onlyWhen mobi >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
 ```bash
 {{% param cliToolName %}} run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 We are immediately confronted with an error message:
 
@@ -356,15 +356,15 @@ The most interesting part is the quota's status which reveals that we cannot use
 
 Fortunately our application can live with less memory than what the LimitRange sets. Let's set the request to the remaining 10 MiB:
 
-{{< onlyWhenNot mobi >}}
+{{% onlyWhenNot mobi %}}
 ```bash
 {{% param cliToolName %}} run overbooked --image=polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
-{{< /onlyWhenNot >}}
-{{< onlyWhen mobi >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
 ```bash
 {{% param cliToolName %}} run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 Even though the limits of both Pods combined overstretch the quota, the requests do not and so the Pods are allowed to run.
