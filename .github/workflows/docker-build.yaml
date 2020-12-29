@@ -18,10 +18,10 @@ jobs:
       - uses: docker/build-push-action@v1
         with:
           dockerfile: ./Dockerfile.mobi
-          build-args: HUGO_ENV=mobi
+          build_args: HUGO_ENV=mobi
           push: false
       - uses: docker/build-push-action@v1
         with:
           dockerfile: ./Dockerfile.rancher
-          build-args: HUGO_ENV=rancher
+          build_args: HUGO_ENV=rancher
           push: false
