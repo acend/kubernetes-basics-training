@@ -51,7 +51,7 @@ git submodule update --remote
 Build the image:
 
 ```bash
-docker build -t acend/kubernetes-basics-training:latest .
+docker build [--build-arg HUGO_ENV=...] -t acend/kubernetes-basics-training .
 ```
 
 Run it locally:

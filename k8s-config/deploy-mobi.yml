@@ -25,9 +25,6 @@ spec:
       containers:
       - image: acend/kubernetes-basics-training:mobi
         imagePullPolicy: Always
-        env:
-          - name: ENV
-            value: mobi
         livenessProbe:
           failureThreshold: 3
           httpGet:

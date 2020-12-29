@@ -25,9 +25,6 @@ spec:
       containers:
       - image: acend/kubernetes-basics-training:openshift
         imagePullPolicy: Always
-        env:
-          - name: ENV
-            value: openshift
         livenessProbe:
           failureThreshold: 3
           httpGet:
