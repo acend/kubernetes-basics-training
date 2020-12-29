@@ -26,7 +26,7 @@ The command `{{% param cliToolName %}} create deployment` from the last lab crea
 You can also use Ingress to expose your Service. Ingress is not a Service type, but it acts as the entry point for your cluster. [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.
 Traffic routing is controlled by rules defined on the {{< onlyWhenNot openshift >}}Ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}Route{{< /onlyWhen >}} resource. {{< onlyWhenNot openshift >}}An Ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}A Route{{< /onlyWhen >}} may be configured to give Services externally-reachable URLs, load balance traffic, terminate SSL / TLS, and offer name based virtual hosting. An Ingress controller is responsible for fulfilling the route, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic.
 
-In order to create {{< onlyWhenNot openshift >}}an ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}a route{{< /onlyWhen >}}, we first need to create a Service of type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types).
+In order to create {{< onlyWhenNot openshift >}}an Ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}a Route{{< /onlyWhen >}}, we first need to create a Service of type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types).
 We're going to do this with the command `{{% param cliToolName %}} expose`:
 
 ```bash
