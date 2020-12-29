@@ -23,7 +23,7 @@ spec:
         app: kubernetes-basics-training-rancher
     spec:
       containers:
-      - image: acend/kubernetes-basics-training:rancher
+      - image: quay.io/acend/kubernetes-basics-training:rancher
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3

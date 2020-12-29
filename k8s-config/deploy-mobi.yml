@@ -23,7 +23,7 @@ spec:
         app: kubernetes-basics-training-mobi
     spec:
       containers:
-      - image: acend/kubernetes-basics-training:mobi
+      - image: quay.io/acend/kubernetes-basics-training:mobi
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3

@@ -23,7 +23,7 @@ spec:
         app: openshift-basics-training
     spec:
       containers:
-      - image: acend/kubernetes-basics-training:openshift
+      - image: quay.io/acend/kubernetes-basics-training:openshift
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
