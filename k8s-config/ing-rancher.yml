@@ -10,7 +10,7 @@ metadata:
   name: kubernetes-basics-training-rancher-acend
 spec:
   rules:
-  - host: kubernetes-basics-rancher.labs.acend.ch
+  - host: kubernetes-basics-rancher.training.acend.ch
     http:
       paths:
       - backend:
@@ -19,5 +19,5 @@ spec:
   tls:
 
   - hosts:
-      - kubernetes-basics-rancher.labs.acend.ch
-    secretName: kubernetes-basics-rancher-labs-acend-ch
+      - kubernetes-basics-rancher.training.acend.ch
+    secretName: kubernetes-basics-rancher-training-acend-ch
