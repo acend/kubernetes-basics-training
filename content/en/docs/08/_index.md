@@ -272,7 +272,7 @@ This does not work if we delete the database Pod as its data is not yet persiste
 
 ## Task {{% param sectionnumber %}}.3: Manual database connection
 
-As described in [lab 7](../07/) we can log into a Pod with {{% onlyWhenNot openshift %}}`kubectl exec -it <pod> -- /bin/bash`{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}`oc rsh <pod>`{{% /onlyWhen %}}.
+As described in [lab 7](../07/) we can log into a Pod with {{< onlyWhenNot openshift >}}`kubectl exec -it <pod> -- /bin/bash`.{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}`oc rsh <pod>`.{{< /onlyWhen >}}
 
 Show all Pods:
 
@@ -298,6 +298,7 @@ kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
 {{% onlyWhen openshift %}}
 ```bash
 oc rsh mariadb-f845ccdb7-hf2x5 --namespace <namespace>
+```
 {{% /onlyWhen %}}
 
 You are now able to connect to the database and display the tables. Login with:
@@ -353,6 +354,7 @@ kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
 {{% onlyWhen openshift %}}
 ```bash
 oc rsh mariadb-f845ccdb7-hf2x5 --namespace <namespace>
+```
 {{% /onlyWhen %}}
 
 This command shows how to drop the whole database:
@@ -384,6 +386,7 @@ kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
 {{% onlyWhen openshift %}}
 ```bash
 oc rsh mariadb-f845ccdb7-hf2x5 --namespace <namespace>
+```
 {{% /onlyWhen %}}
 
 ```bash
@@ -401,7 +404,7 @@ mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -hmariadb acendexampledb
 
 You should now have the following resources in place:
 
-* [mariadb-secret.yaml](mariadb-secret.yaml)
-* {{% onlyWhenNot mobi %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen mobi %}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{% /onlyWhen %}}
 * [example-web-python.yaml](example-web-python.yaml)
+* [mariadb-secret.yaml](mariadb-secret.yaml)
+* {{< onlyWhenNot mobi >}}[mariadb.yaml](mariadb.yaml){{< /onlyWhenNot >}}
+  {{< onlyWhen mobi >}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{< /onlyWhen >}}

@@ -56,23 +56,27 @@ Which should yield output similar to this one:
 
 ## Taks {{% param sectionnumber %}}.2: Attach the ConfigMap to a Container
 
-Next, we want to make a ConfigMap accessible for a Container. There are basically the following possibilities to achieve {{% onlyWhenNot openshift %}}[this](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){{% /onlyWhenNot %}}{{% onlyWhen openshift %}}[this](https://docs.openshift.com/container-platform/latest/builds/builds-configmaps.html#builds-configmaps-consuming-configmap-in-pods){{% /onlyWhen %}}.
+Next, we want to make a ConfigMap accessible for a Container. There are basically the following possibilities to achieve {{% onlyWhenNot openshift %}}[this](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){{% /onlyWhenNot %}}{{% onlyWhen openshift %}}[this](https://docs.openshift.com/container-platform/latest/builds/builds-configmaps.html#builds-configmaps-consuming-configmap-in-pods){{% /onlyWhen %}}
 
 * ConfigMap properties as environment variables in a Deployment
 * Command line arguments via environment variables
 * Mounted as volumes in the container
 
 In this example, we want the file to be mounted as a volume inside the Container.
-{{% onlyWhen openshift %}}
+{{< onlyWhen openshift >}}
 As in [lab 9](../09.0/), we can use the `oc set volume` command to achieve this:
-
+{{< /onlyWhen >}}
+{{% onlyWhen openshift %}}
 ```bash
 oc set volume deploy/example-web-python --add --configmap-name=javaconfiguration --mount-path=/etc/config --name=config-volume --type configmap --namespace <namespace>
 ```
-
+{{% /onlyWhen %}}
+{{< onlyWhen openshift >}}
 {{% alert title="Note" color="primary" %}}
 This task doesn't have any effect on the Python application inside the Container. It is for demonstration purposes only.
 {{% /alert %}}
+{{< /onlyWhen >}}
+{{% onlyWhen openshift %}}
 
 This results in the addition of the following parts to the Deployment (check with `oc get deploy awesome-app -o yaml`):
 

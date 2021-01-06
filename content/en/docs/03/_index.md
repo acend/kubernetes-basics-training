@@ -247,7 +247,7 @@ Discover the different menu entries in the two views, the **Developer** and the 
 Display all existing Pods in the previously created Project with `oc` (there shouldn't yet be any):
 
 ```bash
-oc get pod -n <project>
+oc get pod --namespace <project>
 ```
 
 {{% alert title="Note" color="primary" %}}

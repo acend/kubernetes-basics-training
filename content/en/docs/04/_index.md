@@ -11,6 +11,10 @@ In this lab, we are going to deploy our first container image and look at the co
 
 After we've familiarized ourselves with the platform, we are going to have a look at deploying a pre-built container image from Quay.io or any other public container registry.
 
+{{% onlyWhen openshift %}}
+In OpenShift we have used the `<project>` identifier to select the correct project. Please use the same identifier in the context `<namespace>` to do the same for all the next labs. Ask your teacher if you want to have more informations about that.
+{{% /onlyWhen %}}
+
 First, we are going to directly start a new Pod:
 {{% onlyWhenNot mobi %}}
 
@@ -183,11 +187,13 @@ We are going to use the Docker build strategy. It expects:
 > [...] a repository with a Dockerfile and all required artifacts in it to produce a runnable image.
 
 All of these requirements are already fulfilled in the [sourcecode repository on GitHub](https://github.com/acend/awesome-apps/tree/master/go), so let's build the image!
-
+{{% /onlyWhen %}}
+{{< onlyWhen openshift >}}
 {{% alert title="Note" color="primary" %}}
 Have a look at [OpenShift's documentation](https://docs.openshift.com/container-platform/latest/builds/understanding-image-builds.html) to learn more about the other available build strategies.
 {{% /alert %}}
-
+{{< /onlyWhen >}}
+{{% onlyWhen openshift %}}
 First we clean up the already existing Deployment:
 
 ```bash
