@@ -16,12 +16,12 @@ The PersistentVolumeClaim only represents a request but not the storage itself. 
 
 ## Attaching a volume to a Pod
 
-{{% onlyWhenNot openshift %}}
+{{< onlyWhenNot openshift >}}
 In a second step, the PVC from before is going to be attached to the Pod. In [lab 6](../06/) we edited the deployment configuration in order to insert a readiness probe. We are now going to do the same for inserting the persistent volume.
-{{% /onlyWhenNot %}}
-{{% onlyWhen openshift %}}
+{{< /onlyWhenNot >}}
+{{< onlyWhen openshift >}}
 In a second step, the PVC from before is going to be attached to the Pod. In [lab 6](../06/) we used `{{% param cliToolName %}} set` to add a readiness probe to the Deployment. We are now going to do the same and insert the PersistentVolume.
-{{% /onlyWhen %}}
+{{< /onlyWhen >}}
 
 
 ## Task {{% param sectionnumber %}}.1: Add a PersistentVolume
@@ -135,7 +135,7 @@ If the container won't start because the data directory already has files in it,
 
 ### Restore data
 
-Repeat [task 8.4](../08.0/#task-84-import-a-database-dump).
+Repeat [task 8.4](../08/#task-84-import-a-database-dump).
 
 
 ### Test

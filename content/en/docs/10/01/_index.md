@@ -137,7 +137,11 @@ Rollback the change:
 
 As with every other {{% param distroName %}} resource you can delete the StatefulSet with:
 
-```bash
+{{% alert title="Warning" color="secondary" %}}
+To avoid issues on your personal progress dashboard, we would advise not to delete the StatefulSet from this lab
+{{% /alert %}}
+
+```
 {{% param cliToolName %}} delete statefulset nginx-cluster --namespace <namespace>
 ```
 
