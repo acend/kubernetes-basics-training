@@ -50,7 +50,7 @@ jobs:
           context: .
           file: ./Dockerfile
           build-args: |
-            HUGO_ENV=mobi
+            ACEND_HUGO_ENV=mobi
           push: true
           tags: |
             acend/kubernetes-basics-training:mobi
@@ -62,7 +62,7 @@ jobs:
           context: .
           file: ./Dockerfile
           build-args: |
-            HUGO_ENV=rancher
+            ACEND_HUGO_ENV=rancher
           push: true
           tags: |
             acend/kubernetes-basics-training:rancher
@@ -74,7 +74,7 @@ jobs:
           context: .
           file: ./Dockerfile
           build-args: |
-            HUGO_ENV=openshift
+            ACEND_HUGO_ENV=openshift
           push: true
           tags: |
             acend/kubernetes-basics-training:openshift
