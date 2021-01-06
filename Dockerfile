@@ -1,10 +1,10 @@
 FROM klakegg/hugo:0.80.0-ext-ubuntu AS builder
 
-ARG HUGO_ENV=default
+ARG ACEND_HUGO_ENV=default
 
 COPY . /src
 
-RUN hugo --environment ${HUGO_ENV} --minify
+RUN hugo --environment ${ACEND_HUGO_ENV} --minify
 
 FROM nginxinc/nginx-unprivileged:alpine
 
