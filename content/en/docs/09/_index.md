@@ -34,11 +34,12 @@ oc set volume dc/mariadb --add --name=mariadb-data --claim-name=mariadb-data --t
 ```
 
 With above instruction we create a PVC named `mariadb-data` of 1Gi in size, attach it to the DeploymentConfig `mariadb` and mount it at `/var/lib/mysql`. This is where the MariaDB process writes its data by default so after we make this change, the database will not even notice that it is writing in a PersistentVolume.
-
+{{% /onlyWhen %}}
+{{< onlyWhen openshift >}}
 {{% alert title="Note" color="primary" %}}
 Because we just changed the DeploymentConfig with the `oc set` command, a new Pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
 {{% /alert %}}
-{{% /onlyWhen %}}
+{{< /onlyWhen >}}
 
 {{% onlyWhenNot openshift %}}
 The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size.  
@@ -79,11 +80,12 @@ Add both parts `volumeMounts` and `volumes`
       schedulerName: default-scheduler
 ...
 ```
-
+{{% /onlyWhenNot %}}
+{{< onlyWhenNot openshift >}}
 {{% alert title="Note" color="primary" %}}
 Because we just changed the Deployment a new Pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
 {{% /alert %}}
-{{% /onlyWhenNot %}}
+{{< /onlyWhenNot >}}
 
 {{% alert title="Note" color="primary" %}}
 We need to redeploy the application pod, our application automatically creates the database schema at startup time.

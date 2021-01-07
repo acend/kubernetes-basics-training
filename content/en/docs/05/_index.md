@@ -182,12 +182,12 @@ oc expose service example-web-go
 ```
 
 We are now able to access our app via the freshly created route at `http://example-web-go-<namespace>.<appdomain>`
-
+{{% /onlyWhen %}}
+{{< onlyWhen openshift >}}
 {{% alert title="Note" color="primary" %}}
 The `<appdomain>` is the default domain under which your applications will be accessible and is provided by your trainer. You can also use `oc get route example-web-python` to see the exact value of the exposed route.
 {{% /alert %}}
-
-{{% /onlyWhen %}}
+{{< /onlyWhen >}}
 
 {{% onlyWhenNot openshift %}}
 
@@ -225,6 +225,8 @@ example-web-go   NodePort   10.43.91.62   <none>        5000:30692/TCP
 The `NodePort` number is being assigned by Kubernetes and stays the same as long as the Services is not deleted. A NodePort Service is more suitable for infrastructure tools than for public URLs.
 
 {{% alert title="Note" color="primary" %}}
+<NodePort>
+
 If `NodePort` is not supported in your environment then you can use `--type=ClusterIP` (or omit this parameter completely as it is the default) and use port forwarding to the Service instead.
 
 Head over to task 7.3 in [lab 7](../07/) to learn how to use port forwarding.
@@ -309,6 +311,13 @@ Delete the Service:
 
 Delete the {{< onlyWhenNot openshift >}}Ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}Route{{< /onlyWhen >}}:
 
+{{% onlyWhenNot openshift %}}
 ```bash
-{{% param cliToolName %}} delete {{< onlyWhenNot openshift >}}ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}route{{< /onlyWhen >}} example-web-go --namespace <namespace>
+{{% param cliToolName %}} delete ingress example-web-go --namespace <namespace>
 ```
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
+```bash
+{{% param cliToolName %}} delete route example-web-go --namespace <namespace>
+```
+{{< /onlyWhen >}}
