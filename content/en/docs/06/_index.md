@@ -85,16 +85,16 @@ example-web-python-86d9d584f8-hbvlv   1/1     Running   0          31s
 example-web-python-86d9d584f8-qg499   1/1     Running   0          31s
 ```
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 {{% alert title="Note" color="primary" %}}
 Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
 {{% /alert %}}
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 {{% alert title="Note" color="primary" %}}
 OpenShift supports [horizontal](https://docs.openshift.com/container-platform/latest/nodes/pods/nodes-pods-autoscaling.html) and [vertical autoscaling](https://docs.openshift.com/container-platform/latest/nodes/pods/nodes-pods-vertical-autoscaler.html).
 {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Check for uninterruptible Deployments
@@ -187,13 +187,13 @@ Events:            <none>
 
 Scaling of Pods is fast as {{% param distroName %}} simply creates new containers.
 
-You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{< onlyWhenNot openshift >}}http://example-web-python-<namespace>.<domain>{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}http://<route hostname>{{< /onlyWhen >}}`.
+You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{% onlyWhenNot openshift %}}http://example-web-python-<namespace>.<domain>{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://<route hostname>{{% /onlyWhen %}}`.
 
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 {{% alert title="Note" color="primary" %}}
 You can find out the route's hostname by looking at the output of `oc get route`.
 {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 Now, execute the corresponding loop command for your operating system in another console.
@@ -485,7 +485,7 @@ oc rollout restart deployment example-web-python --namespace <namespace>
 
 ## Self healing
 
-Via the {{< onlyWhenNot openshift >}}Replicaset{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}Deployment definitiion{{< /onlyWhen >}} we told {{% param distroName %}} how many replicas we want. So what happens if we simply delete a Pod?
+Via the {{% onlyWhenNot openshift %}}Replicaset{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Deployment definitiion{{% /onlyWhen %}} we told {{% param distroName %}} how many replicas we want. So what happens if we simply delete a Pod?
 
 Look for a running Pod (status `RUNNING`) that you can bear to kill via `{{% param cliToolName %}} get pods`.
 

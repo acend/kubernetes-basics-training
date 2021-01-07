@@ -6,11 +6,11 @@ sectionnumber: 10.5
 
 In this lab, we are going to look at ResourceQuotas and LimitRanges. As {{% param distroName %}} users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.
 
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 {{% alert title="Note" color="primary" %}}
 Use the existing Namespace `<username>-resources` for this lab.
 {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 {{% onlyWhen rancher %}}
@@ -55,12 +55,12 @@ To show in detail what kinds of limits the quota imposes:
 {{% param cliToolName %}} describe resourcequota <quota-name> --namespace <namespace>
 ```
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 For more details, have look at [Kubernetes' documentation about resource quotas](https://kubernetes.io/docs/concepts/policy/resource-quotas/#requests-vs-limits).
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 For more details, have look into [OpenShift's documentation about resource quotas](https://docs.openshift.com/container-platform/latest/applications/quotas/quotas-setting-per-project.html).
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Requests and limits

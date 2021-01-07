@@ -14,8 +14,8 @@ Running containers should be treated as immutable infrastructure and should ther
 
 ## Task {{% param sectionnumber %}}.1: Shell into Pod
 
-With {{% param distroName %}} you can open a remote shell into a Pod without installing SSH by using the command `{{< onlyWhenNot openshift >}}kubectl exec{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}oc rsh{{< /onlyWhen >}}`. The command can also be used to execute any command in a Pod.
-{{< onlyWhenNot openshift >}}With the parameter `-it` you can leave an open connection.{{< /onlyWhenNot >}}
+With {{% param distroName %}} you can open a remote shell into a Pod without installing SSH by using the command `{{% onlyWhenNot openshift %}}kubectl exec{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}oc rsh{{% /onlyWhen %}}`. The command can also be used to execute any command in a Pod.
+{{% onlyWhenNot openshift %}}With the parameter `-it` you can leave an open connection.{{% /onlyWhenNot %}}
 
 {{% alert title="Note" color="primary" %}}
 On Windows, you can use Git Bash and `winpty`.
