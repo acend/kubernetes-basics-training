@@ -225,8 +225,6 @@ example-web-go   NodePort   10.43.91.62   <none>        5000:30692/TCP
 The `NodePort` number is being assigned by Kubernetes and stays the same as long as the Services is not deleted. A NodePort Service is more suitable for infrastructure tools than for public URLs.
 
 {{% alert title="Note" color="primary" %}}
-<NodePort>
-
 If `NodePort` is not supported in your environment then you can use `--type=ClusterIP` (or omit this parameter completely as it is the default) and use port forwarding to the Service instead.
 
 Head over to task 7.3 in [lab 7](../07/) to learn how to use port forwarding.
