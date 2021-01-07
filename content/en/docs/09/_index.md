@@ -16,12 +16,12 @@ The PersistentVolumeClaim only represents a request but not the storage itself. 
 
 ## Attaching a volume to a Pod
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 In a second step, the PVC from before is going to be attached to the Pod. In [lab 6](../06/) we edited the deployment configuration in order to insert a readiness probe. We are now going to do the same for inserting the persistent volume.
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
 In a second step, the PVC from before is going to be attached to the Pod. In [lab 6](../06/) we used `{{% param cliToolName %}} set` to add a readiness probe to the Deployment. We are now going to do the same and insert the PersistentVolume.
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 
 ## Task {{% param sectionnumber %}}.1: Add a PersistentVolume
@@ -35,11 +35,11 @@ oc set volume dc/mariadb --add --name=mariadb-data --claim-name=mariadb-data --t
 
 With above instruction we create a PVC named `mariadb-data` of 1Gi in size, attach it to the DeploymentConfig `mariadb` and mount it at `/var/lib/mysql`. This is where the MariaDB process writes its data by default so after we make this change, the database will not even notice that it is writing in a PersistentVolume.
 {{% /onlyWhen %}}
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 {{% alert title="Note" color="primary" %}}
 Because we just changed the DeploymentConfig with the `oc set` command, a new Pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
 {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 
 {{% onlyWhenNot openshift %}}
 The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size.  
@@ -81,11 +81,11 @@ Add both parts `volumeMounts` and `volumes`
 ...
 ```
 {{% /onlyWhenNot %}}
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 {{% alert title="Note" color="primary" %}}
 Because we just changed the Deployment a new Pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
 {{% /alert %}}
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
 {{% alert title="Note" color="primary" %}}
 We need to redeploy the application pod, our application automatically creates the database schema at startup time.

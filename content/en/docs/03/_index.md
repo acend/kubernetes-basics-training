@@ -13,13 +13,13 @@ Please make sure you completed [lab 2](../02/) before you continue with this lab
 
 ## Login
 
-{{< onlyWhenNot openshift >}}
+{{% onlyWhenNot openshift %}}
 {{% alert title="Note" color="primary" %}}
 Authentication depends on the specific Kubernetes cluster environment.
 
 You may need special instructions if you are not using our lab environment.
 {{% /alert %}}
-{{< /onlyWhenNot >}}
+{{% /onlyWhenNot %}}
 
 {{% onlyWhenNot openshift %}}
 {{% onlyWhen rancher %}}

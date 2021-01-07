@@ -188,11 +188,11 @@ We are going to use the Docker build strategy. It expects:
 
 All of these requirements are already fulfilled in the [sourcecode repository on GitHub](https://github.com/acend/awesome-apps/tree/master/go), so let's build the image!
 {{% /onlyWhen %}}
-{{< onlyWhen openshift >}}
+{{% onlyWhen openshift %}}
 {{% alert title="Note" color="primary" %}}
 Have a look at [OpenShift's documentation](https://docs.openshift.com/container-platform/latest/builds/understanding-image-builds.html) to learn more about the other available build strategies.
 {{% /alert %}}
-{{< /onlyWhen >}}
+{{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 First we clean up the already existing Deployment:
 
