@@ -309,13 +309,6 @@ Delete the Service:
 
 Delete the {{< onlyWhenNot openshift >}}Ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}Route{{< /onlyWhen >}}:
 
-{{% onlyWhenNot openshift %}}
 ```bash
-{{% param cliToolName %}} delete ingress example-web-go --namespace <namespace>
+{{% param cliToolName %}} delete {{< onlyWhenNot openshift >}}ingress{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}route{{< /onlyWhen >}} example-web-go --namespace <namespace>
 ```
-{{% /onlyWhenNot %}}
-{{% onlyWhen openshift %}}
-```bash
-{{% param cliToolName %}} delete route example-web-go --namespace <namespace>
-```
-{{< /onlyWhen >}}
