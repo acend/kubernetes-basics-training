@@ -17,11 +17,11 @@ As the client is written in Go, you can run the single binary on the following o
 * macOS
 * Linux
 
-{{% onlyWhen rancher %}}
+{{< onlyWhen rancher >}}
 {{% alert title="Note" color="primary" %}}
 In Rancher you can also use `kubectl` directly within your browser. As soon as you are logged in in the Rancher web console, click on **Launch kubectl** (or use the ° key) and you get a console with `kubectl` installed and configured.
 {{% /alert %}}
-{{% /onlyWhen %}}
+{{< /onlyWhen >}}
 
 {{% onlyWhenNot openshift %}}
 
@@ -78,12 +78,14 @@ The `PATH` can be set in Windows in the advanced system settings. It depends on 
 * [Windows 7](http://geekswithblogs.net/renso/archive/2009/10/21/how-to-set-the-windows-path-in-windows-7.aspx)
 * [Windows 8](http://www.itechtics.com/customize-windows-environment-variables/)
 * [Windows 10](http://techmixx.de/windows-10-umgebungsvariablen-bearbeiten/)
+{{% /onlyWhenNot %}}
 
+{{< onlyWhenNot openshift >}}
 {{% alert title="Note: Windows Quick Hack" color="primary" %}}
 Copy the `kubectl` binary directly into the folder `C:\Windows`.
 {{% /alert %}}
+{{< /onlyWhenNot >}}
 
-{{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 
 

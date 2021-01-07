@@ -6,11 +6,11 @@ sectionnumber: 8
 
 Numerous applications are stateful in some way and want to save data persistently, be it in a database, as files on a filesystem or in an object store. In this lab, we are going to create a MariaDB database and configure our application to store its data in it.
 
-{{% onlyWhen openshift %}}
+{{< onlyWhen openshift >}}
 {{% alert title="Warning" color="secondary" %}}
 Please make sure you completed labs [3 (Project creation)](../03.0/), [4 (Deployment creation)](../04.0/) and [5 (Service and Route creation)](../05.0/) before you continue with this lab.
 {{% /alert %}}
-{{% /onlyWhen %}}
+{{< /onlyWhen >}}
 
 
 ## Task {{% param sectionnumber %}}.1: Instantiate a MariaDB database
@@ -102,11 +102,11 @@ The reason is all the values in the `.data` section are base64 encoded. Even tho
 echo "YWNlbmQtZXhhbXBsZS1kYg==" | base64 -d
 ```
 
-{{% onlyWhen openshift %}}
+{{< onlyWhen openshift >}}
 {{% alert title="Note" color="primary" %}}
 There's also the `oc extract` command which can be used to extract the content of Secrets and ConfigMaps into a local directory. Use `oc extract --help` to see how it works.
 {{% /alert %}}
-{{% /onlyWhen %}}
+{{< /onlyWhen >}}
 
 {{% alert title="Note" color="primary" %}}
 By default, Secrets are not encrypted!
@@ -406,5 +406,9 @@ You should now have the following resources in place:
 
 * [example-web-python.yaml](example-web-python.yaml)
 * [mariadb-secret.yaml](mariadb-secret.yaml)
-* {{< onlyWhenNot mobi >}}[mariadb.yaml](mariadb.yaml){{< /onlyWhenNot >}}
-  {{< onlyWhen mobi >}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{< /onlyWhen >}}
+{{% onlyWhenNot mobi %}}
+* [mariadb.yaml](mariadb.yaml)
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
+* [mariadb-mobi.yaml](mariadb-mobi.yaml)
+{{% /onlyWhen %}}

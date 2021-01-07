@@ -14,8 +14,8 @@ Running containers should be treated as immutable infrastructure and should ther
 
 ## Task {{% param sectionnumber %}}.1: Shell into Pod
 
-With {{% param distroName %}} you can open a remote shell into a Pod without installing SSH by using the command `{{% onlyWhenNot openshift %}}kubectl exec{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}oc rsh{{% /onlyWhen %}}`. The command can also be used to execute any command in a Pod.
-{{% onlyWhenNot openshift %}}With the parameter `-it` you can leave an open connection.{{% /onlyWhenNot %}}
+With {{% param distroName %}} you can open a remote shell into a Pod without installing SSH by using the command `{{< onlyWhenNot openshift >}}kubectl exec{{< /onlyWhenNot >}}{{< onlyWhen openshift >}}oc rsh{{< /onlyWhen >}}`. The command can also be used to execute any command in a Pod.
+{{< onlyWhenNot openshift >}}With the parameter `-it` you can leave an open connection.{{< /onlyWhenNot >}}
 
 {{% alert title="Note" color="primary" %}}
 On Windows, you can use Git Bash and `winpty`.
@@ -174,6 +174,17 @@ With the same concept you can access databases from your local workstation or co
 {{% alert title="Note" color="primary" %}}
 The `{{% param cliToolName %}} port-forward` process runs as long as it is not terminated by the user. So when done, stop it with `CTRL-c`.
 {{% /alert %}}
+
+
+## Progress
+
+At this point of the Lab, you are able to visualize your progress on the labs by browsing to the following page <http://localhost:5000/progress>
+
+You may need to set some extra permissions to let the dashboard monitor your progress. Have Fun!
+
+```bash
+{{% param cliToolName %}} create rolebinding progress --clusterrole=view --serviceaccount=<namespace>:default --namespace=<namespace>
+```
 
 
 ## Events

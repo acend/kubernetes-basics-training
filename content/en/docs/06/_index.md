@@ -349,6 +349,8 @@ kubectl edit deployment example-web-python --namespace <namespace>
 ```
 
 {{% alert title="Note" color="primary" %}}
+<vi>
+
 If you're not comfortable with `vi` then you can switch to another editor by setting the environment variable `EDITOR`
 or `KUBE_EDITOR`, e.g. `export EDITOR=nano`.
 {{% /alert %}}

@@ -13,11 +13,15 @@ Please make sure you completed [lab 2](../02/) before you continue with this lab
 
 ## Login
 
-{{% onlyWhenNot openshift %}}
+{{< onlyWhenNot openshift >}}
 {{% alert title="Note" color="primary" %}}
-Authentication depends on the specific Kubernetes cluster environment. You may need special instructions if you're not using our lab environment.
-{{% /alert %}}
+Authentication depends on the specific Kubernetes cluster environment. 
 
+You may need special instructions if you are not using our lab environment.
+{{% /alert %}}
+{{< /onlyWhenNot >}}
+
+{{% onlyWhenNot openshift %}}
 {{% onlyWhen rancher %}}
 {{% onlyWhenNot mobi %}}
 Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cloudscale.ch) (a Swiss IaaS provider) and has been provisioned with [Rancher](https://rancher.com/). You can log in to the cluster with a Rancher user.
@@ -106,7 +110,9 @@ We use the project `kubernetes-techlab` on the `kubedev` cluster.
 Create a new namespace in the lab environment. The `kubectl help` output can help you figure out the right command.
 
 {{% alert title="Note" color="primary" %}}
-Please choose an identifying name for your Namespace, e.g. your initials or name as a prefix. We are going to use `<namespace>` as a placeholder for your created Namespace.
+Please choose an identifying name for your Namespace, e.g. your initials or name as a prefix. 
+
+We are going to use `<namespace>` as a placeholder for your created Namespace.
 {{% /alert %}}
 
 
@@ -216,6 +222,8 @@ Authorized users inside a Project are able to manage those resources. Project na
 Create a new Project in the lab environment. The `oc help` output can help you figure out the right command.
 
 {{% alert title="Note" color="primary" %}}
+<project>
+
 Please choose an identifying name for your Project, e.g. your initials or name as a prefix. We are going to use `<project>` as a placeholder for your created Project.
 {{% /alert %}}
 
@@ -229,6 +237,8 @@ oc new-project <project>
 ```
 
 {{% alert title="Note" color="primary" %}}
+<project>
+
 Some prefer to explicitly select the Project for each `oc` command by adding `--namespace <project>` or `-n <project>`.
 
 By using the following command, you can switch into another Project instead of specifying it for each `oc` command.
