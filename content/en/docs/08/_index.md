@@ -406,9 +406,5 @@ You should now have the following resources in place:
 
 * [example-web-python.yaml](example-web-python.yaml)
 * [mariadb-secret.yaml](mariadb-secret.yaml)
-{{% onlyWhenNot mobi %}}
-* [mariadb.yaml](mariadb.yaml)
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-* [mariadb-mobi.yaml](mariadb-mobi.yaml)
-{{% /onlyWhen %}}
+* {{< onlyWhenNot mobi >}}[mariadb.yaml](mariadb.yaml){{< /onlyWhenNot >}}
+  {{< onlyWhen mobi >}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{< /onlyWhen >}}
