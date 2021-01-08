@@ -183,11 +183,11 @@ In our case we want to create a deployment including a Service for our MySQL dat
 Save this snippet as `mariadb.yaml`:
 
 {{% onlyWhenNot mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/08/mariadb.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/07/mariadb.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/08/mariadb-mobi.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/07/mariadb-mobi.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 Execute it with:
@@ -340,7 +340,7 @@ You can also copy local files into a Pod using `{{% param cliToolName %}} cp`. B
 This is how you copy the database dump into the Pod:
 
 ```bash
-curl -O https://raw.githubusercontent.com/acend/kubernetes-basics-training/master/content/en/docs/08/dump.sql
+curl -O https://raw.githubusercontent.com/acend/kubernetes-basics-training/master/content/en/docs/07/dump.sql
 {{% param cliToolName %}} cp ./dump.sql mysql-f845ccdb7-hf2x5:/tmp/ --namespace <namespace>
 ```
 

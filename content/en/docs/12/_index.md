@@ -85,15 +85,15 @@ The structure of a Kustomize configuration typically looks like this:
 
 Let's have a look at the `base` directory first which contains the base configuration. There's a `deployment.yaml` with the following content:
 
-{{< highlight yaml >}}{{< readfile file="content/en/docs/13/kustomize/base/deployment.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/12/kustomize/base/deployment.yaml" >}}{{< /highlight >}}
 
 There's also a Service for our Deployment in the corresponding `base/service.yaml`:
 
-{{< highlight yaml >}}{{< readfile file="content/en/docs/13/kustomize/base/service.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/12/kustomize/base/service.yaml" >}}{{< /highlight >}}
 
 And there's an additional `base/kustomization.yaml` which is used to configure Kustomize:
 
-{{< highlight yaml >}}{{< readfile file="content/en/docs/13/kustomize/base/kustomization.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/12/kustomize/base/kustomization.yaml" >}}{{< /highlight >}}
 
 It references the previous manifests `service.yaml` and `deployment.yaml` and makes them part of our base configuration.
 
@@ -104,11 +104,11 @@ Now let's have a look at the other directory which is called `overlays`. It cont
 
 `overlays/staging/kustomization.yaml`:
 
-{{< highlight yaml >}}{{< readfile file="content/en/docs/13/kustomize/overlays/staging/kustomization.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/12/kustomize/overlays/staging/kustomization.yaml" >}}{{< /highlight >}}
 
 `overlays/production/kustomization.yaml`:
 
-{{< highlight yaml >}}{{< readfile file="content/en/docs/13/kustomize/overlays/production/kustomization.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/12/kustomize/overlays/production/kustomization.yaml" >}}{{< /highlight >}}
 
 Only the first key `nameSuffix` differs.
 
@@ -116,11 +116,11 @@ In both cases, the `kustomization.yaml` references our base configuration. Howev
 
 `overlays/staging/deployment-patch.yaml`:
 
-{{< highlight yaml >}}{{< readfile file="content/en/docs/13/kustomize/overlays/staging/deployment-patch.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/12/kustomize/overlays/staging/deployment-patch.yaml" >}}{{< /highlight >}}
 
 `overlays/production/deployment-patch.yaml`:
 
-{{< highlight yaml >}}{{< readfile file="content/en/docs/13/kustomize/overlays/production/deployment-patch.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/12/kustomize/overlays/production/deployment-patch.yaml" >}}{{< /highlight >}}
 
 The main difference here is that the environment variable `APPLICATION_NAME` is set differently. The `app` label also differs because we are going to deploy both Deployments into the same Namespace.
 
@@ -128,14 +128,14 @@ The same applies to our Service. It also comes in two customizations so that it 
 
 `overlays/staging/service-patch.yaml`:
 
-{{< highlight yaml >}}{{< readfile file="content/en/docs/13/kustomize/overlays/staging/service-patch.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/12/kustomize/overlays/staging/service-patch.yaml" >}}{{< /highlight >}}
 
 `overlays/production/service-patch.yaml`:
 
-{{< highlight yaml >}}{{< readfile file="content/en/docs/13/kustomize/overlays/production/service-patch.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/12/kustomize/overlays/production/service-patch.yaml" >}}{{< /highlight >}}
 
 {{% alert title="Note" color="primary" %}}
-All files mentioned above are also directly accessible from [GitHub](https://github.com/acend/kubernetes-basics-training/tree/master/content/en/docs/13/kustomize).
+All files mentioned above are also directly accessible from [GitHub](https://github.com/acend/kubernetes-basics-training/tree/master/content/en/docs/12/kustomize).
 {{% /alert %}}
 
 Prepare the files as described above in a local directory of your choice.
