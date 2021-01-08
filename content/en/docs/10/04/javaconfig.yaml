@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: javaconfig
+  name: javaconfiguration
 data:
   java.properties: |
     key=value
