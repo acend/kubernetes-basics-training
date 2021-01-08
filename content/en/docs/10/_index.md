@@ -1,7 +1,14 @@
 ---
-title: "10. Additional concepts"
+title: "10. Deployment strategies"
 weight: 10
 sectionnumber: 10
 ---
 
-{{% param distroName %}} does not only know Pods, Deployments, Services, etc. There are various other kinds of resources. In the next few labs, we are going to have a look at some of them.
+In this lab, we are going to have a look at the different Deployment strategies.
+
+This [document](https://www.cncf.io/wp-content/uploads/2018/03/CNCF-Presentation-Template-K8s-Deployment.pdf) should give you a good start. For more details, have a look at the [examples](https://github.com/ContainerSolutions/k8s-deployment-strategies) or use [this demo](https://github.com/acend/deployment-strategies-demo) in which the different strategies are implemented as Helm charts.
+
+
+## Task {{% param sectionnumber %}}.1: Apply deployment strategies
+
+Apply some deployment strategies to the example from [lab 5](../05).

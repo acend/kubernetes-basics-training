@@ -1,7 +1,7 @@
 ---
-title: "10.4 ConfigMap"
-weight: 104
-sectionnumber: 10.4
+title: "9.4 ConfigMap"
+weight: 94
+sectionnumber: 9.4
 ---
 
 Similar to environment variables, _ConfigsMaps_ allow you to separate the configuration for an application from the image. Pods can access those variables at runtime which allows maximum portability for applications running in containers.
@@ -64,7 +64,7 @@ Next, we want to make a ConfigMap accessible for a Container. There are basicall
 
 In this example, we want the file to be mounted as a volume inside the Container.
 {{% onlyWhen openshift %}}
-As in [lab 9](../09.0/), we can use the `oc set volume` command to achieve this:
+As in [lab 8](../08/), we can use the `oc set volume` command to achieve this:
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 ```bash

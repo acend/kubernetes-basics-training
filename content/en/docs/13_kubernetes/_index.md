@@ -1,7 +1,7 @@
 ---
-title: "14. Web Console"
-weight: 14
-sectionnumber: 14
+title: "13. Web Console"
+weight: 13
+sectionnumber: 13
 onlyWhenNot: openshift
 ---
 

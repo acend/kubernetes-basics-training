@@ -1,7 +1,7 @@
 ---
-title: "10.3 CronJobs and Jobs"
-weight: 103
-sectionnumber: 10.3
+title: "9.3 CronJobs and Jobs"
+weight: 93
+sectionnumber: 9.3
 ---
 
 Jobs are different from normal Deployments: Jobs execute a time-constrained operation and report the result as soon as they are finished; think of a batch job. To achieve this, a Job creates a Pod and runs a defined command. A Job isn't limited to create a single Pod, it can also create multiple Pods. When a Job is deleted, the Pods started (and stopped) by the Job are also deleted.
@@ -16,13 +16,13 @@ More detailed information can be retrieved from the [OpenShift documentation](ht
 {{% /onlyWhen %}}
 
 {{% alert title="Note" color="primary" %}}
-This lab depends on [lab 8](../../08/) or [lab 9](../../09/).
+This lab depends on [lab 7](../../07/) or [lab 8](../../08/).
 {{% /alert %}}
 
 
 ## Task {{% param sectionnumber %}}.1: Create a Job for a database dump
 
-Similar to [task 8.4](../../08.0/#task-84-import-a-database-dump), we now want to create a dump of the running database, but without the need of interactively logging into the Pod.
+Similar to [task 7.4](../../07.0/#task-74-import-a-database-dump), we now want to create a dump of the running database, but without the need of interactively logging into the Pod.
 
 Let's first look at the Job resource that we want to create.
 

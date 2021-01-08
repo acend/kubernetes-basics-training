@@ -1,7 +1,7 @@
 ---
-title: "14. Kubernetes and OpenShift differences"
-weight: 14
-sectionnumber: 14
+title: "13. Kubernetes and OpenShift differences"
+weight: 13
+sectionnumber: 13
 onlyWhen: openshift
 ---
 
@@ -26,7 +26,7 @@ OpenShift extends the Kubernetes API to support certain additional resource type
 
 ### Namespaces and Projects
 
-In [lab 3](../03/) you created your first Project on OpenShift.
+In [lab 2](../02/) you created your first Project on OpenShift.
 You won't find the concept of a "Project" in Kubernetes except in other Kubernetes distributions, specifically in Rancher.
 
 {{% alert title="Note" color="primary" %}}
@@ -59,7 +59,7 @@ In OpenShift, creating an Ingress resource leads to the creation of a correspond
 
 #### Task {{% param sectionnumber %}}.1: Create an Ingress resource
 
-In [lab 6](../06/) you exposed the example-web-python application via Route using the `oc expose` command.
+In [lab 5](../05/) you exposed the example-web-python application via Route using the `oc expose` command.
 
 Expose the application using an Ingress resource.
 It's best to not delete the existing Route so you can compare them.
@@ -99,4 +99,4 @@ More details can be found in [OpenShift's documentation](https://docs.openshift.
 
 ### BuildConfigs and Builds
 
-You already encountered these resource types in [lab 4](../04/). BuildConfigs and Builds make it possible to build a container image on OpenShift instead of relying on an external tool.
+You already encountered these resource types in [lab 3](../03/). BuildConfigs and Builds make it possible to build a container image on OpenShift instead of relying on an external tool.

@@ -1,7 +1,7 @@
 ---
-title: "10.7 Sidecar containers"
-weight: 107
-sectionnumber: 10.7
+title: "9.7 Sidecar containers"
+weight: 97
+sectionnumber: 9.7
 ---
 
 Let's first have a look again at the Pod's description [on the Kubernetes documentation page](https://kubernetes.io/docs/concepts/workloads/pods/pod/):
@@ -22,7 +22,7 @@ In a sidecar pattern, the functionality of the main container is extended or enh
 
 ## Task {{% param sectionnumber %}}.1: Add a Prometheus MySQL exporter as a sidecar
 
-In [lab 9](../../09/) you created a MariaDB deployment. In this task you are going to add the [Prometheus MySQL exporter](https://github.com/prometheus/mysqld_exporter) to it.
+In [lab 8](../../08/) you created a MariaDB deployment. In this task you are going to add the [Prometheus MySQL exporter](https://github.com/prometheus/mysqld_exporter) to it.
 
 {{% onlyWhenNot openshift %}}
 Change the existing `mariadb` Deployment using:

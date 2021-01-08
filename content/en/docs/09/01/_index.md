@@ -1,7 +1,7 @@
 ---
-title: "10.1 StatefulSets"
-weight: 101
-sectionnumber: 10.1
+title: "9.1 StatefulSets"
+weight: 91
+sectionnumber: 9.1
 ---
 
 Stateless applications or applications with a stateful backend can be described as Deployments.
