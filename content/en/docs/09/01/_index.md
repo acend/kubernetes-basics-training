@@ -1,7 +1,7 @@
 ---
-title: "10.1 StatefulSets"
-weight: 101
-sectionnumber: 10.1
+title: "9.1 StatefulSets"
+weight: 91
+sectionnumber: 9.1
 ---
 
 Stateless applications or applications with a stateful backend can be described as Deployments.
@@ -72,10 +72,10 @@ The controllable and predictable behaviour can be a perfect match for applicatio
 Create a file named `sts_nginx-cluster.yaml` with the following definition of a StatefulSet:
 
 {{% onlyWhenNot mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/10/01/sts_nginx-cluster.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/01/sts_nginx-cluster.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/10/01/sts_nginx-cluster_mobi.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/01/sts_nginx-cluster_mobi.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 Create the StatefulSet:

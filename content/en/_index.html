@@ -6,6 +6,9 @@
 {{< onlyWhen openshift >}}
 {{< blocks/cover title="Welcome to the OpenShift Basics Training" image_anchor="top" height="full" color="primary" image="featured-background-openshift.jpg" >}}
 <div class="mx-auto">
+	<a class="btn btn-lg btn-primary mr-3 mb-4" href="{{< relref "/setup" >}}">
+		Setup <i class="fas fa-cogs ml-2 "></i>
+	</a>
 	<a class="btn btn-lg btn-primary mr-3 mb-4" href="{{< relref "/docs" >}}">
 		Labs <i class="fas fa-flask ml-2"></i>
 	</a>
@@ -20,6 +23,9 @@
 {{< onlyWhenNot openshift >}}
 {{< blocks/cover title="Welcome to the Kubernetes Basics Training" image_anchor="top" height="full" color="primary" image="featured-background-kubernetes.jpg" >}}
 <div class="mx-auto">
+	<a class="btn btn-lg btn-primary mr-3 mb-4" href="{{< relref "/setup" >}}">
+		Setup <i class="fas fa-cogs ml-2 "></i>
+	</a>
 	<a class="btn btn-lg btn-primary mr-3 mb-4" href="{{< relref "/docs" >}}">
 		Labs <i class="fas fa-flask ml-2"></i>
 	</a>
@@ -44,8 +50,13 @@
 {{% /blocks/lead %}}
 
 {{< blocks/section color="light">}}
+
+{{% blocks/feature icon="fa-cogs" title="Setup" url="/setup/" %}}
+Start with the setup
+{{% /blocks/feature %}}
+
 {{% blocks/feature icon="fa-flask" title="Labs" url="/docs/" %}}
-Start with your lab session
+Start with the training
 {{% /blocks/feature %}}
 
 {{% blocks/feature icon="fa-chalkboard-teacher" url="/slides/" title="Slides" %}}
@@ -55,6 +66,5 @@ Get the slides for this training
 {{% blocks/feature icon="fa-sliders-h" title="About" url="/about/" %}}
 
 {{% /blocks/feature %}}
-
 
 {{< /blocks/section >}}

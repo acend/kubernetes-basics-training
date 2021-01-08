@@ -1,7 +1,7 @@
 ---
-title: "10.5 ResourceQuota and LimitRange"
-weight: 105
-sectionnumber: 10.5
+title: "9.5 ResourceQuota and LimitRange"
+weight: 95
+sectionnumber: 9.5
 ---
 
 In this lab, we are going to look at ResourceQuotas and LimitRanges. As {{% param distroName %}} users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.

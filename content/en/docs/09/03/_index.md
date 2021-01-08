@@ -1,7 +1,7 @@
 ---
-title: "10.3 CronJobs and Jobs"
-weight: 103
-sectionnumber: 10.3
+title: "9.3 CronJobs and Jobs"
+weight: 93
+sectionnumber: 9.3
 ---
 
 Jobs are different from normal Deployments: Jobs execute a time-constrained operation and report the result as soon as they are finished; think of a batch job. To achieve this, a Job creates a Pod and runs a defined command. A Job isn't limited to create a single Pod, it can also create multiple Pods. When a Job is deleted, the Pods started (and stopped) by the Job are also deleted.
@@ -16,22 +16,22 @@ More detailed information can be retrieved from the [OpenShift documentation](ht
 {{% /onlyWhen %}}
 
 {{% alert title="Note" color="primary" %}}
-This lab depends on [lab 8](../../08/) or [lab 9](../../09/).
+This lab depends on [lab 7](../../07/) or [lab 8](../../08/).
 {{% /alert %}}
 
 
 ## Task {{% param sectionnumber %}}.1: Create a Job for a database dump
 
-Similar to [task 8.4](../../08.0/#task-84-import-a-database-dump), we now want to create a dump of the running database, but without the need of interactively logging into the Pod.
+Similar to [task 7.4](../../07.0/#task-74-import-a-database-dump), we now want to create a dump of the running database, but without the need of interactively logging into the Pod.
 
 Let's first look at the Job resource that we want to create.
 
 {{% onlyWhenNot mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/10/03/job-mariadb-dump.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/03/job-mariadb-dump.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/10/03/job-mariadb-dump-mobi.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/03/job-mariadb-dump-mobi.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 The parameter `.spec.template.spec.containers[0].image` shows that we use the same image as the running database. In contrast to the database Pod, we don't start a database afterwards, but run a `mysqldump` command, specified with `.spec.template.spec.containers[0].command`. To perform the dump, we use the environment variables of the database deployment to set the hostname, user and password parameters of the `mysqldump` command. The `MYSQL_PASSWORD` variable refers to the value of the secret, which is already used for the database Pod. Like this we ensure that the dump is performed with the same credentials.
@@ -67,7 +67,7 @@ A CronJob is nothing else than a resource which creates a Job at a defined time,
 
 The CronJob's definition will remind you of the Deployment's structure, or really any other control resource. There's most importantly the `schedule` specification in [cron schedule format](https://crontab.guru/), some more things you could define and then the Job's definition itself that is going to be created by the CronJob:
 
-{{< highlight yaml >}}{{< readfile file="content/en/docs/10/03/cronjob-mariadb-dump.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/03/cronjob-mariadb-dump.yaml" >}}{{< /highlight >}}
 
 {{% onlyWhenNot openshift %}}
 Further information can be found in the [Kubernetes CronJob documentation](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/).

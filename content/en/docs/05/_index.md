@@ -1,314 +1,511 @@
 ---
-title: "5. Exposing a Service"
+title: "5. Scaling"
 weight: 5
 sectionnumber: 5
 ---
 
-In this lab, we are going to make the freshly deployed application from the last lab available online.
+In this lab, we are going to show you how to scale applications on {{% param distroName %}}. Further, we show you how {{% param distroName %}} makes sure that the number of requested Pods is up and running and how an application can tell the platform that it is ready to receive requests.
+
+{{% alert title="Note" color="primary" %}}
+This lab does not depend on previous labs. You can start with an empty Namespace.
+{{% /alert %}}
 
 
-## Task {{% param sectionnumber %}}.1: Create a ClusterIP Service with an Ingress
+## Task {{% param sectionnumber %}}.1: Scale the example application
 
-The command `{{% param cliToolName %}} create deployment` from the last lab creates a Pod but no Service. A {{% param distroName %}} Service is an abstract way to expose an application running on a set of Pods as a network service. For some parts of your application (for example, frontends) you may want to expose a Service onto an external IP address, that's outside of your cluster.
-
-{{% param distroName %}} `ServiceTypes` allow you to specify what kind of Service you want. The default is `ClusterIP`.
-
-`Type` values and their behaviors are:
-
-* `ClusterIP`: Exposes the Service on a cluster-internal IP. Choosing this value makes the Service only reachable from within the cluster. This is the default ServiceType.
-
-* `NodePort`: Exposes the Service on each Node's IP at a static port (the NodePort). A ClusterIP Service, to which the NodePort Service routes, is automatically created. You'll be able to contact the NodePort Service, from outside the cluster, by requesting \<NodeIP\>:\<NodePort\>.
-
-* `LoadBalancer`: Exposes the Service externally using a cloud provider's load balancer. NodePort and ClusterIP Services, to which the external load balancer routes, are automatically created.
-
-* `ExternalName`: Maps the Service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. No proxying of any kind is set up.
-
-You can also use Ingress to expose your Service. Ingress is not a Service type, but it acts as the entry point for your cluster. [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.
-Traffic routing is controlled by rules defined on the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}} resource. {{% onlyWhenNot openshift %}}An Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}A Route{{% /onlyWhen %}} may be configured to give Services externally-reachable URLs, load balance traffic, terminate SSL / TLS, and offer name based virtual hosting. An Ingress controller is responsible for fulfilling the route, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic.
-
-In order to create {{% onlyWhenNot openshift %}}an Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}a Route{{% /onlyWhen %}}, we first need to create a Service of type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types).
-We're going to do this with the command `{{% param cliToolName %}} expose`:
+Create a new Deployment in your Namespace:
+{{% onlyWhenNot mobi %}}
 
 ```bash
-{{% param cliToolName %}} expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace <namespace>
+{{% param cliToolName %}} create deployment example-web-python --image=quay.io/acend/example-web-python --namespace <namespace>
 ```
 
-{{% onlyWhen openshift %}}
-You may notice an error like `Error from server (AlreadyExists): services "example-web-go" already exists` here. This is because the `oc new-app` command does creates a service, while the `oc create deployment` doesn't.
-{{% /onlyWhen %}}
-
-Let's have a more detailed look at our Service:
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
 
 ```bash
-{{% param cliToolName %}} get services --namespace <namespace>
+kubectl create deployment example-web-python --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-python --namespace <namespace>
+```
+
+{{% /onlyWhen %}}
+If we want to scale our example application, we have to tell the Deployment that we want to have three running replicas instead of one.
+Let's have a closer look at the existing ReplicaSet:
+
+```bash
+{{% param cliToolName %}} get replicasets --namespace <namespace>
+```
+
+Which will give you an output similar to this:
+
+```
+NAME                            DESIRED   CURRENT   READY   AGE
+example-web-python-86d9d584f8   1         1         1       110s
+```
+
+
+Or for even more details:
+
+```bash
+{{% param cliToolName %}} get replicaset <replicaset> -o yaml --namespace <namespace>
+```
+
+The ReplicaSet shows how many instances of a Pod that are desired, current and ready.
+
+
+Now we scale our application to three replicas:
+
+```bash
+{{% param cliToolName %}} scale deployment example-web-python --replicas=3 --namespace <namespace>
+```
+
+Check the number of desired, current and ready replicas:
+
+```bash
+{{% param cliToolName %}} get replicasets --namespace <namespace>
+```
+
+```
+NAME                            DESIRED   CURRENT   READY   AGE
+example-web-python-86d9d584f8   3         3         1       4m33s
+
+```
+
+Look at how many Pods there are:
+
+```bash
+{{% param cliToolName %}} get pods --namespace <namespace>
 ```
 
 Which gives you an output similar to this:
 
-```bash
-NAME             TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
-example-web-go   ClusterIP  10.43.91.62   <none>        5000/TCP  
+```
+NAME                                  READY   STATUS    RESTARTS   AGE
+example-web-python-86d9d584f8-7vjcj   1/1     Running   0          5m2s
+example-web-python-86d9d584f8-hbvlv   1/1     Running   0          31s
+example-web-python-86d9d584f8-qg499   1/1     Running   0          31s
 ```
 
+{{% onlyWhenNot openshift %}}
 {{% alert title="Note" color="primary" %}}
-Service IP (CLUSTER-IP) addresses stay the same for the duration of the Service's lifespan.
+Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
 {{% /alert %}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
+{{% alert title="Note" color="primary" %}}
+OpenShift supports [horizontal](https://docs.openshift.com/container-platform/latest/nodes/pods/nodes-pods-autoscaling.html) and [vertical autoscaling](https://docs.openshift.com/container-platform/latest/nodes/pods/nodes-pods-vertical-autoscaler.html).
+{{% /alert %}}
+{{% /onlyWhen %}}
 
-By executing the following command:
+
+## Check for uninterruptible Deployments
+
+{{% onlyWhenNot openshift %}}
+Now we create a new Service of type `ClusterIP`:
+
 
 ```bash
-{{% param cliToolName %}} get service example-web-go -o yaml --namespace <namespace>
+kubectl expose deployment example-web-python --type="ClusterIP" --name="example-web-python" --port=5000 --target-port=5000 --namespace <namespace>
 ```
 
-You get additional information:
+and we need to create an Ingress to access the application:
 
-```
-apiVersion: v1
-kind: Service
+```yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
 metadata:
-  ...
-  labels:
-    app: example-web-go
-  managedFields:
-    ...
-  name: example-web-go
-  namespace: <namespace>
-  ...
+  name: example-web-python
 spec:
-  clusterIP: 10.43.91.62
-  externalTrafficPolicy: Cluster
-  ports:
-  - port: 5000
-    protocol: TCP
-    targetPort: 5000
-  selector:
-    app: example-web-go
-  sessionAffinity: None
-  type: ClusterIP
-status:
-  loadBalancer: {}
+  rules:
+    - host: example-web-python-<namespace>.<domain>
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: example-web-python
+              servicePort: 5000
 ```
 
-The Service's `selector` defines which Pods are being used as Endpoints. This happens based on labels. Look at the configuration of Service and Pod in order to find out what maps to what:
+Apply the this Ingress definition using e.g. `kubectl create -f ingress.yml --namespace <namespace>`
+
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
+Now we expose our application to the internet by creating a service and a route.
+
+First the Service:
 
 ```bash
-{{% param cliToolName %}} get service example-web-go -o yaml --namespace <namespace>
+oc expose deployment example-web-python --name="example-web-python" --port=5000 --namespace <namespace>
 ```
 
-```
-...
-  selector:
-    app: example-web-go
-...
-```
-
-With the following command you get details from the Pod:
-
-{{% alert title="Note" color="primary" %}}
-First, get all Pod names from your namespace with (`{{% param cliToolName %}} get pods --namespace <namespace>`) and then replace \<pod\> in the following command. If you have installed and configured the bash completion, you can also press the TAB key for autocompletion of the Pods' name.
-{{% /alert %}}
+Then the Route:
 
 ```bash
-{{% param cliToolName %}} get pod <pod> -o yaml --namespace <namespace>
+oc expose service example-web-python --namespace <namespace>
 ```
+{{% /onlyWhen %}}
 
-Let's have a look at the label section of the Pod and verify that the Service selector matches the Pod's labels:
-
-```
-...
-  labels:
-    app: example-web-go
-...
-```
-
-This link between Service and Pod can also be displayed in an easier fashion with the `{{% param cliToolName %}} describe` command:
-
+Let's look at our Service. We should see all three corresponding Endpoints:
 
 ```bash
-{{% param cliToolName %}} describe service example-web-go --namespace <namespace>
+{{% param cliToolName %}} describe service example-web-python --namespace <namespace>
 ```
-
+{{% onlyWhenNot openshift %}}
 ```
-Name:                     example-web-go
-Namespace:                example-ns
-Labels:                   app=example-web-go
+Name:                     example-web-python
+Namespace:                acend-scale
+Labels:                   app=example-web-python
 Annotations:              <none>
-Selector:                 app=example-web-go
+Selector:                 app=example-web-python
 Type:                     ClusterIP
-IP:                       10.39.240.212
+IP:                       10.39.245.205
 Port:                     <unset>  5000/TCP
 TargetPort:               5000/TCP
-Endpoints:                10.36.0.8:5000
+Endpoints:                10.36.0.10:5000,10.36.0.11:5000,10.36.0.9:5000
 Session Affinity:         None
 External Traffic Policy:  Cluster
 Events:
-  Type    Reason                Age    From                Message
-  ----    ------                ----   ----                -------
+  Type    Reason                Age   From                Message
+  ----    ------                ----  ----                -------
 ```
-
-The `Endpoints` shows the IP addresses of all currently matched Pods.
-
-With the ClusterIP Service ready, we can now create the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhen %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}} resource.
-{{% onlyWhenNot openshift %}}
-In order to create the Ingress resource, we first need to create the file `ingress.yaml` and change the `host` entry to match your environment:
-
-{{% onlyWhenNot mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress.template.yaml" >}}{{< /highlight >}}
-{{% /onlyWhenNot %}}
-
-{{% onlyWhen mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress-mobi.template.yaml" >}}{{< /highlight >}}
-{{% /onlyWhen %}}
-
-As you see in the resource definition at `spec.rules[0].http.paths[0].backend.serviceName` we use the previously created `example-web-go` ClusterIP Service.
-
-Let's create the Ingress resource with:
-
-```bash
-kubectl create -f <path to ingress.yaml> --namespace <namespace>
-```
-
-{{% onlyWhenNot mobi %}}
-Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<domain>`
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
-{{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
-
-```bash
-oc expose service example-web-go
 ```
-
-We are now able to access our app via the freshly created route at `http://example-web-go-<namespace>.<appdomain>`
+Name:              example-web-python
+Namespace:         acend-test
+Labels:            app=example-web-python
+Annotations:       <none>
+Selector:          app=example-web-python
+Type:              ClusterIP
+IP:                172.30.177.212
+Port:              <unset>  5000/TCP
+TargetPort:        5000/TCP
+Endpoints:         10.124.4.137:5000
+Session Affinity:  None
+Events:            <none>
+```
 {{% /onlyWhen %}}
+
+Scaling of Pods is fast as {{% param distroName %}} simply creates new containers.
+
+You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{% onlyWhenNot openshift %}}http://example-web-python-<namespace>.<domain>{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://<route hostname>{{% /onlyWhen %}}`.
+
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="primary" %}}
-The `<appdomain>` is the default domain under which your applications will be accessible and is provided by your trainer. You can also use `oc get route example-web-python` to see the exact value of the exposed route.
+You can find out the route's hostname by looking at the output of `oc get route`.
 {{% /alert %}}
 {{% /onlyWhen %}}
+
+
+Now, execute the corresponding loop command for your operating system in another console.
+
+Linux:
+
+
+{{% onlyWhen openshift %}}
+```bash
+URL=$(oc get routes example-web-python -o go-template='{{ .spec.host }}' --namespace <namespace>)
+while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+```
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
+```bash
+URL=example-web-python-<namespace>.<domain>
+while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+```
+{{% /onlyWhenNot %}}
+
+Windows PowerShell:
+
+```bash
+while(1) {
+  Start-Sleep -s 1
+  Invoke-RestMethod http://<URL>/pod/
+  Get-Date -Uformat "+ TIME: %H:%M:%S,%3N"
+}
+```
+
+Scale from 3 replicas to 1.
+The output shows which Pod is still alive and is responding to requests:
+
+```
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:07,289
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:08,357
+POD: example-web-python-86d9d584f8-hbvlv TIME: 17:33:09,423
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:10,494
+POD: example-web-python-86d9d584f8-qg499 TIME: 17:33:11,559
+POD: example-web-python-86d9d584f8-hbvlv TIME: 17:33:12,629
+POD: example-web-python-86d9d584f8-qg499 TIME: 17:33:13,695
+POD: example-web-python-86d9d584f8-hbvlv TIME: 17:33:14,771
+POD: example-web-python-86d9d584f8-hbvlv TIME: 17:33:15,840
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:16,912
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:17,980
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:19,051
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:20,119
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:21,182
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:22,248
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:23,313
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:24,377
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:25,445
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:26,513
+```
+
+The requests get distributed amongst the three Pods. As soon as you scale down to one Pod, there should be only one remaining Pod that responds.
+
+Let's make another test: What happens if you start a new Deployment while our request generator is still running?
+
+{{% alert title="Warning" color="secondary" %}}
+On Windows, execute the following command in Git Bash; PowerShell seems not to work.
+{{% /alert %}}
+
 
 {{% onlyWhenNot openshift %}}
-
-
-## Task {{% param sectionnumber %}}.2: Expose as NodePort
-
-There's a second option to make a Service accessible from outside: Use a [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport).
-
-In order to switch the Service type, we are going to delete the `ClusterIP` Service that we've created before:
-
-
 ```bash
-kubectl delete service example-web-go --namespace=<namespace>
+kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
 ```
-
-With the following command we create a Service:
-
+{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}
 ```bash
-kubectl expose deployment example-web-go --type=NodePort --name=example-web-go --port=5000 --target-port=5000 --namespace <namespace>
+oc rollout restart deployment example-web-python --namespace <namespace>
 ```
-
-Let's have a more detailed look at our Service:
-
-```bash
-kubectl get services --namespace <namespace>
-```
-
-Which gives you an output similar to this:
-
-```bash
-NAME             TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
-example-web-go   NodePort   10.43.91.62   <none>        5000:30692/TCP  
-```
-
-The `NodePort` number is being assigned by Kubernetes and stays the same as long as the Services is not deleted. A NodePort Service is more suitable for infrastructure tools than for public URLs.
-
-{{% alert title="Note" color="primary" %}}
-If `NodePort` is not supported in your environment then you can use `--type=ClusterIP` (or omit this parameter completely as it is the default) and use port forwarding to the Service instead.
-
-Head over to task 7.3 in [lab 7](../07/) to learn how to use port forwarding.
-{{% /alert %}}
-
-
-Open `http://<node-ip>:<node-port>` in your browser.
-You can use any node IP as the Service is exposed on all nodes using the same `NodePort`. Use `kubectl get nodes -o wide` to display the IPs (`INTERNAL-IP`) of the available nodes.
-
-```bash
-kubectl get node -o wide
-```
-
-The output may vary depending on your setup:
-
-```
-NAME         STATUS   ROLES                      AGE    VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
-lab-1   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.142   <none>        Ubuntu 18.04.3 LTS   4.15.0-66-generic   docker://19.3.8
-lab-2   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.77    <none>        Ubuntu 18.04.3 LTS   4.15.0-66-generic   docker://19.3.8
-lab-3   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.148   <none>        Ubuntu 18.04.3 LTS   4.15.0-66-generic   docker://19.3.8
-```
-
-{{% onlyWhen rancher %}}
-{{% alert title="Note" color="primary" %}}
-You can also use the Rancher web console to open the exposed application in your browser. The direkt link is shown on your **Resources / Workload** page in the tab **Workload**. Look for your namespace and the deployment name. The link looks like `31665/tcp`.
-
-![Rancher NodePort](nodeportrancher.png)
-
-Or go to the **Service Discovery** tab and look for your Service name. The link there looks the same and is right below the Service name.
-{{% /alert %}}
 {{% /onlyWhen %}}
+
+
+During a short period we won't get a response:
+
+```
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:24,121
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:25,189
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:26,262
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:27,328
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:28,395
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:29,459
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:30,531
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:31,596
+POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:32,662
+# no answer
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:33,729
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:34,794
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:35,862
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:36,929
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:37,995
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:39,060
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:40,118
+POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:41,187
+```
+
+In our example, we use a very lightweight Pod. If we had used a more heavyweight Pod that needed a longer time to respond to requests we would of course see a larger gap.
+An example for this would be a Java application with a startup time of 30 seconds:
+
+```
+Pod: example-spring-boot-2-73aln TIME: 16:48:25,251
+Pod: example-spring-boot-2-73aln TIME: 16:48:26,305
+Pod: example-spring-boot-2-73aln TIME: 16:48:27,400
+Pod: example-spring-boot-2-73aln TIME: 16:48:28,463
+Pod: example-spring-boot-2-73aln TIME: 16:48:29,507
+<html><body><h1>503 Service Unavailable</h1>
+No server is available to handle this request.
+</body></html>
+ TIME: 16:48:33,562
+<html><body><h1>503 Service Unavailable</h1>
+No server is available to handle this request.
+</body></html>
+ TIME: 16:48:34,601
+ ...
+Pod: example-spring-boot-3-tjdkj TIME: 16:49:20,114
+Pod: example-spring-boot-3-tjdkj TIME: 16:49:21,181
+Pod: example-spring-boot-3-tjdkj TIME: 16:49:22,231
+
+```
+
+It is even possible that the Service gets down, and the routing layer responds with the status code 503 as can be seen in the example output above.
+
+In the following chapter we are going to look at how a Service can be configured to be highly available.
+
+
+## Uninterruptible Deployments
+
+The [rolling update strategy](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/) makes it possible to deploy Pods without interruption. The rolling update strategy means that the new version of an application gets deployed and started. As soon as the application says it is ready, {{% param distroName %}} forwards requests to the new instead of the old version of the Pod, and the old Pod gets terminated.
+
+Additionally, [container health checks](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/) help {{% param distroName %}} to precisely determine what state the application is in.
+
+Basically, there are two different kinds of checks that can be implemented:
+
+* Liveness probes are used to find out if an application is still running
+* Readiness probes tell us if the application is ready to receive requests (which is especially relevant for above-mentioned rolling updates)
+
+These probes can be implemented as HTTP checks, container execution checks (the execution of a command or script inside a container) or TCP socket checks.
+
+In our example, we want the application to tell {{% param distroName %}} that it is ready for requests with an appropriate readiness probe. Our example application has a health check context named health: `{{% onlyWhenNot openshift %}}http://<node-ip>:<node-port>/health{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://${URL}/health{{% /onlyWhen %}}`
+
+
+## Task {{% param sectionnumber %}}.2: Availability during Deployment
+
+{{% onlyWhenNot openshift %}}
+In our deployment configuration inside the rolling update strategy section we define that our application has to be always be available during an update: `maxUnavailable: 0`
+
+You can directly edit the deployment (or any resource) with:
+
+```bash
+kubectl edit deployment example-web-python --namespace <namespace>
+```
+
+{{% alert title="Note" color="primary" %}}
+If you're not comfortable with `vi` then you can switch to another editor by setting the environment variable `EDITOR`
+or `KUBE_EDITOR`, e.g. `export EDITOR=nano`.
+{{% /alert %}}
+
+Look for the following section and change the value for `maxUnavailable` to 0:
+
+```
+...
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+    type: RollingUpdate
+...
+```
+
+Now insert the readiness probe at `.spec.template.spec.containers` above the `resources: {}` line:
+
+```yaml
+...
+     containers:
+      - image: quay.io/acend/example-web-python
+        imagePullPolicy: Always
+        name: example-web-python
+        # start to copy here
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+            scheme: HTTP
+          initialDelaySeconds: 10
+          timeoutSeconds: 1
+        # stop to copy here
+        resources: {}
+...
+```
+
+The `containers` configuration then looks like:
+
+```
+...
+      containers:
+      - image: quay.io/acend/example-web-python
+        imagePullPolicy: Always
+        name: example-web-python
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /health
+            port: 5000
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+...
+```
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
+Define the readiness probe on the Deployment using the following command:
+
+```bash
+oc set probe deploy/example-web-python --readiness --get-url=http://:5000/health --initial-delay-seconds=10 --timeout-seconds=1 --namespace <namespace>
+```
+
+Above command results in the following `readinessProbe` snippet being inserted into the Deployment:
+
+```yaml
+...
+     containers:
+      - image: quay.io/acend/example-web-python
+        imagePullPolicy: Always
+        name: example-web-python
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+            scheme: HTTP
+          initialDelaySeconds: 10
+          timeoutSeconds: 1
+...
+```
+{{% /onlyWhen %}}
+
+We are now going to verify that a redeployment of the application does not lead to an interruption.
+
+Set up the loop again to periodically check the application's response (you don't have to set the `$URL` variable again if it is still defined):
+
+
+{{% onlyWhen openshift %}}
+```bash
+URL=$(oc get routes example-web-python -o go-template='{{ .spec.host }}' --namespace <namespace>)
+while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+```
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
+```bash
+URL=example-web-python-<namespace>.<domain>
+while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+```
 {{% /onlyWhenNot %}}
 
 
-## Task {{% param sectionnumber %}}.3 (optional): For fast learners
-
-Have a closer look at the resources created in your namespace `<namespace>` with the following commands and try to understand them:
+Windows PowerShell:
 
 ```bash
-{{% param cliToolName %}} describe namespace <namespace>
+while(1) {
+  Start-Sleep -s 1
+  Invoke-RestMethod http://[URL]/pod/
+  Get-Date -Uformat "+ TIME: %H:%M:%S,%3N"
+}
 ```
 
-```bash
-{{% param cliToolName %}} get all --namespace <namespace>
-```
+
+{{% onlyWhenNot openshift %}}
+Start a new deployment by editing it (the so-called _ConfigChange_ trigger creates the new Deployment automatically):
 
 ```bash
-{{% param cliToolName %}} describe <resource> <name> --namespace <namespace>
+kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
 ```
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
+Start a new deployment:
 
 ```bash
-{{% param cliToolName %}} get <resource> <name> -o yaml --namespace <namespace>
+oc rollout restart deployment example-web-python --namespace <namespace>
 ```
+{{% /onlyWhen %}}
+
+
+## Self healing
+
+Via the {{% onlyWhenNot openshift %}}Replicaset{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Deployment definitiion{{% /onlyWhen %}} we told {{% param distroName %}} how many replicas we want. So what happens if we simply delete a Pod?
+
+Look for a running Pod (status `RUNNING`) that you can bear to kill via `{{% param cliToolName %}} get pods`.
+
+Show all Pods and watch for changes:
+
+```bash
+{{% param cliToolName %}} get pods -w --namespace <namespace>
+```
+
+Now delete a Pod (in another terminal) with the following command:
+
+```bash
+{{% param cliToolName %}} delete pod <pod> --namespace <namespace>
+```
+
+Observe how {{% param distroName %}} instantly creates a new Pod in order to fulfill the desired number of running instances.
 
 
 ## Save point
 
 You should now have the following resources in place:
 
-* [deployment.yaml](../04/deployment.yaml) (from lab 4)
-* [service.yaml](service.yaml)
-* {{% onlyWhenNot openshift %}}{{% onlyWhenNot mobi %}}[ingress.template.yaml](ingress.template.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen mobi %}}[ingress-mobi.template.yaml](ingress-mobi.template.yaml){{% /onlyWhen %}}{{% /onlyWhenNot %}}
-  {{% onlyWhen openshift %}}An exposed Route{{% /onlyWhen %}}
-
-
-## Task {{% param sectionnumber %}}.4: Clean up
-
-As a last step, clean up the remaining resources so that we have a clean namespace to continue.
-
-Delete the Deployment:
-
-```bash
-{{% param cliToolName %}} delete deployment example-web-go --namespace <namespace>
-```
-
-Delete the Service:
-
-```bash
-{{% param cliToolName %}} delete service example-web-go --namespace <namespace>
-```
-
-Delete the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}}:
-
-```bash
-{{% param cliToolName %}} delete {{% onlyWhenNot openshift %}}ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}route{{% /onlyWhen %}} example-web-go --namespace <namespace>
-```
+* [example-web-python.yaml](example-web-python.yaml)

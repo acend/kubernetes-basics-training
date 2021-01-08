@@ -1,7 +1,7 @@
 ---
-title: "10.4 ConfigMap"
-weight: 104
-sectionnumber: 10.4
+title: "9.4 ConfigMap"
+weight: 94
+sectionnumber: 9.4
 ---
 
 Similar to environment variables, _ConfigsMaps_ allow you to separate the configuration for an application from the image. Pods can access those variables at runtime which allows maximum portability for applications running in containers.
@@ -25,7 +25,7 @@ A classic example for ConfigMaps are properties files of Java applications which
 
 First, create a file called `java.properties` with the following content:
 
-{{< highlight text >}}{{< readfile file="content/en/docs/10/04/java.properties" >}}{{< /highlight >}}
+{{< highlight text >}}{{< readfile file="content/en/docs/09/04/java.properties" >}}{{< /highlight >}}
 Now you can create a ConfigMap based on that file:
 
 ```bash
@@ -51,7 +51,7 @@ Have a look at its content:
 
 Which should yield output similar to this one:
 
-{{< highlight yaml >}}{{< readfile file="content/en/docs/10/04/javaconfig.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/04/javaconfig.yaml" >}}{{< /highlight >}}
 
 
 ## Taks {{% param sectionnumber %}}.2: Attach the ConfigMap to a Container
@@ -64,7 +64,7 @@ Next, we want to make a ConfigMap accessible for a Container. There are basicall
 
 In this example, we want the file to be mounted as a volume inside the Container.
 {{% onlyWhen openshift %}}
-As in [lab 9](../09.0/), we can use the `oc set volume` command to achieve this:
+As in [lab 8](../08/), we can use the `oc set volume` command to achieve this:
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 ```bash
@@ -102,11 +102,11 @@ Basically, a Deployment has to be extended with the following config:
 Here is a complete example Deployment of a sample Java app:
 
 {{% onlyWhenNot mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/10/04/spring-boot-example.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/04/spring-boot-example.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/10/04/spring-boot-example-mobi.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/04/spring-boot-example-mobi.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 
@@ -126,7 +126,7 @@ kubectl exec -it <pod> --namespace <namespace> -- cat /etc/config/java.propertie
 {{% /onlyWhenNot %}}
 
 
-{{< highlight text >}}{{< readfile file="content/en/docs/10/04/java.properties" >}}{{< /highlight >}}
+{{< highlight text >}}{{< readfile file="content/en/docs/09/04/java.properties" >}}{{< /highlight >}}
 
 Like this, the property file can be read and used by the application inside the Container. The image stays portable to other environments.
 

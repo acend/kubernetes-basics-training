@@ -1,7 +1,7 @@
 ---
-title: "10.6 Init Containers"
-weight: 106
-sectionnumber: 10.6
+title: "9.6 Init Containers"
+weight: 96
+sectionnumber: 9.6
 ---
 
 
@@ -22,7 +22,7 @@ Check out the [Init Containers documentation](https://docs.openshift.com/contain
 
 ## Task {{% param sectionnumber %}}.1: Add an Init Container
 
-In [lab 8](../../08.0/) you created the `example-web-python` application. In this task, you are going to add an Init Container which checks if the MariaDB database is ready to be used before actually starting your Python application.
+In [lab 7](../../07/) you created the `example-web-python` application. In this task, you are going to add an Init Container which checks if the MariaDB database is ready to be used before actually starting your Python application.
 
 Edit your existing `example-web-python` Deployment with:
 

@@ -1,262 +1,253 @@
 ---
-title: "3. First steps"
+title: "3. Deploy a container image"
 weight: 3
 sectionnumber: 3
 ---
 
-In this lab, we will interact with the {{% param distroName %}} cluster for the first time.
-
-{{% alert title="Warning" color="secondary" %}}
-Please make sure you completed [lab 2](../02/) before you continue with this lab.
-{{% /alert %}}
+In this lab, we are going to deploy our first container image and look at the concepts of Pods, Services, and Deployments.
 
 
-## Login
+## Task {{% param sectionnumber %}}.1: Start and stop a single Pod
 
-{{% onlyWhenNot openshift %}}
-{{% alert title="Note" color="primary" %}}
-Authentication depends on the specific Kubernetes cluster environment.
+After we've familiarized ourselves with the platform, we are going to have a look at deploying a pre-built container image from Quay.io or any other public container registry.
 
-You may need special instructions if you are not using our lab environment.
-{{% /alert %}}
-{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
+In OpenShift we have used the `<project>` identifier to select the correct project. Please use the same identifier in the context `<namespace>` to do the same for all the next labs. Ask your teacher if you want to have more informations about that.
+{{% /onlyWhen %}}
 
-{{% onlyWhenNot openshift %}}
-{{% onlyWhen rancher %}}
+First, we are going to directly start a new Pod:
 {{% onlyWhenNot mobi %}}
-Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cloudscale.ch) (a Swiss IaaS provider) and has been provisioned with [Rancher](https://rancher.com/). You can log in to the cluster with a Rancher user.
-
-{{% alert title="Note" color="primary" %}}
-Your teacher will provide you with the credentials to log in.
-{{% /alert %}}
-{{% /onlyWhenNot %}}
-
-Log in to the Rancher web console and choose the desired cluster.
-
-You now see a button at the top right that says **Kubeconfig File**. Click it, scroll down to the bottom and click **Copy to Clipboard**.
-
-![Download kubeconfig File](kubectlconfigfilebutton.png)
-
-The copied kubeconfig now needs to be put into a file. The default location for the kubeconfig file is `~/.kube/config`.
-
-{{% alert title="Note" color="primary" %}}
-If you already have a kubeconfig file, you might need to merge the Rancher entries with yours. Or use a dedicated file as described below.
-{{% /alert %}}
-
-Put the copied content into a kubeconfig file on your system.
-If you decide to not use the default kubeconfig location at `~/.kube/config` then let `kubectl` know where you put it with the KUBECONFIG environment variable:
-
-```
-export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
-```
-
-{{% alert title="Note" color="primary" %}} When using PowerShell on a Windows Computer use the following command, you'll have to replace `<user>` with your actual user
-
-```
-$Env:KUBECONFIG = "C:\Users\<user>\.kube-techlab\config"
-```
-
-To set the environment variable (`KUBECONFIG` = `C:\Users\<user>\.kube-techlab\config`) permenantly, check the following documentation:
-
-The `PATH` can be set in Windows in the advanced system settings. It depends on the version:
-
-* [Windows 7](http://geekswithblogs.net/renso/archive/2009/10/21/how-to-set-the-windows-path-in-windows-7.aspx)
-* [Windows 8](http://www.itechtics.com/customize-windows-environment-variables/)
-* [Windows 10](http://techmixx.de/windows-10-umgebungsvariablen-bearbeiten/)
-
-{{% /alert %}}
-
-{{% /onlyWhen %}}
-
-{{% onlyWhen mobi %}}
-We are using the Mobi `kubedev` Kubernetes cluster. Use the following command to set the appropriate context:
 
 ```bash
-kubectl config use-context kubedev
+{{% param cliToolName %}} run awesome-app --image=quay.io/acend/example-web-go --restart=Never --namespace <namespace>
 ```
 
-{{% alert title="Warning" color="secondary" %}}
-Make sure you have setup your kubeconfig file correctly. Check your [CWIKI](https://cwiki.mobicorp.ch/confluence/display/ITContSol/Set+up+Kubectl) for instructions on how to configure it.
-{{% /alert %}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
+
+```bash
+kubectl run awesome-app --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --restart=Never --namespace <namespace>
+```
+
 {{% /onlyWhen %}}
 
+Use `{{% param cliToolName %}} get pods --namespace <namespace>` in order to show the running Pod:
 
-## Namespaces
+```bash
+{{% param cliToolName %}} get pods --namespace <namespace>
+```
 
-As a first step on the cluster we are going to create a new Namespace.
+Which gives you an output similar to this:
 
-A Namespace is the logical design used in Kubernetes to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). Authorized users inside a namespace are able to manage those resources. Namespace names have to be unique in your cluster.
+```
+NAME          READY   STATUS    RESTARTS   AGE
+awesome-app   1/1     Running   0          1m24s
+```
 
 {{% onlyWhen rancher %}}
-{{% alert title="Note" color="primary" %}}
-Additionally, Rancher knows the concept of a [*Project*](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple Namespaces.
-{{% /alert %}}
-
-In the Rancher web console choose the Project called `techlab`.
-
-{{% onlyWhen mobi %}}
-We use the project `kubernetes-techlab` on the `kubedev` cluster.
+Have a look at your awesome-app Pod inside the Rancher web console under **Workloads**.
+{{% /onlyWhen %}}
+{{% onlyWhen openshift %}}
+Have a look at your awesome-app Pod inside the OpenShift web console.
 {{% /onlyWhen %}}
 
+Now delete the newly created Pod:
+
+```bash
+{{% param cliToolName %}} delete pod awesome-app --namespace <namespace>
+```
+
+
+## Task {{% param sectionnumber %}}.2: Create a Deployment
+
+In some use cases it makes sense to start a single Pod but has its downsides and is not really a common practice. Let's look at another concept which is tightly coupled with the Pod: the so-called _Deployment_. A Deployment makes sure a Pod is monitored and the Deployment also checks that the number of running Pods corresponds to the number of requested Pods.
+
+With the following command we can create a Deployment inside our already created namespace:
 {{% onlyWhenNot mobi %}}
-![Rancher Project](chooseproject.png)
+
+```bash
+{{% param cliToolName %}} create deployment example-web-go --image=quay.io/acend/example-web-go --namespace <namespace>
+```
+
 {{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
+
+```bash
+kubectl create deployment example-web-go --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --namespace <namespace>
+
+```
 
 {{% /onlyWhen %}}
+The output should be:
 
+```
+deployment.apps/example-web-go created
+```
 
-### Task {{% param sectionnumber %}}.1: Create a Namespace
+We're using a simple sample application written in Go which you can find built as an image on [Quay.io](https://quay.io/repository/acend/example-web-go/) or its source on [GitHub](https://github.com/acend/awesome-apps).
 
-Create a new namespace in the lab environment. The `kubectl help` output can help you figure out the right command.
+{{% param distroName %}} creates the defined and necessary resources, pulls the container image (in this case from Docker Hub) and deploys the Pod.
+
+Use the command `{{% param cliToolName %}} get` with the `-w` parameter in order to get the requested resources and afterwards watch for changes.
 
 {{% alert title="Note" color="primary" %}}
-Please choose an identifying name for your Namespace, e.g. your initials or name as a prefix.
+The `{{% param cliToolName %}} get -w` command will never end unless you terminate it with `CTRL-c`.
+{{% /alert %}}
 
-We are going to use `<namespace>` as a placeholder for your created Namespace.
+```bash
+{{% param cliToolName %}} get pods -w --namespace <namespace>
+```
+
+{{% alert title="Note" color="primary" %}}
+Instead of using the `-w` parameter you can also use the `watch` command which should be available on most Linux distributions:
+
+```bash
+watch {{% param cliToolName %}} get pods --namespace <namespace>
+```
+
+{{% /alert %}}
+
+This process can last for some time depending on your internet connection and if the image is already available locally.
+
+{{% alert title="Note" color="primary" %}}
+If you want to create your own container images and use them with {{% param distroName %}}, you definitely should have a look at [these best practices](https://docs.openshift.com/container-platform/4.4/openshift_images/create-images.html) and apply them. This image creation guide may be from OpenShift, however it also applies to Kubernetes and other container platforms.
 {{% /alert %}}
 
 
-### Solution
+## Task {{% param sectionnumber %}}.3: Viewing the created resources
 
-To create a new Namespace on your cluster use the following command:
+When we executed the command `{{% param cliToolName %}} create deployment example-web-go --image=quay.io/acend/example-web-go --namespace <namespace>`, {{% param distroName %}} created a Deployment resource.
+
+
+### Deployment
+
+Display the created Deployment using the following command:
 
 ```bash
-kubectl create namespace <namespace>
+{{% param cliToolName %}} get deployments --namespace <namespace>
 ```
+
+A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) defines the following facts:
+
+* Update strategy: How application updates should be executed and how the Pods are being exchanged
+* Containers
+  * Which image should be deployed
+  * Environment configuration for Pods
+  * ImagePullPolicy
+* The number of Pods/Replicas that should be deployed
+
+By using the `-o` (or `--output`) parameter we get a lot more information about the deployment itself. You can choose between YAML and JSON formatting by indicating `-o yaml` or `-o json`. In this training we are going to use YAML, but please feel free to replace `yaml` with `json` if you prefer.
+
+```bash
+{{% param cliToolName %}} get deployment example-web-go -o yaml --namespace <namespace>
+```
+
+After the image has been pulled, {{% param distroName %}} deploys a Pod according to the Deployment:
+
+```bash
+{{% param cliToolName %}} get pods --namespace <namespace>
+```
+
+which gives you an output similar to this:
+
+```
+NAME                              READY   STATUS    RESTARTS   AGE
+example-web-go-69b658f647-xnm94   1/1     Running   0          39s
+```
+
+The Deployment defines that one replica should be deployed --- which is running as we can see in the output. This Pod is not yet reachable from outside of the cluster.
 
 {{% onlyWhen rancher %}}
-{{% alert title="Note" color="primary" %}}
-Namespaces created via `kubectl` have to be assigned to the correct Rancher Project in order to be visible in the Rancher web console. Please ask your teacher for this assignment. Or you can create the Namespace directly within the Rancher web console.
-{{% /alert %}}
+
+
+## Task {{% param sectionnumber %}}.4: Verify the Deployment in the Rancher web console
+
+Try to display the logs from the example application in the Rancher web console.
 {{% /onlyWhen %}}
 
-{{% alert title="Note" color="primary" %}}
-By using the following command, you can switch into another Namespace instead of specifying it for each `kubectl` command.
-
-Linux:
-
-```bash
-kubectl config set-context $(kubectl config current-context) --namespace <namespace>
-```
-
-Windows:
-
-```bash
-kubectl config current-context
-SET KUBE_CONTEXT=[Insert output of the upper command]
-kubectl config set-context %KUBE_CONTEXT% --namespace <namespace>
-```
-
-Some prefer to explicitly select the Namespace for each `kubectl` command by adding `--namespace <namespace>` or `-n <namespace>`. Others prefer helper tools like `kubens` (see [lab 2](../02/)).
-{{% /alert %}}
-
-{{% onlyWhen rancher %}}
-
-
-## Task {{% param sectionnumber %}}.2: Discover the Rancher web console
-
-Check the menu entries, there should neither appear any Deployments nor any Pods or Services in your Namespace.
-
-Display all existing Pods in the previously created Namespace with `kubectl` (there shouldn't yet be any):
-
-```bash
-kubectl get pod -n <namespace>
-```
-
-With the command `kubectl get` you can display all kinds of resources.
-{{% /onlyWhen %}}
-{{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 
 
-### Login on the Web Console
+## Task {{% param sectionnumber %}}.4: Verify the Deployment in the OpenShift web console
 
+Try to display the logs from the example application via the OpenShift web console.
+
+
+## Task {{% param sectionnumber %}}.5: Build the image yourself
+
+Up until now, we've used pre-built images from Quay.io. OpenShift offers the ability to build images on the cluster itself using different [strategies](https://docs.openshift.com/container-platform/latest/builds/understanding-image-builds.html):
+
+* Docker build strategy
+* Source-to-image build strategy
+* Custom build strategy
+* Pipeline build strategy
+
+We are going to use the Docker build strategy. It expects:
+
+> [...] a repository with a Dockerfile and all required artifacts in it to produce a runnable image.
+
+All of these requirements are already fulfilled in the [sourcecode repository on GitHub](https://github.com/acend/awesome-apps/tree/master/go), so let's build the image!
+{{% /onlyWhen %}}
+{{% onlyWhen openshift %}}
 {{% alert title="Note" color="primary" %}}
-Your teacher will provide you with the credentials to log in.
-{{% /alert %}}
-
-Open your browser, open the OpenShift cluster URL and log in using the provided credentials.
-
-
-### Login in the shell
-
-In order to log in on the shell, you can copy the login command from the Web Console and then paste it on the shell.
-
-To do that, open the Web Console and click on your username you see at the top right, then choose **Copy Login Command**.
-
-![oc-login](login-ocp.png)
-
-A new tab or window opens in your browser.
-
-{{% alert title="Note" color="primary" %}}
-You might need to login again.
-{{% /alert %}}
-
-The page now displays a link **Display token**.
-Click it and copy the command under **Log in with this token**.
-
-Now paste the copied command in your shell.
-
-
-### Verify login
-
-If you now execute `oc version` you should see something like this (version numbers may vary):
-
-```
-Client Version: 4.5.7
-Server Version: 4.5.7
-Kubernetes Version: v1.18.3+2cf11e2
-```
-
-
-## Projects
-
-As a first step on the cluster we are going to create a new Project.
-
-A Project is the logical design used in OpenShift to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis.
-Authorized users inside a Project are able to manage those resources. Project names have to be unique in your cluster.
-
-
-### Task {{% param sectionnumber %}}.1: Create a Project
-
-Create a new Project in the lab environment. The `oc help` output can help you figure out the right command.
-
-{{% alert title="Note" color="primary" %}}
-Please choose an identifying name for your Project, e.g. your initials or name as a prefix. We are going to use `<project>` as a placeholder for your created Project.
-{{% /alert %}}
-
-
-### Solution
-
-To create a new Project on your cluster use the following command:
-
-```bash
-oc new-project <project>
-```
-
-{{% alert title="Note" color="primary" %}}
-Some prefer to explicitly select the Project for each `oc` command by adding `--namespace <project>` or `-n <project>`.
-
-By using the following command, you can switch into another Project instead of specifying it for each `oc` command.
-
-```bash
-oc project <project>
-```
-
-{{% /alert %}}
-
-
-## Task {{% param sectionnumber %}}.2: Discover the OpenShift web console
-
-Discover the different menu entries in the two views, the **Developer** and the **Administrator** view.
-
-Display all existing Pods in the previously created Project with `oc` (there shouldn't yet be any):
-
-```bash
-oc get pod --namespace <project>
-```
-
-{{% alert title="Note" color="primary" %}}
-With the command `oc get` you can display all kinds of resources.
+Have a look at [OpenShift's documentation](https://docs.openshift.com/container-platform/latest/builds/understanding-image-builds.html) to learn more about the other available build strategies.
 {{% /alert %}}
 {{% /onlyWhen %}}
+{{% onlyWhen openshift %}}
+First we clean up the already existing Deployment:
+
+```bash
+oc delete deployment example-web-go --namespace <namespace>
+```
+
+We are now ready to create the build and deployment, all in one command:
+
+```bash
+oc new-app --name example-web-go --context-dir go/ --strategy docker https://github.com/acend/awesome-apps.git --namespace <namespace>
+```
+
+Let's watch the image build's process:
+
+```bash
+oc logs bc/example-web-go --follow --namespace <namespace>
+```
+
+The message `Push successful` signifies the image's succesful build and push to OpenShift's internal image.
+
+In above command you discovered a new resource type `bc` which is the abbreviation for _BuildConfig_.
+A BuildConfig defines how a container images has to be built.
+
+A _Build_ resource represents the build process itself based upon the BuildConfig's definition.
+A build takes place in a Pod on OpenShift, so instead of referencing the BuildConfig in our `oc logs` command, we could have used the build Pod's log output.
+However, referencing the BuildConfig has the advantage that it can be reused each time a build is run.
+A build Pod changes its name with every build.
+
+Have a look at the new Deployment created by the `oc new-app` command:
+
+```bash
+oc get deployment example-web-go -o yaml --namespace <namespace>
+```
+
+It looks the same as before with the only essential exception that it uses the image we just built instead of the pre-built image from Quay.io:
+
+```
+    ...
+    spec:
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/baffolter-test/awesome-app@sha256:4cd671273a837453464f7264afe845b299297ebe032f940fd005cf9c40d1e76c
+      ...
+```
+
+{{% /onlyWhen %}}
+
+
+## Save point
+
+{{% alert title="Note" color="primary" %}}
+What's a save point? Save points are intermediate results which you can use if you are stuck. You can compare them with
+your existing resources. Or you can apply the provided manifests with `{{% param cliToolName %}} apply -f <manifest.yaml>`.
+{{% /alert %}}
+
+You should now have the following resources in place:
+
+* [deployment.yaml](deployment.yaml)

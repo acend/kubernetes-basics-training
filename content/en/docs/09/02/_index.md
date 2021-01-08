@@ -1,7 +1,7 @@
 ---
-title: "10.2  DaemonSet"
-weight: 102
-sectionnumber: 10.2
+title: "9.2  DaemonSet"
+weight: 92
+sectionnumber: 9.2
 ---
 
 A DaemonSet is almost identical to a normal Deployment. The difference is that it makes sure that exactly one Pod is running on every (or some specified) Node. When a new Node is added, the DaemonSet automatically deploys a Pod on the new Node if its selector matches.

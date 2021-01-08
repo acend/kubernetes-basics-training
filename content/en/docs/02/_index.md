@@ -1,292 +1,262 @@
 ---
-title: "2. Install the CLI"
+title: "2. First steps"
 weight: 2
 sectionnumber: 2
 ---
 
-In this lab, we will install and configure the `{{% param cliToolName %}}` client to be able to practice further tasks in the labs that follow.
+In this lab, we will interact with the {{% param distroName %}} cluster for the first time.
 
-
-## Command-line interface
-
-The `{{% param cliToolName %}}` command is the primary command-line tool to work with one or several {{% param distroName %}} clusters.
-
-As the client is written in Go, you can run the single binary on the following operating systems:
-
-* Windows
-* macOS
-* Linux
-
-{{% onlyWhen rancher %}}
-{{% alert title="Note" color="primary" %}}
-In Rancher you can also use `kubectl` directly within your browser. As soon as you are logged in in the Rancher web console, click on **Launch kubectl** (or use the ° key) and you get a console with `kubectl` installed and configured.
+{{% alert title="Warning" color="secondary" %}}
+Please make sure you completed [lab 1](../01/) before you continue with this lab.
 {{% /alert %}}
-{{% /onlyWhen %}}
+
+
+## Login
 
 {{% onlyWhenNot openshift %}}
+{{% alert title="Note" color="primary" %}}
+Authentication depends on the specific Kubernetes cluster environment.
 
+You may need special instructions if you are not using our lab environment.
+{{% /alert %}}
+{{% /onlyWhenNot %}}
 
-## Manual installation of kubectl
+{{% onlyWhenNot openshift %}}
+{{% onlyWhen rancher %}}
+{{% onlyWhenNot mobi %}}
+Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cloudscale.ch) (a Swiss IaaS provider) and has been provisioned with [Rancher](https://rancher.com/). You can log in to the cluster with a Rancher user.
 
-Follow <https://kubernetes.io/docs/tasks/tools/install-kubectl/>.
+{{% alert title="Note" color="primary" %}}
+Your teacher will provide you with the credentials to log in.
+{{% /alert %}}
+{{% /onlyWhenNot %}}
 
-In case the installation from the official package repositories didn't work (or a specific version is needed) the static binary can be downloaded and put into one of the following paths.
+Log in to the Rancher web console and choose the desired cluster.
 
-Linux:
+You now see a button at the top right that says **Kubeconfig File**. Click it, scroll down to the bottom and click **Copy to Clipboard**.
+
+![Download kubeconfig File](kubectlconfigfilebutton.png)
+
+The copied kubeconfig now needs to be put into a file. The default location for the kubeconfig file is `~/.kube/config`.
+
+{{% alert title="Note" color="primary" %}}
+If you already have a kubeconfig file, you might need to merge the Rancher entries with yours. Or use a dedicated file as described below.
+{{% /alert %}}
+
+Put the copied content into a kubeconfig file on your system.
+If you decide to not use the default kubeconfig location at `~/.kube/config` then let `kubectl` know where you put it with the KUBECONFIG environment variable:
 
 ```
-~/bin
+export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 ```
 
-macOS:
+{{% alert title="Note" color="primary" %}} When using PowerShell on a Windows Computer use the following command, you'll have to replace `<user>` with your actual user
 
 ```
-~/bin
+$Env:KUBECONFIG = "C:\Users\<user>\.kube-techlab\config"
 ```
 
-Windows:
-
-```
-C:\Kubernetes\
-```
-
-
-## File modes on Linux and macOS
-
-The `kubectl` has to be executable:
-
-```bash
-cd ~/bin
-chmod +x kubectl
-```
-
-
-## PATH variable
-
-In Linux and macOS the directory `~/bin` should already be part of the `PATH` variable.
-In case `kubectl` is placed in a different directory, you can change the `PATH` variable with the following command:
-
-```bash
-export PATH=$PATH:[path to kubectl]
-```
-
-
-### Windows
+To set the environment variable (`KUBECONFIG` = `C:\Users\<user>\.kube-techlab\config`) permenantly, check the following documentation:
 
 The `PATH` can be set in Windows in the advanced system settings. It depends on the version:
 
 * [Windows 7](http://geekswithblogs.net/renso/archive/2009/10/21/how-to-set-the-windows-path-in-windows-7.aspx)
 * [Windows 8](http://www.itechtics.com/customize-windows-environment-variables/)
 * [Windows 10](http://techmixx.de/windows-10-umgebungsvariablen-bearbeiten/)
-{{% /onlyWhenNot %}}
 
-{{% onlyWhenNot openshift %}}
-{{% alert title="Note: Windows Quick Hack" color="primary" %}}
-Copy the `kubectl` binary directly into the folder `C:\Windows`.
-{{% /alert %}}
-{{% /onlyWhenNot %}}
-
-{{% onlyWhen openshift %}}
-
-
-## Installation of `oc`
-
-The straight-forward way to installing `oc` on your system is to install by downloading the binary.
-This is what we are going to do step by step.
-Choose the tab appropriate to your operating system.
-
-
-### Windows
-
-1. First, download `oc`. The following URL directly points to the latest stable `oc` version:
-
-   <https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-windows.zip>
-
-1. Unzip the downloaded archive with a ZIP program.
-1. Move the `oc` binary to a directory that is on your `PATH`.
-
-   {{% alert title="Note" color="primary" %}}
-   To check your `PATH`, open the command prompt and execute the following command:
-
-   ```
-   C:\> path
-   ```
-
-   {{% /alert %}}
-
-
-### macOS
-
-{{% alert title="Note" color="primary" %}}
-With Homebrew, use `brew install openshift-cli`.
 {{% /alert %}}
 
-1. First, download `oc`. The following URL directly points to the latest stable `oc` version:
+{{% /onlyWhen %}}
 
-   <https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-mac.tar.gz>
+{{% onlyWhen mobi %}}
+We are using the Mobi `kubedev` Kubernetes cluster. Use the following command to set the appropriate context:
 
-1. Change into the directory in which you downloaded the file. Unpack the archive, e.g. with:
+```bash
+kubectl config use-context kubedev
+```
 
-   ```bash
-   tar xvzf openshift-client-mac.tar.gz
-   ```
-
-1. Place the `oc` binary in a directory that is on your `PATH`.
-
-   {{% alert title="Note" color="primary" %}}
-   To check your `PATH`, execute the following command:
-
-   ```
-   echo $PATH
-   ```
-
-   {{% /alert %}}
-
-
-### Linux
-
-1. First, download `oc`. The following URL directly points to the latest stable `oc` version:
-
-   <https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz>
-
-1. Change into the directory in which you downloaded the file. Unpack the archive:
-
-   ```bash
-   tar xvzf openshift-client-linux.tar.gz
-   ```
-
-1. Place the `oc` binary in a directory that is on your `PATH`.
-
-   {{% alert title="Note" color="primary" %}}
-   To check your `PATH`, execute the following command:
-
-   ```
-   echo $PATH
-   ```
-
-   {{% /alert %}}
+{{% alert title="Warning" color="secondary" %}}
+Make sure you have setup your kubeconfig file correctly. Check your [CWIKI](https://cwiki.mobicorp.ch/confluence/display/ITContSol/Set+up+Kubectl) for instructions on how to configure it.
+{{% /alert %}}
 {{% /onlyWhen %}}
 
 
-## Verify installation
+## Namespaces
 
-You should now be able to execute `{{% param cliToolName %}}` in the command prompt. To test, execute:
+As a first step on the cluster we are going to create a new Namespace.
+
+A Namespace is the logical design used in Kubernetes to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). Authorized users inside a namespace are able to manage those resources. Namespace names have to be unique in your cluster.
+
+{{% onlyWhen rancher %}}
+{{% alert title="Note" color="primary" %}}
+Additionally, Rancher knows the concept of a [*Project*](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple Namespaces.
+{{% /alert %}}
+
+In the Rancher web console choose the Project called `techlab`.
+
+{{% onlyWhen mobi %}}
+We use the project `kubernetes-techlab` on the `kubedev` cluster.
+{{% /onlyWhen %}}
+
+{{% onlyWhenNot mobi %}}
+![Rancher Project](chooseproject.png)
+{{% /onlyWhenNot %}}
+
+{{% /onlyWhen %}}
+
+
+### Task {{% param sectionnumber %}}.1: Create a Namespace
+
+Create a new namespace in the lab environment. The `kubectl help` output can help you figure out the right command.
+
+{{% alert title="Note" color="primary" %}}
+Please choose an identifying name for your Namespace, e.g. your initials or name as a prefix.
+
+We are going to use `<namespace>` as a placeholder for your created Namespace.
+{{% /alert %}}
+
+
+### Solution
+
+To create a new Namespace on your cluster use the following command:
 
 ```bash
-{{% param cliToolName %}} version
+kubectl create namespace <namespace>
 ```
 
-You should now see something like (the version number may vary):
+{{% onlyWhen rancher %}}
+{{% alert title="Note" color="primary" %}}
+Namespaces created via `kubectl` have to be assigned to the correct Rancher Project in order to be visible in the Rancher web console. Please ask your teacher for this assignment. Or you can create the Namespace directly within the Rancher web console.
+{{% /alert %}}
+{{% /onlyWhen %}}
 
-{{% onlyWhenNot openshift %}}
+{{% alert title="Note" color="primary" %}}
+By using the following command, you can switch into another Namespace instead of specifying it for each `kubectl` command.
 
+Linux:
+
+```bash
+kubectl config set-context $(kubectl config current-context) --namespace <namespace>
 ```
-Client Version: version.Info{Major:"1", Minor:"18", GitVersion:"v1.18.0", GitCommit:"9e991415386e4cf155a24b1da15becaa390438d8", GitTreeState:"clean", BuildDate:"2020-03-25T14:58:59Z", GoVersion:"go1.13.8", Compiler:"gc", Platform:"linux/amd64"}
-...
+
+Windows:
+
+```bash
+kubectl config current-context
+SET KUBE_CONTEXT=[Insert output of the upper command]
+kubectl config set-context %KUBE_CONTEXT% --namespace <namespace>
 ```
 
+Some prefer to explicitly select the Namespace for each `kubectl` command by adding `--namespace <namespace>` or `-n <namespace>`. Others prefer helper tools like `kubens` (see [lab 2](../02/)).
+{{% /alert %}}
+
+{{% onlyWhen rancher %}}
+
+
+## Task {{% param sectionnumber %}}.2: Discover the Rancher web console
+
+Check the menu entries, there should neither appear any Deployments nor any Pods or Services in your Namespace.
+
+Display all existing Pods in the previously created Namespace with `kubectl` (there shouldn't yet be any):
+
+```bash
+kubectl get pod -n <namespace>
+```
+
+With the command `kubectl get` you can display all kinds of resources.
+{{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
+
+
+### Login on the Web Console
+
+{{% alert title="Note" color="primary" %}}
+Your teacher will provide you with the credentials to log in.
+{{% /alert %}}
+
+Open your browser, open the OpenShift cluster URL and log in using the provided credentials.
+
+
+### Login in the shell
+
+In order to log in on the shell, you can copy the login command from the Web Console and then paste it on the shell.
+
+To do that, open the Web Console and click on your username you see at the top right, then choose **Copy Login Command**.
+
+![oc-login](login-ocp.png)
+
+A new tab or window opens in your browser.
+
+{{% alert title="Note" color="primary" %}}
+You might need to login again.
+{{% /alert %}}
+
+The page now displays a link **Display token**.
+Click it and copy the command under **Log in with this token**.
+
+Now paste the copied command in your shell.
+
+
+### Verify login
+
+If you now execute `oc version` you should see something like this (version numbers may vary):
 
 ```
 Client Version: 4.5.7
-...
+Server Version: 4.5.7
+Kubernetes Version: v1.18.3+2cf11e2
 ```
 
-{{% /onlyWhen %}}
 
-If you don't see a similar output, possibly there are issues with the `PATH` variable.
+## Projects
 
-{{% alert title="Warning" color="secondary" %}}
-{{% onlyWhenNot openshift %}}
-Make sure to use at least version 1.16.x for your `kubectl`
-{{% /onlyWhenNot %}}
-{{% onlyWhen openshift %}}
-Make sure to use at least `oc` version `4.5.x`.
-{{% /onlyWhen %}}
+As a first step on the cluster we are going to create a new Project.
+
+A Project is the logical design used in OpenShift to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis.
+Authorized users inside a Project are able to manage those resources. Project names have to be unique in your cluster.
+
+
+### Task {{% param sectionnumber %}}.1: Create a Project
+
+Create a new Project in the lab environment. The `oc help` output can help you figure out the right command.
+
+{{% alert title="Note" color="primary" %}}
+Please choose an identifying name for your Project, e.g. your initials or name as a prefix. We are going to use `<project>` as a placeholder for your created Project.
+{{% /alert %}}
+
+
+### Solution
+
+To create a new Project on your cluster use the following command:
+
+```bash
+oc new-project <project>
+```
+
+{{% alert title="Note" color="primary" %}}
+Some prefer to explicitly select the Project for each `oc` command by adding `--namespace <project>` or `-n <project>`.
+
+By using the following command, you can switch into another Project instead of specifying it for each `oc` command.
+
+```bash
+oc project <project>
+```
 
 {{% /alert %}}
 
 
-## Completion for Bash and Zsh (optional)
+## Task {{% param sectionnumber %}}.2: Discover the OpenShift web console
 
-You can activate Bash completion:
+Discover the different menu entries in the two views, the **Developer** and the **Administrator** view.
 
-```bash
-source <({{% param cliToolName %}} completion bash)
-```
-
-As well as for Zsh:
+Display all existing Pods in the previously created Project with `oc` (there shouldn't yet be any):
 
 ```bash
-source <({{% param cliToolName %}} completion zsh)
+oc get pod --namespace <project>
 ```
 
-To make it permanent, you can put that command in your Bash configuration file:
-
-```bash
-echo "source <({{% param cliToolName %}} completion bash)" >> ~/.bashrc
-```
-
-On most Linux systems, you have to install the `bash-completion` package to make the completion work.
-
-Debian/Ubuntu:
-
-```bash
-sudo apt install bash-completion
-```
-
-Fedora:
-
-```bash
-sudo dnf install bash-completion
-```
-
-{{% onlyWhen openshift %}}
-
-
-## First steps with oc
-
-The `oc` binary has many commands and sub-commands. Invoke `oc --help` to get a list of all commands; `oc <command> --help` gives you detailed help information about a command.
-
-If you don't want to memorize all `oc` options then use the `oc` cheat sheet: <https://developers.redhat.com/cheat-sheets/red-hat-openshift-container-platform>
-
-
-## Other tools to work with OpenShift
-
-* [CodeReady Containers](https://developers.redhat.com/products/codeready-containers/overview)
-* [CodeReady Workspaces](https://developers.redhat.com/products/codeready-workspaces/overview)
+{{% alert title="Note" color="primary" %}}
+With the command `oc get` you can display all kinds of resources.
+{{% /alert %}}
 {{% /onlyWhen %}}
-{{% onlyWhenNot openshift %}}
-
-
-## First steps with kubectl
-
-The `kubectl` binary has many commands and sub-commands. Invoke `kubectl -h` to get a list of all commands; `kubectl <command> -h` gives you detailed help about a command.
-
-If you don't want to memorize all `kubectl` options then use the `kubectl` cheat sheet: <https://kubernetes.io/docs/reference/kubectl/cheatsheet/>
-
-
-## Optional power tools for kubectl
-
-`kubectx` and `kubens` are two handy shell scripts which let you easily switch between Kubernetes contexts and namespaces. See <https://github.com/ahmetb/kubectx> for detailed instructions.
-
-Installation of `kubectx` and `kubens`:
-
-```bash
-curl https://raw.githubusercontent.com/ahmetb/kubectx/master/kubectx -o ~/bin/kubectx
-curl https://raw.githubusercontent.com/ahmetb/kubectx/master/kubens -o ~/bin/kubens
-chmod +x ~/bin/kubectx ~/bin/kubens
-```
-
-`kube-ps1` is another helpful shell script which adds the current context and namespace to the shell prompt: <https://github.com/jonmosco/kube-ps1>
-
-`fzf` is yet another handy helper tool when you have to deal with a lot of contexts or namespaces by adding an interactive menu to `kubectx`and `kubens`: <https://github.com/junegunn/fzf>
-
-`stern` is a very powerful enhancement of `kubectl logs` and lets you tail logs of multiple containers and Pods at the same time: <https://github.com/wercker/stern>.
-
-
-## Other tools to work with Kubernetes
-
-* <https://github.com/lensapp/lens>
-{{% /onlyWhenNot %}}
