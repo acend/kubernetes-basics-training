@@ -1,6 +1,6 @@
 ---
 title: "Installation for Mac"
-weight: 3
+weight: 4
 type: docs
 sectionnumber: 1
 onlyWhenNot: openshift

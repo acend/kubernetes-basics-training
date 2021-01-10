@@ -1,6 +1,6 @@
 ---
 title: "Verify the installation"
-weight: 4
+weight: 6
 type: docs
 sectionnumber: 1
 ---

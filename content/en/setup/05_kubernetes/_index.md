@@ -1,6 +1,6 @@
 ---
 title: "Optional power tools for kubectl"
-weight: 4
+weight: 7
 type: docs
 sectionnumber: 1
 onlyWhenNot: openshift
