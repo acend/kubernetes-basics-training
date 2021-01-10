@@ -1,12 +1,12 @@
 ---
-title: "Installation for Mac"
+title: "Installation for macOS"
 weight: 4
 type: docs
 sectionnumber: 1
 onlyWhenNot: openshift
 ---
 
-## Installation for Mac
+## Installation for macOS
 
 Follow the steps outlined in <https://kubernetes.io/docs/tasks/tools/install-kubectl/>.
 
