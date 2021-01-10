@@ -3,7 +3,6 @@ title: "Verify the installation"
 weight: 4
 type: docs
 sectionnumber: 1
-onlyWhenNot: openshift
 ---
 
 ## Verify the installation
