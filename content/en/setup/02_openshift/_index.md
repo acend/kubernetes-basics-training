@@ -1,12 +1,12 @@
 ---
-title: "Installation for Mac"
-weight: 3
+title: "Installation for macOS"
+weight: 4
 type: docs
 sectionnumber: 1
 onlyWhen: openshift
 ---
 
-## Installation for Mac
+## Installation for macOS
 
 The straight-forward way to installing `oc` on your system is to install by downloading the binary.
 This is what we are going to do step by step.

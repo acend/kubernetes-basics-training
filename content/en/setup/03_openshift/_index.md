@@ -1,6 +1,6 @@
 ---
 title: "Installation for Linux"
-weight: 3
+weight: 5
 type: docs
 sectionnumber: 1
 onlyWhen: openshift
