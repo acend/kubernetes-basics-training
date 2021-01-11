@@ -73,5 +73,5 @@ The CronJob's definition will remind you of the Deployment's structure, or reall
 Further information can be found in the [Kubernetes CronJob documentation](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/).
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
-Further information can be found in the [OpenShift CronJob documentation](https://docs.openshift.com/container-platform/4.6/nodes/jobs/nodes-nodes-jobs.html).
+Further information can be found in the [OpenShift CronJob documentation](https://docs.openshift.com/container-platform/latest/nodes/jobs/nodes-nodes-jobs.html).
 {{% /onlyWhen %}}
