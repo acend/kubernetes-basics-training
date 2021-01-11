@@ -203,9 +203,9 @@ Now paste the copied command in your shell.
 If you now execute `oc version` you should see something like this (version numbers may vary):
 
 ```
-Client Version: 4.5.7
-Server Version: 4.5.7
-Kubernetes Version: v1.18.3+2cf11e2
+Client Version: 4.6.9
+Server Version: 4.6.9
+Kubernetes Version: v1.19.0+7070803
 ```
 
 

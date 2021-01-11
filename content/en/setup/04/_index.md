@@ -26,7 +26,7 @@ Client Version: version.Info{Major:"1", Minor:"18", GitVersion:"v1.18.0", GitCom
 {{% onlyWhen openshift %}}
 
 ```
-Client Version: 4.5.7
+Client Version: 4.6.9
 ...
 ```
 
@@ -39,7 +39,7 @@ If you don't see a similar output, possibly there are issues with the `PATH` var
 Make sure to use at least version 1.16.x for your `kubectl`
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
-Make sure to use at least `oc` version `4.5.x`.
+Make sure to use at least `oc` version `4.6.x`.
 {{% /onlyWhen %}}
 
 {{% /alert %}}
