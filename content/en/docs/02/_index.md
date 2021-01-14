@@ -7,7 +7,7 @@ sectionnumber: 2
 In this lab, we will interact with the {{% param distroName %}} cluster for the first time.
 
 {{% alert title="Warning" color="secondary" %}}
-Please make sure you completed [lab 1](../01/) before you continue with this lab.
+Please make sure you completed [the setup](../../setup/) before you continue with this lab.
 {{% /alert %}}
 
 
