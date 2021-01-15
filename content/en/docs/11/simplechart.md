@@ -15,7 +15,7 @@ First let's create our chart:
 helm create mychart
 ```
 
-You'll now find a `mychart` directory with the newly created chart. It already is a valid and fully functional chart which deploys nginx. Have a look at the generated files and their content. For an explanation of the files, visit the [Helm Developer Documentation](https://docs.helm.sh/developing_charts/#the-chart-file-structure). In a later section you'll find all the information about Helm templates.
+You'll now find a `mychart` directory with the newly created chart. It already is a valid and fully functional chart which deploys Nginx. Have a look at the generated files and their content. For an explanation of the files, visit the [Helm Developer Documentation](https://docs.helm.sh/developing_charts/#the-chart-file-structure). In a later section you'll find all the information about Helm templates.
 
 
 ## Task {{% param sectionnumber %}}.2: Install Release
@@ -44,7 +44,7 @@ helm ls --namespace <namespace>
 
 ## Task {{% param sectionnumber %}}.3: Expose Application
 
-Our freshly deployed nginx is not yet accessible from outside of the Kubernetes cluster. To expose it, we have to change the Service type to `NodePort`.
+Our freshly deployed Nginx is not yet accessible from outside the Kubernetes cluster. To expose it, we have to change the Service type to `NodePort`.
 Search now for the Service type definition in your chart and make the change.
 
 
@@ -59,7 +59,7 @@ spec:
 ...
 ```
 
-Thus we need to change this value inside our `values.yaml` file:
+Thus, we need to change this value inside our `values.yaml` file:
 
 ```yaml
 ...
@@ -82,7 +82,7 @@ You will see in the following command's output when the Service gets a `NodePort
 kubectl get svc --namespace <namespace> --watch
 ```
 
-nginx is now available at the given port number indicated by the `NodePort` and should display a welcome page when accessing it with `curl` or your browser of choice.
+Nginx is now available at the given port number indicated by the `NodePort` and should display a welcome page when accessing it with `curl` or your browser of choice.
 
 
 {{% alert title="Note" color="primary" %}}
@@ -94,7 +94,7 @@ Use `kubectl get node -o wide` to get a node ip address. Remember, [NodePort's](
 
 An alternative way to set or overwrite values for charts we want to deploy is the `--set name=value` parameter. `--set name=value` can be used when installing a chart as well as upgrading.
 
-Update the replica count of your nginx Deployment to 2 using `--set name=value`
+Update the replica count of your Nginx Deployment to 2 using `--set name=value`
 
 
 ### Solution Task 4

@@ -122,7 +122,7 @@ Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-c
 
 ## Deployment hooks on OpenShift
 
-A similar concepts are the so called pre and post deployment hooks. Those hooks basically give the possibility to execute pods during before and after a deployment is in progress
+A similar concept are the so-called pre and post deployment hooks. Those hooks basically give the possibility to execute Pods before and after a deployment is in progress.
 
 Check out the [official documentation](https://docs.openshift.com/container-platform/latest/applications/deployments/deployment-strategies.html) for further information.
 {{% /onlyWhen %}}

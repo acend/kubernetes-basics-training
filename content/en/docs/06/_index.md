@@ -149,7 +149,7 @@ Then execute the port forwarding command using the Pod's name:
 ```
 
 {{% alert title="Note" color="primary" %}}
-Use the additional parameter `--address <IP address>` (where `<IP address>` refers to a NIC's IP address from your local workstation) if you want to access the forwarded port from outside of your own local workstation.
+Use the additional parameter `--address <IP address>` (where `<IP address>` refers to a NIC's IP address from your local workstation) if you want to access the forwarded port from outside your own local workstation.
 {{% /alert %}}
 
 The output of the command should look like this:
@@ -178,9 +178,9 @@ The `{{% param cliToolName %}} port-forward` process runs as long as it is not t
 
 ## Progress
 
-At this point of the Lab, you are able to visualize your progress on the labs by browsing to the following page <http://localhost:5000/progress>
+At this point, you are able to visualize your progress on the labs by browsing to the following page <http://localhost:5000/progress>
 
-You may need to set some extra permissions to let the dashboard monitor your progress. Have Fun!
+You may need to set some extra permissions to let the dashboard monitor your progress. Have fun!
 
 ```bash
 {{% param cliToolName %}} create rolebinding progress --clusterrole=view --serviceaccount=<namespace>:default --namespace=<namespace>

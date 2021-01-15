@@ -7,7 +7,7 @@ sectionnumber: 12.1
 Ok, let's start with Helm.
 First, you have to understand the following 3 Helm concepts: **Chart**, **Repository** and **Release**.
 
-A **Chart** is a Helm package. It contains all of the resource definitions necessary to run an application, tool, or service inside of a Kubernetes cluster. Think of it like the Kubernetes equivalent of a Homebrew formula, an Apt dpkg, or a Yum RPM file.
+A **Chart** is a Helm package. It contains all the resource definitions necessary to run an application, tool, or service inside a Kubernetes cluster. Think of it like the Kubernetes equivalent of a Homebrew formula, an Apt dpkg, or a Yum RPM file.
 
 A **Repository** is the place where charts can be collected and shared. It’s like Perl’s CPAN archive or the Fedora Package Database, but for Kubernetes packages.
 

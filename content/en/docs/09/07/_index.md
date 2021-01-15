@@ -15,7 +15,7 @@ In a sidecar pattern, the functionality of the main container is extended or enh
 
 * Different resource profiles, i.e. independent resource accounting and allocation
 * Clear separation of concerns at packaging level, i.e. no strong coupling between containers
-* Reusability, i.e. sidecar containers can be paired with numerous different "main" containers
+* Reusability, i.e., sidecar containers can be paired with numerous "main" containers
 * Failure containment boundary, making it possible for the overall system to degrade gracefully
 * Independent testing, packaging, upgrade, deployment and if necessary rollback
 

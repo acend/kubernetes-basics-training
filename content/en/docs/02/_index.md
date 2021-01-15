@@ -76,16 +76,16 @@ kubectl config use-context kubedev
 ```
 
 {{% alert title="Warning" color="secondary" %}}
-Make sure you have setup your kubeconfig file correctly. Check your [CWIKI](https://cwiki.mobicorp.ch/confluence/display/ITContSol/Set+up+Kubectl) for instructions on how to configure it.
+Make sure you have set up your kubeconfig file correctly. Check your [CWIKI](https://cwiki.mobicorp.ch/confluence/display/ITContSol/Set+up+Kubectl) for instructions on how to configure it.
 {{% /alert %}}
 {{% /onlyWhen %}}
 
 
 ## Namespaces
 
-As a first step on the cluster we are going to create a new Namespace.
+As a first step on the cluster, we are going to create a new Namespace.
 
-A Namespace is the logical design used in Kubernetes to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). Authorized users inside a namespace are able to manage those resources. Namespace names have to be unique in your cluster.
+A Namespace is a logical design used in Kubernetes to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). Authorized users inside a namespace are able to manage those resources. Namespace names have to be unique in your cluster.
 
 {{% onlyWhen rancher %}}
 {{% alert title="Note" color="primary" %}}
@@ -189,7 +189,7 @@ To do that, open the Web Console and click on your username you see at the top r
 A new tab or window opens in your browser.
 
 {{% alert title="Note" color="primary" %}}
-You might need to login again.
+You might need to log in again.
 {{% /alert %}}
 
 The page now displays a link **Display token**.
@@ -211,9 +211,9 @@ Kubernetes Version: v1.19.0+7070803
 
 ## Projects
 
-As a first step on the cluster we are going to create a new Project.
+As a first step on the cluster, we are going to create a new Project.
 
-A Project is the logical design used in OpenShift to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis.
+A Project is a logical design used in OpenShift to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis.
 Authorized users inside a Project are able to manage those resources. Project names have to be unique in your cluster.
 
 

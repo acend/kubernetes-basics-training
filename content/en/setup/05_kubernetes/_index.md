@@ -20,7 +20,7 @@ chmod +x ~/bin/kubectx ~/bin/kubens
 
 `kube-ps1` is another helpful shell script which adds the current context and namespace to the shell prompt: <https://github.com/jonmosco/kube-ps1>
 
-`fzf` is yet another handy helper tool when you have to deal with a lot of contexts or namespaces by adding an interactive menu to `kubectx`and `kubens`: <https://github.com/junegunn/fzf>
+`fzf` is yet another handy helper tool when you have to deal with a lot of contexts or namespaces by adding an interactive menu to `kubectx` and `kubens`: <https://github.com/junegunn/fzf>
 
 `stern` is a very powerful enhancement of `kubectl logs` and lets you tail logs of multiple containers and Pods at the same time: <https://github.com/wercker/stern>.
 

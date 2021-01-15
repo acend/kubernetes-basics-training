@@ -18,7 +18,7 @@ Use the existing Namespace `<username>-resources` for this lab.
 
 ## Namespace creation
 
-Make sure you're logged in on the Rancher web console. Choose the appropriate cluster and click on __Projects/Namespaces__. Under the Project kubernetes-quotalab click on __Add Namespace__.
+Make sure you're logged in on the Rancher web console. Choose the appropriate cluster and click on __Projects/Namespaces__. Under the Project `kubernetes-quotalab` click on __Add Namespace__.
 
 Choose a name for your Namespace, e.g. in the form of `<yourname>`-quota, expand the __Container Default Resource Limit__ view and set the following values:
 
@@ -67,7 +67,7 @@ For more details, have look into [OpenShift's documentation about resource quota
 
 As we've already seen, compute ResourceQuotas limit the amount of memory and CPU we can use in a {{% onlyWhenNot openshift %}}Namespace{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Project{{% /onlyWhen %}}. Only defining a ResourceQuota, however is not going to have an effect on Pods that don't define the amount of resources they want to use. This is where the concept of limits and requests comes into play.
 
-Limits and requests on a Pod, or rather on a container in a Pod, define how much memory and CPU this container wants to consume at least (request) and at most (limit). Requests mean that the container will be guaranteed to get at least this amount of resources, limits represent the upper boundary which cannot be crossed. Defining these values helps {{% param distroName %}} in determining on which Node to schedule the Pod, because it knows how many resources should be available for it.
+Limits and requests on a Pod, or rather on a container in a Pod, define how much memory and CPU this container wants to consume at least (request) and at most (limit). Requests mean that the container will be guaranteed to get at least this amount of resources, limits represent the upper boundary which cannot be crossed. Defining these values helps {{% param distroName %}} in determining on which Node to schedule the Pod because it knows how many resources should be available for it.
 
 {{% alert title="Note" color="primary" %}}
 Containers using more CPU time than what their limit allows will be throttled.
@@ -141,7 +141,7 @@ Quoting the [Kubernetes documentation](https://kubernetes.io/docs/concepts/polic
 * Enforce a ratio between request and limit for a resource in a Namespace
 * Set default request/limit for compute resources in a Namespace and automatically inject them to containers at runtime
 
-If for example a container did not define any requests or limits and there was a LimitRange defining default values, these default values would be used when deploying said container. However, as soon as limits or requests were defined, the default values would no longer be applied.
+If for example a container did not define any requests or limits and there was a LimitRange defining the default values, these default values would be used when deploying said container. However, as soon as limits or requests were defined, the default values would no longer be applied.
 
 The possibility of enforcing minimum and maximum resources and defining ResourceQuotas per Namespace allows for many combinations of resource control.
 
@@ -154,7 +154,7 @@ Check whether your Namespace contains a LimitRange:
 {{% param cliToolName %}} describe limitrange --namespace <namespace>
 ```
 
-Above command should output this (name and Namespace will vary):
+The above command should output this (name and Namespace will vary):
 
 ```
 Name:       ce01a1b6-a162-479d-847c-4821255cc6db
@@ -172,7 +172,7 @@ Check whether a ResourceQuota exists in your Namespace:
 {{% param cliToolName %}} describe quota --namespace <namespace>
 ```
 
-Above command could (must not) output this (name and Namespace will vary):
+The above command could (must not) output this (name and Namespace will vary):
 
 ```
 Name:            lab-quota

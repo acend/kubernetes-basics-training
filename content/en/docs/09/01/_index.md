@@ -16,7 +16,7 @@ This lab does not depend on other labs.
 
 ## Consistent hostnames
 
-While in normal Deployments a hash based name of the Pods (also represented as the hostname inside the Pod) is generated, StatefulSets create Pods with preconfigured names.
+While in normal Deployments a hash-based name of the Pods (also represented as the hostname inside the Pod) is generated, StatefulSets create Pods with preconfigured names.
 An example of a RabbitMQ cluster with three instances (Pods) could look like this:
 
 ```
@@ -38,7 +38,7 @@ Let's use our RabbitMQ example again:
 1. `rabbitmq-3` is started
 1. As soon as Pod `rabbitmq-3` is in `Ready` state the same procedure starts for `rabbitmq-4`
 
-When scaling down the order is inverted. The highest-numbered Pod will be stopped first.
+When scaling down, the order is inverted. The highest-numbered Pod will be stopped first.
 As soon as it has finished terminating the now highest-numbered Pod is stopped.
 This procedure is repeated as long as the desired number of replicas has not been reached.
 
@@ -64,7 +64,7 @@ This spares you from defining identical Deployments with 1 replica each but diff
 
 ## Conclusion
 
-The controllable and predictable behaviour can be a perfect match for applications such as RabbitMQ or etcd, as you need unique names for such application clusters.
+The controllable and predictable behavior can be a perfect match for applications such as RabbitMQ or etcd, as you need unique names for such application clusters.
 
 
 ## Task {{% param sectionnumber %}}.1: Create a StatefulSet
@@ -125,7 +125,7 @@ kubectl set image statefulset nginx-cluster nginx=docker-registry.mobicorp.ch/pu
 
 ## Task {{% param sectionnumber %}}.4: Rollback
 
-Imagine you just realized that switching to the `latest` image tag was a really bad idea (because it is generally not advisable).
+Imagine you just realized that switching to the `latest` image tag was an awful idea (because it is generally not advisable).
 Rollback the change:
 
 ```bash

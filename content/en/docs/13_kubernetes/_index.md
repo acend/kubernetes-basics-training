@@ -8,9 +8,9 @@ onlyWhenNot: openshift
 
 In this lab you will deploy the Web Console to your Namespace.
 
-To make Kubernetes workload visible there are many options. In our limited namespace we are not allowed to create a read-only user who can access more than our own namespace. Therefore this labs uses a small Web Console which can be installed in our Namespace to make our workload visible.
+To make Kubernetes workload visible there are many options. In our limited namespace we are not allowed to create a read-only user who can access more than our own namespace. Therefore, this lab uses a small Web Console which can be installed in our Namespace to make our workload visible.
 
-The [Web Console](http://kubeview.benco.io/) which will be used, is a small project to make some Kubernetes ressources visible.
+The [Web Console](http://kubeview.benco.io/) which will be used, is a small project to make some Kubernetes resources visible.
 
 
 ## Task {{% param sectionnumber %}}.1: Install the Web Console
@@ -47,12 +47,12 @@ Now we see all our deployments in our Namespace.
 
 ## Task {{% param sectionnumber %}}.4: Scale your workload
 
-Since we have completed all the Labs before we should now be able to scale the Pods from our workload. We will see how the Web Console changes after refreshing the page. Let's do it!
+Since we have completed all the Labs before, we should now be able to scale the Pods from our workload. We will see how the Web Console changes after refreshing the page. Let's do it!
 
 
-## Additional informations
+## Additional information
 
-This Lab is just a small demonstration of an working Web Console for Kubernetes. To get an idea of other Dashboards check the following links for more informations.
+This Lab is just a small demonstration of a working Web Console for Kubernetes. To get an idea of other Dashboards check the following links for more information.
 
 * [GitHub Repo (kubeview)](https://github.com/benc-uk/kubeview)
 * [Official Web Console](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)

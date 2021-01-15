@@ -25,7 +25,7 @@ Make sure you are in OpenShift's **Developer** view (upper left dropdown) and ha
 
 ![selection](selection.png)
 
-Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Instantiate Template**. A form opens. Check that the first field corresponds to the correct Project and set the MariaDB Database Name field to `acendexampledb` and leave the remaining fields as they are. Finally click **Create** at the end of the form.
+Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Instantiate Template**. A form opens. Check that the first field corresponds to the correct Project and set the MariaDB Database Name field to `acendexampledb` and leave the remaining fields as they are. Finally, click **Create** at the end of the form.
 
 
 ### Instantiate a template using the CLI
@@ -71,14 +71,14 @@ The Template's content reveals a Secret, a Service and a DeploymentConfig.
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 
-We are first going to create a so-called _Secret_ in which we store sensitive data like the databasename, the password, the rootpassword and the username. The secret will be used to access the database and also to create the initial database.
+We are first going to create a so-called _Secret_ in which we store sensitive data like the database name, the password, the root password, and the username. The secret will be used to access the database and also to create the initial database.
 
 ```bash
 kubectl create secret generic mariadb --from-literal=database-name=acendexampledb --from-literal=database-password=mysqlpassword --from-literal=database-root-password=mysqlrootpassword --from-literal=database-user=acend-user --namespace <namespace>
 ```
 {{% /onlyWhenNot %}}
 
-The Secret contains the database name, user, passwort and the root password. However, these values will neither be shown with `{{% param cliToolName %}} get` nor with `{{% param cliToolName %}} describe`:
+The Secret contains the database name, user, password, and the root password. However, these values will neither be shown with `{{% param cliToolName %}} get` nor with `{{% param cliToolName %}} describe`:
 
 ```bash
 {{% param cliToolName %}} get secret mariadb --output yaml --namespace <namespace>
@@ -114,7 +114,7 @@ By default, Secrets are not encrypted!
 {{% onlyWhenNot openshift %}}Kubernetes 1.13 [offers this capability](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/){{% /onlyWhenNot %}}. Another option would be the use of a secrets management solution like [Vault by HashiCorp](https://www.vaultproject.io/).
 {{% /alert %}}
 {{% onlyWhen openshift %}}
-The interesting thing about Secrets is that they can be reused. We could extract all the plaintext values from the Secret but it's way easier to instead simply refer to its values inside the Deployment or DeploymentConfig (as in this lab):
+The interesting thing about Secrets is that they can be reused. We could extract all the plaintext values from the Secret, but it's way easier to instead simply refer to its values inside the Deployment or DeploymentConfig (as in this lab):
 
 ```bash
 oc get dc mariadb --output yaml --namespace <namespace>
@@ -204,7 +204,7 @@ The environment variables defined in the deployment configure the MariaDB Pod an
 
 ## Task {{% param sectionnumber %}}.2: Attach the database to the application
 
-By default, our `example-web-python` application uses a SQLite memory database. However, this can be changed by defining the following environment variable(`MYSQL_URI`) to use the newly created MariaDB database:
+By default, our `example-web-python` application uses an SQLite memory database. However, this can be changed by defining the following environment variable(`MYSQL_URI`) to use the newly created MariaDB database:
 
 ```
 #MYSQL_URI=mysql://<user>:<password>@<host>/<database>
@@ -213,7 +213,7 @@ MYSQL_URI=mysql://acend-user:mysqlpassword@mariadb/acendexampledb
 
 The connection string our `example-web-python` application uses to connect to our new MariaDB, is a concatenated string from the values of the `mariadb` Secret.
 
-For the actual MariaDB host, you can either use the MariaDB Service's ClusterIP or DNS name as address. All Services and Pods can be resolved by DNS using their name.
+For the actual MariaDB host, you can either use the MariaDB Service's ClusterIP or DNS name as the address. All Services and Pods can be resolved by DNS using their name.
 
 The following commands sets the environment variables for the deployment configuration of the `example-web-python` application
 
@@ -328,7 +328,7 @@ show tables;
 
 ## Task {{% param sectionnumber %}}.4: Import a database dump
 
-Our task is now to import this [dump.sql](https://raw.githubusercontent.com/acend/kubernetes-basics-training/master/content/en/docs/07/dump.sql) into the MariaDB database running as a Pod. Use the `mysql` command line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
+Our task is now to import this [dump.sql](https://raw.githubusercontent.com/acend/kubernetes-basics-training/master/content/en/docs/07/dump.sql) into the MariaDB database running as a Pod. Use the `mysql` command-line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
 
 {{% alert title="Note" color="primary" %}}
 You can also copy local files into a Pod using `{{% param cliToolName %}} cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the Pod and use `curl -O <url>`.
