@@ -12,7 +12,7 @@ In this lab, we are going to deploy our first container image and look at the co
 After we've familiarized ourselves with the platform, we are going to have a look at deploying a pre-built container image from Quay.io or any other public container registry.
 
 {{% onlyWhen openshift %}}
-In OpenShift we have used the `<project>` identifier to select the correct project. Please use the same identifier in the context `<namespace>` to do the same for all the next labs. Ask your trainer if you want to have more informations about that.
+In OpenShift we have used the `<project>` identifier to select the correct project. Please use the same identifier in the context `<namespace>` to do the same for all upcoming labs. Ask your trainer if you want to have more informations about that.
 {{% /onlyWhen %}}
 
 First, we are going to directly start a new Pod:
