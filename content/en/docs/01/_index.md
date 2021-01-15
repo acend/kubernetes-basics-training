@@ -156,14 +156,28 @@ A Service is unique inside a Namespace.
 
 ### Deployment
 
-Please follow <https://kubernetes.io/docs/concepts/workloads/controllers/deployment/>.
+{{% onlyWhenNot openshift %}}
+Have a look at the [official documentation](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/).
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
+Have a look at the [official documentation](https://docs.openshift.com/container-platform/latest/applications/deployments/what-deployments-are.html).
+{{% /onlyWhen %}}
 
 
 ### Volume
 
-Please follow <https://kubernetes.io/docs/concepts/storage/volumes/>.
-
+{{% onlyWhenNot openshift %}}
+Have a look at the [official documentation](https://kubernetes.io/docs/concepts/storage/volumes/).
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
+Have a look at the [official documentation](https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-volumes.html).
+{{% /onlyWhen %}}
 
 ### Job
 
-Please follow <https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/>.
+{{% onlyWhenNot openshift %}}
+Have a look at the [official documentation](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/).
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
+Have a look at the [official documentation](https://docs.openshift.com/container-platform/latest/nodes/jobs/nodes-nodes-jobs.html).
+{{% /onlyWhen %}}
