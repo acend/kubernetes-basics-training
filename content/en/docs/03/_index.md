@@ -86,7 +86,7 @@ deployment.apps/example-web-go created
 
 We're using a simple sample application written in Go which you can find built as an image on [Quay.io](https://quay.io/repository/acend/example-web-go/) or its source on [GitHub](https://github.com/acend/awesome-apps).
 
-{{% param distroName %}} creates the defined and necessary resources, pulls the container image (in this case from Docker Hub) and deploys the Pod.
+{{% param distroName %}} creates the defined and necessary resources, pulls the container image (in this case from Quay.io) and deploys the Pod.
 
 Use the command `{{% param cliToolName %}} get` with the `-w` parameter in order to get the requested resources and afterwards watch for changes.
 
