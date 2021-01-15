@@ -74,7 +74,7 @@ Make use of the Kubernetes documentation about Ingress resources.
 
 Your Ingress resource should look similar to this:
 
-{{< highlight yaml >}}{{< readfile file="content/en/docs/13_openshift/ingress_v1beta1.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/13_openshift/ingress_v1.yaml" >}}{{< /highlight >}}
 
 
 ### Deployments and DeploymentConfigs
