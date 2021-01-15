@@ -84,7 +84,7 @@ The output should be:
 deployment.apps/example-web-go created
 ```
 
-We're using a simple sample application written in Go, which you can find built as an image on [Quay.io](https://quay.io/repository/acend/example-web-go/) or its source on [GitHub](https://github.com/acend/awesome-apps).
+We're using a simple sample application written in Go, which you can find built as an image on [Quay.io](https://quay.io/repository/acend/example-web-go/) or as source code on [GitHub](https://github.com/acend/awesome-apps).
 
 {{% param distroName %}} creates the defined and necessary resources, pulls the container image (in this case from Quay.io) and deploys the Pod.
 
