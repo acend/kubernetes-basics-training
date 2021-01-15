@@ -37,7 +37,7 @@ Do not execute these steps if you already have created a MariaDB database using 
 We are going to instantiate the MariaDB Template from the `openshift` Project. Before we can do that, we need to know what parameters the Template expects. Let's find out:
 
 ```bash
-oc process --parameters mariadb-ephemeral --namespace openshift
+oc process --parameters openshift//mariadb-ephemeral
 ```
 
 ```
@@ -55,7 +55,7 @@ MARIADB_VERSION         Version of MariaDB image to be used (10.2 or latest).   
 As you might already see, each of the parameters has a default value ("VALUE" column). Also, the parameters `MYSQL_USER`, `MYSQL_PASSWORD` and `MYSQL_ROOT_PASSWORD` are going to be generated ("GENERATOR" is set to `expression` and "VALUE" contains a regular expression). This means we don't necessarily have to overwrite any of them so let's simply use those defaults:
 
 ```bash
-oc process mariadb-ephemeral -pMYSQL_DATABASE=acendexampledb  --namespace openshift | oc apply -f -
+oc process --parameters openshift//mariadb-ephemeral -pMYSQL_DATABASE=acendexampledb  | oc apply --namespace=<namespace> -f -
 ```
 
 
