@@ -55,7 +55,7 @@ MARIADB_VERSION         Version of MariaDB image to be used (10.2 or latest).   
 As you might already see, each of the parameters has a default value ("VALUE" column). Also, the parameters `MYSQL_USER`, `MYSQL_PASSWORD` and `MYSQL_ROOT_PASSWORD` are going to be generated ("GENERATOR" is set to `expression` and "VALUE" contains a regular expression). This means we don't necessarily have to overwrite any of them so let's simply use those defaults:
 
 ```bash
-oc process --parameters openshift//mariadb-ephemeral -pMYSQL_DATABASE=acendexampledb  | oc apply --namespace=<namespace> -f -
+oc process openshift//mariadb-ephemeral -pMYSQL_DATABASE=acendexampledb  | oc apply --namespace=<namespace> -f -
 ```
 
 
