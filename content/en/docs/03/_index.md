@@ -12,7 +12,7 @@ In this lab, we are going to deploy our first container image and look at the co
 After we've familiarized ourselves with the platform, we are going to have a look at deploying a pre-built container image from Quay.io or any other public container registry.
 
 {{% onlyWhen openshift %}}
-In OpenShift we have used the `<project>` identifier to select the correct project. Please use the same identifier in the context `<namespace>` to do the same for all upcoming labs. Ask your trainer if you want to have more informations about that.
+In OpenShift we have used the `<project>` identifier to select the correct project. Please use the same identifier in the context `<namespace>` to do the same for all upcoming labs. Ask your trainer if you want to have more information about that.
 {{% /onlyWhen %}}
 
 First, we are going to directly start a new Pod:
@@ -88,7 +88,7 @@ We're using a simple sample application written in Go, which you can find built 
 
 {{% param distroName %}} creates the defined and necessary resources, pulls the container image (in this case from Quay.io) and deploys the Pod.
 
-Use the command `{{% param cliToolName %}} get` with the `-w` parameter in order to get the requested resources and afterwards watch for changes.
+Use the command `{{% param cliToolName %}} get` with the `-w` parameter in order to get the requested resources and afterward watch for changes.
 
 {{% alert title="Note" color="primary" %}}
 The `{{% param cliToolName %}} get -w` command will never end unless you terminate it with `CTRL-c`.
@@ -155,7 +155,7 @@ NAME                              READY   STATUS    RESTARTS   AGE
 example-web-go-69b658f647-xnm94   1/1     Running   0          39s
 ```
 
-The Deployment defines that one replica should be deployed --- which is running as we can see in the output. This Pod is not yet reachable from outside of the cluster.
+The Deployment defines that one replica should be deployed --- which is running as we can see in the output. This Pod is not yet reachable from outside the cluster.
 
 {{% onlyWhen rancher %}}
 
@@ -212,7 +212,7 @@ Let's watch the image build's process:
 oc logs bc/example-web-go --follow --namespace <namespace>
 ```
 
-The message `Push successful` signifies the image's succesful build and push to OpenShift's internal image.
+The message `Push successful` signifies the image's successful build and push to OpenShift's internal image.
 
 In the above command you discovered a new resource type `bc` which is the abbreviation for _BuildConfig_.
 A BuildConfig defines how a container image has to be built.

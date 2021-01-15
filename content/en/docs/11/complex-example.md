@@ -56,7 +56,7 @@ bitnami         https://charts.bitnami.com/bitnami
 
 Now look at the available configuration for this Helm chart. Usually you can find them in the [`values.yaml`](https://github.com/bitnami/charts/blob/master/bitnami/wordpress/values.yaml) or in the chart's readme file. You can also check them on its [Helm Hub page](https://hub.helm.sh/charts/bitnami/wordpress).
 
-We are going to override some of the values. For that purpose, create a new `values.yaml` file locally on your workstation with the following content:
+We are going to override some values. For that purpose, create a new `values.yaml` file locally on your workstation with the following content:
 
 ```yaml
 ---
@@ -75,7 +75,7 @@ mariadb:
       size: 1Gi
 ```
 
-If you look inside the [requirements.yaml](https://github.com/bitnami/charts/blob/master/bitnami/wordpress/requirements.yaml) file of the WordPress chart you see a dependency to the [MariaDB Helm chart](https://github.com/bitnami/charts/tree/master/bitnami/mariadb). All the MariaDB values are used by this dependent Helm chart and the chart is automatically deployed when installing WordPress.
+If you look inside the [requirements.yaml](https://github.com/bitnami/charts/blob/master/bitnami/wordpress/requirements.yaml) file of the WordPress chart you see a dependency to the [MariaDB Helm chart](https://github.com/bitnami/charts/tree/master/bitnami/mariadb). All the MariaDB values are used by this dependent Helm chart, and the chart is automatically deployed when installing WordPress.
 
 {{% onlyWhen mobi %}}
 The WordPress and MariaDB charts use (at the time of writing) the following container images:
@@ -124,7 +124,7 @@ mariadb:
       size: 1Gi
 ```
 
-The image tag remains as already defined in the orginial [`values.yaml`](https://github.com/bitnami/charts/blob/master/bitnami/wordpress/values.yaml) file from the chart.
+The image tag remains as already defined in the original [`values.yaml`](https://github.com/bitnami/charts/blob/master/bitnami/wordpress/values.yaml) file from the chart.
 
 You can use the following snippet for your Ingress configuration if you want to be able to access the WordPress instance after deploying it (although this is not really necessary for this lab).
 

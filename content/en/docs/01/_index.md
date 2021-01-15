@@ -21,12 +21,12 @@ As OpenShift is based on Kubernetes, its concepts also apply to OpenShift which 
 ## Core concepts
 
 {{% onlyWhenNot openshift %}}
-With the open source software Kubernetes, you get a platform to deploy your application in a container and operate it at the same time.
-Therefore, Kubernetes is also called a _Container Platform_ or the term _Container-as-a-Service_ (CaaS) is used.
+With the open-source software Kubernetes, you get a platform to deploy your application in a container and operate it at the same time.
+Therefore, Kubernetes is also called a _Container Platform_, or the term _Container-as-a-Service_ (CaaS) is used.
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
-With the open source software OpenShift, you get a platform to build and deploy your application in a container as well as operate it at the same time.
-Therefore, OpenShift is also called a _Container Platform_ or the term _Container-as-a-Service_ (CaaS) is used.
+With the open-source software OpenShift, you get a platform to build and deploy your application in a container as well as operate it at the same time.
+Therefore, OpenShift is also called a _Container Platform_, or the term _Container-as-a-Service_ (CaaS) is used.
 {{% /onlyWhen %}}
 Depending on the configuration the term _Platform-as-a-Service_ (PaaS) works as well.
 
@@ -135,7 +135,7 @@ A Pod is the smallest entity in Kubernetes and OpenShift.
 {{% /onlyWhen %}}
 It represents one instance of your running application process.
 The Pod consists of at least two containers, one for your application itself and another one as part of the Kubernetes design, to keep the network namespace.
-The so called infrastructure container (or pause container) therefore is automatically added by Kubernetes.
+The so-called infrastructure container (or pause container) therefore is automatically added by Kubernetes.
 
 The application ports from inside the Pod are exposed via Services.
 

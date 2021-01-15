@@ -32,7 +32,7 @@ Now you can create a ConfigMap based on that file:
 {{% param cliToolName %}} create configmap javaconfiguration --from-file=./java.properties --namespace <namespace>
 ```
 
-Verify that the the ConfigMap was created successfully:
+Verify that the ConfigMap was created successfully:
 
 ```bash
 oc get configmaps --namespace <namespace>
@@ -54,12 +54,12 @@ Which should yield output similar to this one:
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/04/javaconfig.yaml" >}}{{< /highlight >}}
 
 
-## Taks {{% param sectionnumber %}}.2: Attach the ConfigMap to a Container
+## Task {{% param sectionnumber %}}.2: Attach the ConfigMap to a Container
 
 Next, we want to make a ConfigMap accessible for a Container. There are basically the following possibilities to achieve {{% onlyWhenNot openshift %}}[this](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){{% /onlyWhenNot %}}{{% onlyWhen openshift %}}[this](https://docs.openshift.com/container-platform/latest/builds/builds-configmaps.html#builds-configmaps-consuming-configmap-in-pods){{% /onlyWhen %}}
 
 * ConfigMap properties as environment variables in a Deployment
-* Command line arguments via environment variables
+* Command-line arguments via environment variables
 * Mounted as volumes in the container
 
 In this example, we want the file to be mounted as a volume inside the Container.
@@ -78,7 +78,7 @@ This task doesn't have any effect on the Python application inside the Container
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 
-This results in the addition of the following parts to the Deployment (check with `oc get deploy awesome-app -o yaml`):
+This results in the addition of the following parts to the Deployment (check with `oc get deploy example-web-python -o yaml`):
 
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}

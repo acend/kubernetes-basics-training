@@ -125,7 +125,7 @@ spec:
               servicePort: 5000
 ```
 
-Apply the this Ingress definition using e.g. `kubectl create -f ingress.yml --namespace <namespace>`
+Apply this Ingress definition using, e.g., `kubectl create -f ingress.yml --namespace <namespace>`
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
@@ -292,7 +292,7 @@ POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:40,118
 POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:41,187
 ```
 
-In our example, we use a very lightweight Pod. If we had used a more heavyweight Pod that needed a longer time to respond to requests we would of course see a larger gap.
+In our example, we use a very lightweight Pod. If we had used a more heavyweight Pod that needed a longer time to respond to requests, we would of course see a larger gap.
 An example for this would be a Java application with a startup time of 30 seconds:
 
 ```
@@ -330,7 +330,7 @@ Additionally, [container health checks](https://kubernetes.io/docs/tasks/configu
 Basically, there are two different kinds of checks that can be implemented:
 
 * Liveness probes are used to find out if an application is still running
-* Readiness probes tell us if the application is ready to receive requests (which is especially relevant for above-mentioned rolling updates)
+* Readiness probes tell us if the application is ready to receive requests (which is especially relevant for the above-mentioned rolling updates)
 
 These probes can be implemented as HTTP checks, container execution checks (the execution of a command or script inside a container) or TCP socket checks.
 
@@ -340,7 +340,7 @@ In our example, we want the application to tell {{% param distroName %}} that it
 ## Task {{% param sectionnumber %}}.2: Availability during Deployment
 
 {{% onlyWhenNot openshift %}}
-In our deployment configuration inside the rolling update strategy section we define that our application has to be always be available during an update: `maxUnavailable: 0`
+In our deployment configuration inside the rolling update strategy section we define that our application has to be always available during an update: `maxUnavailable: 0`
 
 You can directly edit the deployment (or any resource) with:
 
@@ -418,7 +418,7 @@ Define the readiness probe on the Deployment using the following command:
 oc set probe deploy/example-web-python --readiness --get-url=http://:5000/health --initial-delay-seconds=10 --timeout-seconds=1 --namespace <namespace>
 ```
 
-Above command results in the following `readinessProbe` snippet being inserted into the Deployment:
+The above command results in the following `readinessProbe` snippet being inserted into the Deployment:
 
 ```yaml
 ...
@@ -483,9 +483,9 @@ oc rollout restart deployment example-web-python --namespace <namespace>
 {{% /onlyWhen %}}
 
 
-## Self healing
+## Self-healing
 
-Via the {{% onlyWhenNot openshift %}}Replicaset{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Deployment definitiion{{% /onlyWhen %}} we told {{% param distroName %}} how many replicas we want. So what happens if we simply delete a Pod?
+Via the {{% onlyWhenNot openshift %}}Replicaset{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Deployment definition{{% /onlyWhen %}} we told {{% param distroName %}} how many replicas we want. So what happens if we simply delete a Pod?
 
 Look for a running Pod (status `RUNNING`) that you can bear to kill via `{{% param cliToolName %}} get pods`.
 

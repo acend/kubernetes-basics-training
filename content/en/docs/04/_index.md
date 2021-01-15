@@ -9,7 +9,7 @@ In this lab, we are going to make the freshly deployed application from the last
 
 ## Task {{% param sectionnumber %}}.1: Create a ClusterIP Service with an Ingress
 
-The command `{{% param cliToolName %}} create deployment` from the last lab creates a Pod but no Service. A {{% param distroName %}} Service is an abstract way to expose an application running on a set of Pods as a network service. For some parts of your application (for example, frontends) you may want to expose a Service onto an external IP address, that's outside of your cluster.
+The command `{{% param cliToolName %}} create deployment` from the last lab creates a Pod but no Service. A {{% param distroName %}} Service is an abstract way to expose an application running on a set of Pods as a network service. For some parts of your application (for example, frontends) you may want to expose a Service onto an external IP address which is outside your cluster.
 
 {{% param distroName %}} `ServiceTypes` allow you to specify what kind of Service you want. The default is `ClusterIP`.
 
@@ -24,7 +24,7 @@ The command `{{% param cliToolName %}} create deployment` from the last lab crea
 * `ExternalName`: Maps the Service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. No proxying of any kind is set up.
 
 You can also use Ingress to expose your Service. Ingress is not a Service type, but it acts as the entry point for your cluster. [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.
-Traffic routing is controlled by rules defined on the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}} resource. {{% onlyWhenNot openshift %}}An Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}A Route{{% /onlyWhen %}} may be configured to give Services externally-reachable URLs, load balance traffic, terminate SSL / TLS, and offer name based virtual hosting. An Ingress controller is responsible for fulfilling the route, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic.
+Traffic routing is controlled by rules defined on the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}} resource. {{% onlyWhenNot openshift %}}An Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}A Route{{% /onlyWhen %}} may be configured to give Services externally-reachable URLs, load balance traffic, terminate SSL / TLS, and offer name-based virtual hosting. An Ingress controller is responsible for fulfilling the route, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic.
 
 In order to create {{% onlyWhenNot openshift %}}an Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}a Route{{% /onlyWhen %}}, we first need to create a Service of type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types).
 We're going to do this with the command `{{% param cliToolName %}} expose`:
@@ -169,10 +169,10 @@ kubectl create -f <path to ingress.yaml> --namespace <namespace>
 ```
 
 {{% onlyWhenNot mobi %}}
-Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<domain>`
+Afterward, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<domain>`
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
-Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
+Afterward, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
@@ -249,7 +249,7 @@ lab-3   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.148   <no
 
 {{% onlyWhen rancher %}}
 {{% alert title="Note" color="primary" %}}
-You can also use the Rancher web console to open the exposed application in your browser. The direkt link is shown on your **Resources / Workload** page in the tab **Workload**. Look for your namespace and the deployment name. The link looks like `31665/tcp`.
+You can also use the Rancher web console to open the exposed application in your browser. The direct link is shown on your **Resources / Workload** page in the tab **Workload**. Look for your namespace and the deployment name. The link looks like `31665/tcp`.
 
 ![Rancher NodePort](nodeportrancher.png)
 
@@ -293,7 +293,7 @@ You should now have the following resources in place:
 
 ## Task {{% param sectionnumber %}}.4: Clean up
 
-As a last step, clean up the remaining resources so that we have a clean namespace to continue.
+As the last step, clean up the remaining resources so that we have a clean namespace to continue.
 
 Delete the Deployment:
 
