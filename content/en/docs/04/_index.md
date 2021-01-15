@@ -185,7 +185,7 @@ We are now able to access our app via the freshly created route at `http://examp
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="primary" %}}
-The `<appdomain>` is the default domain under which your applications will be accessible and is provided by your trainer. You can also use `oc get route example-web-python` to see the exact value of the exposed route.
+The `<appdomain>` is the default domain under which your applications will be accessible and is provided by your trainer. You can also use `oc get route example-web-go` to see the exact value of the exposed route.
 {{% /alert %}}
 {{% /onlyWhen %}}
 
