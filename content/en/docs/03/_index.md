@@ -215,7 +215,7 @@ oc logs bc/example-web-go --follow --namespace <namespace>
 The message `Push successful` signifies the image's succesful build and push to OpenShift's internal image.
 
 In the above command you discovered a new resource type `bc` which is the abbreviation for _BuildConfig_.
-A BuildConfig defines how a container images has to be built.
+A BuildConfig defines how a container image has to be built.
 
 A _Build_ resource represents the build process itself based upon the BuildConfig's definition.
 A build takes place in a Pod on OpenShift, so instead of referencing the BuildConfig in our `oc logs` command, we could have used the build Pod's log output.
