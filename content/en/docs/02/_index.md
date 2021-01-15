@@ -200,7 +200,7 @@ Now paste the copied command in your shell.
 
 ### Verify login
 
-If you now execute `oc version` you should see something like this (version numbers may vary):
+If you now execute `oc version` you should see something like this (your output may vary):
 
 ```
 Client Version: 4.6.9
