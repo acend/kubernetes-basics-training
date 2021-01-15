@@ -173,6 +173,7 @@ Have a look at the [official documentation](https://kubernetes.io/docs/concepts/
 Have a look at the [official documentation](https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-volumes.html).
 {{% /onlyWhen %}}
 
+
 ### Job
 
 {{% onlyWhenNot openshift %}}
