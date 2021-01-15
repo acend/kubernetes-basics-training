@@ -36,4 +36,8 @@ With Homebrew, use `brew install openshift-cli`.
 
    {{% /alert %}}
 
+1. If you have previously accessed a Kubernetes you have to rename your `.kube` directory.
+
+   Check if you have a directory `~\.kube` and rename it to something like `~\.kube_backup`.
+   After the training you can rename it back.
 1. [Verify your installation](../04/).
