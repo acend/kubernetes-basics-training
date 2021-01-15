@@ -27,7 +27,7 @@ You may need special instructions if you are not using our lab environment.
 Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cloudscale.ch) (a Swiss IaaS provider) and has been provisioned with [Rancher](https://rancher.com/). You can log in to the cluster with a Rancher user.
 
 {{% alert title="Note" color="primary" %}}
-Your teacher will provide you with the credentials to log in.
+Your trainer will provide you with the credentials to log in.
 {{% /alert %}}
 {{% /onlyWhenNot %}}
 
