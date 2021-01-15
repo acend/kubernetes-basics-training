@@ -234,7 +234,7 @@ It looks the same as before with the only essential exception that it uses the i
     ...
     spec:
       containers:
-      - image: image-registry.openshift-image-registry.svc:5000/baffolter-test/awesome-app@sha256:4cd671273a837453464f7264afe845b299297ebe032f940fd005cf9c40d1e76c
+      - image: image-registry.openshift-image-registry.svc:5000/<namespace>/awesome-app@sha256:4cd671273a837453464f7264afe845b299297ebe032f940fd005cf9c40d1e76c
       ...
 ```
 
