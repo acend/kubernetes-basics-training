@@ -60,7 +60,7 @@ Now delete the newly created Pod:
 
 ## Task {{% param sectionnumber %}}.2: Create a Deployment
 
-In some use cases it makes sense to start a single Pod but has its downsides and is not really a common practice. Let's look at another concept which is tightly coupled with the Pod: the so-called _Deployment_. A Deployment makes sure a Pod is monitored and the Deployment also checks that the number of running Pods corresponds to the number of requested Pods.
+In some use cases it can make sense to start a single Pod. But this has its downsides and is not really a common practice. Let's look at another concept which is tightly coupled with the Pod: the so-called _Deployment_. A Deployment ensures that a Pod is monitored and checks that the number of running Pods corresponds to the number of requested Pods.
 
 With the following command we can create a Deployment inside our already created namespace:
 {{% onlyWhenNot mobi %}}
