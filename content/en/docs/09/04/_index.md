@@ -54,15 +54,15 @@ Which should yield output similar to this one:
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/04/javaconfig.yaml" >}}{{< /highlight >}}
 
 
-## Task {{% param sectionnumber %}}.2: Attach the ConfigMap to a Container
+## Task {{% param sectionnumber %}}.2: Attach the ConfigMap to a container
 
-Next, we want to make a ConfigMap accessible for a Container. There are basically the following possibilities to achieve {{% onlyWhenNot openshift %}}[this](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){{% /onlyWhenNot %}}{{% onlyWhen openshift %}}[this](https://docs.openshift.com/container-platform/latest/builds/builds-configmaps.html#builds-configmaps-consuming-configmap-in-pods){{% /onlyWhen %}}
+Next, we want to make a ConfigMap accessible for a container. There are basically the following possibilities to achieve {{% onlyWhenNot openshift %}}[this](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){{% /onlyWhenNot %}}{{% onlyWhen openshift %}}[this](https://docs.openshift.com/container-platform/latest/builds/builds-configmaps.html#builds-configmaps-consuming-configmap-in-pods){{% /onlyWhen %}}
 
 * ConfigMap properties as environment variables in a Deployment
 * Command-line arguments via environment variables
 * Mounted as volumes in the container
 
-In this example, we want the file to be mounted as a volume inside the Container.
+In this example, we want the file to be mounted as a volume inside the container.
 {{% onlyWhen openshift %}}
 As in [lab 8](../08/), we can use the `oc set volume` command to achieve this:
 {{% /onlyWhen %}}
@@ -73,7 +73,7 @@ oc set volume deploy/example-web-python --add --configmap-name=javaconfiguration
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="primary" %}}
-This task doesn't have any effect on the Python application inside the Container. It is for demonstration purposes only.
+This task doesn't have any effect on the Python application inside the container. It is for demonstration purposes only.
 {{% /alert %}}
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
@@ -111,7 +111,7 @@ Here is a complete example Deployment of a sample Java app:
 {{% /onlyWhenNot %}}
 
 
-This means that the Container should now be able to access the ConfigMap's content in `/etc/config/java.properties`. Let's check:
+This means that the container should now be able to access the ConfigMap's content in `/etc/config/java.properties`. Let's check:
 
 
 {{% onlyWhen openshift %}}
@@ -128,7 +128,7 @@ kubectl exec -it <pod> --namespace <namespace> -- cat /etc/config/java.propertie
 
 {{< highlight text >}}{{< readfile file="content/en/docs/09/04/java.properties" >}}{{< /highlight >}}
 
-Like this, the property file can be read and used by the application inside the Container. The image stays portable to other environments.
+Like this, the property file can be read and used by the application inside the container. The image stays portable to other environments.
 
 
 ## Task {{% param sectionnumber %}}.3: ConfigMap Data Sources

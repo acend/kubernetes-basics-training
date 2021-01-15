@@ -125,7 +125,7 @@ Log files of a Pod can be shown with the following command:
 
 The parameter `-f` allows you to follow the log file (same as `tail -f`). With this, log files are streamed and new entries are shown immediately.
 
-When a Pod is in state `CrashLoopBackOff` it means that although multiple attempts have been made, no Container inside the Pod could be started successfully. Now even though no Container might be running at the moment the `{{% param cliToolName %}} logs` command is executed, there is a way to view the logs the application might have generated. This is achieved using the `-p` or `--previous` parameter:
+When a Pod is in state `CrashLoopBackOff` it means that although multiple attempts have been made, no container inside the Pod could be started successfully. Now even though no container might be running at the moment the `{{% param cliToolName %}} logs` command is executed, there is a way to view the logs the application might have generated. This is achieved using the `-p` or `--previous` parameter:
 
  ```bash
 {{% param cliToolName %}} logs -p <pod> --namespace <namespace>
