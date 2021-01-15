@@ -27,7 +27,7 @@ You may need special instructions if you are not using our lab environment.
 Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cloudscale.ch) (a Swiss IaaS provider) and has been provisioned with [Rancher](https://rancher.com/). You can log in to the cluster with a Rancher user.
 
 {{% alert title="Note" color="primary" %}}
-Your trainer will provide you with the credentials to log in.
+Your trainer will provide you with the information needed to log in.
 {{% /alert %}}
 {{% /onlyWhenNot %}}
 
@@ -126,7 +126,7 @@ kubectl create namespace <namespace>
 
 {{% onlyWhen rancher %}}
 {{% alert title="Note" color="primary" %}}
-Namespaces created via `kubectl` have to be assigned to the correct Rancher Project in order to be visible in the Rancher web console. Please ask your teacher for this assignment. Or you can create the Namespace directly within the Rancher web console.
+Namespaces created via `kubectl` have to be assigned to the correct Rancher Project in order to be visible in the Rancher web console. Please ask your trainer for this assignment. Or you can create the Namespace directly within the Rancher web console.
 {{% /alert %}}
 {{% /onlyWhen %}}
 
@@ -172,15 +172,15 @@ With the command `kubectl get` you can display all kinds of resources.
 ### Login on the Web Console
 
 {{% alert title="Note" color="primary" %}}
-Your teacher will provide you with the credentials to log in.
+Your trainer will provide you with the information needed to log in.
 {{% /alert %}}
 
 Open your browser, open the OpenShift cluster URL and log in using the provided credentials.
 
 
-### Login in the shell
+### Login on the command line
 
-In order to log in on the shell, you can copy the login command from the Web Console and then paste it on the shell.
+In order to log in on the command line, copy the login command from the Web Console.
 
 To do that, open the Web Console and click on your username you see at the top right, then choose **Copy Login Command**.
 
@@ -195,7 +195,7 @@ You might need to login again.
 The page now displays a link **Display token**.
 Click it and copy the command under **Log in with this token**.
 
-Now paste the copied command in your shell.
+Now paste the copied command on the command line.
 
 
 ### Verify login
