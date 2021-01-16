@@ -7,7 +7,7 @@ menu:
     weight: 1
 ---
 
-## Command-line interface tool
+## Command line tool
 
 The `{{% param cliToolName %}}` command is the primary command line tool to work with one or several {{% param distroName %}} clusters.
 

@@ -59,7 +59,7 @@ Which should yield output similar to this one:
 Next, we want to make a ConfigMap accessible for a container. There are basically the following possibilities to achieve {{% onlyWhenNot openshift %}}[this](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){{% /onlyWhenNot %}}{{% onlyWhen openshift %}}[this](https://docs.openshift.com/container-platform/latest/builds/builds-configmaps.html#builds-configmaps-consuming-configmap-in-pods){{% /onlyWhen %}}
 
 * ConfigMap properties as environment variables in a Deployment
-* Command-line arguments via environment variables
+* Command line arguments via environment variables
 * Mounted as volumes in the container
 
 In this example, we want the file to be mounted as a volume inside the container.
