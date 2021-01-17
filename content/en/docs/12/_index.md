@@ -51,7 +51,7 @@ Or in one `{{% param cliToolName %}}` command with the parameter `-k` instead of
 
 We are going to deploy a simple application:
 
-* The Deployment starts an application based on Nginx
+* The Deployment starts an application based on nginx
 * A Service exposes the Deployment
 * The application will be deployed for two different example environments, integration and production
 

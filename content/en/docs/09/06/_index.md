@@ -1,28 +1,28 @@
 ---
-title: "9.6 Init Containers"
+title: "9.6 Init containers"
 weight: 96
 sectionnumber: 9.6
 ---
 
 
-A Pod can have multiple Containers running apps within it, but it can also have one or more *Init Containers*, which are run before the app Containers are started.
+A Pod can have multiple container running apps within it, but it can also have one or more *init containers*, which are run before the app container are started.
 
-Init Containers are exactly like regular Containers, except:
+Init containers are exactly like regular container, except:
 
-* Init Containers always run to completion.
-* Each Init Container must complete successfully before the next one starts.
+* Init containers always run to completion.
+* Each init container must complete successfully before the next one starts.
 
 {{% onlyWhenNot openshift %}}
-Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes documentation for more details.
+Check [Init Containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes documentation for more details.
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 Check out the [Init Containers documentation](https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-init.html) for more details.
 {{% /onlyWhen %}}
 
 
-## Task {{% param sectionnumber %}}.1: Add an Init Container
+## Task {{% param sectionnumber %}}.1: Add an init container
 
-In [lab 7](../../07/) you created the `example-web-python` application. In this task, you are going to add an Init Container which checks if the MariaDB database is ready to be used before actually starting your Python application.
+In [lab 7](../../07/) you created the `example-web-python` application. In this task, you are going to add an init container which checks if the MariaDB database is ready to be used before actually starting your Python application.
 
 Edit your existing `example-web-python` Deployment with:
 
@@ -30,7 +30,7 @@ Edit your existing `example-web-python` Deployment with:
 {{% param cliToolName %}} edit deployment example-web-python --namespace <namespace>
 ```
 
-Add the Init Container into the existing Deployment:
+Add the init container into the existing Deployment:
 {{% onlyWhenNot mobi %}}
 
 ```yaml
@@ -67,7 +67,7 @@ Let's see what has changed by analyzing your `example-web-python` Pod with the f
 {{% param cliToolName %}} describe pod <pod> --namespace <namespace>
 ```
 
-You see the new Init Container with the name `wait-for-db`:
+You see the new init container with the name `wait-for-db`:
 
 ```
 ...
@@ -95,9 +95,9 @@ Init Containers:
 ...
 ```
 
-The Init Container has `State: Terminated` and an `Exit Code: 0` which means it was successful. That's what we wanted, the Init Container was successfully executed before our main application.
+The init container has `State: Terminated` and an `Exit Code: 0` which means it was successful. That's what we wanted, the init container was successfully executed before our main application.
 
-You can also check the logs of the Init Container with:
+You can also check the logs of the init container with:
 
 ```bash
 {{% param cliToolName %}} logs -c wait-for-db <pod> --namespace <namespace>

@@ -293,7 +293,7 @@ You should now have the following resources in place:
 
 ## Task {{% param sectionnumber %}}.4: Clean up
 
-As the last step, clean up the remaining resources so that we have a clean namespace to continue.
+As the last step, clean up the remaining resources so that we have a clean Namespace to continue.
 
 Delete the Deployment:
 

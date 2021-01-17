@@ -21,11 +21,11 @@ As OpenShift is based on Kubernetes, its concepts also apply to OpenShift which 
 ## Core concepts
 
 {{% onlyWhenNot openshift %}}
-With the open-source software Kubernetes, you get a platform to deploy your application in a container and operate it at the same time.
+With the open source software Kubernetes, you get a platform to deploy your application in a container and operate it at the same time.
 Therefore, Kubernetes is also called a _Container Platform_, or the term _Container-as-a-Service_ (CaaS) is used.
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
-With the open-source software OpenShift, you get a platform to build and deploy your application in a container as well as operate it at the same time.
+With the open source software OpenShift, you get a platform to build and deploy your application in a container as well as operate it at the same time.
 Therefore, OpenShift is also called a _Container Platform_, or the term _Container-as-a-Service_ (CaaS) is used.
 {{% /onlyWhen %}}
 Depending on the configuration the term _Platform-as-a-Service_ (PaaS) works as well.
