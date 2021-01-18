@@ -178,7 +178,7 @@ Afterwards, we are able to access our freshly created Ingress at `http://example
 {{% onlyWhen openshift %}}
 
 ```bash
-oc expose service example-web-go
+oc expose service example-web-go --namespace <namespace>
 ```
 
 We are now able to access our app via the freshly created route at `http://example-web-go-<namespace>.<appdomain>`
@@ -312,3 +312,11 @@ Delete the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhenNot %}}{{% onlyWhen 
 ```bash
 {{% param cliToolName %}} delete {{% onlyWhenNot openshift %}}ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}route{{% /onlyWhen %}} example-web-go --namespace <namespace>
 ```
+
+{{% onlyWhen openshift %}}
+Delete the BuildConfig:
+
+```bash
+oc delete bc example-web-go --namespace <namespace>
+```
+{{% /onlyWhen %}}
