@@ -297,7 +297,7 @@ kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 ```bash
-oc rsh mariadb-f845ccdb7-hf2x5 --namespace <namespace>
+oc rsh --namespace <namespace> mariadb-f845ccdb7-hf2x5
 ```
 {{% /onlyWhen %}}
 
@@ -353,7 +353,7 @@ kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 ```bash
-oc rsh mariadb-f845ccdb7-hf2x5 --namespace <namespace>
+oc rsh --namespace <namespace> mariadb-f845ccdb7-hf2x5
 ```
 {{% /onlyWhen %}}
 
@@ -385,7 +385,7 @@ kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 ```bash
-oc rsh mariadb-f845ccdb7-hf2x5 --namespace <namespace>
+oc rsh --namespace <namespace> mariadb-f845ccdb7-hf2x5
 ```
 {{% /onlyWhen %}}
 
