@@ -87,7 +87,6 @@ Because we just changed the Deployment a new Pod was automatically redeployed. T
 {{% /alert %}}
 {{% /onlyWhenNot %}}
 
-{{% alert title="Note" color="primary" %}}
 We need to redeploy the application pod, our application automatically creates the database schema at startup time.
 
 {{% onlyWhenNot openshift %}}
@@ -102,7 +101,6 @@ oc rollout restart deployment example-web-python --namespace <namespace>
 ```
 {{% /onlyWhen %}}
 
-{{% /alert %}}
 Using the command `{{% param cliToolName %}} get persistentvolumeclaim` or `{{% param cliToolName %}} get pvc`, we can display the freshly created PersistentVolumeClaim:
 
 ```bash
