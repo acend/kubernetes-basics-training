@@ -148,6 +148,11 @@ Scale your MariaDB Pod to 0 replicas and back to 1. Observe that the new Pod did
 You should now have the following resources in place:
 
 * [pvc.yaml](pvc.yaml)
-* {{% onlyWhenNot mobi %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
+* {{% onlyWhenNot openshift %}}
+  {{% onlyWhenNot mobi %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
   {{% onlyWhen mobi %}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{% /onlyWhen %}}
+  {{% /onlyWhenNot %}}
+  {{% onlyWhen openshift %}}[mariadb-openshift.yaml](mariadb-openshift.yaml){{% /onlyWhen %}}
+
+
 * [example-web-python.yaml](../08/example-web-python.yaml) (from lab 8)
