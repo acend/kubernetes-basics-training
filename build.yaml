@@ -1,7 +1,6 @@
 name: Build Training
 
 on:
-  push:
   pull_request:
 
 jobs:
@@ -40,7 +39,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}
+            quay.io/acend/helm-basics-training:pr-${{ github.event.pull_request.number }}
       - 
         name: Build Mobi Version
         uses: docker/build-push-action@v2
@@ -51,7 +50,7 @@ jobs:
             ACEND_HUGO_ENV=mobi
           push: true
           tags: |
-            quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-mobi
+            quay.io/acend/helm-basics-training:pr-${{ github.event.pull_request.number }}-mobi
       - 
         name: Build Rancher Version
         uses: docker/build-push-action@v2
@@ -62,24 +61,13 @@ jobs:
             ACEND_HUGO_ENV=rancher
           push: true
           tags: |
-            quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-rancher
-      - 
-        name: Build OpenShift Version
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          build-args: |
-            ACEND_HUGO_ENV=openshift
-          push: true
-          tags: |
-            quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-openshift
+            quay.io/acend/helm-basics-training:pr-${{ github.event.pull_request.number }}-rancher
       - 
         name: 'Deploy'
         uses: 'deliverybot/helm@v1'
         with:
           release: 'pr-${{ github.event.pull_request.number }}'
-          namespace: 'acend-kubernetes-basics-training-test'
+          namespace: 'acend-helm-basics-training-test'
           version: '${{ github.sha }}'
           repository: 'https://acend.github.io/helm-charts/'
           chart: 'acend-training-chart'
@@ -98,28 +86,21 @@ jobs:
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
         with:
-          args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-acend --namespace acend-kubernetes-basics-training-test
+          args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-helm-basics-acend --namespace acend-helm-basics-training-test
       - 
         name: redeploy mobi deployment
         uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
         with:
-          args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-mobi --namespace acend-kubernetes-basics-training-test
+          args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-helm-basics-mobi --namespace acend-helm-basics-training-test
       - 
         name: redeploy rancher deployment
         uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
         with:
-          args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-rancher --namespace acend-kubernetes-basics-training-test
-      - 
-        name: redeploy openshift deployment
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
-        with:
-          args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-openshift --namespace acend-kubernetes-basics-training-test
+          args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-helm-basics-rancher --namespace acend-helm-basics-training-test
       - 
         name: Comment on PR
         uses: marocchino/sticky-pull-request-comment@v2
@@ -127,8 +108,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: |
            PR Environements: 
-           *  acend <https://kubernetes-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch>
-           *  mobi <https://kubernetes-basics-mobi-pr-${{ github.event.pull_request.number }}.k8s.puzzle.ch>
-           *  rancher <https://kubernetes-basics-rancher-pr-${{ github.event.pull_request.number }}.training.acend.ch>
-           *  openshift <https://openshift-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch>
-
+           *  acend <https://helm-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch>
+           *  mobi <https://helm-basics-mobi-pr-${{ github.event.pull_request.number }}.k8s.puzzle.ch>
+           *  rancher <https://helm-basics-rancher-pr-${{ github.event.pull_request.number }}.training.acend.ch>
