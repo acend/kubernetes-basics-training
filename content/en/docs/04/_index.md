@@ -319,4 +319,10 @@ Delete the BuildConfig:
 ```bash
 oc delete bc example-web-go --namespace <namespace>
 ```
+
+Delete the ImageStreams:
+
+```bash
+oc delete is alpine example-web-go --namespace <namespace>
+```
 {{% /onlyWhen %}}
