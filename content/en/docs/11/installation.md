@@ -59,8 +59,4 @@ The output is similar to this:
 version.BuildInfo{Version:"v3.1.2", GitCommit:"d878d4d45863e42fd5cff6743294a11d28a9abce", GitTreeState:"clean", GoVersion:"go1.13.8"}
 ```
 
-From here you should be able to run the client and [add the stable repo](https://helm.sh/docs/intro/quickstart/#initialize-a-helm-chart-repository):
-
-```bash
-helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-```
+From here on you should be able to run the client.
