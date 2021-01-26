@@ -155,4 +155,4 @@ You should now have the following resources in place:
   {{% onlyWhen openshift %}}[mariadb-openshift.yaml](mariadb-openshift.yaml){{% /onlyWhen %}}
 
 
-* [example-web-python.yaml](../08/example-web-python.yaml) (from lab 8)
+* [example-web-python.yaml](../07/example-web-python.yaml) (from lab 7)
