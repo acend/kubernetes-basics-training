@@ -50,7 +50,7 @@ spec:
             secretKeyRef:
               key: database-name
               name: mariadb
-        image: image-registry.openshift-image-registry.svc:5000/openshift/mariadb@sha256:513f7db527608c6c96b3659220ffc0397bdd30ff6617dad1790a90e14ac4f3b0
+        image: image-registry.openshift-image-registry.svc:5000/openshift/mariadb:10.3-el8
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -101,4 +101,3 @@ spec:
         kind: ImageStreamTag
         name: mariadb:10.3-el8
         namespace: openshift
-      lastTriggeredImage: image-registry.openshift-image-registry.svc:5000/openshift/mariadb@sha256:513f7db527608c6c96b3659220ffc0397bdd30ff6617dad1790a90e14ac4f3b0
