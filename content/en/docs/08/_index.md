@@ -87,7 +87,6 @@ Because we just changed the Deployment a new Pod was automatically redeployed. T
 {{% /alert %}}
 {{% /onlyWhenNot %}}
 
-{{% alert title="Note" color="primary" %}}
 We need to redeploy the application pod, our application automatically creates the database schema at startup time.
 
 {{% onlyWhenNot openshift %}}
@@ -102,7 +101,6 @@ oc rollout restart deployment example-web-python --namespace <namespace>
 ```
 {{% /onlyWhen %}}
 
-{{% /alert %}}
 Using the command `{{% param cliToolName %}} get persistentvolumeclaim` or `{{% param cliToolName %}} get pvc`, we can display the freshly created PersistentVolumeClaim:
 
 ```bash
@@ -150,6 +148,11 @@ Scale your MariaDB Pod to 0 replicas and back to 1. Observe that the new Pod did
 You should now have the following resources in place:
 
 * [pvc.yaml](pvc.yaml)
-* {{% onlyWhenNot mobi %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
+* {{% onlyWhenNot openshift %}}
+  {{% onlyWhenNot mobi %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
   {{% onlyWhen mobi %}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{% /onlyWhen %}}
-* [example-web-python.yaml](../08/example-web-python.yaml) (from lab 8)
+  {{% /onlyWhenNot %}}
+  {{% onlyWhen openshift %}}[mariadb-openshift.yaml](mariadb-openshift.yaml){{% /onlyWhen %}}
+
+
+* [example-web-python.yaml](../07/example-web-python.yaml) (from lab 7)

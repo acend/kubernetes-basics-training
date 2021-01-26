@@ -25,7 +25,7 @@ Make sure you are in OpenShift's **Developer** view (upper left dropdown) and ha
 
 ![selection](selection.png)
 
-Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Instantiate Template**. A form opens. Check that the first field corresponds to the correct Project and set the MariaDB Database Name field to `acendexampledb` and leave the remaining fields as they are. Finally, click **Create** at the end of the form.
+Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Instantiate Template**. A form opens. Check that the first field corresponds to the correct Project and set the **MariaDB Database Name** field to `acendexampledb` and leave the remaining fields as they are. Finally, click **Create** at the end of the form.
 
 
 ### Instantiate a template using the CLI
@@ -406,5 +406,8 @@ You should now have the following resources in place:
 
 * [example-web-python.yaml](example-web-python.yaml)
 * [mariadb-secret.yaml](mariadb-secret.yaml)
-* {{% onlyWhenNot mobi %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
+* {{% onlyWhenNot openshift %}}
+  {{% onlyWhenNot mobi %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
   {{% onlyWhen mobi %}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{% /onlyWhen %}}
+  {{% /onlyWhenNot %}}
+  {{% onlyWhen openshift %}}[mariadb-openshift.yaml](mariadb-openshift.yaml){{% /onlyWhen %}}
