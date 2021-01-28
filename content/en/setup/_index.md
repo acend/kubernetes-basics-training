@@ -1,6 +1,6 @@
 ---
 title: "Setup"
-weight: 2
+weight: 1
 type: docs
 menu:
   main:
