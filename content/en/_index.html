@@ -15,8 +15,6 @@
 	<a class="btn btn-lg btn-secondary mr-3 mb-4" href="{{< relref "/slides" >}}">
 		Slides <i class="fas fa-chalkboard-teacher ml-2 "></i>
 	</a>
-	<p class="lead mt-5">Show more!</p>
-	{{< blocks/link-down color="info" >}}
 </div>
 {{< /blocks/cover >}}
 {{< /onlyWhen >}}
@@ -32,39 +30,6 @@
 	<a class="btn btn-lg btn-secondary mr-3 mb-4" href="{{< relref "/slides" >}}">
 		Slides <i class="fas fa-chalkboard-teacher ml-2 "></i>
 	</a>
-	<p class="lead mt-5">Show more!</p>
-	{{< blocks/link-down color="info" >}}
 </div>
 {{< /blocks/cover >}}
 {{< /onlyWhenNot >}}
-
-
-{{% blocks/lead color="dark" %}}
-{{< onlyWhenNot openshift >}}
-[Kubernetes (K8s)](https://kubernetes.io/docs/concepts/overview/what-is-kubernetes/) is an open source system for automating deployment, scaling, and management of containerized applications.
-{{< /onlyWhenNot >}}
-{{< onlyWhen openshift >}}
-[OpenShift](https://www.openshift.com/learn/what-is-openshift) is a hybrid cloud, enterprise Kubernetes application platform.
-{{< /onlyWhen >}}
-
-{{% /blocks/lead %}}
-
-{{< blocks/section color="light">}}
-
-{{% blocks/feature icon="fa-cogs" title="Setup" url="/setup/" %}}
-Start with the setup
-{{% /blocks/feature %}}
-
-{{% blocks/feature icon="fa-flask" title="Labs" url="/docs/" %}}
-Start with the training
-{{% /blocks/feature %}}
-
-{{% blocks/feature icon="fa-chalkboard-teacher" url="/slides/" title="Slides" %}}
-Get the slides for this training
-{{% /blocks/feature %}}
-
-{{% blocks/feature icon="fa-sliders-h" title="About" url="/about/" %}}
-
-{{% /blocks/feature %}}
-
-{{< /blocks/section >}}
