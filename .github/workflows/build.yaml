@@ -74,7 +74,7 @@ jobs:
           tags: |
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-openshift
       - 
-        name: 'Deploy'
+        name: 'Deploy Helm Release'
         uses: 'deliverybot/helm@v1'
         with:
           release: 'pr-${{ github.event.pull_request.number }}'
@@ -92,42 +92,42 @@ jobs:
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG_TEST }}'
       - 
-        name: redeploy acend deployment
+        name: Redeploy Latest Deployment
         uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
         with:
           args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-acend --namespace acend-kubernetes-basics-training-test
       - 
-        name: redeploy mobi deployment
+        name: Redeploy Mobi Deployment
         uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
         with:
           args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-mobi --namespace acend-kubernetes-basics-training-test
       - 
-        name: redeploy rancher deployment
+        name: Redeploy Rancher Deployment
         uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
         with:
           args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-rancher --namespace acend-kubernetes-basics-training-test
       - 
-        name: redeploy openshift deployment
+        name: Redeploy OpenShift Deployment
         uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
         with:
           args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-openshift --namespace acend-kubernetes-basics-training-test
       - 
-        name: Comment on PR
+        name: Comment PR Environments in PR
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: |
-           PR Environements: 
-           *  acend <https://kubernetes-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch>
-           *  mobi <https://kubernetes-basics-mobi-pr-${{ github.event.pull_request.number }}.k8s.puzzle.ch>
-           *  rancher <https://kubernetes-basics-rancher-pr-${{ github.event.pull_request.number }}.training.acend.ch>
-           *  openshift <https://openshift-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch>
+           PR Environments: 
+           * acend version <https://kubernetes-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch>
+           * mobi version <https://kubernetes-basics-mobi-pr-${{ github.event.pull_request.number }}.k8s.puzzle.ch>
+           * rancher version <https://kubernetes-basics-rancher-pr-${{ github.event.pull_request.number }}.training.acend.ch>
+           * openshift version <https://openshift-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch>
 
