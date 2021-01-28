@@ -77,7 +77,7 @@ jobs:
           tags: |
             quay.io/acend/kubernetes-basics-training:latest-openshift
       - 
-        name: 'Deploy'
+        name: 'Deploy Helm Release'
         uses: 'deliverybot/helm@v1'
         with:
           release: 'latest'
@@ -95,28 +95,28 @@ jobs:
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
       - 
-        name: redeploy acend deployment
+        name: Redeploy Latest Deployment
         uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
         with:
           args: rollout restart deployment/latest-acend-kubernetes-basics-acend --namespace acend-kubernetes-basics-training-prod
       - 
-        name: redeploy mobi deployment
+        name: Redeploy Mobi Deployment
         uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
         with:
           args: rollout restart deployment/latest-acend-kubernetes-basics-mobi --namespace acend-kubernetes-basics-training-prod
       - 
-        name: redeploy rancher deployment
+        name: Redeploy Rancher Deployment
         uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
         with:
           args: rollout restart deployment/latest-acend-kubernetes-basics-rancher --namespace acend-kubernetes-basics-training-prod
       - 
-        name: redeploy openshift deployment
+        name: Redeploy OpenShift Deployment
         uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
