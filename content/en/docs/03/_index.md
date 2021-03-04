@@ -74,7 +74,6 @@ With the following command we can create a Deployment inside our already created
 
 ```bash
 kubectl create deployment example-web-go --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --namespace <namespace>
-
 ```
 
 {{% /onlyWhen %}}
@@ -116,7 +115,13 @@ If you want to create your own container images and use them with {{% param dist
 
 ## Task {{% param sectionnumber %}}.3: Viewing the created resources
 
+{{% onlyWhenNot mobi %}}
 When we executed the command `{{% param cliToolName %}} create deployment example-web-go --image=quay.io/acend/example-web-go --namespace <namespace>`, {{% param distroName %}} created a Deployment resource.
+{{% /onlyWhenNot %}}
+
+{{% onlyWhen mobi %}}
+When we executed the command `kubectl create deployment example-web-go --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --namespace <namespace>`, kubectl created a Deployment resource.
+{{% /onlyWhen %}}
 
 
 ### Deployment
