@@ -16,7 +16,7 @@ Kustomize can be used in two different ways:
 * With the parameter `--kustomize` or `-k` in certain `{{% param cliToolName %}}` subcommands such as `apply` or `create`
 
 {{% alert title="Note" color="primary" %}}
-You might get different behaviour depending on which variant you use. The reason for this is that the version built into `{{% param cliToolName %}}` is usually older than the standalone binary.
+You might get a different behaviour depending on which variant you use. The reason for this is that the version built into `{{% param cliToolName %}}` is usually older than the standalone binary.
 {{% /alert %}}
 
 

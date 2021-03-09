@@ -5,9 +5,9 @@ sectionnumber: 9.6
 ---
 
 
-A Pod can have multiple container running apps within it, but it can also have one or more *init containers*, which are run before the app container are started.
+A Pod can have multiple containers running apps within it, but it can also have one or more *init containers*, which are run before the app container is started.
 
-Init containers are exactly like regular container, except:
+Init containers are exactly like regular containers, except:
 
 * Init containers always run to completion.
 * Each init container must complete successfully before the next one starts.
@@ -95,7 +95,7 @@ Init Containers:
 ...
 ```
 
-The init container has `State: Terminated` and an `Exit Code: 0` which means it was successful. That's what we wanted, the init container was successfully executed before our main application.
+The init container has the `State: Terminated` and an `Exit Code: 0` which means it was successful. That's what we wanted, the init container was successfully executed before our main application.
 
 You can also check the logs of the init container with:
 

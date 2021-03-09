@@ -4,7 +4,7 @@ weight: 123
 sectionnumber: 12.3
 ---
 
-In this lab we're going to create our very first Helm chart and deploy it.
+In this lab, we're going to create our very first Helm chart and deploy it.
 
 
 ## Task {{% param sectionnumber %}}.1: Create Chart
@@ -45,7 +45,7 @@ helm ls --namespace <namespace>
 ## Task {{% param sectionnumber %}}.3: Expose Application
 
 Our freshly deployed nginx is not yet accessible from outside the Kubernetes cluster. To expose it, we have to change the Service type to `NodePort`.
-Search now for the Service type definition in your chart and make the change.
+Search for the Service type definition in your chart and make the change.
 
 
 ### Solution Task 3

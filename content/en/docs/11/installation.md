@@ -47,7 +47,7 @@ Install the `helm` cli on your system:
 Please make sure to select the [Windows version](https://get.helm.sh/helm-v3.1.2-windows-amd64.zip). Put the binary into your working directory or make sure the directory containing the `helm.exe` binary is in your `Path` environment variable.
 {{% /alert %}}
 
-To verify run the following command and check if `Version` is what you expected:
+To verify, run the following command and check if `Version` is what you expected:
 
 ```bash
 helm version
