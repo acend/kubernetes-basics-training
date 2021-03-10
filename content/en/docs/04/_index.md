@@ -9,22 +9,22 @@ In this lab, we are going to make the freshly deployed application from the last
 
 ## Task {{% param sectionnumber %}}.1: Create a ClusterIP Service with an Ingress
 
-The command `{{% param cliToolName %}} create deployment` from the last lab creates a Pod but no Service. A {{% param distroName %}} Service is an abstract way to expose an application running on a set of Pods as a network service. For some parts of your application (for example, frontends) you may want to expose a Service onto an external IP address which is outside your cluster.
+The command `{{% param cliToolName %}} create deployment` from the last lab creates a Pod but no Service. A {{% param distroName %}} Service is an abstract way to expose an application running on a set of Pods as a network service. For some parts of your application (for example, frontends) you may want to expose a Service to an external IP address which is outside your cluster.
 
 {{% param distroName %}} `ServiceTypes` allow you to specify what kind of Service you want. The default is `ClusterIP`.
 
 `Type` values and their behaviors are:
 
-* `ClusterIP`: Exposes the Service on a cluster-internal IP. Choosing this value makes the Service only reachable from within the cluster. This is the default ServiceType.
+* `ClusterIP`: Exposes the Service on a cluster-internal IP. Choosing this value only makes the Service reachable from within the cluster. This is the default ServiceType.
 
-* `NodePort`: Exposes the Service on each Node's IP at a static port (the NodePort). A ClusterIP Service, to which the NodePort Service routes, is automatically created. You'll be able to contact the NodePort Service, from outside the cluster, by requesting \<NodeIP\>:\<NodePort\>.
+* `NodePort`: Exposes the Service on each Node's IP at a static port (the NodePort). A ClusterIP Service, to which the NodePort Service routes, is automatically created. You'll be able to contact the NodePort Service from outside the cluster, by requesting \<NodeIP\>:\<NodePort\>.
 
 * `LoadBalancer`: Exposes the Service externally using a cloud provider's load balancer. NodePort and ClusterIP Services, to which the external load balancer routes, are automatically created.
 
 * `ExternalName`: Maps the Service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. No proxying of any kind is set up.
 
 You can also use Ingress to expose your Service. Ingress is not a Service type, but it acts as the entry point for your cluster. [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.
-Traffic routing is controlled by rules defined on the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}} resource. {{% onlyWhenNot openshift %}}An Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}A Route{{% /onlyWhen %}} may be configured to give Services externally-reachable URLs, load balance traffic, terminate SSL / TLS, and offer name-based virtual hosting. An Ingress controller is responsible for fulfilling the route, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic.
+Traffic routing is controlled by rules defined on the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}} resource. {{% onlyWhenNot openshift %}}An Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}A Route{{% /onlyWhen %}} may be configured to give Services externally reachable URLs, load balance traffic, terminate SSL / TLS, and offer name-based virtual hosting. An Ingress controller is responsible for fulfilling the route, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic.
 
 In order to create {{% onlyWhenNot openshift %}}an Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}a Route{{% /onlyWhen %}}, we first need to create a Service of type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types).
 We're going to do this with the command `{{% param cliToolName %}} expose`:
@@ -34,7 +34,7 @@ We're going to do this with the command `{{% param cliToolName %}} expose`:
 ```
 
 {{% onlyWhen openshift %}}
-You may notice an error like `Error from server (AlreadyExists): services "example-web-go" already exists` here. This is because the `oc new-app` command does creates a service, while the `oc create deployment` doesn't.
+You may notice an error like `Error from server (AlreadyExists): services "example-web-go" already exists` here. This is because the `oc new-app` command creates a service, while the `oc create deployment` doesn't.
 {{% /onlyWhen %}}
 
 Let's have a more detailed look at our Service:
@@ -105,7 +105,7 @@ The Service's `selector` defines which Pods are being used as Endpoints. This ha
 With the following command you get details from the Pod:
 
 {{% alert title="Note" color="primary" %}}
-First, get all Pod names from your namespace with (`{{% param cliToolName %}} get pods --namespace <namespace>`) and then replace \<pod\> in the following command. If you have installed and configured the bash completion, you can also press the TAB key for autocompletion of the Pods' name.
+First, get all Pod names from your namespace with (`{{% param cliToolName %}} get pods --namespace <namespace>`) and then replace \<pod\> in the following command. If you have installed and configured the bash completion, you can also press the TAB key for autocompletion of the Pod's name.
 {{% /alert %}}
 
 ```bash
@@ -146,7 +146,7 @@ Events:
   ----    ------                ----   ----                -------
 ```
 
-The `Endpoints` shows the IP addresses of all currently matched Pods.
+The `Endpoints` show the IP addresses of all currently matched Pods.
 
 With the ClusterIP Service ready, we can now create the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhen %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}} resource.
 {{% onlyWhenNot openshift %}}
@@ -169,10 +169,10 @@ kubectl create -f <path to ingress.yaml> --namespace <namespace>
 ```
 
 {{% onlyWhenNot mobi %}}
-Afterward, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<domain>`
+Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<domain>`
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
-Afterward, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
+Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
@@ -222,7 +222,7 @@ NAME             TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
 example-web-go   NodePort   10.43.91.62   <none>        5000:30692/TCP  
 ```
 
-The `NodePort` number is being assigned by Kubernetes and stays the same as long as the Services is not deleted. A NodePort Service is more suitable for infrastructure tools than for public URLs.
+The `NodePort` number is assigned by Kubernetes and stays the same as long as the Service is not deleted. A NodePort Service is more suitable for infrastructure tools than for public URLs.
 
 {{% alert title="Note" color="primary" %}}
 If `NodePort` is not supported in your environment then you can use `--type=ClusterIP` (or omit this parameter completely as it is the default) and use port forwarding to the Service instead.

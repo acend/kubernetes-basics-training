@@ -145,4 +145,4 @@ To avoid issues on your personal progress dashboard, we would advise not to dele
 {{% param cliToolName %}} delete statefulset nginx-cluster --namespace <namespace>
 ```
 
-Further information can be found in [Kubernetes' StatefulSet documentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or this [published article](https://opensource.com/article/17/2/stateful-applications).
+Further information can be found in the [Kubernetes' StatefulSet documentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or this [published article](https://opensource.com/article/17/2/stateful-applications).

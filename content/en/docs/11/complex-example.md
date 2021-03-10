@@ -39,7 +39,7 @@ $env:http_proxy="http://u...:PASSWORD@dirproxy.mobi.ch:80"
 $env:https_proxy="http://u...:PASSWORD@dirproxy.mobi.ch:80"
 ```
 
-Replace `u...:PASSWORD` with your account details. If you have specials chars in your password, you have to escape them with hexadecimal value according to [this](https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters)
+Replace `u...:PASSWORD` with your account details. If you have special chars in your password, you have to escape them with hexadecimal value according to [this](https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters)
 {{% /onlyWhen %}}
 
 ```bash
@@ -158,7 +158,7 @@ version: ~3.5.7
 ```
 
 This is e.g. equivalent to `>= 3.5.7, < 3.6.0`
-Check [this SemVer readme chapter](https://github.com/Masterminds/semver#checking-version-constraints) for more information about version ranges.
+Check [this SemVer readme chapter](https://github.com/Masterminds/semver#checking-version-constraints) for more information on version ranges.
 
 {{% alert title="Note" color="primary" %}}
 For more details on how to manage **dependencies**, check out the [Helm Dependencies Documentation](https://v2.helm.sh/docs/charts/#chart-dependencies).

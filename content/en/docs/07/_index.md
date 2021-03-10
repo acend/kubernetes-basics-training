@@ -61,7 +61,7 @@ oc process openshift//mariadb-ephemeral -pMYSQL_DATABASE=acendexampledb  | oc ap
 
 ## Task {{% param sectionnumber %}}.2: Inspection
 
-What just happened is that you instantiated an OpenShift Template that creates multiple resources using the (default) values as parameters. Let's have a look at the resources that just have been created by looking at the Template's definition:
+What just happened is that you instantiated an OpenShift Template that creates multiple resources using the (default) values as parameters. Let's have a look at the resources that have just been created by looking at the Template's definition:
 
 ```bash
 oc get templates -n openshift mariadb-ephemeral -o yaml
@@ -96,7 +96,7 @@ metadata:
   ...
 type: Opaque
 ```
-The reason is all the values in the `.data` section are base64 encoded. Even though we cannot see the true values, they can easily be decoded:
+The reason is that all the values in the `.data` section are base64 encoded. Even though we cannot see the true values, they can easily be decoded:
 
 ```bash
 echo "YWNlbmQtZXhhbXBsZS1kYg==" | base64 -d
@@ -202,7 +202,7 @@ The environment variables defined in the deployment configure the MariaDB Pod an
 {{% /onlyWhenNot %}}
 
 
-## Task {{% param sectionnumber %}}.2: Attach the database to the application
+## Task {{% param sectionnumber %}}.3: Attach the database to the application
 
 By default, our `example-web-python` application uses an SQLite memory database. However, this can be changed by defining the following environment variable(`MYSQL_URI`) to use the newly created MariaDB database:
 
@@ -215,7 +215,7 @@ The connection string our `example-web-python` application uses to connect to ou
 
 For the actual MariaDB host, you can either use the MariaDB Service's ClusterIP or DNS name as the address. All Services and Pods can be resolved by DNS using their name.
 
-The following commands sets the environment variables for the deployment configuration of the `example-web-python` application
+The following commands set the environment variables for the deployment configuration of the `example-web-python` application
 
 ```bash
 {{% param cliToolName %}} set env --from=secret/mariadb --prefix=MYSQL_ deploy/example-web-python --namespace <namespace>
@@ -262,15 +262,14 @@ You could also do the changes by directly editing the Deployment:
         ...
 ```
 
-In order to find out if the change worked we can either look at the container's logs (`{{% param cliToolName %}} logs <pod>`).
-Or we could register some "Hellos" in the application, delete the Pod, wait for the new Pod to be started and check if they are still there.
+In order to find out if the change worked we can either look at the container's logs (`{{% param cliToolName %}} logs <pod>`) or we could register some "Hellos" in the application, delete the Pod, wait for the new Pod to be started and check if they are still there.
 
 {{% alert title="Note" color="primary" %}}
 This does not work if we delete the database Pod as its data is not yet persisted.
 {{% /alert %}}
 
 
-## Task {{% param sectionnumber %}}.3: Manual database connection
+## Task {{% param sectionnumber %}}.4: Manual database connection
 
 As described in [lab 6](../06/) we can log into a Pod with {{% onlyWhenNot openshift %}}`kubectl exec -it <pod> -- /bin/bash`.{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}`oc rsh <pod>`.{{% /onlyWhen %}}
 
@@ -326,12 +325,12 @@ show tables;
 ```
 
 
-## Task {{% param sectionnumber %}}.4: Import a database dump
+## Task {{% param sectionnumber %}}.5: Import a database dump
 
 Our task is now to import this [dump.sql](https://raw.githubusercontent.com/acend/kubernetes-basics-training/master/content/en/docs/07/dump.sql) into the MariaDB database running as a Pod. Use the `mysql` command line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
 
 {{% alert title="Note" color="primary" %}}
-You can also copy local files into a Pod using `{{% param cliToolName %}} cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the Pod and use `curl -O <url>`.
+You can also copy local files into a Pod using `{{% param cliToolName %}} cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the Pod and using `curl -O <url>`.
 {{% /alert %}}
 
 

@@ -131,7 +131,7 @@ As you now know what limits and requests are, we can come back to the statement 
 
 > As we've already seen, compute ResourceQuotas limit the amount of memory and CPU we can use in a Namespace. Only defining a ResourceQuota, however is not going to have an effect on Pods that don't define the amount of resources they want to use. This is where the concept of limits and requests comes into play.
 
-So if a cluster administrator wanted to make sure that every Pod in the cluster counted against the compute ResourceQuota, the administrator would have to have a way of defining some kind of default limits and requests that were applied if none were defined in the containers.
+So, if a cluster administrator wanted to make sure that every Pod in the cluster counted against the compute ResourceQuota, the administrator would have to have a way of defining some kind of default limits and requests that were applied if none were defined in the containers.
 This is exactly what _LimitRanges_ are for.
 
 Quoting the [Kubernetes documentation](https://kubernetes.io/docs/concepts/policy/limit-range/), LimitRanges can be used to:
@@ -154,7 +154,7 @@ Check whether your Namespace contains a LimitRange:
 {{% param cliToolName %}} describe limitrange --namespace <namespace>
 ```
 
-The above command should output this (name and Namespace will vary):
+The command above should output this (name and Namespace will vary):
 
 ```
 Name:       ce01a1b6-a162-479d-847c-4821255cc6db
@@ -172,7 +172,7 @@ Check whether a ResourceQuota exists in your Namespace:
 {{% param cliToolName %}} describe quota --namespace <namespace>
 ```
 
-The above command could (must not) output this (name and Namespace will vary):
+The command above could (must not) output this (name and Namespace will vary):
 
 ```
 Name:            lab-quota
@@ -256,7 +256,7 @@ Near the end of the output you can find the relevant status part:
 ```
 
 {{% /onlyWhen %}}
-So let's look at the numbers to verify the container really had too little memory. We started the `stress` command using parameter `--vm-bytes 85M` which means the process wants to allocate 85 megabytes of memory. Again looking at the Pod's YAML definition with:
+So let's look at the numbers to verify the container really had too little memory. We started the `stress` command using the parameter `--vm-bytes 85M` which means the process wants to allocate 85 megabytes of memory. Again looking at the Pod's YAML definition with:
 
 ```bash
 {{% param cliToolName %}} get pod stress2much --output yaml --namespace <namespace>
@@ -298,7 +298,7 @@ Let's fix this by recreating the Pod and explicitly setting the memory request t
 {{% /onlyWhen %}}
 
 {{% alert title="Note" color="primary" %}}
-Remember, if you'd only set the limit, the request would be set to the same value.
+Remember, if you only set the limit, the request will be set to the same value.
 {{% /alert %}}
 
 You should now see that the Pod is successfully running:
@@ -354,7 +354,7 @@ which should output the following YAML definition:
 
 The most interesting part is the quota's status which reveals that we cannot use more than 100 MiB of memory and that 80 MiB are already used.
 
-Fortunately our application can live with less memory than what the LimitRange sets. Let's set the request to the remaining 10 MiB:
+Fortunately, our application can live with less memory than what the LimitRange sets. Let's set the request to the remaining 10 MiB:
 
 {{% onlyWhenNot mobi %}}
 ```bash

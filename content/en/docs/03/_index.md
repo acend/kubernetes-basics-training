@@ -12,7 +12,7 @@ In this lab, we are going to deploy our first container image and look at the co
 After we've familiarized ourselves with the platform, we are going to have a look at deploying a pre-built container image from Quay.io or any other public container registry.
 
 {{% onlyWhen openshift %}}
-In OpenShift we have used the `<project>` identifier to select the correct project. Please use the same identifier in the context `<namespace>` to do the same for all upcoming labs. Ask your trainer if you want to have more information about that.
+In OpenShift we have used the `<project>` identifier to select the correct project. Please use the same identifier in the context `<namespace>` to do the same for all upcoming labs. Ask your trainer if you want more information on that.
 {{% /onlyWhen %}}
 
 First, we are going to directly start a new Pod:
@@ -134,7 +134,7 @@ Display the created Deployment using the following command:
 
 A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) defines the following facts:
 
-* Update strategy: How application updates should be executed and how the Pods are being exchanged
+* Update strategy: How application updates should be executed and how the Pods are exchanged
 * Containers
   * Which image should be deployed
   * Environment configuration for Pods
@@ -211,7 +211,7 @@ We are now ready to create the build and deployment, all in one command:
 oc new-app --name example-web-go --context-dir go/ --strategy docker https://github.com/acend/awesome-apps.git --namespace <namespace>
 ```
 
-Let's watch the image build's process:
+Let's watch the image's build process:
 
 ```bash
 oc logs bc/example-web-go --follow --namespace <namespace>
@@ -250,7 +250,7 @@ It looks the same as before with the only essential exception that it uses the i
 
 {{% alert title="Note" color="primary" %}}
 What's a save point? Save points are intermediate results which you can use if you are stuck. You can compare them with
-your existing resources. Or you can apply the provided manifests with `{{% param cliToolName %}} apply -f <manifest.yaml>`.
+your existing resources or you can apply the provided manifests with `{{% param cliToolName %}} apply -f <manifest.yaml>`.
 {{% /alert %}}
 
 You should now have the following resources in place:
