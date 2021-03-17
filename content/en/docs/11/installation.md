@@ -31,20 +31,20 @@ Check out the [Helm Documentation](https://helm.sh/docs/topics/v2_v3_migration/)
 
 Every [release](https://github.com/helm/helm/releases) of Helm provides binary releases for a variety of OSes. These binary versions can be manually downloaded and installed.
 
-The latest v3 release v3.1.2 can be found [here](https://github.com/helm/helm/releases/tag/v3.1.2).
+The latest v3 release v3.5.3 can be found [here](https://github.com/helm/helm/releases/tag/v3.5.3).
 
 
 ## Task {{% param sectionnumber %}}.1: Install CLI
 
 Install the `helm` cli on your system:
 
-1. Download your desired version from [here](https://get.helm.sh/helm-v3.1.2-linux-amd64.tar.gz)
-1. Unpack it (`tar -zxvf helm-v3.1.2-linux-amd64.tar.gz`)
+1. Download your desired version from [here](https://get.helm.sh/helm-v3.5.3-linux-amd64.tar.gz)
+1. Unpack it (`tar -zxvf helm-v3.5.3-linux-amd64.tar.gz`)
 1. Find the helm binary in the unpacked directory and move it to its desired destination (e.g. `mv linux-amd64/helm /usr/local/bin/`)
     * The desired destination should be listed in your $PATH environment variable (`echo $PATH`)
 
 {{% alert title="Note for Windows users" color="primary" %}}
-Please make sure to select the [Windows version](https://get.helm.sh/helm-v3.1.2-windows-amd64.zip). Put the binary into your working directory or make sure the directory containing the `helm.exe` binary is in your `Path` environment variable.
+Please make sure to select the [Windows version](https://get.helm.sh/helm-v3.5.3-windows-amd64.zip). Put the binary into your working directory or make sure the directory containing the `helm.exe` binary is in your `Path` environment variable.
 {{% /alert %}}
 
 To verify, run the following command and check if `Version` is what you expected:
@@ -56,7 +56,7 @@ helm version
 The output is similar to this:
 
 ```bash
-version.BuildInfo{Version:"v3.1.2", GitCommit:"d878d4d45863e42fd5cff6743294a11d28a9abce", GitTreeState:"clean", GoVersion:"go1.13.8"}
+version.BuildInfo{Version:"v3.5.3", GitCommit:"041ce5a2c17a58be0fcd5f5e16fb3e7e95fea622", GitTreeState:"dirty", GoVersion:"go1.15.8"}
 ```
 
 From here on you should be able to run the client.
