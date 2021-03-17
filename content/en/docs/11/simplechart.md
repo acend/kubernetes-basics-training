@@ -1,7 +1,7 @@
 ---
-title: "12.3 Create a Chart"
-weight: 123
-sectionnumber: 12.3
+title: "11.3 Create a Chart"
+weight: 113
+sectionnumber: 11.3
 ---
 
 In this lab, we're going to create our very first Helm chart and deploy it.
