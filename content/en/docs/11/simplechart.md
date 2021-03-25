@@ -76,7 +76,96 @@ helm ls --namespace <namespace>
 
 ## Task {{% param sectionnumber %}}.3: Expose Application
 
-Our freshly deployed nginx is not yet accessible from outside the Kubernetes cluster. To expose it, we have to change the Service type to `NodePort`.
+Our freshly deployed nginx is not yet accessible from outside the {{% param distroName %}} cluster.
+{{% onlyWhen openshift %}}
+To expose it, we have to make sure a so called ingress resource will be deployed as well.
+Have a look at the file `templates/ingress.yaml` and the ingress section of the `mychart/values.yaml`
+
+
+### Solution Task 3
+
+A look into the file `templates/ingress.yaml` reveals that the rendering of the ingress and its values is configurable through values:
+
+```yaml
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "mychart.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "mychart.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.ingress.tls }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: {{ $svcPort }}
+          {{- end }}
+    {{- end }}
+  {{- end }}
+```
+
+Thus, we need to change this value inside our `mychart/values.yaml` file:
+
+{{% alert title="Note" color="primary" %}}
+Make sure to replace the `<namespace>` and `<appdomain>` accordingly.
+{{% /alert %}}
+
+```yaml
+...
+ingress:
+  enabled: true
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: mychart-<namespace>.<appdomain>
+      paths:
+      - path: /
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+...
+```
+
+Apply the change by upgrading our release:
+
+
+```bash
+helm upgrade --namespace <namespace> myfirstrelease ./mychart
+```
+
+Verify the successful deployment in your browser `http://mychart-<namespace>.<appdomain>`.
+{{% /onlyWhen %}}
+
+{{% onlyWhenNot openshift %}}
+To expose it, we have to change the Service type to `NodePort`.
 Search for the Service type definition in your chart and make the change.
 
 
@@ -91,7 +180,7 @@ spec:
 ...
 ```
 
-Thus, we need to change this value inside our `values.yaml` file:
+Thus, we need to change this value inside our `mychart/values.yaml` file:
 
 ```yaml
 ...
@@ -121,6 +210,8 @@ nginx is now available at the given port number indicated by the `NodePort` and 
 Use `{{% param cliToolName %}} get node -o wide` to get a node ip address. Remember, [NodePort's](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport) are open on any kubernetes node
 {{% /alert %}}
 
+{{% /onlyWhenNot %}}
+
 
 ## Task {{% param sectionnumber %}}.4: Overwrite value using commandline param
 
@@ -146,4 +237,4 @@ To remove an application, simply remove the Helm release with the following comm
 helm delete myfirstrelease
 ```
 
-Do this with our deployed release. With `kubectl get pods --namespace <namespace>` you should no longer see your application Pod.
+Do this with our deployed release. With `{{% param cliToolName %}} get pods --namespace <namespace>` you should no longer see your application Pod.
