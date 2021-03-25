@@ -67,17 +67,26 @@ service:
   type: ClusterIP
 updateStrategy:
   type: Recreate
-
+{{% onlyWhen openshift %}}
+podSecurityContext:
+  enabled: false
+containerSecurityContext:
+  enabled: false
+{{% /onlyWhen %}}
 ingress:
   enabled: true
-  hostname: wordpress-<namespace>.<appdomain>
+  hostname: wordpress--<namespace>.<appdomain>
 
 mariadb:
-  db:
-    password: mysuperpassword123
   primary:
     persistence:
       size: 1Gi
+{{% onlyWhen openshift %}}
+    podSecurityContext:
+      enabled: false
+    containerSecurityContext:
+      enabled: false
+{{% /onlyWhen %}}
 ```
 
 {{% alert title="Note" color="primary" %}}
@@ -134,8 +143,6 @@ mariadb:
   image:
     registry: docker-registry.mobicorp.ch
     repository: puzzle/helm-techlab/mariadb
-  db:
-    password: mysuperpassword123
   primary:
     persistence:
       size: 1Gi
@@ -176,7 +183,7 @@ Subcharts are an alternative way to define dependencies within a chart: A chart 
 We are now going to deploy the application in a specific version (which is not the latest release on purpose). Also note that we define our custom `values.yaml` file with the `-f` parameter:
 
 ```bash
-helm install wordpress bitnami/wordpress -f values.yaml --version 10.0.6 --namespace <namespace>
+helm install wordpress bitnami/wordpress -f values.yaml --version 10.7.1 --namespace <namespace>
 ```
 
 Look for the newly created resources with `helm ls` and `{{% param cliToolName %}} get deploy,pod,ingress,pvc`:
@@ -189,7 +196,7 @@ which gives you:
 
 ```bash
 NAME      NAMESPACE       REVISION  UPDATED                                     STATUS    CHART             APP VERSION
-wordpress <namespace>         1        2020-03-31 13:23:17.213961038 +0200 CEST deployed  wordpress-10.0.6  5.5.3
+wordpress <namespace>         1     2021-03-25 14:27:38.231722961 +0100 CET     deployed  wordpress-10.7.1  5.7.0
 ```
 
 and
@@ -212,7 +219,7 @@ NAME                           HOSTS                                          AD
 ingress.extensions/wordpress   wordpress-<namespace>.<appdomain>              10.100.1.10   80      2m6s
 
 NAME                                             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS            AGE
-persistentvolumeclaim/data-wordpress-mariadb-0   Bound    pvc-859fe3b4-b598-4f86-b7ed-a3a183f700fd   8Gi        RWO            cloudscale-volume-ssd   2m6s
+persistentvolumeclaim/data-wordpress-mariadb-0   Bound    pvc-859fe3b4-b598-4f86-b7ed-a3a183f700fd   1Gi        RWO            cloudscale-volume-ssd   2m6s
 persistentvolumeclaim/wordpress                  Bound    pvc-83ebf739-0b0e-45a2-936e-e925141a0d35   1Gi        RWO            cloudscale-volume-ssd   2m7s
 ```
 
@@ -223,12 +230,39 @@ helm get values wordpress --namespace <namespace>
 ```
 
 which gives you:
-
+{{% onlyWhen openshift %}}
 ```yaml
 USER-SUPPLIED VALUES:
+containerSecurityContext:
+  enabled: false
+ingress:
+  enabled: true
+  hostname: wordpress--<namespace>.<appdomain>
 mariadb:
-  db:
-    password: mysuperpassword123
+  primary:
+    containerSecurityContext:
+      enabled: false
+    persistence:
+      size: 1Gi
+    podSecurityContext:
+      enabled: false
+persistence:
+  size: 1Gi
+podSecurityContext:
+  enabled: false
+service:
+  type: ClusterIP
+updateStrategy:
+  type: Recreate
+```
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
+```yaml
+USER-SUPPLIED VALUES:
+ingress:
+  enabled: true
+  hostname: wordpress--<namespace>.<appdomain>
+mariadb:
   primary:
     persistence:
       size: 1Gi
@@ -238,8 +272,8 @@ service:
   type: ClusterIP
 updateStrategy:
   type: Recreate
-
 ```
+{{% /onlyWhenNot %}}
 
 As soon as all deployments are ready (meaning pods `wordpress` and `mariadb` are running) you can open the application with the URL from your Ingress resource defined in `values.yaml`.
 
@@ -273,7 +307,7 @@ export MARIADB_PASSWORD=$({{% param cliToolName %}} get secret wordpress-mariadb
 Then do the upgrade with the following command:
 
 ```bash
-helm upgrade -f values.yaml --set wordpressPassword=$WORDPRESS_PASSWORD --set mariadb.auth.rootPassword=$MARIADB_ROOT_PASSWORD --set mariadb.auth.password=$MARIADB_PASSWORD --version 10.0.7 wordpress bitnami/wordpress --namespace <namespace>
+helm upgrade -f values.yaml --set wordpressPassword=$WORDPRESS_PASSWORD --set mariadb.auth.rootPassword=$MARIADB_ROOT_PASSWORD --set mariadb.auth.password=$MARIADB_PASSWORD --version 10.7.2 wordpress bitnami/wordpress --namespace <namespace>
 ```
 
 And then observe the changes in your WordPress and MariaDB Apps
