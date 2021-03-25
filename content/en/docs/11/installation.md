@@ -4,48 +4,47 @@ weight: 112
 sectionnumber: 11.2
 ---
 
-This guide shows you how to install the Helm CLI. Helm can be installed either from source or from pre-built binary releases.
-
-
-## Helm v2 vs. v3
-
-Helm recently got a big update to v3 which saw some significant changes. However, Helm v2 is still in heavy use. Before downloading any Helm cli client, make sure you get the correct version.
-
-As for one of the big differences: Helm v2 requires a server-side component to be running inside your Kubernetes cluster called **Tiller**. Tiller is the service that actually communicates with the Kubernetes API to manage our Helm packages.
-
-This implies that Tiller:
-
-* will usually need admin privileges: If a user wants to install a chart that contains any cluster-wide element like a ClusterRole or a CustomResourceDefinition, Tiller should be privileged enough to create or delete those resources.
-* should be accessible to any authenticated user: Any valid user of the cluster may require access to install a chart.
-
-That leads to a now-obvious security issue: escalation of privileges. Suddenly, users with minimum privileges are able to interact with the cluster as if they were administrators. The problem is bigger if a Kubernetes Pod gets compromised: that compromised Pod is also able to access the cluster as an administrator. That's indeed disturbing.
-
-With the v3 release, Helm got rid of Tiller.
-
-{{% alert title="Note" color="primary" %}}
-Check out the [Helm Documentation](https://helm.sh/docs/topics/v2_v3_migration/) for more details about changes between v2 and v3.
-{{% /alert %}}
-
-
-## Install the Helm v3 CLI client
-
-Every [release](https://github.com/helm/helm/releases) of Helm provides binary releases for a variety of OSes. These binary versions can be manually downloaded and installed.
-
-The latest v3 release v3.5.3 can be found [here](https://github.com/helm/helm/releases/tag/v3.5.3).
+This guide shows you how to install the `helm` CLI tool. `helm` can be installed either from source or from pre-built binary releases.
+We are going to use the pre-built releases.
+`helm` binaries can be found on [Helm's release page](https://github.com/helm/helm/releases) for the usual variety of operating systems.
 
 
 ## Task {{% param sectionnumber %}}.1: Install CLI
 
-Install the `helm` cli on your system:
+Install the CLI for your **Operating System**
 
-1. Download your desired version from [here](https://get.helm.sh/helm-v3.5.3-linux-amd64.tar.gz)
-1. Unpack it (`tar -zxvf helm-v3.5.3-linux-amd64.tar.gz`)
-1. Find the helm binary in the unpacked directory and move it to its desired destination (e.g. `mv linux-amd64/helm /usr/local/bin/`)
-    * The desired destination should be listed in your $PATH environment variable (`echo $PATH`)
+1. [Download the latest release](https://github.com/helm/helm/releases)
+1. Unpack it (e.g. `tar -zxvf <filename>`)
+1. Copy to the correct location
+   * Linux: Find the `helm` binary in the unpacked directory and move it to its desired destination (e.g. `mv linux-amd64/helm ~/.local/bin/`)
+     * The desired destination should be listed in your $PATH environment variable (`echo $PATH`)
+   * macOS: Find the `helm` binary in the unpacked directory and move it to its desired destination (e.g. `mv darwin-amd64/helm ~/bin/`)
+     * The desired destination should be listed in your $PATH environment variable (`echo $PATH`)
+   * Windows: Find the `helm` binary in the unpacked directory and move it to its desired destination
+     * The desired destination should be listed in your $PATH environment variable (`echo $PATH`)
 
-{{% alert title="Note for Windows users" color="primary" %}}
-Please make sure to select the [Windows version](https://get.helm.sh/helm-v3.5.3-windows-amd64.zip). Put the binary into your working directory or make sure the directory containing the `helm.exe` binary is in your `Path` environment variable.
+{{% onlyWhen mobi %}}
+
+
+## Proxy configuration
+
+{{% alert title="Note" color="primary" %}}
+If you have direct access to the internet from your location, the proxy configuration is not required.
 {{% /alert %}}
+
+Set your HTTP proxy environment variables so that a chart repository can be added to your Helm repos in a later lab:
+
+```bash
+export HTTP_PROXY="http://<username>:<password>@dirproxy.mobi.ch:80"
+export HTTPS_PROXY="http://<username>:<password>@dirproxy.mobi.ch:80"
+export NO_PROXY="localhost,127.0.0.1,.mobicorp.ch,.mobicorp.test,.mobi.ch"
+```
+
+Replace `<username`> and `<password>` with your credentials. If you have special characters in your password, escape them with their corresponding hexadecimal values according to [this article](https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters).
+{{% /onlyWhen %}}
+
+
+## Task {{% param sectionnumber %}}.2: Verify
 
 To verify, run the following command and check if `Version` is what you expected:
 
