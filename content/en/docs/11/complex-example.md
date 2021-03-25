@@ -75,7 +75,7 @@ containerSecurityContext:
 {{% /onlyWhen %}}
 ingress:
   enabled: true
-  hostname: wordpress--<namespace>.<appdomain>
+  hostname: wordpress-<namespace>.<appdomain>
 
 mariadb:
   primary:
