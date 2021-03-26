@@ -19,17 +19,19 @@ First, we are going to directly start a new Pod:
 {{% onlyWhenNot mobi %}}
 
 ```bash
-{{% param cliToolName %}} run awesome-app --image=quay.io/acend/example-web-go --restart=Never --namespace <namespace>
+{{% param cliToolName %}} run awesome-app --image=quay.io/acend/example-web-go --restart=Never --requests='cpu=10m,memory=16Mi' --limits='cpu=20m,memory=32Mi' --namespace <namespace>
 ```
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
 
 ```bash
-kubectl run awesome-app --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --restart=Never --namespace <namespace>
+kubectl run awesome-app --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --requests='cpu=10m,memory=16Mi' --limits='cpu=20m,memory=32Mi' --restart=Never --namespace <namespace>
 ```
 
 {{% /onlyWhen %}}
+
+
 
 Use `{{% param cliToolName %}} get pods --namespace <namespace>` in order to show the running Pod:
 

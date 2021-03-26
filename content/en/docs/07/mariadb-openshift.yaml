@@ -80,9 +80,14 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 1
-        resources:
-          limits:
-            memory: 512Mi
+          resources:
+            limits:
+              cpu: 100m
+              memory: 512Mi
+            requests:
+              cpu: 50m
+              memory: 128Mi
+
         volumeMounts:
         - mountPath: /var/lib/mysql/data
           name: mariadb-data
