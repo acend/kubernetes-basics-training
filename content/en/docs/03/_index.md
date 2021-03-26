@@ -32,7 +32,6 @@ kubectl run awesome-app --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/exam
 {{% /onlyWhen %}}
 
 
-
 Use `{{% param cliToolName %}} get pods --namespace <namespace>` in order to show the running Pod:
 
 ```bash
