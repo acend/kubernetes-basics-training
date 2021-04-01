@@ -27,8 +27,8 @@ spec:
           name: example-spring-boot
           resources: 
             limits:
-              cpu: 50m
-              memory: 64Mi
+              cpu: 1
+              memory: 128Mi
             requests:
               cpu: 20m
               memory: 32Mi
