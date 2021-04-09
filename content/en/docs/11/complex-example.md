@@ -202,7 +202,7 @@ wordpress <namespace>         1     2021-03-25 14:27:38.231722961 +0100 CET     
 and
 
 ```bash
-{{% param cliToolName %}} -n <namespace> get deploy,pod,ingress,pvc
+{{% param cliToolName %}} get deploy,pod,ingress,pvc --namespace <namespace>
 ```
 
 which gives you:
@@ -231,6 +231,7 @@ helm get values wordpress --namespace <namespace>
 
 which gives you:
 {{% onlyWhen openshift %}}
+
 ```yaml
 USER-SUPPLIED VALUES:
 containerSecurityContext:
@@ -255,8 +256,10 @@ service:
 updateStrategy:
   type: Recreate
 ```
+
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
+
 ```yaml
 USER-SUPPLIED VALUES:
 ingress:
@@ -273,6 +276,7 @@ service:
 updateStrategy:
   type: Recreate
 ```
+
 {{% /onlyWhenNot %}}
 
 As soon as all deployments are ready (meaning pods `wordpress` and `mariadb` are running) you can open the application with the URL from your Ingress resource defined in `values.yaml`.
