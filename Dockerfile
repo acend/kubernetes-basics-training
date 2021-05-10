@@ -6,7 +6,7 @@ COPY . /src
 
 RUN hugo --environment ${TRAINING_HUGO_ENV} --minify
 
-FROM nginxinc/nginx-unprivileged:alpine
+FROM nginxinc/nginx-unprivileged:1.20-alpine
 
 EXPOSE 8080
 
