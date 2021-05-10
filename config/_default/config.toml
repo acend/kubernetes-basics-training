@@ -16,7 +16,6 @@ disableSVG = true
 defaultContentLanguage = "en"
 defaultContentLanguageInSubdir = false
 
-
 disableKinds = ["taxonomy", "taxonomyTerm"]
 
 # Highlighting config
@@ -45,13 +44,11 @@ resampleFilter = "CatmullRom"
 quality = 75
 anchor = "smart"
 
-
 [Languages]
 [Languages.en]
 title = "Kubernetes Basics Training"
 languageName = "English"
 weight = 1
-
 
 # navigation
 [Languages.en.menu]
@@ -72,7 +69,6 @@ url = "https://www.acend.ch"
   # guessSyntax = "true"
 
 [params]
-
 copyright = "acend gmbh"
 github_repo = "https://github.com/acend/kubernetes-basics-training"
 github_branch = "main"
