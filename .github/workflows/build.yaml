@@ -47,7 +47,7 @@ jobs:
           context: .
           file: ./Dockerfile
           build-args: |
-            ACEND_HUGO_ENV=mobi
+            TRAINING_HUGO_ENV=mobi
           push: true
           tags: |
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-mobi
@@ -58,7 +58,7 @@ jobs:
           context: .
           file: ./Dockerfile
           build-args: |
-            ACEND_HUGO_ENV=rancher
+            TRAINING_HUGO_ENV=rancher
           push: true
           tags: |
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-rancher
@@ -69,7 +69,7 @@ jobs:
           context: .
           file: ./Dockerfile
           build-args: |
-            ACEND_HUGO_ENV=openshift
+            TRAINING_HUGO_ENV=openshift
           push: true
           tags: |
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-openshift
