@@ -1,4 +1,4 @@
-name: Build Training
+name: Build Training and Publish
 
 on:
   pull_request:
@@ -7,31 +7,33 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - 
+      -
         name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: recursive
-      - 
-        name: Lint Markdown
-        uses: nosborn/github-action-markdown-cli@v1.1.1
+      -
+        name: Set up npm for linting
+        uses: actions/setup-node@v2
         with:
-          files: "content *.md"
-          config_file: ".markdownlint.json"
+          node-version: '15.x'
+      -
+        name: Lint Markdown
+        run: npm ci && npm run mdlint
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      - 
+      -
         name: Login to Quay.io Container Registry
         uses: docker/login-action@v1 
         with:
           registry: quay.io
           username: ${{ secrets.QUAYIO_USERNAME }}
           password: ${{ secrets.QUAYIO_TOKEN }}
-      - 
+      -
         name: Build Latest Version
         uses: docker/build-push-action@v2
         with:
@@ -40,7 +42,17 @@ jobs:
           push: true
           tags: |
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}
-      - 
+      -
+        name: Run vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os'
+          severity: 'CRITICAL,HIGH'
+      -
         name: Build Mobi Version
         uses: docker/build-push-action@v2
         with:
@@ -51,7 +63,17 @@ jobs:
           push: true
           tags: |
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-mobi
-      - 
+      -
+        name: Run vulnerability scanner Mobi
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-mobi'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os'
+          severity: 'CRITICAL,HIGH'
+      -
         name: Build Rancher Version
         uses: docker/build-push-action@v2
         with:
@@ -62,7 +84,17 @@ jobs:
           push: true
           tags: |
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-rancher
-      - 
+      -
+        name: Run vulnerability scanner Rancher
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-rancher'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os'
+          severity: 'CRITICAL,HIGH'
+      -
         name: Build OpenShift Version
         uses: docker/build-push-action@v2
         with:
@@ -73,7 +105,17 @@ jobs:
           push: true
           tags: |
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-openshift
-      - 
+      -
+        name: Run vulnerability scanner OpenShift
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-openshift'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os'
+          severity: 'CRITICAL,HIGH'
+      -
         name: 'Deploy Helm Release'
         uses: 'deliverybot/helm@v1'
         with:
@@ -88,38 +130,37 @@ jobs:
             [
               "helm-chart/values.yaml"
             ]
-
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG_TEST }}'
-      - 
+      -
         name: Redeploy Latest Deployment
         uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
         with:
           args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-acend --namespace acend-kubernetes-basics-training-test
-      - 
+      -
         name: Redeploy Mobi Deployment
         uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
         with:
           args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-mobi --namespace acend-kubernetes-basics-training-test
-      - 
+      -
         name: Redeploy Rancher Deployment
         uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
         with:
           args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-rancher --namespace acend-kubernetes-basics-training-test
-      - 
+      -
         name: Redeploy OpenShift Deployment
         uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
         with:
           args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-openshift --namespace acend-kubernetes-basics-training-test
-      - 
+      -
         name: Comment PR Environments in PR
         uses: marocchino/sticky-pull-request-comment@v2
         with:
