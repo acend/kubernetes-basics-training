@@ -35,7 +35,7 @@ Now you can create a ConfigMap based on that file:
 Verify that the ConfigMap was created successfully:
 
 ```bash
-oc get configmaps --namespace <namespace>
+{{% param cliToolName %}} get configmaps --namespace <namespace>
 ```
 
 ```
