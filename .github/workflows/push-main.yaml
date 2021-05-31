@@ -50,10 +50,17 @@ jobs:
         with:
           image-ref: 'quay.io/acend/kubernetes-basics-training:latest'
           format: 'table'
-          exit-code: '1'
+          output: 'trivy-results.txt'
+          exit-code: '0'
           ignore-unfixed: true
           vuln-type: 'os'
           severity: 'CRITICAL,HIGH'
+      -
+        name: Archive vulnerability scan results
+        uses: actions/upload-artifact@v2
+        with:
+          name: trivy-results-main
+          path: trivy-results.txt
       -
         name: Build Mobi Version
         uses: docker/build-push-action@v2
