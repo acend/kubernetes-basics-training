@@ -48,10 +48,17 @@ jobs:
         with:
           image-ref: 'quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}'
           format: 'table'
-          exit-code: '1'
+          output: 'trivy-results.txt'
+          exit-code: '0'
           ignore-unfixed: true
           vuln-type: 'os'
           severity: 'CRITICAL,HIGH'
+      -
+        name: Archive vulnerability scan results
+        uses: actions/upload-artifact@v2
+        with:
+          name: trivy-results-build
+          path: trivy-results.txt
       -
         name: Build Mobi Version
         uses: docker/build-push-action@v2
@@ -64,16 +71,6 @@ jobs:
           tags: |
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-mobi
       -
-        name: Run vulnerability scanner Mobi
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-mobi'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os'
-          severity: 'CRITICAL,HIGH'
-      -
         name: Build Rancher Version
         uses: docker/build-push-action@v2
         with:
@@ -85,16 +82,6 @@ jobs:
           tags: |
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-rancher
       -
-        name: Run vulnerability scanner Rancher
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-rancher'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os'
-          severity: 'CRITICAL,HIGH'
-      -
         name: Build OpenShift Version
         uses: docker/build-push-action@v2
         with:
@@ -105,16 +92,6 @@ jobs:
           push: true
           tags: |
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-openshift
-      -
-        name: Run vulnerability scanner OpenShift
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-openshift'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os'
-          severity: 'CRITICAL,HIGH'
       -
         name: 'Deploy Helm Release'
         uses: 'deliverybot/helm@v1'
