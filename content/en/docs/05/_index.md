@@ -17,7 +17,7 @@ Create a new Deployment in your Namespace:
 {{% onlyWhenNot mobi %}}
 
 ```bash
-{{% param cliToolName %}} create deployment example-web-python --image=quay.io/acend/example-web-python --namespace <namespace>
+{{% param cliToolName %}} create deployment example-web-python --image={{% param baseRegistryUrl %}}example-web-python --namespace <namespace>
 ```
 
 {{% /onlyWhenNot %}}
@@ -371,7 +371,7 @@ Now insert the readiness probe at `.spec.template.spec.containers` above the `re
 ```yaml
 ...
      containers:
-      - image: quay.io/acend/example-web-python
+      - image: {{% param baseRegistryUrl %}}example-web-python
         imagePullPolicy: Always
         name: example-web-python
         # start to copy here
@@ -392,7 +392,7 @@ The `containers` configuration then looks like:
 ```
 ...
       containers:
-      - image: quay.io/acend/example-web-python
+      - image: {{% param baseRegistryUrl %}}example-web-python
         imagePullPolicy: Always
         name: example-web-python
         readinessProbe:
@@ -423,7 +423,7 @@ The command above results in the following `readinessProbe` snippet being insert
 ```yaml
 ...
      containers:
-      - image: quay.io/acend/example-web-python
+      - image: {{% param baseRegistryUrl %}}example-web-python
         imagePullPolicy: Always
         name: example-web-python
         readinessProbe:
