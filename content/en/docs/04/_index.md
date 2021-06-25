@@ -197,7 +197,7 @@ The `<appdomain>` is the default domain under which your applications will be ac
 
 {{% onlyWhenNot openshift %}}
 
-
+{{% onlyWhenNot netcetera %}}
 ## Task {{% param sectionnumber %}}.2: Expose as NodePort
 
 There's a second option to make a Service accessible from outside: Use a [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport).
@@ -264,7 +264,7 @@ Or go to the **Service Discovery** tab and look for your Service name. The link 
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 
-
+{{% /onlyWhenNot %}}
 ## Task {{% param sectionnumber %}}.3 (optional): For fast learners
 
 Have a closer look at the resources created in your namespace `<namespace>` with the following commands and try to understand them:
@@ -293,5 +293,6 @@ You should now have the following resources in place:
 * [deployment.yaml](../03/deployment.yaml) (from lab 3)
 * [service.yaml](service.yaml)
 * {{% onlyWhenNot openshift %}}{{% onlyWhenNot mobi %}}[ingress.template.yaml](ingress.template.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen mobi %}}[ingress-mobi.template.yaml](ingress-mobi.template.yaml){{% /onlyWhen %}}{{% /onlyWhenNot %}}
+  {{% onlyWhen mobi %}}[ingress-mobi.template.yaml](ingress-mobi.template.yaml){{% /onlyWhen %}}{{% onlyWhen netcetera %}}[ingress-netcetera.template.yaml](ingress-netcetera.template.yaml){{% /onlyWhen %}}{{% /onlyWhenNot %}}
+  
   {{% onlyWhen openshift %}}An exposed Route{{% /onlyWhen %}}
