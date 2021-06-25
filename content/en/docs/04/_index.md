@@ -292,7 +292,7 @@ You should now have the following resources in place:
 
 * [deployment.yaml](../03/deployment.yaml) (from lab 3)
 * [service.yaml](service.yaml)
-* {{% onlyWhenNot openshift %}}{{% onlyWhenNot mobi %}}[ingress.template.yaml](ingress.template.yaml){{% /onlyWhenNot %}}
+* {{% onlyWhenNot openshift %}}{{% onlyWhenNot mobi %}}{{% onlyWhenNot netcetera %}}[ingress.template.yaml](ingress.template.yaml){{% /onlyWhenNot %}}{{% /onlyWhenNot %}}
   {{% onlyWhen mobi %}}[ingress-mobi.template.yaml](ingress-mobi.template.yaml){{% /onlyWhen %}}{{% onlyWhen netcetera %}}[ingress-netcetera.template.yaml](ingress-netcetera.template.yaml){{% /onlyWhen %}}{{% /onlyWhenNot %}}
   
   {{% onlyWhen openshift %}}An exposed Route{{% /onlyWhen %}}
