@@ -196,9 +196,9 @@ The `<appdomain>` is the default domain under which your applications will be ac
 {{% /onlyWhen %}}
 
 {{% onlyWhenNot openshift %}}
-
-
 {{% onlyWhenNot netcetera %}}
+
+
 ## Task {{% param sectionnumber %}}.2: Expose as NodePort
 
 There's a second option to make a Service accessible from outside: Use a [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport).
@@ -264,8 +264,9 @@ Or go to the **Service Discovery** tab and look for your Service name. The link 
 {{% /alert %}}
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
-
 {{% /onlyWhenNot %}}
+
+
 ## Task {{% param sectionnumber %}}.3 (optional): For fast learners
 
 Have a closer look at the resources created in your namespace `<namespace>` with the following commands and try to understand them:
