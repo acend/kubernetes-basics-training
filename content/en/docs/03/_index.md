@@ -19,7 +19,7 @@ First, we are going to directly start a new Pod:
 {{% onlyWhenNot mobi %}}
 
 ```bash
-{{% param cliToolName %}} run awesome-app --image={{% param baseRegistryUrl %}}example-web-go --restart=Never --requests='cpu=10m,memory=16Mi' --limits='cpu=20m,memory=32Mi' --namespace <namespace>
+{{% param cliToolName %}} run awesome-app --image={{% param baseRegistryUrl %}}acend/example-web-go --restart=Never --requests='cpu=10m,memory=16Mi' --limits='cpu=20m,memory=32Mi' --namespace <namespace>
 ```
 
 {{% /onlyWhenNot %}}
