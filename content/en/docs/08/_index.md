@@ -150,8 +150,7 @@ You should now have the following resources in place:
 * [pvc.yaml](pvc.yaml)
 * {{% onlyWhenNot openshift %}}
   {{% onlyWhenNot customer %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen mobi %}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{% /onlyWhen %}}
-  {{% onlyWhen netcetera %}}[mariadb-netcetera.yaml](mariadb-netcetera.yaml){{% /onlyWhen %}}
+  {{% onlyWhen customer %}}[mariadb-{{% param customer %}}.yaml](mariadb-{{% param customer %}}.yaml){{% /onlyWhen %}}
   {{% /onlyWhenNot %}}
   {{% onlyWhen openshift %}}[mariadb-openshift.yaml](mariadb-openshift.yaml){{% /onlyWhen %}}
 

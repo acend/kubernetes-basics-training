@@ -156,12 +156,8 @@ In order to create the Ingress resource, we first need to create the file `ingre
 {{< highlight yaml >}}{{< readfile file="content/en/docs/04/ingress.template.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 
-{{% onlyWhen mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/04/ingress-mobi.template.yaml" >}}{{< /highlight >}}
-{{% /onlyWhen %}}
-
-{{% onlyWhen netcetera %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/04/ingress-netcetera.template.yaml" >}}{{< /highlight >}}
+{{% onlyWhen customer %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/04/ingress-{{% param customer %}}.template.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 As you see in the resource definition at `spec.rules[0].http.paths[0].backend.serviceName` we use the previously created `example-web-go` ClusterIP Service.
@@ -176,7 +172,7 @@ kubectl create -f <path to ingress.yaml> --namespace <namespace>
 Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<domain>`
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
-Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
+Afterwards, we are able to access our freshly created Ingress at `https://example-web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
@@ -294,8 +290,7 @@ You should now have the following resources in place:
 * [service.yaml](service.yaml)
 * {{% onlyWhenNot openshift %}}
   {{% onlyWhenNot customer %}}[ingress.template.yaml](ingress.template.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen mobi %}}[ingress-mobi.template.yaml](ingress-mobi.template.yaml){{% /onlyWhen %}}
-  {{% onlyWhen netcetera %}}[ingress-netcetera.template.yaml](ingress-netcetera.template.yaml){{% /onlyWhen %}}
+  {{% onlyWhen customer %}}[ingress-{{% param customer %}}.template.yaml](ingress-{{% param customer %}}.template.yaml){{% /onlyWhen %}}
   {{% /onlyWhenNot %}}
   
   {{% onlyWhen openshift %}}An exposed Route{{% /onlyWhen %}}

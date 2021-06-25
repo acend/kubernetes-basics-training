@@ -118,5 +118,4 @@ Check out the [official documentation](https://docs.openshift.com/container-plat
 You should now have the following resources in place:
 
 * {{% onlyWhenNot customer %}}[example-web-python.yaml](example-web-python.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen mobi %}}[example-web-python-mobi.yaml](example-web-python-mobi.yaml){{% /onlyWhen %}}
-  {{% onlyWhen netcetera %}}[example-web-python-netcetera.yaml](example-web-python-netcetera.yaml){{% /onlyWhen %}}
+  {{% onlyWhen customer %}}[example-web-python-{{% param customer %}}.yaml](example-web-python-{{% param customer %}}.yaml){{% /onlyWhen %}}

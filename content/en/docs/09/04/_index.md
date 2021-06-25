@@ -105,11 +105,8 @@ Here is a complete example Deployment of a sample Java app:
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/04/spring-boot-example.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 
-{{% onlyWhen mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/04/spring-boot-example-mobi.yaml" >}}{{< /highlight >}}
-{{% /onlyWhen %}}
-{{% onlyWhen netcetera %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/04/spring-boot-example-netcetera.yaml" >}}{{< /highlight >}}
+{{% onlyWhen customer %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/04/spring-boot-example-{{% param customer %}}.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 

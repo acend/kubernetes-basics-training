@@ -134,12 +134,8 @@ and we need to create an Ingress to access the application:
 {{% /onlyWhenNot %}}
 
 
-{{% onlyWhen mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress-mobi.template.yaml" >}}{{< /highlight >}}
-{{% /onlyWhen %}}
-
-{{% onlyWhen netcetera %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress-netcetera.template.yaml" >}}{{< /highlight >}}
+{{% onlyWhen customer %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress-{{% param customer %}}.template.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 Apply this Ingress definition using, e.g., `kubectl create -f ingress.yml --namespace <namespace>`

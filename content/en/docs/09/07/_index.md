@@ -43,11 +43,11 @@ oc edit dc mariadb --namespace <namespace>
 And add a new (sidecar) container into your DeploymentConfig:
 {{% /onlyWhen %}}
 
-{{% onlyWhenNot mobi %}}
+{{% onlyWhenNot customer %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/07/deploy_mariadb-sidecar.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/07/deploy_mariadb-sidecar_mobi.yaml" >}}{{< /highlight >}}
+{{% onlyWhen customer %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/07/deploy_mariadb-sidecar_{{% param customer %}}.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 Your Pod now has two running containers. Verify this with:
