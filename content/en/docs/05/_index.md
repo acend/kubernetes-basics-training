@@ -129,11 +129,10 @@ kubectl expose deployment example-web-python --type="ClusterIP" --name="example-
 
 and we need to create an Ingress to access the application:
 
-{{% onlyWhenNot mobi %}}
-{{% onlyWhenNot netcetera %}}
+{{% onlyWhenNot customer %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress.template.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
-{{% /onlyWhenNot %}}
+
 
 {{% onlyWhen mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress-mobi.template.yaml" >}}{{< /highlight >}}

@@ -182,10 +182,8 @@ As we had seen in the earlier labs, all resources like Deployments, Services, Se
 In our case we want to create a deployment including a Service for our MySQL database.
 Save this snippet as `mariadb.yaml`:
 
-{{% onlyWhenNot mobi %}}
-{{% onlyWhenNot netcetera %}}
+{{% onlyWhenNot customer %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/07/mariadb.yaml" >}}{{< /highlight >}}
-{{% /onlyWhenNot %}}
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen mobi %}}
@@ -413,7 +411,8 @@ You should now have the following resources in place:
 * [example-web-python.yaml](example-web-python.yaml)
 * [mariadb-secret.yaml](mariadb-secret.yaml)
 * {{% onlyWhenNot openshift %}}
-  {{% onlyWhenNot mobi %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
+  {{% onlyWhenNot customer %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
   {{% onlyWhen mobi %}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{% /onlyWhen %}}
+  {{% onlyWhen netcetera %}}[mariadb-netcetera.yaml](mariadb-netcetera.yaml){{% /onlyWhen %}}
   {{% /onlyWhenNot %}}
   {{% onlyWhen openshift %}}[mariadb-openshift.yaml](mariadb-openshift.yaml){{% /onlyWhen %}}

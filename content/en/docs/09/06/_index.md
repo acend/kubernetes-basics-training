@@ -31,32 +31,17 @@ Edit your existing `example-web-python` Deployment with:
 ```
 
 Add the init container into the existing Deployment:
-{{% onlyWhenNot mobi %}}
 
 ```yaml
 ...
 spec:
   initContainers:
   - name: wait-for-db
-    image: busybox:1.28
+    image: {{% param baseRegistryUrl %}}busybox:1.28
     command: ['sh', '-c', "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
 ...
 ```
 
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-
-```yaml
-...
-spec:
-  initContainers:
-  - name: wait-for-db
-    image: docker-registry.mobicorp.ch/cop/curl-and-provide:latest
-    command: ['sh', '-c', "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
-...
-```
-
-{{% /onlyWhen %}}
 {{% alert title="Note" color="primary" %}}
 This obviously only checks if there is a DNS Record for your MariaDB Service and not if the database is ready. But you get the idea, right?
 {{% /alert %}}
@@ -132,5 +117,6 @@ Check out the [official documentation](https://docs.openshift.com/container-plat
 
 You should now have the following resources in place:
 
-* {{% onlyWhenNot mobi %}}[example-web-python.yaml](example-web-python.yaml){{% /onlyWhenNot %}}
+* {{% onlyWhenNot customer %}}[example-web-python.yaml](example-web-python.yaml){{% /onlyWhenNot %}}
   {{% onlyWhen mobi %}}[example-web-python-mobi.yaml](example-web-python-mobi.yaml){{% /onlyWhen %}}
+  {{% onlyWhen netcetera %}}[example-web-python-netcetera.yaml](example-web-python-netcetera.yaml){{% /onlyWhen %}}

@@ -26,12 +26,16 @@ Similar to [task 7.4](../../07.0/#task-74-import-a-database-dump), we now want t
 
 Let's first look at the Job resource that we want to create.
 
-{{% onlyWhenNot mobi %}}
+{{% onlyWhenNot customer %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/03/job-mariadb-dump.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/03/job-mariadb-dump-mobi.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
+
+{{% onlyWhen netcetera %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/03/job-mariadb-dump-netcetera.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 The parameter `.spec.template.spec.containers[0].image` shows that we use the same image as the running database. In contrast to the database Pod, we don't start a database afterwards, but run a `mysqldump` command, specified with `.spec.template.spec.containers[0].command`. To perform the dump, we use the environment variables of the database deployment to set the hostname, user and password parameters of the `mysqldump` command. The `MYSQL_PASSWORD` variable refers to the value of the secret, which is already used for the database Pod. This way we ensure that the dump is performed with the same credentials.

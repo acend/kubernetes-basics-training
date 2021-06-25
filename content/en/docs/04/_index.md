@@ -152,10 +152,8 @@ With the ClusterIP Service ready, we can now create the {{% onlyWhenNot openshif
 {{% onlyWhenNot openshift %}}
 In order to create the Ingress resource, we first need to create the file `ingress.yaml` and change the `host` entry to match your environment:
 
-{{% onlyWhenNot mobi %}}
-{{% onlyWhenNot netcetera %}}
+{{% onlyWhenNot customer %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/04/ingress.template.yaml" >}}{{< /highlight >}}
-{{% /onlyWhenNot %}}
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen mobi %}}

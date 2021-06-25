@@ -1,3 +1,3 @@
 [params]
-enabledModule = "base rancher netcetera"
+enabledModule = "base rancher customer netcetera"
 baseRegistryUrl = "docker-registry-mirror.netcetera.com/"

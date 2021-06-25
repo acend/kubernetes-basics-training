@@ -84,7 +84,7 @@ spec:
         app: example-web-go
     spec:
       containers:
-      - image: {% param baseRegistryUrl %}}acend/example-web-go
+      - image: {{% param baseRegistryUrl %}}acend/example-web-go
         name: example-web-go
         resources:
           requests:
