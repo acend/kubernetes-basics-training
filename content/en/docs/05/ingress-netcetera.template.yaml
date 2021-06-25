@@ -1,0 +1,16 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: example-web-python
+  annotations:
+    kubernetes.io/ingress.class: "nginx-external"
+spec:
+  rules:
+    - host: example-web-python-<namespace>.training.test.netcetera.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: example-web-python
+              servicePort: 5000
