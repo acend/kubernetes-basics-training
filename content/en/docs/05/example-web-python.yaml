@@ -33,6 +33,13 @@ spec:
       containers:
         - name: example-web-python
           image: quay.io/acend/example-web-python
+          resources:
+            limits:
+              cpu: 100m
+              memory: 196Mi
+            requests:
+              cpu: 50m
+              memory: 128Mi
           readinessProbe:
             httpGet:
               path: /health
