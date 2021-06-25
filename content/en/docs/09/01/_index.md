@@ -74,8 +74,11 @@ Create a file named `sts_nginx-cluster.yaml` with the following definition of a 
 {{% onlyWhenNot customer %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/01/sts_nginx-cluster.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
-{{% onlyWhen customer %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/01/sts_nginx-cluster_{{% param customer %}}.yaml" >}}{{< /highlight >}
+{{% onlyWhen mobi %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/01/sts_nginx-cluster_mobi.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
+{{% onlyWhen netcetera %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/01/sts_nginx-cluster_netcetera.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 Create the StatefulSet:

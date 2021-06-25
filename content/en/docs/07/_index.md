@@ -186,8 +186,11 @@ Save this snippet as `mariadb.yaml`:
 {{< highlight yaml >}}{{< readfile file="content/en/docs/07/mariadb.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 
-{{% onlyWhen customer %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/07/mariadb-{{% param customer %}}.yaml" >}}{{< /highlight >}}
+{{% onlyWhen mobi %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/07/mariadb-mobi.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
+{{% onlyWhen netcetera %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/07/mariadb-netcetera.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 

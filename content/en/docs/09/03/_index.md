@@ -30,8 +30,11 @@ Let's first look at the Job resource that we want to create.
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/03/job-mariadb-dump.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 
-{{% onlyWhen customer %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/03/job-mariadb-dump-{{% param customer %}}.yaml" >}}{{< /highlight >}}
+{{% onlyWhen mobi %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/03/job-mariadb-dump-mobi.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
+{{% onlyWhen netcetera %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/03/job-mariadb-dump-netcetera.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 

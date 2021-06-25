@@ -156,9 +156,13 @@ In order to create the Ingress resource, we first need to create the file `ingre
 {{< highlight yaml >}}{{< readfile file="content/en/docs/04/ingress.template.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 
-{{% onlyWhen customer %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/04/ingress-{{% param customer %}}.template.yaml" >}}{{< /highlight >}}
+{{% onlyWhen mobi %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/04/ingress-mobi.template.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
+{{% onlyWhen netcetera %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/04/ingress-netcetera.template.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
+
 
 As you see in the resource definition at `spec.rules[0].http.paths[0].backend.serviceName` we use the previously created `example-web-go` ClusterIP Service.
 

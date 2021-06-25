@@ -7,7 +7,6 @@ imagePrefix = "puzzle_"
 baseRegistryUrl = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/"
 customer = "mobi"
 
-
 [[Languages.en.menu.main]]
 copyright = "Puzzle ITC GmbH"
 url = "https://www.puzzle.ch"
