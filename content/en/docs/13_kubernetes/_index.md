@@ -2,7 +2,7 @@
 title: "13. Web Console"
 weight: 13
 sectionnumber: 13
-onlyWhenNot: openshift
+onlyWhenNot: openshift customer
 ---
 
 
