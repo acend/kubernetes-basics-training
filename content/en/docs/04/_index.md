@@ -197,6 +197,7 @@ The `<appdomain>` is the default domain under which your applications will be ac
 
 {{% onlyWhenNot openshift %}}
 
+
 {{% onlyWhenNot netcetera %}}
 ## Task {{% param sectionnumber %}}.2: Expose as NodePort
 
