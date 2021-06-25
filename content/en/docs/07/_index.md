@@ -260,7 +260,7 @@ You could also do the changes by directly editing the Deployment:
               name: mariadb
         - name: MYSQL_URI
           value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
-        image: {{% param baseRegistryUrl %}}example-web-go
+        image: {{% param baseRegistryUrl %}}acend/example-web-go
         imagePullPolicy: Always
         name: example-web-python
         ...

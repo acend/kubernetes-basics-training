@@ -260,7 +260,7 @@ Let's fix this by recreating the Pod and explicitly setting the memory request t
 
 ```bash
 {{% param cliToolName %}} delete pod stress2much --namespace <namespace>
-{{% param cliToolName %}} run stress --image=polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+{{% param cliToolName %}} run stress --image={{% param baseRegistryUrl %}}polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
 {{% /onlyWhenNot %}}
