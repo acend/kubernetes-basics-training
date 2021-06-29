@@ -19,7 +19,7 @@ First, we are going to directly start a new Pod:
 {{% onlyWhenNot mobi %}}
 
 ```bash
-{{% param cliToolName %}} run awesome-app --image={{% param baseRegistryUrl %}}example-web-go --restart=Never --requests='cpu=10m,memory=16Mi' --limits='cpu=20m,memory=32Mi' --namespace <namespace>
+{{% param cliToolName %}} run awesome-app --image={{% param baseRegistryUrl %}}acend/example-web-go --restart=Never --requests='cpu=10m,memory=16Mi' --limits='cpu=20m,memory=32Mi' --namespace <namespace>
 ```
 
 {{% /onlyWhenNot %}}
@@ -63,21 +63,45 @@ Now delete the newly created Pod:
 
 In some use cases it can make sense to start a single Pod. But this has its downsides and is not really a common practice. Let's look at another concept which is tightly coupled with the Pod: the so-called _Deployment_. A Deployment ensures that a Pod is monitored and checks that the number of running Pods corresponds to the number of requested Pods.
 
-With the following command we can create a Deployment inside our already created namespace:
-{{% onlyWhenNot mobi %}}
 
-```bash
-{{% param cliToolName %}} create deployment example-web-go --image={{% param baseRegistryUrl %}}example-web-go --namespace <namespace>
+To create a new Deployment we first define our Deployment in a new file `03_deployment.yaml` with the following content:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: example-web-go
+  name: example-web-go
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-web-go
+  template:
+    metadata:
+      labels:
+        app: example-web-go
+    spec:
+      containers:
+      - image: {{% param baseRegistryUrl %}}acend/example-web-go
+        name: example-web-go
+        resources:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            cpu: 20m
+            memory: 32Mi
 ```
 
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
+And with this we create our Deployment inside our already created namespace:
+
 
 ```bash
-kubectl create deployment example-web-go --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --namespace <namespace>
+{{% param cliToolName %}} apply -f 03_deployment.yaml --namespace <namespace>
 ```
 
-{{% /onlyWhen %}}
 The output should be:
 
 ```

@@ -13,21 +13,41 @@ This lab does not depend on previous labs. You can start with an empty Namespace
 
 ## Task {{% param sectionnumber %}}.1: Scale the example application
 
-Create a new Deployment in your Namespace:
-{{% onlyWhenNot mobi %}}
+Create a new Deployment in your Namespace. So again, lets define the Deployment using YAML in a file `05_deployment.yaml` with the following content:
 
-```bash
-{{% param cliToolName %}} create deployment example-web-python --image={{% param baseRegistryUrl %}}example-web-python --namespace <namespace>
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: example-web-python
+  name: example-web-python
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-web-python
+  template:
+    metadata:
+      labels:
+        app: example-web-python
+    spec:
+      containers:
+      - image: {{% param baseRegistryUrl %}}acend/example-web-python
+        name: example-web-python
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
 ```
 
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-
 ```bash
-kubectl create deployment example-web-python --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-python --namespace <namespace>
+{{% param cliToolName %}} apply -f 05_deployment.yaml --namespace <namespace>
 ```
 
-{{% /onlyWhen %}}
 If we want to scale our example application, we have to tell the Deployment that we want to have three running replicas instead of one.
 Let's have a closer look at the existing ReplicaSet:
 
@@ -109,21 +129,16 @@ kubectl expose deployment example-web-python --type="ClusterIP" --name="example-
 
 and we need to create an Ingress to access the application:
 
-```yaml
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: example-web-python
-spec:
-  rules:
-    - host: example-web-python-<namespace>.<domain>
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: example-web-python
-              servicePort: 5000
-```
+{{% onlyWhenNot customer %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress.template.yaml" >}}{{< /highlight >}}
+{{% /onlyWhenNot %}}
+
+{{% onlyWhen mobi %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress-mobi.template.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
+{{% onlyWhen netcetera %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress-netcetera.template.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
 
 Apply this Ingress definition using, e.g., `kubectl create -f ingress.yml --namespace <namespace>`
 

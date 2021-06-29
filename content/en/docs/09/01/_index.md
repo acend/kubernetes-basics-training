@@ -71,11 +71,14 @@ The controllable and predictable behavior can be a perfect match for application
 
 Create a file named `sts_nginx-cluster.yaml` with the following definition of a StatefulSet:
 
-{{% onlyWhenNot mobi %}}
+{{% onlyWhenNot customer %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/01/sts_nginx-cluster.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/01/sts_nginx-cluster_mobi.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
+{{% onlyWhen netcetera %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/01/sts_nginx-cluster_netcetera.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 Create the StatefulSet:
@@ -113,7 +116,7 @@ Set the StatefulSet's image tag to `latest`:
 
 {{% onlyWhenNot mobi %}}
 ```bash
-{{% param cliToolName %}} set image statefulset nginx-cluster nginx=nginxinc/nginx-unprivileged:latest --namespace <namespace>
+{{% param cliToolName %}} set image statefulset nginx-cluster nginx={{% param baseRegistryUrl %}}nginxinc/nginx-unprivileged:latest --namespace <namespace>
 ```
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}

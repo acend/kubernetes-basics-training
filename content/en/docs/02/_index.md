@@ -23,13 +23,15 @@ You may need special instructions if you are not using our lab environment.
 
 {{% onlyWhenNot openshift %}}
 {{% onlyWhen rancher %}}
-{{% onlyWhenNot mobi %}}
+{{% onlyWhen cloudscale %}}
+
 Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cloudscale.ch) (a Swiss IaaS provider) and has been provisioned with [Rancher](https://rancher.com/). You can log in to the cluster with a Rancher user.
 
 {{% alert title="Note" color="primary" %}}
 Your trainer will provide you with the information needed to log in.
 {{% /alert %}}
-{{% /onlyWhenNot %}}
+{{% /onlyWhen %}}
+
 
 Log in to the Rancher web console and choose the desired cluster.
 
@@ -92,15 +94,11 @@ A Namespace is a logical design used in Kubernetes to organize and separate your
 Additionally, Rancher knows the concept of a [*Project*](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple Namespaces.
 {{% /alert %}}
 
-In the Rancher web console choose the Project called `techlab`.
+In the Rancher web console choose the Project called `Training`.
 
 {{% onlyWhen mobi %}}
 We use the project `kubernetes-techlab` on the `kubedev` cluster.
 {{% /onlyWhen %}}
-
-{{% onlyWhenNot mobi %}}
-![Rancher Project](chooseproject.png)
-{{% /onlyWhenNot %}}
 
 {{% /onlyWhen %}}
 

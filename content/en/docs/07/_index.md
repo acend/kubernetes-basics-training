@@ -182,13 +182,17 @@ As we had seen in the earlier labs, all resources like Deployments, Services, Se
 In our case we want to create a deployment including a Service for our MySQL database.
 Save this snippet as `mariadb.yaml`:
 
-{{% onlyWhenNot mobi %}}
+{{% onlyWhenNot customer %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/07/mariadb.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/07/mariadb-mobi.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
+{{% onlyWhen netcetera %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/07/mariadb-netcetera.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
+
 
 Execute it with:
 
@@ -256,7 +260,7 @@ You could also do the changes by directly editing the Deployment:
               name: mariadb
         - name: MYSQL_URI
           value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
-        image: {{% param baseRegistryUrl %}}example-web-go
+        image: {{% param baseRegistryUrl %}}acend/example-web-go
         imagePullPolicy: Always
         name: example-web-python
         ...
@@ -406,7 +410,7 @@ You should now have the following resources in place:
 * [example-web-python.yaml](example-web-python.yaml)
 * [mariadb-secret.yaml](mariadb-secret.yaml)
 * {{% onlyWhenNot openshift %}}
-  {{% onlyWhenNot mobi %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen mobi %}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{% /onlyWhen %}}
+  {{% onlyWhenNot customer %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
+  {{% onlyWhen customer %}}[mariadb-{{% param customer %}}.yaml](mariadb-{{% param customer %}}.yaml){{% /onlyWhen %}}
   {{% /onlyWhenNot %}}
   {{% onlyWhen openshift %}}[mariadb-openshift.yaml](mariadb-openshift.yaml){{% /onlyWhen %}}

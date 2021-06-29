@@ -73,10 +73,11 @@ copyright = "acend gmbh"
 github_repo = "https://github.com/acend/kubernetes-basics-training"
 github_branch = "main"
 
-enabledModule = "base"
+enabledModule = "base cloudscale"
 distroName = "Kubernetes"
 cliToolName = "kubectl"
 baseRegistryUrl = "quay.io/acend/"
+customer = "none"
 
 # Enable Lunr.js offline search
 offlineSearch = true

@@ -9,7 +9,7 @@ In this lab, we are going to make the freshly deployed application from the last
 
 ## Task {{% param sectionnumber %}}.1: Create a ClusterIP Service with an Ingress
 
-The command `{{% param cliToolName %}} create deployment` from the last lab creates a Pod but no Service. A {{% param distroName %}} Service is an abstract way to expose an application running on a set of Pods as a network service. For some parts of your application (for example, frontends) you may want to expose a Service to an external IP address which is outside your cluster.
+The command `{{% param cliToolName %}} apply -f 03_deployment.yaml` from the last lab creates a Deployment but no Service. A {{% param distroName %}} Service is an abstract way to expose an application running on a set of Pods as a network service. For some parts of your application (for example, frontends) you may want to expose a Service to an external IP address which is outside your cluster.
 
 {{% param distroName %}} `ServiceTypes` allow you to specify what kind of Service you want. The default is `ClusterIP`.
 
@@ -152,13 +152,17 @@ With the ClusterIP Service ready, we can now create the {{% onlyWhenNot openshif
 {{% onlyWhenNot openshift %}}
 In order to create the Ingress resource, we first need to create the file `ingress.yaml` and change the `host` entry to match your environment:
 
-{{% onlyWhenNot mobi %}}
+{{% onlyWhenNot customer %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/04/ingress.template.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/04/ingress-mobi.template.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
+{{% onlyWhen netcetera %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/04/ingress-netcetera.template.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
+
 
 As you see in the resource definition at `spec.rules[0].http.paths[0].backend.serviceName` we use the previously created `example-web-go` ClusterIP Service.
 
@@ -172,7 +176,7 @@ kubectl create -f <path to ingress.yaml> --namespace <namespace>
 Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<domain>`
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
-Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
+Afterwards, we are able to access our freshly created Ingress at `https://example-web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
@@ -190,6 +194,7 @@ The `<appdomain>` is the default domain under which your applications will be ac
 {{% /onlyWhen %}}
 
 {{% onlyWhenNot openshift %}}
+{{% onlyWhenNot netcetera %}}
 
 
 ## Task {{% param sectionnumber %}}.2: Expose as NodePort
@@ -257,6 +262,7 @@ Or go to the **Service Discovery** tab and look for your Service name. The link 
 {{% /alert %}}
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
+{{% /onlyWhenNot %}}
 
 
 ## Task {{% param sectionnumber %}}.3 (optional): For fast learners
@@ -286,6 +292,9 @@ You should now have the following resources in place:
 
 * [deployment.yaml](../03/deployment.yaml) (from lab 3)
 * [service.yaml](service.yaml)
-* {{% onlyWhenNot openshift %}}{{% onlyWhenNot mobi %}}[ingress.template.yaml](ingress.template.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen mobi %}}[ingress-mobi.template.yaml](ingress-mobi.template.yaml){{% /onlyWhen %}}{{% /onlyWhenNot %}}
+* {{% onlyWhenNot openshift %}}
+  {{% onlyWhenNot customer %}}[ingress.template.yaml](ingress.template.yaml){{% /onlyWhenNot %}}
+  {{% onlyWhen customer %}}[ingress-{{% param customer %}}.template.yaml](ingress-{{% param customer %}}.template.yaml){{% /onlyWhen %}}
+  {{% /onlyWhenNot %}}
+  
   {{% onlyWhen openshift %}}An exposed Route{{% /onlyWhen %}}
