@@ -116,12 +116,12 @@ Set the StatefulSet's image tag to `latest`:
 
 {{% onlyWhenNot mobi %}}
 ```bash
-{{% param cliToolName %}} set image statefulset nginx-cluster nginx={{% param registryMirror %}}nginxinc/nginx-unprivileged:latest --namespace <namespace>
+{{% param cliToolName %}} set image statefulset nginx-cluster nginx={{% param registry_dockerio %}}nginxinc/nginx-unprivileged:latest --namespace <namespace>
 ```
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
 ```bash
-kubectl set image statefulset nginx-cluster nginx={{% param registryMirror %}}nginx:latest --namespace <namespace>
+kubectl set image statefulset nginx-cluster nginx={{% param registry_dockerio %}}nginx:latest --namespace <namespace>
 ```
 {{% /onlyWhen %}}
 

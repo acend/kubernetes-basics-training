@@ -1,7 +1,7 @@
 [params]
 enabledModule = "base rancher customer netcetera"
 
-registryMirror = "docker-registry-mirror.netcetera.com/"
+registry_dockerio = "docker-registry-mirror.netcetera.com/"
 baseRegistryUrl = "docker-registry-mirror.netcetera.com/acend" # for acend images
 
 customer = "netcetera"
