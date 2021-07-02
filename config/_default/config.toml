@@ -76,7 +76,7 @@ github_branch = "main"
 enabledModule = "base cloudscale"
 distroName = "Kubernetes"
 cliToolName = "kubectl"
-registry_dockerio = "docker.io" # for non acend images on docker.io
+registry_dockerio = "docker.io/" # for non acend images on docker.io
 baseRegistryUrl = "quay.io/acend/" # for acend images
 customer = "none"
 
