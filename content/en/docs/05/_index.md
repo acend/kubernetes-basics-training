@@ -33,7 +33,7 @@ spec:
         app: example-web-python
     spec:
       containers:
-      - image: {{% param baseRegistryUrl %}}acend/example-web-python
+      - image: {{% param baseRegistryUrl %}}example-web-python
         name: example-web-python
         resources:
           limits:

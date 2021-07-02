@@ -19,14 +19,14 @@ First, we are going to directly start a new Pod:
 {{% onlyWhenNot mobi %}}
 
 ```bash
-{{% param cliToolName %}} run awesome-app --image={{% param baseRegistryUrl %}}acend/example-web-go --restart=Never --requests='cpu=10m,memory=16Mi' --limits='cpu=20m,memory=32Mi' --namespace <namespace>
+{{% param cliToolName %}} run awesome-app --image={{% param baseRegistryUrl %}}example-web-go --restart=Never --requests='cpu=10m,memory=16Mi' --limits='cpu=20m,memory=32Mi' --namespace <namespace>
 ```
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
 
 ```bash
-kubectl run awesome-app --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --requests='cpu=10m,memory=16Mi' --limits='cpu=20m,memory=32Mi' --restart=Never --namespace <namespace>
+kubectl run awesome-app --image={{% param baseRegistryUrl %}}example-web-go --requests='cpu=10m,memory=16Mi' --limits='cpu=20m,memory=32Mi' --restart=Never --namespace <namespace>
 ```
 
 {{% /onlyWhen %}}
@@ -84,7 +84,7 @@ spec:
         app: example-web-go
     spec:
       containers:
-      - image: {{% param baseRegistryUrl %}}acend/example-web-go
+      - image: {{% param baseRegistryUrl %}}{{% param baseRegistryOrg %}}example-web-go
         name: example-web-go
         resources:
           requests:
@@ -145,7 +145,7 @@ When we executed the command `{{% param cliToolName %}} create deployment exampl
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen mobi %}}
-When we executed the command `kubectl create deployment example-web-go --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --namespace <namespace>`, kubectl created a Deployment resource.
+When we executed the command `kubectl create deployment example-web-go --image={{% param baseRegistryUrl %}}example-web-go --namespace <namespace>`, kubectl created a Deployment resource.
 {{% /onlyWhen %}}
 
 
