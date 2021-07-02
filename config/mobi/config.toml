@@ -4,7 +4,8 @@ theme = ["docsy-puzzle", "docsy-plus", "docsy"]
 enabledModule = "base rancher customer mobi"
 copyright = "Puzzle ITC GmbH"
 imagePrefix = "puzzle_"
-baseRegistryUrl = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/"
+registryMirror = "docker-registry.mobicorp.ch/puzzle/k8s/kurs"
+baseRegistryUrl = "docker-registry.mobicorp.ch/puzzle/k8s/kurs"
 customer = "mobi"
 
 [[Languages.en.menu.main]]

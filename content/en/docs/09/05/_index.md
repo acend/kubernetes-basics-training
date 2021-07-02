@@ -85,7 +85,7 @@ metadata:
 spec:
   containers:
   - name: lr-demo-ctr
-    image: {{% param baseRegistryUrl %}}nginx-unprivileged:1.18-alpine
+    image: {{% param registryMirror %}}nginx-unprivileged:1.18-alpine
     resources:
       limits:
         memory: "200Mi"
@@ -188,7 +188,7 @@ requests.memory  0     100Mi
 
 Create a Pod using the polinux/stress image:
 ```bash
-{{% param cliToolName %}} run stress2much --image={{% param baseRegistryUrl %}}polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+{{% param cliToolName %}} run stress2much --image={{% param registryMirror %}}polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
 
@@ -224,7 +224,7 @@ Near the end of the output you can find the relevant status part:
 ```yaml
   containerStatuses:
   - containerID: docker://da2473f1c8ccdffbb824d03689e9fe738ed689853e9c2643c37f206d10f93a73
-    image: {{% param baseRegistryUrl %}}polinux/stress:latest
+    image: {{% param registryMirror %}}polinux/stress:latest
     lastState:
       terminated:
         ...
@@ -260,7 +260,7 @@ Let's fix this by recreating the Pod and explicitly setting the memory request t
 
 ```bash
 {{% param cliToolName %}} delete pod stress2much --namespace <namespace>
-{{% param cliToolName %}} run stress --image={{% param baseRegistryUrl %}}polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+{{% param cliToolName %}} run stress --image={{% param registryMirror %}}polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
 {{% /onlyWhenNot %}}
@@ -290,7 +290,7 @@ stress   1/1     Running   0          25s
 Create another Pod, again using the `polinux/stress` image. This time our application is less demanding and only needs 10 MB of memory (`--vm-bytes 10M`):
 
 ```bash
-{{% param cliToolName %}} run overbooked --image={{% param baseRegistryUrl %}}polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+{{% param cliToolName %}} run overbooked --image={{% param registryMirror %}}polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
 
 We are immediately confronted with an error message:
@@ -326,7 +326,7 @@ The most interesting part is the quota's status which reveals that we cannot use
 Fortunately, our application can live with less memory than what the LimitRange sets. Let's set the request to the remaining 10 MiB:
 
 ```bash
-{{% param cliToolName %}} run overbooked --image={{% param baseRegistryUrl %}}polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+{{% param cliToolName %}} run overbooked --image={{% param registryMirror %}}polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
 
 Even though the limits of both Pods combined overstretch the quota, the requests do not and so the Pods are allowed to run.
