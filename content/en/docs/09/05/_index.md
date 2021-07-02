@@ -85,7 +85,7 @@ metadata:
 spec:
   containers:
   - name: lr-demo-ctr
-    image: {{% param registry_dockerio %}}nginx-unprivileged:1.18-alpine
+    image: {{% param registry_dockerio %}}nginxinc/nginx-unprivileged:1.18-alpine
     resources:
       limits:
         memory: "200Mi"
