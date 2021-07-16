@@ -84,7 +84,7 @@ acendAwesomeApp-example-web-python = "quay.io/acend/example-web-python:latest"
 nginxinc-nginx-unprivileged = "docker.io/nginxinc/nginx-unprivileged:latest"
 nginxinc-nginx-unprivileged-fix-version = "docker.io/nginxinc/nginx-unprivileged:1.18-alpine"
 nginx = "docker.io/nginx:latest"
-polinux-stress = "docker.io/polinux/stress:latest"
+stress = "quay.io/acend/stress:latest"
 busybox = "docker.io/busybox:1.28"
 
 # Enable Lunr.js offline search

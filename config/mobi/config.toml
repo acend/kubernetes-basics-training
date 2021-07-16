@@ -12,7 +12,7 @@ acendAwesomeApp-example-web-python = "docker-registry.mobicorp.ch/puzzle/k8s/kur
 nginxinc-nginx-unprivileged = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx-unprivileged:latest"
 nginxinc-nginx-unprivileged-fix-version = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx-unprivileged:1.18-alpine"
 nginx = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx:latest"
-polinux-stress = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/stress:latest"
+stress = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/stress:latest"
 busybox = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/busybox:1.28"
 
 [[Languages.en.menu.main]]
