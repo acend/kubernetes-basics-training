@@ -1,7 +1,12 @@
 [params]
 enabledModule = "base rancher customer netcetera"
 
-registry_dockerio = "docker-registry-mirror.netcetera.com/"
-baseRegistryUrl = "docker-registry-mirror.netcetera.com/acend" # for acend images
-
 customer = "netcetera"
+
+[params.images]
+acendAwesomeApp-example-web-go = "docker-registry-mirror.netcetera.com/acend/example-web-go:latest"
+acendAwesomeApp-example-web-python = "docker-registry-mirror.netcetera.com/acend/example-web-python:latest"
+nginxinc-nginx-unprivileged = "docker-registry-mirror.netcetera.com/nginxinc/nginx-unprivileged:latest"
+nginx = "docker-registry-mirror.netcetera.com/nginx:latest"
+polinux-stress = "docker-registry-mirror.netcetera.com/polinux/stress:latest"
+busybox = "docker-registry-mirror.netcetera.com/busybox:1.28"
