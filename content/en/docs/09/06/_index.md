@@ -37,7 +37,7 @@ Add the init container into the existing Deployment:
 spec:
   initContainers:
   - name: wait-for-db
-    image: {{% param registry_dockerio %}}busybox:1.28
+    image: {{% param "images.busybox" %}}
     command: ['sh', '-c', "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
 ...
 ```

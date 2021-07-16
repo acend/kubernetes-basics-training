@@ -4,9 +4,15 @@ theme = ["docsy-puzzle", "docsy-plus", "docsy"]
 enabledModule = "base rancher customer mobi"
 copyright = "Puzzle ITC GmbH"
 imagePrefix = "puzzle_"
-registry_dockerio = "docker-registry.mobicorp.ch/puzzle/k8s/kurs"
-baseRegistryUrl = "docker-registry.mobicorp.ch/puzzle/k8s/kurs"
 customer = "mobi"
+
+[params.images]
+acendAwesomeApp-example-web-go = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go:latest"
+acendAwesomeApp-example-web-python = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-python:latest"
+nginxinc-nginx-unprivileged = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx-unprivileged:latest"
+nginx = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx:latest"
+polinux-stress = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/stress:latest"
+busybox = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/busybox:1.28"
 
 [[Languages.en.menu.main]]
 copyright = "Puzzle ITC GmbH"
@@ -17,7 +23,7 @@ url = "https://www.puzzle.ch"
 [[params.links.developer]]
 name = "GitHub"
 icon = "fab fa-github"
-url = "https://github.com/acend/container-basics-training"
+url = "https://github.com/acend/kubernetes-basics-training"
 
 [[params.links.user]]
 name = "Twitter"
