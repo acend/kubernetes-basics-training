@@ -85,7 +85,7 @@ metadata:
 spec:
   containers:
   - name: lr-demo-ctr
-    image: {{% param "images.nginxinc-nginx-unprivileged" %}}
+    image: {{% param "images.nginxinc-nginx-unprivileged-fix-version" %}}
     resources:
       limits:
         memory: "200Mi"
