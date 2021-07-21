@@ -105,55 +105,40 @@ jobs:
           push: true
           tags: |
             quay.io/acend/kubernetes-basics-training:latest-netcetera
-      -
-        name: 'Deploy Helm Release'
-        uses: 'deliverybot/helm@v1'
+      - 
+        name: 'Install Helm'
+        uses: azure/setup-helm@v1
         with:
-          release: 'latest'
-          namespace: 'acend-kubernetes-basics-training-prod'
-          version: '${{ github.sha }}'
-          repository: 'https://acend.github.io/helm-charts/'
-          chart: 'acend-training-chart'
-          token: '${{ github.token }}'
-          helm: 'helm3'
-          value-files: |
-            [
-              "helm-chart/values.yaml"
-            ]
-        env:
-          KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
-      -
-        name: Redeploy acend Deployment
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
+          version: v3.6.2
+      - 
+        name: Install Kubectl
+        uses: azure/setup-kubectl@v1
         with:
-          args: rollout restart deployment/latest-acend-kubernetes-basics-acend --namespace acend-kubernetes-basics-training-prod
-      -
-        name: Redeploy Mobi Deployment
-        uses: actions-hub/kubectl@master
+          version: v1.21.2
+      - 
+        name: Create KUBECONFIG
         env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
-        with:
-          args: rollout restart deployment/latest-acend-kubernetes-basics-mobi --namespace acend-kubernetes-basics-training-prod
-      -
-        name: Redeploy Rancher Deployment
-        uses: actions-hub/kubectl@master
+          KUBE_CONFIG: '${{ secrets.KUBECONFIG }}'
+        run: |
+          mkdir -p $HOME/.kube
+          echo "$KUBE_CONFIG" > $HOME/.kube/config
+      - 
+        name: Deploy Helm Release
         env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
-        with:
-          args: rollout restart deployment/latest-acend-kubernetes-basics-rancher --namespace acend-kubernetes-basics-training-prod
-      -
-        name: Redeploy OpenShift Deployment
-        uses: actions-hub/kubectl@master
+          TRAINING_HELM_RELEASE: 'latest'
+          TRAINING_NAMESPACE: 'acend-kubernetes-basics-training-prod'
+          TRAINING_VERSION: '${{ github.sha }}'
+        run: |
+          helm upgrade $TRAINING_HELM_RELEASE acend-training-chart --install --wait --kubeconfig $HOME/.kube/config  --namespace=$TRAINING_NAMESPACE --set=app.name=$HELM_RELEASE --set=app.version=$TRAINING_VERSION --repo=https://acend.github.io/helm-charts/ --values=helm-chart/values.yaml --atomic
+      - 
+        name: Redeploy Deployments
         env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
-        with:
-          args: rollout restart deployment/latest-acend-kubernetes-basics-openshift --namespace acend-kubernetes-basics-training-prod
-      -
-        name: Redeploy Netcetera Deployment
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
-        with:
-          args: rollout restart deployment/latest-acend-kubernetes-basics-netcetera --namespace acend-kubernetes-basics-training-prod
+          TRAINING_HELM_RELEASE: 'latest'
+          TRAINING_NAMESPACE: 'acend-kubernetes-basics-training-prod'
+        run: |
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-acend --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-mobi --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-rancher --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-openshift --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-netcetera --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+

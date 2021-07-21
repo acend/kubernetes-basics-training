@@ -34,7 +34,7 @@ jobs:
           username: ${{ secrets.QUAYIO_USERNAME }}
           password: ${{ secrets.QUAYIO_TOKEN }}
       -
-        name: Build Latest Version
+        name: Build Acend Version
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -103,58 +103,42 @@ jobs:
           push: true
           tags: |
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-netcetera
-      -
-        name: 'Deploy Helm Release'
-        uses: 'deliverybot/helm@v1'
+      - 
+        name: 'Install Helm'
+        uses: azure/setup-helm@v1
         with:
-          release: 'pr-${{ github.event.pull_request.number }}'
-          namespace: 'acend-kubernetes-basics-training-test'
-          version: '${{ github.sha }}'
-          repository: 'https://acend.github.io/helm-charts/'
-          chart: 'acend-training-chart'
-          token: '${{ github.token }}'
-          helm: 'helm3'
-          value-files: |
-            [
-              "helm-chart/values.yaml"
-            ]
-        env:
-          KUBECONFIG_FILE: '${{ secrets.KUBECONFIG_TEST }}'
-      -
-        name: Redeploy Latest Deployment
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
+          version: v3.6.2
+      - 
+        name: Install Kubectl
+        uses: azure/setup-kubectl@v1
         with:
-          args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-acend --namespace acend-kubernetes-basics-training-test
-      -
-        name: Redeploy Mobi Deployment
-        uses: actions-hub/kubectl@master
+          version: v1.21.2
+      - 
+        name: Create KUBECONFIG
         env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
-        with:
-          args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-mobi --namespace acend-kubernetes-basics-training-test
-      -
-        name: Redeploy Rancher Deployment
-        uses: actions-hub/kubectl@master
+          KUBE_CONFIG: '${{ secrets.KUBECONFIG_TEST }}'
+        run: |
+          mkdir -p $HOME/.kube
+          echo "$KUBE_CONFIG" > $HOME/.kube/config
+      - 
+        name: Deploy Helm Release
         env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
-        with:
-          args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-rancher --namespace acend-kubernetes-basics-training-test
-      -
-        name: Redeploy OpenShift Deployment
-        uses: actions-hub/kubectl@master
+          TRAINING_HELM_RELEASE: 'pr-${{ github.event.pull_request.number }}'
+          TRAINING_NAMESPACE: 'acend-kubernetes-basics-training-test'
+          TRAINING_VERSION: '${{ github.sha }}'
+        run: |
+          helm upgrade $TRAINING_HELM_RELEASE acend-training-chart --install --wait --kubeconfig $HOME/.kube/config  --namespace=$TRAINING_NAMESPACE --set=app.name=$HELM_RELEASE --set=app.version=$TRAINING_VERSION --repo=https://acend.github.io/helm-charts/ --values=helm-chart/values.yaml --atomic
+      - 
+        name: Redeploy Deployments
         env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
-        with:
-          args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-openshift --namespace acend-kubernetes-basics-training-test
-      -
-        name: Redeploy Netcetera Deployment
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_TEST_BASE64 }}
-        with:
-          args: rollout restart deployment/pr-${{ github.event.pull_request.number }}-acend-kubernetes-basics-netcetera --namespace acend-kubernetes-basics-training-test
+          TRAINING_HELM_RELEASE: 'pr-${{ github.event.pull_request.number }}'
+          TRAINING_NAMESPACE: 'acend-kubernetes-basics-training-test'
+        run: |
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-acend --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-mobi --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-rancher --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-openshift --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-netcetera --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
       -
         name: Comment PR Environments in PR
         uses: marocchino/sticky-pull-request-comment@v2
