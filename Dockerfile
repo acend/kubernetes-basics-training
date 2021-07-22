@@ -24,3 +24,4 @@ FROM nginxinc/nginx-unprivileged:1.21-alpine
 EXPOSE 8080
 
 COPY --from=builder /src/public /usr/share/nginx/html
+COPY --from=wkhtmltopdf /pdf.pdf /usr/share/nginx/html/pdf/pdf.pdf
