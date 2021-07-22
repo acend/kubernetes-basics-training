@@ -37,7 +37,7 @@ Log in to the Rancher web console and choose the desired cluster.
 
 You now see a button at the top right that says **Kubeconfig File**. Click it, scroll down to the bottom and click **Copy to Clipboard**.
 
-![Download kubeconfig File](kubectlconfigfilebutton.png)
+{{< imgproc kubectlconfigfilebutton.png Resize  "800x" >}}{{< /imgproc >}}
 
 The copied kubeconfig now needs to be put into a file. The default location for the kubeconfig file is `~/.kube/config`.
 
@@ -182,7 +182,7 @@ In order to log in on the command line, copy the login command from the Web Cons
 
 To do that, open the Web Console and click on your username that you see at the top right, then choose **Copy Login Command**.
 
-![oc-login](login-ocp.png)
+{{% imgproc login-ocp.png Resize  "400x" %}}{{% /imgproc %}}
 
 A new tab or window will open in your browser.
 
