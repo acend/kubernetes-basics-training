@@ -23,7 +23,7 @@ We are going to use an OpenShift template to create the database. This can be do
 
 Make sure you are in OpenShift's **Developer** view (upper left dropdown) and have selected the correct Project:
 
-![selection](selection.png)
+{{< imgproc selection.png Resize  "600x" >}}{{< /imgproc >}}
 
 Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Instantiate Template**. A form opens. Check that the first field corresponds to the correct Project and set the **MariaDB Database Name** field to `acendexampledb` and leave the remaining fields as they are. Finally, click **Create** at the end of the form.
 
