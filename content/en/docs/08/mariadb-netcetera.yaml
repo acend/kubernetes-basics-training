@@ -1,8 +1,19 @@
+# Secrets are stored in the same file as the Deployment for demo purposes. Don't do this for production workloads!
+---
+apiVersion: v1
+data:
+  database-name: YWNlbmQtZXhhbXBsZS1kYg==
+  database-password: bXlzcWxwYXNzd29yZA==
+  database-root-password: bXlzcWxyb290cGFzc3dvcmQ=
+  database-user: YWNlbmQtdXNlcg==
+kind: Secret
+metadata:
+  name: mariadb
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mariadb-svc
+  name: mariadb
   labels:
     app: mariadb
 spec:
@@ -29,7 +40,7 @@ spec:
         app: mariadb
     spec:
       containers:
-        - image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mariadb:10.5
+        - image: docker-registry-mirror.netcetera.com/mariadb:10.5
           name: mariadb
           args:
             - "--ignore-db-dir=lost+found"
@@ -60,10 +71,18 @@ spec:
           ports:
             - containerPort: 3306
               name: mariadb
+          volumeMounts:
+            - name: mariadb-data
+              mountPath: /var/lib/mysql
           resources:
             limits:
-              cpu: 500m
-              memory: 512Mi
+              cpu: 200m
+              memory: 196Mi
             requests:
               cpu: 50m
               memory: 128Mi
+
+      volumes:
+        - name: mariadb-data
+          persistentVolumeClaim:
+            claimName: mariadb-data

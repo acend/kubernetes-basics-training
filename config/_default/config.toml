@@ -16,7 +16,6 @@ disableSVG = true
 defaultContentLanguage = "en"
 defaultContentLanguageInSubdir = false
 
-
 disableKinds = ["taxonomy", "taxonomyTerm"]
 
 # Highlighting config
@@ -45,13 +44,11 @@ resampleFilter = "CatmullRom"
 quality = 75
 anchor = "smart"
 
-
 [Languages]
 [Languages.en]
 title = "Kubernetes Basics Training"
 languageName = "English"
 weight = 1
-
 
 # navigation
 [Languages.en.menu]
@@ -72,14 +69,26 @@ url = "https://www.acend.ch"
   # guessSyntax = "true"
 
 [params]
-
 copyright = "acend gmbh"
 github_repo = "https://github.com/acend/kubernetes-basics-training"
 github_branch = "main"
 
-enabledModule = "base"
+enabledModule = "base cloudscale"
 distroName = "Kubernetes"
 cliToolName = "kubectl"
+customer = "none"
+
+[params.images]
+acendAwesomeApp-example-web-go = "quay.io/acend/example-web-go:latest"
+acendAwesomeApp-example-web-python = "quay.io/acend/example-web-python:latest"
+nginxinc-nginx-unprivileged = "docker.io/nginxinc/nginx-unprivileged:latest"
+nginxinc-nginx-unprivileged-fix-version = "docker.io/nginxinc/nginx-unprivileged:1.18-alpine"
+nginx = "docker.io/nginx:latest"
+stress = "quay.io/acend/stress:latest"
+busybox = "docker.io/busybox:1.28"
+
+[params.pdf]
+title="Kubernetes Basics Training"
 
 # Enable Lunr.js offline search
 offlineSearch = true

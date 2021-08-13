@@ -4,7 +4,7 @@ weight: 97
 sectionnumber: 9.7
 ---
 
-Let's first have a look again at the Pod's description [on the Kubernetes documentation page](https://kubernetes.io/docs/concepts/workloads/pods/pod/):
+Let's first have another look at the Pod's description [on the Kubernetes documentation page](https://kubernetes.io/docs/concepts/workloads/pods/pod/):
 
 > A Pod (as in a pod of whales or pea pod) is a group of one or more containers (such as Docker containers), with shared storage/network, and a specification for how to run the containers. A Pod’s contents are always co-located and co-scheduled, and run in a shared context. A Pod models an application-specific “logical host” - it contains one or more application containers which are relatively tightly coupled — in a pre-container world, being executed on the same physical or virtual machine would mean being executed on the same logical host.
 > The shared context of a Pod is a set of Linux namespaces, cgroups, and potentially other facets of isolation - the same things that isolate a Docker container. Within a Pod’s context, the individual applications may have further sub-isolations applied.
@@ -43,11 +43,14 @@ oc edit dc mariadb --namespace <namespace>
 And add a new (sidecar) container into your DeploymentConfig:
 {{% /onlyWhen %}}
 
-{{% onlyWhenNot mobi %}}
+{{% onlyWhenNot customer %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/07/deploy_mariadb-sidecar.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/07/deploy_mariadb-sidecar_mobi.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
+{{% onlyWhen netcetera %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/07/deploy_mariadb-sidecar_netcetera.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 Your Pod now has two running containers. Verify this with:

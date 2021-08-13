@@ -4,7 +4,7 @@ weight: 5
 sectionnumber: 5
 ---
 
-In this lab, we are going to show you how to scale applications on {{% param distroName %}}. Further, we show you how {{% param distroName %}} makes sure that the number of requested Pods is up and running and how an application can tell the platform that it is ready to receive requests.
+In this lab, we are going to show you how to scale applications on {{% param distroName %}}. Furthermore, we show you how {{% param distroName %}} makes sure that the number of requested Pods is up and running and how an application can tell the platform that it is ready to receive requests.
 
 {{% alert title="Note" color="primary" %}}
 This lab does not depend on previous labs. You can start with an empty Namespace.
@@ -13,21 +13,41 @@ This lab does not depend on previous labs. You can start with an empty Namespace
 
 ## Task {{% param sectionnumber %}}.1: Scale the example application
 
-Create a new Deployment in your Namespace:
-{{% onlyWhenNot mobi %}}
+Create a new Deployment in your Namespace. So again, lets define the Deployment using YAML in a file `05_deployment.yaml` with the following content:
 
-```bash
-{{% param cliToolName %}} create deployment example-web-python --image=quay.io/acend/example-web-python --namespace <namespace>
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: example-web-python
+  name: example-web-python
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-web-python
+  template:
+    metadata:
+      labels:
+        app: example-web-python
+    spec:
+      containers:
+      - image: {{% param "images.acendAwesomeApp-example-web-python" %}}
+        name: example-web-python
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
 ```
 
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-
 ```bash
-kubectl create deployment example-web-python --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-python --namespace <namespace>
+{{% param cliToolName %}} apply -f 05_deployment.yaml --namespace <namespace>
 ```
 
-{{% /onlyWhen %}}
 If we want to scale our example application, we have to tell the Deployment that we want to have three running replicas instead of one.
 Let's have a closer look at the existing ReplicaSet:
 
@@ -49,7 +69,7 @@ Or for even more details:
 {{% param cliToolName %}} get replicaset <replicaset> -o yaml --namespace <namespace>
 ```
 
-The ReplicaSet shows how many instances of a Pod that are desired, current and ready.
+The ReplicaSet shows how many instances of a Pod are desired, current and ready.
 
 
 Now we scale our application to three replicas:
@@ -100,7 +120,7 @@ OpenShift supports [horizontal](https://docs.openshift.com/container-platform/la
 ## Check for uninterruptible Deployments
 
 {{% onlyWhenNot openshift %}}
-Now we create a new Service of type `ClusterIP`:
+Now we create a new Service of the type `ClusterIP`:
 
 
 ```bash
@@ -109,21 +129,16 @@ kubectl expose deployment example-web-python --type="ClusterIP" --name="example-
 
 and we need to create an Ingress to access the application:
 
-```yaml
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: example-web-python
-spec:
-  rules:
-    - host: example-web-python-<namespace>.<domain>
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: example-web-python
-              servicePort: 5000
-```
+{{% onlyWhenNot customer %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress.template.yaml" >}}{{< /highlight >}}
+{{% /onlyWhenNot %}}
+
+{{% onlyWhen mobi %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress-mobi.template.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
+{{% onlyWhen netcetera %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress-netcetera.template.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
 
 Apply this Ingress definition using, e.g., `kubectl create -f ingress.yml --namespace <namespace>`
 
@@ -254,7 +269,7 @@ The requests get distributed amongst the three Pods. As soon as you scale down t
 Let's make another test: What happens if you start a new Deployment while our request generator is still running?
 
 {{% alert title="Warning" color="secondary" %}}
-On Windows, execute the following command in Git Bash; PowerShell seems not to work.
+On Windows, execute the following command in Git Bash; PowerShell doesn't seem to work.
 {{% /alert %}}
 
 
@@ -340,7 +355,7 @@ In our example, we want the application to tell {{% param distroName %}} that it
 ## Task {{% param sectionnumber %}}.2: Availability during Deployment
 
 {{% onlyWhenNot openshift %}}
-In our deployment configuration inside the rolling update strategy section we define that our application has to be always available during an update: `maxUnavailable: 0`
+In our deployment configuration inside the rolling update strategy section, we define that our application always has to be available during an update: `maxUnavailable: 0`
 
 You can directly edit the deployment (or any resource) with:
 
@@ -371,7 +386,7 @@ Now insert the readiness probe at `.spec.template.spec.containers` above the `re
 ```yaml
 ...
      containers:
-      - image: quay.io/acend/example-web-python
+      - image: {{% param "images.acendAwesomeApp-example-web-python" %}}
         imagePullPolicy: Always
         name: example-web-python
         # start to copy here
@@ -389,10 +404,10 @@ Now insert the readiness probe at `.spec.template.spec.containers` above the `re
 
 The `containers` configuration then looks like:
 
-```
+```yaml
 ...
       containers:
-      - image: quay.io/acend/example-web-python
+      - image: {{% param "images.acendAwesomeApp-example-web-python" %}}
         imagePullPolicy: Always
         name: example-web-python
         readinessProbe:
@@ -418,12 +433,12 @@ Define the readiness probe on the Deployment using the following command:
 oc set probe deploy/example-web-python --readiness --get-url=http://:5000/health --initial-delay-seconds=10 --timeout-seconds=1 --namespace <namespace>
 ```
 
-The above command results in the following `readinessProbe` snippet being inserted into the Deployment:
+The command above results in the following `readinessProbe` snippet being inserted into the Deployment:
 
 ```yaml
 ...
      containers:
-      - image: quay.io/acend/example-web-python
+      - image: {{% param "images.acendAwesomeApp-example-web-python" %}}
         imagePullPolicy: Always
         name: example-web-python
         readinessProbe:

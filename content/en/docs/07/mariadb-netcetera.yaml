@@ -29,7 +29,7 @@ spec:
         app: mariadb
     spec:
       containers:
-        - image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mariadb:10.5
+        - image: docker-registry-mirror.netcetera.com/mariadb:10.5
           name: mariadb
           args:
             - "--ignore-db-dir=lost+found"
@@ -62,8 +62,8 @@ spec:
               name: mariadb
           resources:
             limits:
-              cpu: 500m
-              memory: 512Mi
+              cpu: 400m
+              memory: 256Mi
             requests:
               cpu: 50m
               memory: 128Mi

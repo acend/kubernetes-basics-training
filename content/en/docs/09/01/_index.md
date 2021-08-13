@@ -71,11 +71,14 @@ The controllable and predictable behavior can be a perfect match for application
 
 Create a file named `sts_nginx-cluster.yaml` with the following definition of a StatefulSet:
 
-{{% onlyWhenNot mobi %}}
+{{% onlyWhenNot customer %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/01/sts_nginx-cluster.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/01/sts_nginx-cluster_mobi.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
+{{% onlyWhen netcetera %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/01/sts_nginx-cluster_netcetera.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 Create the StatefulSet:
@@ -113,12 +116,12 @@ Set the StatefulSet's image tag to `latest`:
 
 {{% onlyWhenNot mobi %}}
 ```bash
-{{% param cliToolName %}} set image statefulset nginx-cluster nginx=nginxinc/nginx-unprivileged:latest --namespace <namespace>
+{{% param cliToolName %}} set image statefulset nginx-cluster nginx={{% param "images.nginxinc-nginx-unprivileged" %}} --namespace <namespace>
 ```
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
 ```bash
-kubectl set image statefulset nginx-cluster nginx=docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx:latest --namespace <namespace>
+kubectl set image statefulset nginx-cluster nginx={{% param "images.nginx" %}} --namespace <namespace>
 ```
 {{% /onlyWhen %}}
 
@@ -145,4 +148,4 @@ To avoid issues on your personal progress dashboard, we would advise not to dele
 {{% param cliToolName %}} delete statefulset nginx-cluster --namespace <namespace>
 ```
 
-Further information can be found in [Kubernetes' StatefulSet documentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or this [published article](https://opensource.com/article/17/2/stateful-applications).
+Further information can be found in the [Kubernetes' StatefulSet documentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or this [published article](https://opensource.com/article/17/2/stateful-applications).

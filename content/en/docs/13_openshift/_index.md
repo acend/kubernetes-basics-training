@@ -12,7 +12,7 @@ As a concluding lab, we are going to have a look at these differences.
 ## Life cycle and versions
 
 Red Hat releases a new OpenShift 4 release every six months, as is the case with Kubernetes.
-The important difference however is that the latest OpenShift release is always based upon the second latest Kubernetes release.
+The important difference however is that the latest OpenShift release is always based on the second latest Kubernetes release.
 
 Keep this in mind especially when using Kubernetes' documentation e.g. about some resource type.
 
@@ -79,8 +79,8 @@ Your Ingress resource should look similar to this:
 
 ### Deployments and DeploymentConfigs
 
-OpenShift introduced the concept of _DeploymentConfigs_ which got later introduced to upstream Kubernetes as Deployments.
-The reason they don't have the same name is because Deployments lack some features DeploymentConfigs offer.
+OpenShift introduced the concept of _DeploymentConfigs_ which later got introduced to upstream Kubernetes as Deployments.
+The reason they don't have the same name is because Deployments lack some features that DeploymentConfigs offer.
 It's advisable however to use Deployments wherever possible as they're compatible with other Kubernetes distributions where DeploymentConfigs are only supported on OpenShift.
 
 The [OpenShift documentation](https://docs.openshift.com/container-platform/latest/applications/deployments/what-deployments-are.html) offers a detailed explanation of the differences.

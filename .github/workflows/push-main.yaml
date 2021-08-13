@@ -9,17 +9,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - 
+      -
         name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: recursive
-      - 
-        name: Lint Markdown
-        uses: nosborn/github-action-markdown-cli@v1.1.1
+      -
+        name: Set up npm for linting
+        uses: actions/setup-node@v2
         with:
-          files: "content *.md"
-          config_file: ".markdownlint.json"
+          node-version: '15.x'
+      -
+        name: Lint Markdown
+        run: npm ci && npm run mdlint
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -33,8 +35,8 @@ jobs:
           registry: quay.io
           username: ${{ secrets.QUAYIO_USERNAME }}
           password: ${{ secrets.QUAYIO_TOKEN }}
-      - 
-        name: Build and Push Latest Version
+      -
+        name: Build Acend Version
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -42,82 +44,101 @@ jobs:
           push: true
           tags: |
             quay.io/acend/kubernetes-basics-training:latest
-      - 
-        name: Build and Push Mobi Version
+      -
+        name: Run vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'quay.io/acend/kubernetes-basics-training:latest'
+          format: 'table'
+          output: 'trivy-results.txt'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os'
+          severity: 'CRITICAL,HIGH'
+      -
+        name: Archive vulnerability scan results
+        uses: actions/upload-artifact@v2
+        with:
+          name: trivy-results-main
+          path: trivy-results.txt
+      -
+        name: Build Mobi Version
         uses: docker/build-push-action@v2
         with:
           context: .
           file: ./Dockerfile
           build-args: |
-            ACEND_HUGO_ENV=mobi
+            TRAINING_HUGO_ENV=mobi
           push: true
           tags: |
             quay.io/acend/kubernetes-basics-training:latest-mobi
-      - 
-        name: Build and Push Rancher Version
+      -
+        name: Build Rancher Version
         uses: docker/build-push-action@v2
         with:
           context: .
           file: ./Dockerfile
           build-args: |
-            ACEND_HUGO_ENV=rancher
+            TRAINING_HUGO_ENV=rancher
           push: true
           tags: |
             quay.io/acend/kubernetes-basics-training:latest-rancher
-      - 
-        name: Build and Push OpenShift Version
+      -
+        name: Build OpenShift Version
         uses: docker/build-push-action@v2
         with:
           context: .
           file: ./Dockerfile
           build-args: |
-            ACEND_HUGO_ENV=openshift
+            TRAINING_HUGO_ENV=openshift
           push: true
           tags: |
             quay.io/acend/kubernetes-basics-training:latest-openshift
-      - 
-        name: 'Deploy Helm Release'
-        uses: 'deliverybot/helm@v1'
+      -
+        name: Build Netcetera Version
+        uses: docker/build-push-action@v2
         with:
-          release: 'latest'
-          namespace: 'acend-kubernetes-basics-training-prod'
-          version: '${{ github.sha }}'
-          repository: 'https://acend.github.io/helm-charts/'
-          chart: 'acend-training-chart'
-          token: '${{ github.token }}'
-          helm: 'helm3'
-          value-files: |
-            [
-              "helm-chart/values.yaml"
-            ]
+          context: .
+          file: ./Dockerfile
+          build-args: |
+            TRAINING_HUGO_ENV=netcetera
+          push: true
+          tags: |
+            quay.io/acend/kubernetes-basics-training:latest-netcetera
+      - 
+        name: 'Install Helm'
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.6.2
+      - 
+        name: Install Kubectl
+        uses: azure/setup-kubectl@v1
+        with:
+          version: v1.21.2
+      - 
+        name: Create KUBECONFIG
+        env:
+          KUBE_CONFIG: '${{ secrets.KUBECONFIG }}'
+        run: |
+          mkdir -p $HOME/.kube
+          echo "$KUBE_CONFIG" > $HOME/.kube/config
+      - 
+        name: Deploy Helm Release
+        env:
+          TRAINING_HELM_RELEASE: 'latest'
+          TRAINING_NAMESPACE: 'acend-kubernetes-basics-training-prod'
+          TRAINING_VERSION: '${{ github.sha }}'
+        run: |
+          helm upgrade $TRAINING_HELM_RELEASE acend-training-chart --install --wait --kubeconfig $HOME/.kube/config  --namespace=$TRAINING_NAMESPACE --set=app.name=$HELM_RELEASE --set=app.version=$TRAINING_VERSION --repo=https://acend.github.io/helm-charts/ --values=helm-chart/values.yaml --atomic
+      - 
+        name: Redeploy Deployments
+        env:
+          TRAINING_HELM_RELEASE: 'latest'
+          TRAINING_NAMESPACE: 'acend-kubernetes-basics-training-prod'
+        run: |
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-acend --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-mobi --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-rancher --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-openshift --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-netcetera --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
 
-        env:
-          KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
-      - 
-        name: Redeploy Latest Deployment
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
-        with:
-          args: rollout restart deployment/latest-acend-kubernetes-basics-acend --namespace acend-kubernetes-basics-training-prod
-      - 
-        name: Redeploy Mobi Deployment
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
-        with:
-          args: rollout restart deployment/latest-acend-kubernetes-basics-mobi --namespace acend-kubernetes-basics-training-prod
-      - 
-        name: Redeploy Rancher Deployment
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
-        with:
-          args: rollout restart deployment/latest-acend-kubernetes-basics-rancher --namespace acend-kubernetes-basics-training-prod
-      - 
-        name: Redeploy OpenShift Deployment
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBECONFIG_BASE64 }}
-        with:
-          args: rollout restart deployment/latest-acend-kubernetes-basics-openshift --namespace acend-kubernetes-basics-training-prod

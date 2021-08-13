@@ -1,5 +1,12 @@
 ---
 apiVersion: v1
+data:
+  MYSQL_URI: bXlzcWw6Ly9leGFtcGxlOm15c3FscGFzc3dvcmRAbXlzcWwvZXhhbXBsZQ==
+kind: Secret
+metadata:
+  name: mysql-uri
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: example-web-python
@@ -30,16 +37,19 @@ spec:
       labels:
         app: example-web-python
     spec:
+      initContainers:
+        - name: wait-for-db
+          image: docker-registry-mirror.netcetera.com/busybox:1.28
+          command: ['sh', '-c', "until nslookup mysql.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
       containers:
         - name: example-web-python
-          image: quay.io/acend/example-web-python
-          resources:
-            limits:
-              cpu: 100m
-              memory: 128Mi
-            requests:
-              cpu: 50m
-              memory: 128Mi
+          image: docker-registry-mirror.netcetera.com/acend/example-web-python
+          env:
+            - name: MYSQL_URI
+              valueFrom:
+                secretKeyRef:
+                  key: MYSQL_URI
+                  name: mysql-uri
           readinessProbe:
             httpGet:
               path: /health

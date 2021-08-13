@@ -5,9 +5,9 @@ sectionnumber: 9.6
 ---
 
 
-A Pod can have multiple container running apps within it, but it can also have one or more *init containers*, which are run before the app container are started.
+A Pod can have multiple containers running apps within it, but it can also have one or more *init containers*, which are run before the app container is started.
 
-Init containers are exactly like regular container, except:
+Init containers are exactly like regular containers, except:
 
 * Init containers always run to completion.
 * Each init container must complete successfully before the next one starts.
@@ -31,32 +31,17 @@ Edit your existing `example-web-python` Deployment with:
 ```
 
 Add the init container into the existing Deployment:
-{{% onlyWhenNot mobi %}}
 
 ```yaml
 ...
 spec:
   initContainers:
   - name: wait-for-db
-    image: busybox:1.28
+    image: {{% param "images.busybox" %}}
     command: ['sh', '-c', "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
 ...
 ```
 
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-
-```yaml
-...
-spec:
-  initContainers:
-  - name: wait-for-db
-    image: docker-registry.mobicorp.ch/cop/curl-and-provide:latest
-    command: ['sh', '-c', "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
-...
-```
-
-{{% /onlyWhen %}}
 {{% alert title="Note" color="primary" %}}
 This obviously only checks if there is a DNS Record for your MariaDB Service and not if the database is ready. But you get the idea, right?
 {{% /alert %}}
@@ -95,7 +80,7 @@ Init Containers:
 ...
 ```
 
-The init container has `State: Terminated` and an `Exit Code: 0` which means it was successful. That's what we wanted, the init container was successfully executed before our main application.
+The init container has the `State: Terminated` and an `Exit Code: 0` which means it was successful. That's what we wanted, the init container was successfully executed before our main application.
 
 You can also check the logs of the init container with:
 
@@ -132,5 +117,5 @@ Check out the [official documentation](https://docs.openshift.com/container-plat
 
 You should now have the following resources in place:
 
-* {{% onlyWhenNot mobi %}}[example-web-python.yaml](example-web-python.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen mobi %}}[example-web-python-mobi.yaml](example-web-python-mobi.yaml){{% /onlyWhen %}}
+* {{% onlyWhenNot customer %}}[example-web-python.yaml](example-web-python.yaml){{% /onlyWhenNot %}}
+  {{% onlyWhen customer %}}[example-web-python-{{% param customer %}}.yaml](example-web-python-{{% param customer %}}.yaml){{% /onlyWhen %}}

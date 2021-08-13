@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx:1.12
+          image: docker-registry-mirror.netcetera.com/nginxinc/nginx-unprivileged:1.18-alpine
           ports:
             - containerPort: 80
               name: nginx

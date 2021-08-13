@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: mariadb
-        image: mariadb:10.5
+        image: docker-registry-mirror.netcetera.com/mariadb:10.5
         command:
         - 'bash'
         - '-eo'
@@ -46,5 +46,4 @@ spec:
           requests:
             cpu: 20m
             memory: 64Mi
-
       restartPolicy: Never

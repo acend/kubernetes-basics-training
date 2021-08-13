@@ -23,24 +23,26 @@ You may need special instructions if you are not using our lab environment.
 
 {{% onlyWhenNot openshift %}}
 {{% onlyWhen rancher %}}
-{{% onlyWhenNot mobi %}}
+{{% onlyWhen cloudscale %}}
+
 Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cloudscale.ch) (a Swiss IaaS provider) and has been provisioned with [Rancher](https://rancher.com/). You can log in to the cluster with a Rancher user.
 
 {{% alert title="Note" color="primary" %}}
 Your trainer will provide you with the information needed to log in.
 {{% /alert %}}
-{{% /onlyWhenNot %}}
+{{% /onlyWhen %}}
+
 
 Log in to the Rancher web console and choose the desired cluster.
 
 You now see a button at the top right that says **Kubeconfig File**. Click it, scroll down to the bottom and click **Copy to Clipboard**.
 
-![Download kubeconfig File](kubectlconfigfilebutton.png)
+{{< imgproc kubectlconfigfilebutton.png Resize  "800x" >}}{{< /imgproc >}}
 
 The copied kubeconfig now needs to be put into a file. The default location for the kubeconfig file is `~/.kube/config`.
 
 {{% alert title="Note" color="primary" %}}
-If you already have a kubeconfig file, you might need to merge the Rancher entries with yours. Or use a dedicated file as described below.
+If you already have a kubeconfig file, you might need to merge the Rancher entries with yours or use a dedicated file as described below.
 {{% /alert %}}
 
 Put the copied content into a kubeconfig file on your system.
@@ -50,13 +52,13 @@ If you decide to not use the default kubeconfig location at `~/.kube/config` the
 export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 ```
 
-{{% alert title="Note" color="primary" %}} When using PowerShell on a Windows Computer use the following command, you'll have to replace `<user>` with your actual user
+{{% alert title="Note" color="primary" %}} When using PowerShell on a Windows Computer use the following command. You'll have to replace `<user>` with your actual user
 
 ```
 $Env:KUBECONFIG = "C:\Users\<user>\.kube-techlab\config"
 ```
 
-To set the environment variable (`KUBECONFIG` = `C:\Users\<user>\.kube-techlab\config`) permenantly, check the following documentation:
+To set the environment variable (`KUBECONFIG` = `C:\Users\<user>\.kube-techlab\config`) permanently, check the following documentation:
 
 The `PATH` can be set in Windows in the advanced system settings. It depends on the version:
 
@@ -92,15 +94,11 @@ A Namespace is a logical design used in Kubernetes to organize and separate your
 Additionally, Rancher knows the concept of a [*Project*](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple Namespaces.
 {{% /alert %}}
 
-In the Rancher web console choose the Project called `techlab`.
+In the Rancher web console choose the Project called `Training`.
 
 {{% onlyWhen mobi %}}
 We use the project `kubernetes-techlab` on the `kubedev` cluster.
 {{% /onlyWhen %}}
-
-{{% onlyWhenNot mobi %}}
-![Rancher Project](chooseproject.png)
-{{% /onlyWhenNot %}}
 
 {{% /onlyWhen %}}
 
@@ -126,7 +124,7 @@ kubectl create namespace <namespace>
 
 {{% onlyWhen rancher %}}
 {{% alert title="Note" color="primary" %}}
-Namespaces created via `kubectl` have to be assigned to the correct Rancher Project in order to be visible in the Rancher web console. Please ask your trainer for this assignment. Or you can create the Namespace directly within the Rancher web console.
+Namespaces created via `kubectl` have to be assigned to the correct Rancher Project in order to be visible in the Rancher web console. Please ask your trainer for this assignment or you can create the Namespace directly within the Rancher web console.
 {{% /alert %}}
 {{% /onlyWhen %}}
 
@@ -155,7 +153,7 @@ Some prefer to explicitly select the Namespace for each `kubectl` command by add
 
 ## Task {{% param sectionnumber %}}.2: Discover the Rancher web console
 
-Check the menu entries, there should neither appear any Deployments nor any Pods or Services in your Namespace.
+Check the menu entries, there should neither be any Deployments nor any Pods or Services in your Namespace.
 
 Display all existing Pods in the previously created Namespace with `kubectl` (there shouldn't yet be any):
 
@@ -182,18 +180,18 @@ Open your browser, open the OpenShift cluster URL and log in using the provided 
 
 In order to log in on the command line, copy the login command from the Web Console.
 
-To do that, open the Web Console and click on your username you see at the top right, then choose **Copy Login Command**.
+To do that, open the Web Console and click on your username that you see at the top right, then choose **Copy Login Command**.
 
-![oc-login](login-ocp.png)
+{{% imgproc login-ocp.png Resize  "400x" %}}{{% /imgproc %}}
 
-A new tab or window opens in your browser.
+A new tab or window will open in your browser.
 
 {{% alert title="Note" color="primary" %}}
 You might need to log in again.
 {{% /alert %}}
 
 The page now displays a link **Display token**.
-Click it and copy the command under **Log in with this token**.
+Click on it and copy the command under **Log in with this token**.
 
 Now paste the copied command on the command line.
 
