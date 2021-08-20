@@ -132,7 +132,7 @@ foo: this is a normal string
 
 But if we want escape sequences handled, we need to use double quotes.
 
-```
+```yaml
 ---
 foo: "this is not a normal string\n"
 bar: this is not a normal string\n
@@ -170,7 +170,7 @@ bar: |
 
 So, we see the newlines where they are in the document.
 
-```
+```yaml
 bar : this is not a normal string it
 spans more than
 one line
