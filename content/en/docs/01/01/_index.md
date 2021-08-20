@@ -15,6 +15,8 @@ As you will see a lot of YAML in our Kubernetes basics course, we want to make s
 
 This introcution is based on the [YAML Tutorial from cloudbees.com](https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started)
 
+For more information and the full spec have a look at https://yaml.org/
+
 
 ## A simple file
 
