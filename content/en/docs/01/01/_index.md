@@ -11,34 +11,34 @@ YAML is not a programming language. It is mostly used for storing configuration 
 Data serialization is the process of converting data objects, or object states present in complex data structures, into a stream of bytes for storage, transfer, and distribution in a form that can allow recovery of its original structure.
 {{% /alert %}}
 
-As you will see a lot of YAML in out Kubernetes Basics course, we want to make sure you can read and write YAML. If you are not yet familiar with YAML, this lab is waiting for you. Otherwise, feel free to skip it or come back later if you meet some less familiar YAML stuff.
+As you will see a lot of YAML in our Kubernetes basics course, we want to make sure you can read and write YAML. If you are not yet familiar with YAML, this introduction is waiting for you. Otherwise, feel free to skip it or come back later if you meet some less familiar YAML stuff.
 
 This introcution is based on the [YAML Tutorial from cloudbees.com](https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started)
 
 
 ## A simple file
 
-Let's look at a YAML file for a overview.:
+Let's look at a YAML file for a overview:
 
 ```yaml
 
 ---
- foo: "foo is not bar"
- bar: "bar is not foo"
- pi: 3.14159
- awesome: true
- kubernetes-birth-year: 2015
- cloud-nativ:
-   - scalable
-   - dynamic
-   - cloud
-   - container
- kubernetes:
-   version: "1.22.0"
-   deployed: true
-   applications:
-     - name: "My App"
-       location: "public cloud"
+foo: "foo is not bar"
+bar: "bar is not foo"
+pi: 3.14159
+awesome: true
+kubernetes-birth-year: 2015
+cloud-nativ:
+  - scalable
+  - dynamic
+  - cloud
+  - container
+kubernetes:
+version: "1.22.0"
+deployed: true
+applications:
+  - name: "My App"
+    location: "public cloud"
 ```
 
 The file starts with three dashes. These dashes indicate the start of a new YAML document. YAML supports multiple documents, and compliant parsers will recognize each set of dashes as the beginning of a new one.
@@ -101,7 +101,7 @@ plop: 023332
 
 YAML supports both fixed and exponential floating point numbers.
 
-```
+```yaml
 ---
 foo: 1230.15
 bar:  12.3015e+05
@@ -109,7 +109,7 @@ bar:  12.3015e+05
 
 Finally, we can represent not-a-number (NAN) or infinity.
 
-```
+```yaml
 ---
 foo: .inf
 bar: -.Inf
