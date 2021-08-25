@@ -1,28 +1,28 @@
 ---
-title: "9.6 Init Containers"
+title: "9.6 Init containers"
 weight: 96
 sectionnumber: 9.6
 ---
 
 
-A Pod can have multiple Containers running apps within it, but it can also have one or more *Init Containers*, which are run before the app Containers are started.
+A Pod can have multiple containers running apps within it, but it can also have one or more *init containers*, which are run before the app container is started.
 
-Init Containers are exactly like regular Containers, except:
+Init containers are exactly like regular containers, except:
 
-* Init Containers always run to completion.
-* Each Init Container must complete successfully before the next one starts.
+* Init containers always run to completion.
+* Each init container must complete successfully before the next one starts.
 
 {{% onlyWhenNot openshift %}}
-Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes documentation for more details.
+Check [Init Containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes documentation for more details.
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 Check out the [Init Containers documentation](https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-init.html) for more details.
 {{% /onlyWhen %}}
 
 
-## Task {{% param sectionnumber %}}.1: Add an Init Container
+## Task {{% param sectionnumber %}}.1: Add an init container
 
-In [lab 7](../../07/) you created the `example-web-python` application. In this task, you are going to add an Init Container which checks if the MariaDB database is ready to be used before actually starting your Python application.
+In [lab 7](../../07/) you created the `example-web-python` application. In this task, you are going to add an init container which checks if the MariaDB database is ready to be used before actually starting your Python application.
 
 Edit your existing `example-web-python` Deployment with:
 
@@ -30,33 +30,18 @@ Edit your existing `example-web-python` Deployment with:
 {{% param cliToolName %}} edit deployment example-web-python --namespace <namespace>
 ```
 
-Add the Init Container into the existing Deployment:
-{{% onlyWhenNot mobi %}}
+Add the init container into the existing Deployment:
 
 ```yaml
 ...
 spec:
   initContainers:
   - name: wait-for-db
-    image: busybox:1.28
+    image: {{% param "images.busybox" %}}
     command: ['sh', '-c', "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
 ...
 ```
 
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-
-```yaml
-...
-spec:
-  initContainers:
-  - name: wait-for-db
-    image: docker-registry.mobicorp.ch/cop/curl-and-provide:latest
-    command: ['sh', '-c', "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
-...
-```
-
-{{% /onlyWhen %}}
 {{% alert title="Note" color="primary" %}}
 This obviously only checks if there is a DNS Record for your MariaDB Service and not if the database is ready. But you get the idea, right?
 {{% /alert %}}
@@ -67,7 +52,7 @@ Let's see what has changed by analyzing your `example-web-python` Pod with the f
 {{% param cliToolName %}} describe pod <pod> --namespace <namespace>
 ```
 
-You see the new Init Container with the name `wait-for-db`:
+You see the new init container with the name `wait-for-db`:
 
 ```
 ...
@@ -95,9 +80,9 @@ Init Containers:
 ...
 ```
 
-The Init Container has `State: Terminated` and an `Exit Code: 0` which means it was successful. That's what we wanted, the Init Container was successfully executed before our main application.
+The init container has the `State: Terminated` and an `Exit Code: 0` which means it was successful. That's what we wanted, the init container was successfully executed before our main application.
 
-You can also check the logs of the Init Container with:
+You can also check the logs of the init container with:
 
 ```bash
 {{% param cliToolName %}} logs -c wait-for-db <pod> --namespace <namespace>
@@ -122,7 +107,7 @@ Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-c
 
 ## Deployment hooks on OpenShift
 
-A similar concepts are the so called pre and post deployment hooks. Those hooks basically give the possibility to execute pods during before and after a deployment is in progress
+A similar concept are the so-called pre and post deployment hooks. Those hooks basically give the possibility to execute Pods before and after a deployment is in progress.
 
 Check out the [official documentation](https://docs.openshift.com/container-platform/latest/applications/deployments/deployment-strategies.html) for further information.
 {{% /onlyWhen %}}
@@ -132,5 +117,5 @@ Check out the [official documentation](https://docs.openshift.com/container-plat
 
 You should now have the following resources in place:
 
-* {{% onlyWhenNot mobi %}}[example-web-python.yaml](example-web-python.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen mobi %}}[example-web-python-mobi.yaml](example-web-python-mobi.yaml){{% /onlyWhen %}}
+* {{% onlyWhenNot customer %}}[example-web-python.yaml](example-web-python.yaml){{% /onlyWhenNot %}}
+  {{% onlyWhen customer %}}[example-web-python-{{% param customer %}}.yaml](example-web-python-{{% param customer %}}.yaml){{% /onlyWhen %}}

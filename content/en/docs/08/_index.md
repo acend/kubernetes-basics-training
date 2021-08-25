@@ -30,10 +30,10 @@ In a second step, the PVC from before is going to be attached to the Pod. In [la
 The `oc set volume` command makes it possible to create a PVC and attach it to a Deployment in one fell swoop:
 
 ```bash
-oc set volume dc/mariadb --add --name=mariadb-persistent-storage --claim-name=mariadb-data --type persistentVolumeClaim --mount-path=/var/lib/mysql --claim-size=1G --overwrite --namespace <namespace>
+oc set volume dc/mariadb --add --name=mariadb-data --claim-name=mariadb-data --type persistentVolumeClaim --mount-path=/var/lib/mysql --claim-size=1G --overwrite --namespace <namespace>
 ```
 
-With above instruction we create a PVC named `mariadb-data` of 1Gi in size, attach it to the DeploymentConfig `mariadb` and mount it at `/var/lib/mysql`. This is where the MariaDB process writes its data by default so after we make this change, the database will not even notice that it is writing in a PersistentVolume.
+With the instruction above we create a PVC named `mariadb-data` of 1Gi in size, attach it to the DeploymentConfig `mariadb` and mount it at `/var/lib/mysql`. This is where the MariaDB process writes its data by default so after we make this change, the database will not even notice that it is writing in a PersistentVolume.
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="primary" %}}
@@ -68,10 +68,10 @@ Add both parts `volumeMounts` and `volumes`
         terminationMessagePolicy: File
         # start to copy here
         volumeMounts:
-        - name: mariadb-persistent-storage
+        - name: mariadb-data
           mountPath: /var/lib/mysql
       volumes:
-      - name: mariadb-persistent-storage
+      - name: mariadb-data
         persistentVolumeClaim:
           claimName: mariadb-data
       # stop to copy here
@@ -87,7 +87,6 @@ Because we just changed the Deployment a new Pod was automatically redeployed. T
 {{% /alert %}}
 {{% /onlyWhenNot %}}
 
-{{% alert title="Note" color="primary" %}}
 We need to redeploy the application pod, our application automatically creates the database schema at startup time.
 
 {{% onlyWhenNot openshift %}}
@@ -102,7 +101,6 @@ oc rollout restart deployment example-web-python --namespace <namespace>
 ```
 {{% /onlyWhen %}}
 
-{{% /alert %}}
 Using the command `{{% param cliToolName %}} get persistentvolumeclaim` or `{{% param cliToolName %}} get pvc`, we can display the freshly created PersistentVolumeClaim:
 
 ```bash
@@ -150,6 +148,11 @@ Scale your MariaDB Pod to 0 replicas and back to 1. Observe that the new Pod did
 You should now have the following resources in place:
 
 * [pvc.yaml](pvc.yaml)
-* {{% onlyWhenNot mobi %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen mobi %}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{% /onlyWhen %}}
-* [example-web-python.yaml](../08/example-web-python.yaml) (from lab 8)
+* {{% onlyWhenNot openshift %}}
+  {{% onlyWhenNot customer %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
+  {{% onlyWhen customer %}}[mariadb-{{% param customer %}}.yaml](mariadb-{{% param customer %}}.yaml){{% /onlyWhen %}}
+  {{% /onlyWhenNot %}}
+  {{% onlyWhen openshift %}}[mariadb-openshift.yaml](mariadb-openshift.yaml){{% /onlyWhen %}}
+
+
+* [example-web-python.yaml](../07/example-web-python.yaml) (from lab 7)

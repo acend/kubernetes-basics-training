@@ -12,24 +12,25 @@ In this lab, we are going to deploy our first container image and look at the co
 After we've familiarized ourselves with the platform, we are going to have a look at deploying a pre-built container image from Quay.io or any other public container registry.
 
 {{% onlyWhen openshift %}}
-In OpenShift we have used the `<project>` identifier to select the correct project. Please use the same identifier in the context `<namespace>` to do the same for all the next labs. Ask your teacher if you want to have more informations about that.
+In OpenShift we have used the `<project>` identifier to select the correct project. Please use the same identifier in the context `<namespace>` to do the same for all upcoming labs. Ask your trainer if you want more information on that.
 {{% /onlyWhen %}}
 
 First, we are going to directly start a new Pod:
 {{% onlyWhenNot mobi %}}
 
 ```bash
-{{% param cliToolName %}} run awesome-app --image=quay.io/acend/example-web-go --restart=Never --namespace <namespace>
+{{% param cliToolName %}} run awesome-app --image={{% param "images.acendAwesomeApp-example-web-go" %}} --restart=Never --requests='cpu=10m,memory=16Mi' --limits='cpu=20m,memory=32Mi' --namespace <namespace>
 ```
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
 
 ```bash
-kubectl run awesome-app --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --restart=Never --namespace <namespace>
+kubectl run awesome-app --image={{% param "images.acendAwesomeApp-example-web-go" %}} --requests='cpu=10m,memory=16Mi' --limits='cpu=20m,memory=32Mi' --restart=Never --namespace <namespace>
 ```
 
 {{% /onlyWhen %}}
+
 
 Use `{{% param cliToolName %}} get pods --namespace <namespace>` in order to show the running Pod:
 
@@ -60,35 +61,58 @@ Now delete the newly created Pod:
 
 ## Task {{% param sectionnumber %}}.2: Create a Deployment
 
-In some use cases it makes sense to start a single Pod but has its downsides and is not really a common practice. Let's look at another concept which is tightly coupled with the Pod: the so-called _Deployment_. A Deployment makes sure a Pod is monitored and the Deployment also checks that the number of running Pods corresponds to the number of requested Pods.
+In some use cases it can make sense to start a single Pod. But this has its downsides and is not really a common practice. Let's look at another concept which is tightly coupled with the Pod: the so-called _Deployment_. A Deployment ensures that a Pod is monitored and checks that the number of running Pods corresponds to the number of requested Pods.
 
-With the following command we can create a Deployment inside our already created namespace:
-{{% onlyWhenNot mobi %}}
 
-```bash
-{{% param cliToolName %}} create deployment example-web-go --image=quay.io/acend/example-web-go --namespace <namespace>
+To create a new Deployment we first define our Deployment in a new file `03_deployment.yaml` with the following content:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: example-web-go
+  name: example-web-go
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-web-go
+  template:
+    metadata:
+      labels:
+        app: example-web-go
+    spec:
+      containers:
+      - image: {{% param "images.acendAwesomeApp-example-web-go" %}}
+        name: example-web-go
+        resources:
+          requests:
+            cpu: 10m
+            memory: 16Mi
+          limits:
+            cpu: 20m
+            memory: 32Mi
 ```
 
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
+And with this we create our Deployment inside our already created namespace:
+
 
 ```bash
-kubectl create deployment example-web-go --image=docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go --namespace <namespace>
-
+{{% param cliToolName %}} apply -f 03_deployment.yaml --namespace <namespace>
 ```
 
-{{% /onlyWhen %}}
 The output should be:
 
 ```
 deployment.apps/example-web-go created
 ```
 
-We're using a simple sample application written in Go which you can find built as an image on [Quay.io](https://quay.io/repository/acend/example-web-go/) or its source on [GitHub](https://github.com/acend/awesome-apps).
+We're using a simple sample application written in Go, which you can find built as an image on [Quay.io](https://quay.io/repository/acend/example-web-go/) or as source code on [GitHub](https://github.com/acend/awesome-apps).
 
-{{% param distroName %}} creates the defined and necessary resources, pulls the container image (in this case from Docker Hub) and deploys the Pod.
+{{% param distroName %}} creates the defined and necessary resources, pulls the container image (in this case from Quay.io) and deploys the Pod.
 
-Use the command `{{% param cliToolName %}} get` with the `-w` parameter in order to get the requested resources and afterwards watch for changes.
+Use the command `{{% param cliToolName %}} get` with the `-w` parameter in order to get the requested resources and afterward watch for changes.
 
 {{% alert title="Note" color="primary" %}}
 The `{{% param cliToolName %}} get -w` command will never end unless you terminate it with `CTRL-c`.
@@ -110,13 +134,19 @@ watch {{% param cliToolName %}} get pods --namespace <namespace>
 This process can last for some time depending on your internet connection and if the image is already available locally.
 
 {{% alert title="Note" color="primary" %}}
-If you want to create your own container images and use them with {{% param distroName %}}, you definitely should have a look at [these best practices](https://docs.openshift.com/container-platform/4.4/openshift_images/create-images.html) and apply them. This image creation guide may be from OpenShift, however it also applies to Kubernetes and other container platforms.
+If you want to create your own container images and use them with {{% param distroName %}}, you definitely should have a look at [these best practices](https://docs.openshift.com/container-platform/4.4/openshift_images/create-images.html) and apply them. This image creation guide may be for OpenShift, however it also applies to Kubernetes and other container platforms.
 {{% /alert %}}
 
 
 ## Task {{% param sectionnumber %}}.3: Viewing the created resources
 
-When we executed the command `{{% param cliToolName %}} create deployment example-web-go --image=quay.io/acend/example-web-go --namespace <namespace>`, {{% param distroName %}} created a Deployment resource.
+{{% onlyWhenNot mobi %}}
+When we executed the command `{{% param cliToolName %}} create deployment example-web-go --image={{% param "images.acendAwesomeApp-example-web-go" %}} --namespace <namespace>`, {{% param distroName %}} created a Deployment resource.
+{{% /onlyWhenNot %}}
+
+{{% onlyWhen mobi %}}
+When we executed the command `kubectl create deployment example-web-go --image={{% param "images.acendAwesomeApp-example-web-go" %}} --namespace <namespace>`, kubectl created a Deployment resource.
+{{% /onlyWhen %}}
 
 
 ### Deployment
@@ -129,7 +159,7 @@ Display the created Deployment using the following command:
 
 A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) defines the following facts:
 
-* Update strategy: How application updates should be executed and how the Pods are being exchanged
+* Update strategy: How application updates should be executed and how the Pods are exchanged
 * Containers
   * Which image should be deployed
   * Environment configuration for Pods
@@ -155,7 +185,7 @@ NAME                              READY   STATUS    RESTARTS   AGE
 example-web-go-69b658f647-xnm94   1/1     Running   0          39s
 ```
 
-The Deployment defines that one replica should be deployed --- which is running as we can see in the output. This Pod is not yet reachable from outside of the cluster.
+The Deployment defines that one replica should be deployed --- which is running as we can see in the output. This Pod is not yet reachable from outside the cluster.
 
 {{% onlyWhen rancher %}}
 
@@ -206,16 +236,16 @@ We are now ready to create the build and deployment, all in one command:
 oc new-app --name example-web-go --context-dir go/ --strategy docker https://github.com/acend/awesome-apps.git --namespace <namespace>
 ```
 
-Let's watch the image build's process:
+Let's watch the image's build process:
 
 ```bash
 oc logs bc/example-web-go --follow --namespace <namespace>
 ```
 
-The message `Push successful` signifies the image's succesful build and push to OpenShift's internal image.
+The message `Push successful` signifies the image's successful build and push to OpenShift's internal image.
 
-In above command you discovered a new resource type `bc` which is the abbreviation for _BuildConfig_.
-A BuildConfig defines how a container images has to be built.
+In the above command you discovered a new resource type `bc` which is the abbreviation for _BuildConfig_.
+A BuildConfig defines how a container image has to be built.
 
 A _Build_ resource represents the build process itself based upon the BuildConfig's definition.
 A build takes place in a Pod on OpenShift, so instead of referencing the BuildConfig in our `oc logs` command, we could have used the build Pod's log output.
@@ -234,7 +264,7 @@ It looks the same as before with the only essential exception that it uses the i
     ...
     spec:
       containers:
-      - image: image-registry.openshift-image-registry.svc:5000/baffolter-test/awesome-app@sha256:4cd671273a837453464f7264afe845b299297ebe032f940fd005cf9c40d1e76c
+      - image: image-registry.openshift-image-registry.svc:5000/<namespace>/awesome-app@sha256:4cd671273a837453464f7264afe845b299297ebe032f940fd005cf9c40d1e76c
       ...
 ```
 
@@ -245,7 +275,7 @@ It looks the same as before with the only essential exception that it uses the i
 
 {{% alert title="Note" color="primary" %}}
 What's a save point? Save points are intermediate results which you can use if you are stuck. You can compare them with
-your existing resources. Or you can apply the provided manifests with `{{% param cliToolName %}} apply -f <manifest.yaml>`.
+your existing resources or you can apply the provided manifests with `{{% param cliToolName %}} apply -f <manifest.yaml>`.
 {{% /alert %}}
 
 You should now have the following resources in place:

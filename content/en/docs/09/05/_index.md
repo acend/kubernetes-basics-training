@@ -18,7 +18,7 @@ Use the existing Namespace `<username>-resources` for this lab.
 
 ## Namespace creation
 
-Make sure you're logged in on the Rancher web console. Choose the appropriate cluster and click on __Projects/Namespaces__. Under the Project kubernetes-quotalab click on __Add Namespace__.
+Make sure you're logged in on the Rancher web console. Choose the appropriate cluster and click on __Projects/Namespaces__. Under the Project `kubernetes-quotalab` click on __Add Namespace__.
 
 Choose a name for your Namespace, e.g. in the form of `<yourname>`-quota, expand the __Container Default Resource Limit__ view and set the following values:
 
@@ -27,7 +27,7 @@ Choose a name for your Namespace, e.g. in the form of `<yourname>`-quota, expand
 * __Memory Limit__: 32
 * __Memory Reservation__: 16
 
-![Quota lab namespace creation](../create_quotalab_namespace.png)
+{{< imgproc create_quotalab_namespace.png Resize  "1000x" >}}{{< /imgproc >}}
 
 Finally, click on __Create__.
 {{% /onlyWhen %}}
@@ -67,7 +67,7 @@ For more details, have look into [OpenShift's documentation about resource quota
 
 As we've already seen, compute ResourceQuotas limit the amount of memory and CPU we can use in a {{% onlyWhenNot openshift %}}Namespace{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Project{{% /onlyWhen %}}. Only defining a ResourceQuota, however is not going to have an effect on Pods that don't define the amount of resources they want to use. This is where the concept of limits and requests comes into play.
 
-Limits and requests on a Pod, or rather on a container in a Pod, define how much memory and CPU this container wants to consume at least (request) and at most (limit). Requests mean that the container will be guaranteed to get at least this amount of resources, limits represent the upper boundary which cannot be crossed. Defining these values helps {{% param distroName %}} in determining on which Node to schedule the Pod, because it knows how many resources should be available for it.
+Limits and requests on a Pod, or rather on a container in a Pod, define how much memory and CPU this container wants to consume at least (request) and at most (limit). Requests mean that the container will be guaranteed to get at least this amount of resources, limits represent the upper boundary which cannot be crossed. Defining these values helps {{% param distroName %}} in determining on which Node to schedule the Pod because it knows how many resources should be available for it.
 
 {{% alert title="Note" color="primary" %}}
 Containers using more CPU time than what their limit allows will be throttled.
@@ -85,7 +85,7 @@ metadata:
 spec:
   containers:
   - name: lr-demo-ctr
-    image: nginx
+    image: {{% param "images.nginxinc-nginx-unprivileged-fix-version" %}}
     resources:
       limits:
         memory: "200Mi"
@@ -131,7 +131,7 @@ As you now know what limits and requests are, we can come back to the statement 
 
 > As we've already seen, compute ResourceQuotas limit the amount of memory and CPU we can use in a Namespace. Only defining a ResourceQuota, however is not going to have an effect on Pods that don't define the amount of resources they want to use. This is where the concept of limits and requests comes into play.
 
-So if a cluster administrator wanted to make sure that every Pod in the cluster counted against the compute ResourceQuota, the administrator would have to have a way of defining some kind of default limits and requests that were applied if none were defined in the containers.
+So, if a cluster administrator wanted to make sure that every Pod in the cluster counted against the compute ResourceQuota, the administrator would have to have a way of defining some kind of default limits and requests that were applied if none were defined in the containers.
 This is exactly what _LimitRanges_ are for.
 
 Quoting the [Kubernetes documentation](https://kubernetes.io/docs/concepts/policy/limit-range/), LimitRanges can be used to:
@@ -141,7 +141,7 @@ Quoting the [Kubernetes documentation](https://kubernetes.io/docs/concepts/polic
 * Enforce a ratio between request and limit for a resource in a Namespace
 * Set default request/limit for compute resources in a Namespace and automatically inject them to containers at runtime
 
-If for example a container did not define any requests or limits and there was a LimitRange defining default values, these default values would be used when deploying said container. However, as soon as limits or requests were defined, the default values would no longer be applied.
+If for example a container did not define any requests or limits and there was a LimitRange defining the default values, these default values would be used when deploying said container. However, as soon as limits or requests were defined, the default values would no longer be applied.
 
 The possibility of enforcing minimum and maximum resources and defining ResourceQuotas per Namespace allows for many combinations of resource control.
 
@@ -154,7 +154,7 @@ Check whether your Namespace contains a LimitRange:
 {{% param cliToolName %}} describe limitrange --namespace <namespace>
 ```
 
-Above command should output this (name and Namespace will vary):
+The command above should output this (name and Namespace will vary):
 
 ```
 Name:       ce01a1b6-a162-479d-847c-4821255cc6db
@@ -172,7 +172,7 @@ Check whether a ResourceQuota exists in your Namespace:
 {{% param cliToolName %}} describe quota --namespace <namespace>
 ```
 
-Above command could (must not) output this (name and Namespace will vary):
+The command above could (must not) output this (name and Namespace will vary):
 
 ```
 Name:            lab-quota
@@ -186,17 +186,11 @@ requests.memory  0     100Mi
 
 ## Task {{% param sectionnumber %}}.2: Default memory limit
 
-Create a Pod using the polinux/stress image:
-{{% onlyWhenNot mobi %}}
+Create a Pod using the stress image:
 ```bash
-{{% param cliToolName %}} run stress2much --image=polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+{{% param cliToolName %}} run stress2much --image={{% param "images.stress" %}} --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-```bash
-kubectl run stress2much --image=docker-registry.mobicorp.ch/polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
-```
-{{% /onlyWhen %}}
+
 
 {{% alert title="Note" color="primary" %}}
 You have to actively terminate the following command pressing `CTRL+c` on your keyboard.
@@ -227,12 +221,10 @@ The `stress2much` Pod was OOM (out of memory) killed. We can see this in the `ST
 ```
 
 Near the end of the output you can find the relevant status part:
-{{% onlyWhenNot mobi %}}
-
-```
+```yaml
   containerStatuses:
   - containerID: docker://da2473f1c8ccdffbb824d03689e9fe738ed689853e9c2643c37f206d10f93a73
-    image: polinux/stress:latest
+    image: {{% param "images.stress" %}}
     lastState:
       terminated:
         ...
@@ -240,23 +232,7 @@ Near the end of the output you can find the relevant status part:
         ...
 ```
 
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-
-
-```
-  containerStatuses:
-  - containerID: docker://da2473f1c8ccdffbb824d03689e9fe738ed689853e9c2643c37f206d10f93a73
-    image: docker-registry.mobicorp.ch/polinux/stress:latest
-    lastState:
-      terminated:
-        ...
-        reason: OOMKilled
-        ...
-```
-
-{{% /onlyWhen %}}
-So let's look at the numbers to verify the container really had too little memory. We started the `stress` command using parameter `--vm-bytes 85M` which means the process wants to allocate 85 megabytes of memory. Again looking at the Pod's YAML definition with:
+So let's look at the numbers to verify the container really had too little memory. We started the `stress` command using the parameter `--vm-bytes 85M` which means the process wants to allocate 85 megabytes of memory. Again looking at the Pod's YAML definition with:
 
 ```bash
 {{% param cliToolName %}} get pod stress2much --output yaml --namespace <namespace>
@@ -284,7 +260,7 @@ Let's fix this by recreating the Pod and explicitly setting the memory request t
 
 ```bash
 {{% param cliToolName %}} delete pod stress2much --namespace <namespace>
-{{% param cliToolName %}} run stress --image=polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+{{% param cliToolName %}} run stress --image={{% param "images.stress" %}} --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
 {{% /onlyWhenNot %}}
@@ -292,13 +268,13 @@ Let's fix this by recreating the Pod and explicitly setting the memory request t
 
 ```bash
 {{% param cliToolName %}} delete pod stress2much --namespace <namespace>
-{{% param cliToolName %}} run stress --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+{{% param cliToolName %}} run stress --image={{% param "images.stress" %}} --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
 ```
 
 {{% /onlyWhen %}}
 
 {{% alert title="Note" color="primary" %}}
-Remember, if you'd only set the limit, the request would be set to the same value.
+Remember, if you only set the limit, the request will be set to the same value.
 {{% /alert %}}
 
 You should now see that the Pod is successfully running:
@@ -311,18 +287,11 @@ stress   1/1     Running   0          25s
 
 ## Task {{% param sectionnumber %}}.3: Hitting the quota
 
-Create another Pod, again using the `polinux/stress` image. This time our application is less demanding and only needs 10 MB of memory (`--vm-bytes 10M`):
+Create another Pod, again using the `stress` image. This time our application is less demanding and only needs 10 MB of memory (`--vm-bytes 10M`):
 
-{{% onlyWhenNot mobi %}}
 ```bash
-{{% param cliToolName %}} run overbooked --image=polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+{{% param cliToolName %}} run overbooked --image={{% param "images.stress" %}} --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-```bash
-{{% param cliToolName %}} run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
-```
-{{% /onlyWhen %}}
 
 We are immediately confronted with an error message:
 
@@ -354,17 +323,10 @@ which should output the following YAML definition:
 
 The most interesting part is the quota's status which reveals that we cannot use more than 100 MiB of memory and that 80 MiB are already used.
 
-Fortunately our application can live with less memory than what the LimitRange sets. Let's set the request to the remaining 10 MiB:
+Fortunately, our application can live with less memory than what the LimitRange sets. Let's set the request to the remaining 10 MiB:
 
-{{% onlyWhenNot mobi %}}
 ```bash
-{{% param cliToolName %}} run overbooked --image=polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+{{% param cliToolName %}} run overbooked --image={{% param "images.stress" %}} --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
 ```
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-```bash
-{{% param cliToolName %}} run overbooked --image=docker-registry.mobicorp.ch/polinux/stress --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
-```
-{{% /onlyWhen %}}
 
 Even though the limits of both Pods combined overstretch the quota, the requests do not and so the Pods are allowed to run.

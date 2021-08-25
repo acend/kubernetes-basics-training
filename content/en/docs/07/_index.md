@@ -23,9 +23,9 @@ We are going to use an OpenShift template to create the database. This can be do
 
 Make sure you are in OpenShift's **Developer** view (upper left dropdown) and have selected the correct Project:
 
-![selection](selection.png)
+{{< imgproc selection.png Resize  "600x" >}}{{< /imgproc >}}
 
-Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Instantiate Template**. A form opens. Check that the first field corresponds to the correct Project and set the MariaDB Database Name field to `acendexampledb` and leave the remaining fields as they are. Finally click **Create** at the end of the form.
+Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Instantiate Template**. A form opens. Check that the first field corresponds to the correct Project and set the **MariaDB Database Name** field to `acendexampledb` and leave the remaining fields as they are. Finally, click **Create** at the end of the form.
 
 
 ### Instantiate a template using the CLI
@@ -37,7 +37,7 @@ Do not execute these steps if you already have created a MariaDB database using 
 We are going to instantiate the MariaDB Template from the `openshift` Project. Before we can do that, we need to know what parameters the Template expects. Let's find out:
 
 ```bash
-oc process --parameters mariadb-ephemeral --namespace openshift
+oc process --parameters openshift//mariadb-ephemeral
 ```
 
 ```
@@ -55,13 +55,13 @@ MARIADB_VERSION         Version of MariaDB image to be used (10.2 or latest).   
 As you might already see, each of the parameters has a default value ("VALUE" column). Also, the parameters `MYSQL_USER`, `MYSQL_PASSWORD` and `MYSQL_ROOT_PASSWORD` are going to be generated ("GENERATOR" is set to `expression` and "VALUE" contains a regular expression). This means we don't necessarily have to overwrite any of them so let's simply use those defaults:
 
 ```bash
-oc process mariadb-ephemeral -pMYSQL_DATABASE=acendexampledb  --namespace openshift | oc apply -f -
+oc process openshift//mariadb-ephemeral -pMYSQL_DATABASE=acendexampledb  | oc apply --namespace=<namespace> -f -
 ```
 
 
 ## Task {{% param sectionnumber %}}.2: Inspection
 
-What just happened is that you instantiated an OpenShift Template that creates multiple resources using the (default) values as parameters. Let's have a look at the resources that just have been created by looking at the Template's definition:
+What just happened is that you instantiated an OpenShift Template that creates multiple resources using the (default) values as parameters. Let's have a look at the resources that have just been created by looking at the Template's definition:
 
 ```bash
 oc get templates -n openshift mariadb-ephemeral -o yaml
@@ -71,14 +71,14 @@ The Template's content reveals a Secret, a Service and a DeploymentConfig.
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 
-We are first going to create a so-called _Secret_ in which we store sensitive data like the databasename, the password, the rootpassword and the username. The secret will be used to access the database and also to create the initial database.
+We are first going to create a so-called _Secret_ in which we store sensitive data like the database name, the password, the root password, and the username. The secret will be used to access the database and also to create the initial database.
 
 ```bash
 kubectl create secret generic mariadb --from-literal=database-name=acend-exampledb --from-literal=database-password=mysqlpassword --from-literal=database-root-password=mysqlrootpassword --from-literal=database-user=acend-user --namespace <namespace>
 ```
 {{% /onlyWhenNot %}}
 
-The Secret contains the database name, user, passwort and the root password. However, these values will neither be shown with `{{% param cliToolName %}} get` nor with `{{% param cliToolName %}} describe`:
+The Secret contains the database name, user, password, and the root password. However, these values will neither be shown with `{{% param cliToolName %}} get` nor with `{{% param cliToolName %}} describe`:
 
 ```bash
 {{% param cliToolName %}} get secret mariadb --output yaml --namespace <namespace>
@@ -96,7 +96,7 @@ metadata:
   ...
 type: Opaque
 ```
-The reason is all the values in the `.data` section are base64 encoded. Even though we cannot see the true values, they can easily be decoded:
+The reason is that all the values in the `.data` section are base64 encoded. Even though we cannot see the true values, they can easily be decoded:
 
 ```bash
 echo "YWNlbmQtZXhhbXBsZS1kYg==" | base64 -d
@@ -114,7 +114,7 @@ By default, Secrets are not encrypted!
 {{% onlyWhenNot openshift %}}Kubernetes 1.13 [offers this capability](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/){{% /onlyWhenNot %}}. Another option would be the use of a secrets management solution like [Vault by HashiCorp](https://www.vaultproject.io/).
 {{% /alert %}}
 {{% onlyWhen openshift %}}
-The interesting thing about Secrets is that they can be reused. We could extract all the plaintext values from the Secret but it's way easier to instead simply refer to its values inside the Deployment or DeploymentConfig (as in this lab):
+The interesting thing about Secrets is that they can be reused. We could extract all the plaintext values from the Secret, but it's way easier to instead simply refer to its values inside the Deployment or DeploymentConfig (as in this lab):
 
 ```bash
 oc get dc mariadb --output yaml --namespace <namespace>
@@ -182,13 +182,17 @@ As we had seen in the earlier labs, all resources like Deployments, Services, Se
 In our case we want to create a deployment including a Service for our MySQL database.
 Save this snippet as `mariadb.yaml`:
 
-{{% onlyWhenNot mobi %}}
+{{% onlyWhenNot customer %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/07/mariadb.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/07/mariadb-mobi.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
+{{% onlyWhen netcetera %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/07/mariadb-netcetera.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
+
 
 Execute it with:
 
@@ -202,9 +206,9 @@ The environment variables defined in the deployment configure the MariaDB Pod an
 {{% /onlyWhenNot %}}
 
 
-## Task {{% param sectionnumber %}}.2: Attach the database to the application
+## Task {{% param sectionnumber %}}.3: Attach the database to the application
 
-By default, our `example-web-python` application uses a SQLite memory database. However, this can be changed by defining the following environment variable(`MYSQL_URI`) to use the newly created MariaDB database:
+By default, our `example-web-python` application uses an SQLite memory database. However, this can be changed by defining the following environment variable(`MYSQL_URI`) to use the newly created MariaDB database:
 
 ```
 #MYSQL_URI=mysql://<user>:<password>@<host>/<database>
@@ -213,9 +217,9 @@ MYSQL_URI=mysql://acend-user:mysqlpassword@mariadb-svc/acend-exampledb
 
 The connection string our `example-web-python` application uses to connect to our new MariaDB, is a concatenated string from the values of the `mariadb` Secret.
 
-For the actual MariaDB host, you can either use the MariaDB Service's ClusterIP or DNS name as address. All Services and Pods can be resolved by DNS using their name.
+For the actual MariaDB host, you can either use the MariaDB Service's ClusterIP or DNS name as the address. All Services and Pods can be resolved by DNS using their name.
 
-The following commands sets the environment variables for the deployment configuration of the `example-web-python` application
+The following commands set the environment variables for the deployment configuration of the `example-web-python` application
 
 ```bash
 {{% param cliToolName %}} set env --from=secret/mariadb --prefix=MYSQL_ deploy/example-web-python --namespace <namespace>
@@ -256,21 +260,20 @@ You could also do the changes by directly editing the Deployment:
               name: mariadb
         - name: MYSQL_URI
           value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb-svc/$(MYSQL_DATABASE_NAME)
-        image: quay.io/acend/example-web-go
+        image: {{% param "images.acendAwesomeApp-example-web-python" %}}
         imagePullPolicy: Always
         name: example-web-python
         ...
 ```
 
-In order to find out if the change worked we can either look at the container's logs (`{{% param cliToolName %}} logs <pod>`).
-Or we could register some "Hellos" in the application, delete the Pod, wait for the new Pod to be started and check if they are still there.
+In order to find out if the change worked we can either look at the container's logs (`{{% param cliToolName %}} logs <pod>`) or we could register some "Hellos" in the application, delete the Pod, wait for the new Pod to be started and check if they are still there.
 
 {{% alert title="Note" color="primary" %}}
 This does not work if we delete the database Pod as its data is not yet persisted.
 {{% /alert %}}
 
 
-## Task {{% param sectionnumber %}}.3: Manual database connection
+## Task {{% param sectionnumber %}}.4: Manual database connection
 
 As described in [lab 6](../06/) we can log into a Pod with {{% onlyWhenNot openshift %}}`kubectl exec -it <pod> -- /bin/bash`.{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}`oc rsh <pod>`.{{% /onlyWhen %}}
 
@@ -297,7 +300,7 @@ kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 ```bash
-oc rsh mariadb-f845ccdb7-hf2x5 --namespace <namespace>
+oc rsh --namespace <namespace> mariadb-f845ccdb7-hf2x5
 ```
 {{% /onlyWhen %}}
 
@@ -326,12 +329,12 @@ show tables;
 ```
 
 
-## Task {{% param sectionnumber %}}.4: Import a database dump
+## Task {{% param sectionnumber %}}.5: Import a database dump
 
 Our task is now to import this [dump.sql](https://raw.githubusercontent.com/acend/kubernetes-basics-training/master/content/en/docs/07/dump.sql) into the MariaDB database running as a Pod. Use the `mysql` command line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
 
 {{% alert title="Note" color="primary" %}}
-You can also copy local files into a Pod using `{{% param cliToolName %}} cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the Pod and use `curl -O <url>`.
+You can also copy local files into a Pod using `{{% param cliToolName %}} cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the Pod and using `curl -O <url>`.
 {{% /alert %}}
 
 
@@ -406,5 +409,8 @@ You should now have the following resources in place:
 
 * [example-web-python.yaml](example-web-python.yaml)
 * [mariadb-secret.yaml](mariadb-secret.yaml)
-* {{% onlyWhenNot mobi %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen mobi %}}[mariadb-mobi.yaml](mariadb-mobi.yaml){{% /onlyWhen %}}
+* {{% onlyWhenNot openshift %}}
+  {{% onlyWhenNot customer %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
+  {{% onlyWhen customer %}}[mariadb-{{% param customer %}}.yaml](mariadb-{{% param customer %}}.yaml){{% /onlyWhen %}}
+  {{% /onlyWhenNot %}}
+  {{% onlyWhen openshift %}}[mariadb-openshift.yaml](mariadb-openshift.yaml){{% /onlyWhen %}}

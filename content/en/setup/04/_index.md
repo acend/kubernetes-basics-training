@@ -47,13 +47,13 @@ Make sure to use at least `oc` version `4.6.x`.
 
 ## First steps with {{% param cliToolName %}}
 
-The `{{% param cliToolName %}}` binary has many commands and sub-commands. Invoke `{{% param cliToolName %}} --help` (or simply `-h`) to get a list of all commands; `{{% param cliToolName %}} <command> --help` gives you detailed help about a command.
+The `{{% param cliToolName %}}` binary has many subcommands. Invoke `{{% param cliToolName %}} --help` (or simply `-h`) to get a list of all subcommands; `{{% param cliToolName %}} <subcommand> --help` gives you detailed help about a subcommand.
 
 {{% onlyWhenNot openshift %}}
 If you don't want to memorize all `kubectl` options then use the `kubectl` cheat sheet: <https://kubernetes.io/docs/reference/kubectl/cheatsheet/>
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
-If you don't want to memorize all `oc` options then use the `oc` cheat sheet: <https://developers.redhat.com/cheat-sheets/red-hat-openshift-container-platform>
+If you don't want to memorize all `oc` options (and have a Red Hat Login) then use the `oc` cheat sheet: <https://developers.redhat.com/cheat-sheets/red-hat-openshift-container-platform>
 {{% /onlyWhen %}}
 
 

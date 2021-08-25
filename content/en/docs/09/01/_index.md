@@ -16,7 +16,7 @@ This lab does not depend on other labs.
 
 ## Consistent hostnames
 
-While in normal Deployments a hash based name of the Pods (also represented as the hostname inside the Pod) is generated, StatefulSets create Pods with preconfigured names.
+While in normal Deployments a hash-based name of the Pods (also represented as the hostname inside the Pod) is generated, StatefulSets create Pods with preconfigured names.
 An example of a RabbitMQ cluster with three instances (Pods) could look like this:
 
 ```
@@ -38,7 +38,7 @@ Let's use our RabbitMQ example again:
 1. `rabbitmq-3` is started
 1. As soon as Pod `rabbitmq-3` is in `Ready` state the same procedure starts for `rabbitmq-4`
 
-When scaling down the order is inverted. The highest-numbered Pod will be stopped first.
+When scaling down, the order is inverted. The highest-numbered Pod will be stopped first.
 As soon as it has finished terminating the now highest-numbered Pod is stopped.
 This procedure is repeated as long as the desired number of replicas has not been reached.
 
@@ -64,18 +64,21 @@ This spares you from defining identical Deployments with 1 replica each but diff
 
 ## Conclusion
 
-The controllable and predictable behaviour can be a perfect match for applications such as RabbitMQ or etcd, as you need unique names for such application clusters.
+The controllable and predictable behavior can be a perfect match for applications such as RabbitMQ or etcd, as you need unique names for such application clusters.
 
 
 ## Task {{% param sectionnumber %}}.1: Create a StatefulSet
 
 Create a file named `sts_nginx-cluster.yaml` with the following definition of a StatefulSet:
 
-{{% onlyWhenNot mobi %}}
+{{% onlyWhenNot customer %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/01/sts_nginx-cluster.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
 {{< highlight yaml >}}{{< readfile file="content/en/docs/09/01/sts_nginx-cluster_mobi.yaml" >}}{{< /highlight >}}
+{{% /onlyWhen %}}
+{{% onlyWhen netcetera %}}
+{{< highlight yaml >}}{{< readfile file="content/en/docs/09/01/sts_nginx-cluster_netcetera.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 Create the StatefulSet:
@@ -113,19 +116,19 @@ Set the StatefulSet's image tag to `latest`:
 
 {{% onlyWhenNot mobi %}}
 ```bash
-{{% param cliToolName %}} set image statefulset nginx-cluster nginx=nginxinc/nginx-unprivileged:latest --namespace <namespace>
+{{% param cliToolName %}} set image statefulset nginx-cluster nginx={{% param "images.nginxinc-nginx-unprivileged" %}} --namespace <namespace>
 ```
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
 ```bash
-kubectl set image statefulset nginx-cluster nginx=docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx:latest --namespace <namespace>
+kubectl set image statefulset nginx-cluster nginx={{% param "images.nginx" %}} --namespace <namespace>
 ```
 {{% /onlyWhen %}}
 
 
 ## Task {{% param sectionnumber %}}.4: Rollback
 
-Imagine you just realized that switching to the `latest` image tag was a really bad idea (because it is generally not advisable).
+Imagine you just realized that switching to the `latest` image tag was an awful idea (because it is generally not advisable).
 Rollback the change:
 
 ```bash
@@ -141,8 +144,8 @@ As with every other {{% param distroName %}} resource you can delete the Statefu
 To avoid issues on your personal progress dashboard, we would advise not to delete the StatefulSet from this lab
 {{% /alert %}}
 
-```bash
+```
 {{% param cliToolName %}} delete statefulset nginx-cluster --namespace <namespace>
 ```
 
-Further information can be found in [Kubernetes' StatefulSet documentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or this [published article](https://opensource.com/article/17/2/stateful-applications).
+Further information can be found in the [Kubernetes' StatefulSet documentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or this [published article](https://opensource.com/article/17/2/stateful-applications).

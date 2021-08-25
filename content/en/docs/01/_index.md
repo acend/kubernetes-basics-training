@@ -14,7 +14,7 @@ All explanations and resources used in this lab give only a quick and not detail
 In this lab, we will introduce the core concepts of OpenShift.
 
 All explanations and resources used in this lab give only a quick and not detailed overview.
-As OpenShift is based on Kubernetes, its concepts also apply to OpenShift which you find on [the official Kubernetes documentation](https://kubernetes.io/docs/concepts/).
+As OpenShift is based on Kubernetes, its concepts also apply to OpenShift which you find in [the official Kubernetes documentation](https://kubernetes.io/docs/concepts/).
 {{% /onlyWhen %}}
 
 
@@ -22,11 +22,11 @@ As OpenShift is based on Kubernetes, its concepts also apply to OpenShift which 
 
 {{% onlyWhenNot openshift %}}
 With the open source software Kubernetes, you get a platform to deploy your application in a container and operate it at the same time.
-Therefore, Kubernetes is also called a _Container Platform_ or the term _Container-as-a-Service_ (CaaS) is used.
+Therefore, Kubernetes is also called a _Container Platform_, or the term _Container-as-a-Service_ (CaaS) is used.
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 With the open source software OpenShift, you get a platform to build and deploy your application in a container as well as operate it at the same time.
-Therefore, OpenShift is also called a _Container Platform_ or the term _Container-as-a-Service_ (CaaS) is used.
+Therefore, OpenShift is also called a _Container Platform_, or the term _Container-as-a-Service_ (CaaS) is used.
 {{% /onlyWhen %}}
 Depending on the configuration the term _Platform-as-a-Service_ (PaaS) works as well.
 
@@ -39,7 +39,7 @@ Kubernetes' underlying container engine most often is [Docker](https://www.docke
 {{% onlyWhen openshift %}}
 OpenShift's underlying container engine is [CRI-O](https://cri-o.io/). Earlier releases used [Docker](https://www.docker.com/).
 {{% /onlyWhen %}}
-Docker was originally created to help developers test their applications in their continuous integration environments. Nowadays also system admins use it.
+Docker was originally created to help developers test their applications in their continuous integration environments. Nowadays, system admins also use it.
 CRI-O doesn't exist as long as Docker does. It is a "lightweight container runtime for Kubernetes" and is fully [OCI-compliant](https://github.com/opencontainers/runtime-spec).
 
 
@@ -57,9 +57,9 @@ OpenShift basically consists of master and worker nodes.
 
 The master components are the _API server_, the _scheduler_ and the _controller manager_.
 The API server itself represents the management interface.
-The scheduler and the controller manager decide how applications should be deployed on the cluster. Additionally, the state and configuration of the cluster itself is controlled in the master components.
+The scheduler and the controller manager decide how applications should be deployed on the cluster. Additionally, the state and configuration of the cluster itself are controlled in the master components.
 
-Worker nodes are also known as compute nodes, application nodes or minions and are responsible for running the container workload (applications).
+Worker nodes are also known as compute nodes, application nodes or minions, and are responsible for running the container workload (applications).
 The _control plane_ for the worker nodes is implemented in the master components.
 
 
@@ -80,9 +80,9 @@ In a container itself any process can be started that runs natively on your oper
 Containers are based on images.
 An image represents the file tree, which includes the binary, shared libraries and other files which are needed to run your application.
 
-A container image typically is built from a `Containerfile` or `Dockerfile`, which is a text file filled with instructions.
+A container image is typically built from a `Containerfile` or `Dockerfile`, which is a text file filled with instructions.
 The end result is a hierarchically layered binary construct.
-Depending on the backend the implementation is using overlay or copy-on-write (COW) mechanisms to represent the image.
+Depending on the backend, the implementation uses overlay or copy-on-write (COW) mechanisms to represent the image.
 
 Layer example for a Tomcat application:
 
@@ -135,7 +135,7 @@ A Pod is the smallest entity in Kubernetes and OpenShift.
 {{% /onlyWhen %}}
 It represents one instance of your running application process.
 The Pod consists of at least two containers, one for your application itself and another one as part of the Kubernetes design, to keep the network namespace.
-The so called infrastructure container (or pause container) therefore is automatically added by Kubernetes.
+The so-called infrastructure container (or pause container) is therefore automatically added by Kubernetes.
 
 The application ports from inside the Pod are exposed via Services.
 
@@ -148,22 +148,37 @@ There are different kinds of Services:
 
 * `ClusterIP`: Default virtual IP address range
 * `NodePort`: Same as `ClusterIP` plus open ports on the nodes
-* `LoadBalancer`: An external load balancer is created, works only in cloud environments, e.g. AWS ELB
-* `ExternalName`: A DNS entry is created, also works only in cloud environments
+* `LoadBalancer`: An external load balancer is created, only works in cloud environments, e.g. AWS ELB
+* `ExternalName`: A DNS entry is created, also only works in cloud environments
 
 A Service is unique inside a Namespace.
 
 
 ### Deployment
 
-Please follow <https://kubernetes.io/docs/concepts/workloads/controllers/deployment/>.
+{{% onlyWhenNot openshift %}}
+Have a look at the [official documentation](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/).
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
+Have a look at the [official documentation](https://docs.openshift.com/container-platform/latest/applications/deployments/what-deployments-are.html).
+{{% /onlyWhen %}}
 
 
 ### Volume
 
-Please follow <https://kubernetes.io/docs/concepts/storage/volumes/>.
+{{% onlyWhenNot openshift %}}
+Have a look at the [official documentation](https://kubernetes.io/docs/concepts/storage/volumes/).
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
+Have a look at the [official documentation](https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-volumes.html).
+{{% /onlyWhen %}}
 
 
 ### Job
 
-Please follow <https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/>.
+{{% onlyWhenNot openshift %}}
+Have a look at the [official documentation](https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/).
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
+Have a look at the [official documentation](https://docs.openshift.com/container-platform/latest/nodes/jobs/nodes-nodes-jobs.html).
+{{% /onlyWhen %}}

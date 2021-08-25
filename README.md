@@ -51,7 +51,7 @@ git submodule update --remote
 Build the image:
 
 ```bash
-docker build <--build-arg ACEND_HUGO_ENV=...> -t acend/kubernetes-basics-training .
+docker build <--build-arg TRAINING_HUGO_ENV=...> -t acend/kubernetes-basics-training .
 ```
 
 Run it locally:
@@ -66,7 +66,7 @@ docker run -i -p 8080:8080 acend/kubernetes-basics-training
 Build the image:
 
 ```bash
-buildah build-using-dockerfile <--build-arg ACEND_HUGO_ENV=...> -t acend/kubernetes-basics-training:latest .
+buildah build-using-dockerfile <--build-arg TRAINING_HUGO_ENV=...> -t acend/kubernetes-basics-training:latest .
 ```
 
 Run it locally with the following command. Beware that `--rmi` automatically removes the built image when the container stops, so you either have to rebuild it or remove the parameter from the command.
@@ -103,7 +103,60 @@ For local checks, you can either use Visual Studio Code with the corresponding e
 
 ```shell script
 npm install
-node_modules/.bin/markdownlint content *.md
+npm run mdlint
+```
+
+Npm not installed? no problem
+
+```bash
+export HUGO_VERSION=$(grep "FROM klakegg/hugo" Dockerfile | sed 's/FROM klakegg\/hugo://g' | sed 's/ AS builder//g')
+docker run --rm --interactive -v $(pwd):/src klakegg/hugo:${HUGO_VERSION}-ci /bin/bash -c "set -euo pipefail;npm install; npm run mdlint;"
+```
+
+
+## Github Actions
+
+
+### Build
+
+The [build action](.github/workflows/build.yaml) is fired on Pull Requests does the following
+
+* builds all PR Versions (Linting and Docker build)
+* deploys the built container images to the container registry
+* Deploys a PR environment in a k8s test namespace with helm
+* Triggers a redeployment
+* Comments in the PR where the PR Environments can be found
+
+
+### PR Cleanup
+
+The [pr-cleanup action](.github/workflows/pr-cleanup.yaml) is fired when Pull Requests are closed and does the following
+
+* Uninstalls PR Helm Release
+
+
+### Push Main
+
+The [push main action](.github/workflows/push-main.yaml) is fired when a commit is pushed to the main branch (eg. a PR is merged) and does the following, it's very similar to the Build Action
+
+* builds main Versions (Linting and Docker build)
+* deploys the built container images to the container registry
+* Deploys the main Version on k8s using helm
+* Triggers a redeployment
+
+
+## Helm
+
+Manually deploy the training Release using the following command:
+
+```bash
+helm install --repo https://acend.github.io/helm-charts/  <release> acend-training-chart --values helm-chart/values.yaml -n <namespace>
+```
+
+For debugging purposes use the `--dry-run` parameter
+
+```bash
+helm install --dry-run --repo https://acend.github.io/helm-charts/  <release> acend-training-chart --values helm-chart/values.yaml -n <namespace>
 ```
 
 

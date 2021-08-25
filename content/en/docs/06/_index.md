@@ -125,7 +125,7 @@ Log files of a Pod can be shown with the following command:
 
 The parameter `-f` allows you to follow the log file (same as `tail -f`). With this, log files are streamed and new entries are shown immediately.
 
-When a Pod is in state `CrashLoopBackOff` it means that although multiple attempts have been made, no Container inside the Pod could be started successfully. Now even though no Container might be running at the moment the `{{% param cliToolName %}} logs` command is executed, there is a way to view the logs the application might have generated. This is achieved using the `-p` or `--previous` parameter:
+When a Pod is in state `CrashLoopBackOff` it means that although multiple attempts have been made, no container inside the Pod could be started successfully. Now even though no container might be running at the moment the `{{% param cliToolName %}} logs` command is executed, there is a way to view the logs the application might have generated. This is achieved using the `-p` or `--previous` parameter:
 
  ```bash
 {{% param cliToolName %}} logs -p <pod> --namespace <namespace>
@@ -149,7 +149,7 @@ Then execute the port forwarding command using the Pod's name:
 ```
 
 {{% alert title="Note" color="primary" %}}
-Use the additional parameter `--address <IP address>` (where `<IP address>` refers to a NIC's IP address from your local workstation) if you want to access the forwarded port from outside of your own local workstation.
+Use the additional parameter `--address <IP address>` (where `<IP address>` refers to a NIC's IP address from your local workstation) if you want to access the forwarded port from outside your own local workstation.
 {{% /alert %}}
 
 The output of the command should look like this:
@@ -178,9 +178,9 @@ The `{{% param cliToolName %}} port-forward` process runs as long as it is not t
 
 ## Progress
 
-At this point of the Lab, you are able to visualize your progress on the labs by browsing to the following page <http://localhost:5000/progress>
+At this point, you are able to visualize your progress on the labs by browsing through the following page <http://localhost:5000/progress>
 
-You may need to set some extra permissions to let the dashboard monitor your progress. Have Fun!
+You may need to set some extra permissions to let the dashboard monitor your progress. Have fun!
 
 ```bash
 {{% param cliToolName %}} create rolebinding progress --clusterrole=view --serviceaccount=<namespace>:default --namespace=<namespace>
@@ -190,7 +190,7 @@ You may need to set some extra permissions to let the dashboard monitor your pro
 ## Events
 
 {{% param distroName %}} maintains an event log with high-level information on what's going on in the cluster.
-It's possible that everything looks okay at first glance but somehow something seems stuck.
+It's possible that everything looks okay at first but somehow something seems stuck.
 Make sure to have a look at the events because they can give you more information if something is not working as expected.
 
 Use the following command to list the events in chronological order:

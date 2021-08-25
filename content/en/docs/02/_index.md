@@ -23,24 +23,26 @@ You may need special instructions if you are not using our lab environment.
 
 {{% onlyWhenNot openshift %}}
 {{% onlyWhen rancher %}}
-{{% onlyWhenNot mobi %}}
+{{% onlyWhen cloudscale %}}
+
 Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cloudscale.ch) (a Swiss IaaS provider) and has been provisioned with [Rancher](https://rancher.com/). You can log in to the cluster with a Rancher user.
 
 {{% alert title="Note" color="primary" %}}
-Your teacher will provide you with the credentials to log in.
+Your trainer will provide you with the information needed to log in.
 {{% /alert %}}
-{{% /onlyWhenNot %}}
+{{% /onlyWhen %}}
+
 
 Log in to the Rancher web console and choose the desired cluster.
 
 You now see a button at the top right that says **Kubeconfig File**. Click it, scroll down to the bottom and click **Copy to Clipboard**.
 
-![Download kubeconfig File](kubectlconfigfilebutton.png)
+{{< imgproc kubectlconfigfilebutton.png Resize  "800x" >}}{{< /imgproc >}}
 
 The copied kubeconfig now needs to be put into a file. The default location for the kubeconfig file is `~/.kube/config`.
 
 {{% alert title="Note" color="primary" %}}
-If you already have a kubeconfig file, you might need to merge the Rancher entries with yours. Or use a dedicated file as described below.
+If you already have a kubeconfig file, you might need to merge the Rancher entries with yours or use a dedicated file as described below.
 {{% /alert %}}
 
 Put the copied content into a kubeconfig file on your system.
@@ -50,13 +52,13 @@ If you decide to not use the default kubeconfig location at `~/.kube/config` the
 export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 ```
 
-{{% alert title="Note" color="primary" %}} When using PowerShell on a Windows Computer use the following command, you'll have to replace `<user>` with your actual user
+{{% alert title="Note" color="primary" %}} When using PowerShell on a Windows Computer use the following command. You'll have to replace `<user>` with your actual user
 
 ```
 $Env:KUBECONFIG = "C:\Users\<user>\.kube-techlab\config"
 ```
 
-To set the environment variable (`KUBECONFIG` = `C:\Users\<user>\.kube-techlab\config`) permenantly, check the following documentation:
+To set the environment variable (`KUBECONFIG` = `C:\Users\<user>\.kube-techlab\config`) permanently, check the following documentation:
 
 The `PATH` can be set in Windows in the advanced system settings. It depends on the version:
 
@@ -76,31 +78,27 @@ kubectl config use-context kubedev
 ```
 
 {{% alert title="Warning" color="secondary" %}}
-Make sure you have setup your kubeconfig file correctly. Check your [CWIKI](https://cwiki.mobicorp.ch/confluence/display/ITContSol/Set+up+Kubectl) for instructions on how to configure it.
+Make sure you have set up your kubeconfig file correctly. Check your [CWIKI](https://cwiki.mobicorp.ch/confluence/display/ITContSol/Set+up+Kubectl) for instructions on how to configure it.
 {{% /alert %}}
 {{% /onlyWhen %}}
 
 
 ## Namespaces
 
-As a first step on the cluster we are going to create a new Namespace.
+As a first step on the cluster, we are going to create a new Namespace.
 
-A Namespace is the logical design used in Kubernetes to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). Authorized users inside a namespace are able to manage those resources. Namespace names have to be unique in your cluster.
+A Namespace is a logical design used in Kubernetes to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). Authorized users inside a namespace are able to manage those resources. Namespace names have to be unique in your cluster.
 
 {{% onlyWhen rancher %}}
 {{% alert title="Note" color="primary" %}}
 Additionally, Rancher knows the concept of a [*Project*](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple Namespaces.
 {{% /alert %}}
 
-In the Rancher web console choose the Project called `techlab`.
+In the Rancher web console choose the Project called `Training`.
 
 {{% onlyWhen mobi %}}
 We use the project `kubernetes-techlab` on the `kubedev` cluster.
 {{% /onlyWhen %}}
-
-{{% onlyWhenNot mobi %}}
-![Rancher Project](chooseproject.png)
-{{% /onlyWhenNot %}}
 
 {{% /onlyWhen %}}
 
@@ -126,7 +124,7 @@ kubectl create namespace <namespace>
 
 {{% onlyWhen rancher %}}
 {{% alert title="Note" color="primary" %}}
-Namespaces created via `kubectl` have to be assigned to the correct Rancher Project in order to be visible in the Rancher web console. Please ask your teacher for this assignment. Or you can create the Namespace directly within the Rancher web console.
+Namespaces created via `kubectl` have to be assigned to the correct Rancher Project in order to be visible in the Rancher web console. Please ask your trainer for this assignment or you can create the Namespace directly within the Rancher web console.
 {{% /alert %}}
 {{% /onlyWhen %}}
 
@@ -155,7 +153,7 @@ Some prefer to explicitly select the Namespace for each `kubectl` command by add
 
 ## Task {{% param sectionnumber %}}.2: Discover the Rancher web console
 
-Check the menu entries, there should neither appear any Deployments nor any Pods or Services in your Namespace.
+Check the menu entries, there should neither be any Deployments nor any Pods or Services in your Namespace.
 
 Display all existing Pods in the previously created Namespace with `kubectl` (there shouldn't yet be any):
 
@@ -172,35 +170,35 @@ With the command `kubectl get` you can display all kinds of resources.
 ### Login on the Web Console
 
 {{% alert title="Note" color="primary" %}}
-Your teacher will provide you with the credentials to log in.
+Your trainer will provide you with the information needed to log in.
 {{% /alert %}}
 
 Open your browser, open the OpenShift cluster URL and log in using the provided credentials.
 
 
-### Login in the shell
+### Login on the command line
 
-In order to log in on the shell, you can copy the login command from the Web Console and then paste it on the shell.
+In order to log in on the command line, copy the login command from the Web Console.
 
-To do that, open the Web Console and click on your username you see at the top right, then choose **Copy Login Command**.
+To do that, open the Web Console and click on your username that you see at the top right, then choose **Copy Login Command**.
 
-![oc-login](login-ocp.png)
+{{% imgproc login-ocp.png Resize  "400x" %}}{{% /imgproc %}}
 
-A new tab or window opens in your browser.
+A new tab or window will open in your browser.
 
 {{% alert title="Note" color="primary" %}}
-You might need to login again.
+You might need to log in again.
 {{% /alert %}}
 
 The page now displays a link **Display token**.
-Click it and copy the command under **Log in with this token**.
+Click on it and copy the command under **Log in with this token**.
 
-Now paste the copied command in your shell.
+Now paste the copied command on the command line.
 
 
 ### Verify login
 
-If you now execute `oc version` you should see something like this (version numbers may vary):
+If you now execute `oc version` you should see something like this (your output may vary):
 
 ```
 Client Version: 4.6.9
@@ -211,9 +209,9 @@ Kubernetes Version: v1.19.0+7070803
 
 ## Projects
 
-As a first step on the cluster we are going to create a new Project.
+As a first step on the cluster, we are going to create a new Project.
 
-A Project is the logical design used in OpenShift to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis.
+A Project is a logical design used in OpenShift to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis.
 Authorized users inside a Project are able to manage those resources. Project names have to be unique in your cluster.
 
 

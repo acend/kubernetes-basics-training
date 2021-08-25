@@ -14,3 +14,10 @@ spec:
       containers:
         - name: example-web-go
           image: quay.io/acend/example-web-go
+          resources:
+            limits:
+              cpu: 20m
+              memory: 32Mi
+            requests:
+              cpu: 10m
+              memory: 16Mi

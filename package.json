@@ -1,6 +1,22 @@
 {
   "name": "kubernetes-basics-training",
+  "version": "1.0.0",
+  "description": "Kubernetes Basics Training",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acend/kubernetes-basics-training.git"
+  },
+  "author": "acend gmbh",
+  "scripts": {
+    "mdlint": "markdownlint --config .markdownlint.json content *.md",
+    "prepare": "husky install"
+  },
+  "bugs": {
+    "url": "https://github.com/acend/kubernetes-basics-training/issues"
+  },
+  "homepage": "https://github.com/acend/kubernetes-basics-training#readme",
   "devDependencies": {
-    "markdownlint-cli": "0.26.0"
+    "husky": "7.0.2",
+    "markdownlint-cli": "0.28.1"
   }
 }

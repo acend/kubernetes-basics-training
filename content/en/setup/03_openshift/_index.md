@@ -32,6 +32,11 @@ This is what we are going to do step by step:
 
    {{% /alert %}}
 
+1. If you have previously accessed a Kubernetes cluster you have to rename your `.kube` directory.
+
+   Check if you have a directory `~\.kube` and rename it to something like `~\.kube_backup`.
+   You can undo this after the training.
+
 
 ## Completion for Bash and Zsh (optional)
 
