@@ -15,7 +15,7 @@ After we've familiarized ourselves with the platform, we are going to have a loo
 In OpenShift we have used the `<project>` identifier to select the correct project. Please use the same identifier in the context `<namespace>` to do the same for all upcoming labs. Ask your trainer if you want more information on that.
 {{% /onlyWhen %}}
 
-First, we are going to directly start a new Pod. For this we first have to device our Kubernetes Pod resource. Create a new file `03_pod.yaml` with the following content:
+First, we are going to directly start a new Pod. For this we have to define our Kubernetes Pod resource definition. Create a new file `03_pod.yaml` with the following content:
 
 ```yaml
 apiVersion: v1
