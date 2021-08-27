@@ -50,7 +50,7 @@ Save it to `pvc.yaml`:
 And create it with:
 
 ```bash
-kubectl create -f pvc.yaml --namespace <namespace>
+kubectl apply -f pvc.yaml --namespace <namespace>
 ```
 
 We now have to insert the volume definition in the correct section of the MariaDB deployment:
