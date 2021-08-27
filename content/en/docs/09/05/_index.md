@@ -187,8 +187,31 @@ requests.memory  0     100Mi
 ## Task {{% param sectionnumber %}}.2: Default memory limit
 
 Create a Pod using the stress image:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: stress
+spec:
+  containers:
+  - command:
+    - stress
+    - --vm
+    - "1"
+    - --vm-bytes
+    - 85M
+    - --vm-hang
+    - "1"
+    image: {{% param "images.stress" %}}
+    imagePullPolicy: Always
+    name: stress
+```
+
+apply this resource with:
+
 ```bash
-{{% param cliToolName %}} run stress2much --image={{% param "images.stress" %}} --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+{{% param cliToolName %}} kubectl apply -f pod_stress.yaml
 ```
 
 
@@ -254,24 +277,50 @@ reveals the following values:
 
 These are the values from the LimitRange, and the defined limit of 32 MiB of memory prevents the `stress` process of ever allocating the desired 85 MB.
 
-Let's fix this by recreating the Pod and explicitly setting the memory request to 85 MB:
+Let's fix this by recreating the Pod and explicitly setting the memory request to 85 MB.
 
-{{% onlyWhenNot mobi %}}
+First, delete the `stress2much` pod with:
 
-```bash
-{{% param cliToolName %}} delete pod stress2much --namespace <namespace>
-{{% param cliToolName %}} run stress --image={{% param "images.stress" %}} --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
-```
-
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
 
 ```bash
-{{% param cliToolName %}} delete pod stress2much --namespace <namespace>
-{{% param cliToolName %}} run stress --image={{% param "images.stress" %}} --limits=memory=100Mi --requests=memory=85Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 85M --vm-hang 1
+{{% param cliToolName %}} delete Pod stress2much --namespace <namespace>
 ```
 
-{{% /onlyWhen %}}
+Then create a new Pod where the requests and limits are set:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: stress
+spec:
+  containers:
+  - command:
+    - stress
+    - --vm
+    - "1"
+    - --vm-bytes
+    - 85M
+    - --vm-hang
+    - "1"
+    image: {{% param "images.stress" %}}
+    imagePullPolicy: Always
+    name: stress
+    resources:
+      limits:
+        cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 10m
+        memory: 85Mi
+```
+
+And apply this again with:
+
+```bash
+{{% param cliToolName %}} kubectl apply -f pod_stress_resources.yaml
+```
+
 
 {{% alert title="Note" color="primary" %}}
 Remember, if you only set the limit, the request will be set to the same value.
@@ -289,8 +338,30 @@ stress   1/1     Running   0          25s
 
 Create another Pod, again using the `stress` image. This time our application is less demanding and only needs 10 MB of memory (`--vm-bytes 10M`):
 
+Create a new Pod resource with:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: overbooked
+spec:
+  containers:
+  - command:
+    - stress
+    - --vm
+    - "1"
+    - --vm-bytes
+    - 10M
+    - --vm-hang
+    - "1"
+    image: {{% param "images.stress" %}}
+    imagePullPolicy: Always
+    name: overbooked
+```
+
 ```bash
-{{% param cliToolName %}} run overbooked --image={{% param "images.stress" %}} --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+{{% param cliToolName %}} kubectl apply -f pod_overbooked.yaml
 ```
 
 We are immediately confronted with an error message:
@@ -325,8 +396,35 @@ The most interesting part is the quota's status which reveals that we cannot use
 
 Fortunately, our application can live with less memory than what the LimitRange sets. Let's set the request to the remaining 10 MiB:
 
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: overbooked
+spec:
+  containers:
+  - command:
+    - stress
+    - --vm
+    - "1"
+    - --vm-bytes
+    - 10M
+    - --vm-hang
+    - "1"
+    image: {{% param "images.stress" %}}
+    imagePullPolicy: Always
+    name: overbooked
+    resources:
+      limits:
+        memory: 16Mi
+      requests:
+        memory: 10Mi
+```
+
+And apply with:
+
 ```bash
-{{% param cliToolName %}} run overbooked --image={{% param "images.stress" %}} --limits=memory=16Mi --requests=memory=10Mi --namespace <namespace> --command -- stress --vm 1 --vm-bytes 10M --vm-hang 1
+{{% param cliToolName %}} kubectl apply -f pod_overbooked.yaml
 ```
 
 Even though the limits of both Pods combined overstretch the quota, the requests do not and so the Pods are allowed to run.
