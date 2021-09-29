@@ -28,7 +28,7 @@ In [lab 8](../../08/) you created a MariaDB deployment. In this task you are goi
 Change the existing `mariadb` Deployment using:
 
 ```bash
-kubectl edit deployment mysql --namespace <namespace>
+kubectl edit deployment mariadb --namespace <namespace>
 ```
 
 And add a new (sidecar) container into your Deployment:
