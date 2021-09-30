@@ -84,7 +84,7 @@ Create a file named `sts_nginx-cluster.yaml` with the following definition of a 
 Create the StatefulSet:
   
 ```bash
-{{% param cliToolName %}} create -f sts_nginx-cluster.yaml --namespace <namespace>
+{{% param cliToolName %}} apply -f sts_nginx-cluster.yaml --namespace <namespace>
 ```
 
 To watch the pods' progress, open a second console and execute the watch command:

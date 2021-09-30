@@ -197,7 +197,7 @@ Save this snippet as `mariadb.yaml`:
 Execute it with:
 
 ```bash
-kubectl create -f mariadb.yaml --namespace <namespace>
+kubectl apply -f mariadb.yaml --namespace <namespace>
 ```
 
 As soon as the container image for `mariadb:10.5` has been pulled, you will see a new Pod using `kubectl get pods`.
@@ -367,8 +367,8 @@ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb-svc acend-exampledb
 ```
 
 ```bash
-drop database acend-exampledb;
-create database acend-exampledb;
+drop database `acend-exampledb`;
+create database `acend-exampledb`;
 exit
 ```
 
