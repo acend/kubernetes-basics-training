@@ -135,7 +135,7 @@ If the container won't start because the data directory already has files in it,
 
 ### Restore data
 
-Repeat [task 7.4](../07/#task-74-import-a-database-dump).
+Repeat [task 7.5](../07/#task-75-import-a-database-dump).
 
 
 ### Test

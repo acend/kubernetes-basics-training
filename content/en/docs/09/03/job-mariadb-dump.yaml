@@ -31,7 +31,7 @@ spec:
               key: database-user
               name: mariadb
         - name: MYSQL_HOST
-          value: mariadb-svc
+          value: mariadb
         - name: MYSQL_PORT
           value: "3306"
         - name: MYSQL_PASSWORD
