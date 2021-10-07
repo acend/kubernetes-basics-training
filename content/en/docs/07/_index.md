@@ -25,7 +25,7 @@ Make sure you are in OpenShift's **Developer** view (upper left dropdown) and ha
 
 {{< imgproc selection.png Resize  "600x" >}}{{< /imgproc >}}
 
-Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Instantiate Template**. A form opens. Check that the first field corresponds to the correct Project and set the **MariaDB Database Name** field to `acendexampledb` and leave the remaining fields as they are. Finally, click **Create** at the end of the form.
+Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Instantiate Template**. A form opens. Check that the first field corresponds to the correct Project and set the **MariaDB Database Name** field to `acend-exampledb` and leave the remaining fields as they are. Finally, click **Create** at the end of the form.
 
 
 ### Instantiate a template using the CLI
@@ -55,7 +55,7 @@ MARIADB_VERSION         Version of MariaDB image to be used (10.2 or latest).   
 As you might already see, each of the parameters has a default value ("VALUE" column). Also, the parameters `MYSQL_USER`, `MYSQL_PASSWORD` and `MYSQL_ROOT_PASSWORD` are going to be generated ("GENERATOR" is set to `expression` and "VALUE" contains a regular expression). This means we don't necessarily have to overwrite any of them so let's simply use those defaults:
 
 ```bash
-oc process openshift//mariadb-ephemeral -pMYSQL_DATABASE=acendexampledb  | oc apply --namespace=<namespace> -f -
+oc process openshift//mariadb-ephemeral -pMYSQL_DATABASE=acend-exampledb  | oc apply --namespace=<namespace> -f -
 ```
 
 
