@@ -38,7 +38,7 @@ spec:
   initContainers:
   - name: wait-for-db
     image: {{% param "images.busybox" %}}
-    command: ['sh', '-c', "until nslookup mariadb-svc.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
+    command: ['sh', '-c', "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
 ...
 ```
 

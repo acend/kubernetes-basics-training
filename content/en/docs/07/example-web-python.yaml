@@ -50,7 +50,7 @@ spec:
                 key: database-user
                 name: mariadb
           - name: MYSQL_URI
-            value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb-svc/$(MYSQL_DATABASE_NAME)
+            value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
           readinessProbe:
             httpGet:
               path: /health

@@ -212,7 +212,7 @@ By default, our `example-web-python` application uses an SQLite memory database.
 
 ```
 #MYSQL_URI=mysql://<user>:<password>@<host>/<database>
-MYSQL_URI=mysql://acend-user:mysqlpassword@mariadb-svc/acend-exampledb
+MYSQL_URI=mysql://acend-user:mysqlpassword@mariadb/acend-exampledb
 ```
 
 The connection string our `example-web-python` application uses to connect to our new MariaDB, is a concatenated string from the values of the `mariadb` Secret.
@@ -223,7 +223,7 @@ The following commands set the environment variables for the deployment configur
 
 ```bash
 {{% param cliToolName %}} set env --from=secret/mariadb --prefix=MYSQL_ deploy/example-web-python --namespace <namespace>
-{{% param cliToolName %}} set env deploy/example-web-python MYSQL_URI='mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb-svc/$(MYSQL_DATABASE_NAME)' --namespace <namespace>
+{{% param cliToolName %}} set env deploy/example-web-python MYSQL_URI='mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)' --namespace <namespace>
 ```
 
 The first command inserts the values from the Secret, the second finally uses these values to put them in the environment variable `MYSQL_URI` which the application considers.
@@ -259,7 +259,7 @@ You could also do the changes by directly editing the Deployment:
               key: database-user
               name: mariadb
         - name: MYSQL_URI
-          value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb-svc/$(MYSQL_DATABASE_NAME)
+          value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
         image: {{% param "images.acendAwesomeApp-example-web-python" %}}
         imagePullPolicy: Always
         name: example-web-python
@@ -307,7 +307,7 @@ oc rsh --namespace <namespace> mariadb-f845ccdb7-hf2x5
 You are now able to connect to the database and display the tables. Login with:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb-svc acend-exampledb
+mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend-exampledb
 ```
 
 ```
@@ -363,7 +363,7 @@ oc rsh <podname> --namespace <namespace>
 This command shows how to drop the whole database:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb-svc acend-exampledb
+mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend-exampledb
 ```
 
 ```bash
@@ -375,7 +375,7 @@ exit
 Import a dump:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb-svc acend-exampledb < /tmp/dump.sql
+mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend-exampledb < /tmp/dump.sql
 ```
 
 {{% alert title="Note" color="primary" %}}
@@ -393,7 +393,7 @@ oc rsh <podname> --namespace <namespace>
 {{% /onlyWhen %}}
 
 ```bash
-mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -hmariadb-svc acend-exampledb > /tmp/dump.sql
+mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -hmariadb acend-exampledb > /tmp/dump.sql
 ```
 
 ```bash
