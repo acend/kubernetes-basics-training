@@ -216,7 +216,7 @@ Try to display the logs from the example application via the OpenShift web conso
 
 ## Task {{% param sectionnumber %}}.5: Build the image yourself
 
-Up until now, we've used pre-built images from Quay.io. OpenShift offers the ability to build images on the cluster itself using different [strategies](https://docs.openshift.com/container-platform/latest/cicd/builds/understanding-image-builds.html)
+Up until now, we've used pre-built images from Quay.io. OpenShift offers the ability to build images on the cluster itself using different [strategies](https://docs.openshift.com/container-platform/latest/cicd/builds/understanding-image-builds.html):
 
 * Docker build strategy
 * Source-to-image build strategy
