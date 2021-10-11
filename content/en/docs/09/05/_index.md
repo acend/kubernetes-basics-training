@@ -211,7 +211,7 @@ spec:
 apply this resource with:
 
 ```bash
-{{% param cliToolName %}} kubectl apply -f pod_stress.yaml
+{{% param cliToolName %}} apply -f pod_stress.yaml
 ```
 
 
