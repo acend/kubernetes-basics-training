@@ -211,7 +211,7 @@ spec:
 apply this resource with:
 
 ```bash
-{{% param cliToolName %}} kubectl apply -f pod_stress.yaml
+{{% param cliToolName %}} apply -f pod_stress.yaml
 ```
 
 
@@ -318,7 +318,7 @@ spec:
 And apply this again with:
 
 ```bash
-{{% param cliToolName %}} kubectl apply -f pod_stress_resources.yaml
+{{% param cliToolName %}} apply -f pod_stress_resources.yaml
 ```
 
 
@@ -361,7 +361,7 @@ spec:
 ```
 
 ```bash
-{{% param cliToolName %}} kubectl apply -f pod_overbooked.yaml
+{{% param cliToolName %}} apply -f pod_overbooked.yaml
 ```
 
 We are immediately confronted with an error message:
@@ -424,7 +424,7 @@ spec:
 And apply with:
 
 ```bash
-{{% param cliToolName %}} kubectl apply -f pod_overbooked.yaml
+{{% param cliToolName %}} apply -f pod_overbooked.yaml
 ```
 
 Even though the limits of both Pods combined overstretch the quota, the requests do not and so the Pods are allowed to run.
