@@ -29,8 +29,8 @@ menu:
 {{% blocks/feature icon="fa-chalkboard-teacher" url="https://www.cncf.io/wp-content/uploads/2018/03/CNCF-Presentation-Template-K8s-Deployment.pdf" title="Kubernetes Deployment Strategies" %}}
 {{% /blocks/feature %}}
 
-{{< blocks/feature icon="fa-chalkboard-teacher" url="https://drive.google.com/uc?export=download&id=1vk1SEhPtugvouPC5YpAlhzw6LSUxLKch" title="Helm and Kustomize" >}}
-{{< /blocks/feature >}}
+{{% blocks/feature icon="fa-chalkboard-teacher" url="https://drive.google.com/uc?export=download&id=1vk1SEhPtugvouPC5YpAlhzw6LSUxLKch" title="Helm and Kustomize" %}}
+{{% /blocks/feature %}}
 {{% /onlyWhen %}}
 
 {{< /blocks/section >}}
