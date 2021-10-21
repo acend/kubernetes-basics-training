@@ -25,7 +25,7 @@ Make sure you are in OpenShift's **Developer** view (upper left dropdown) and ha
 
 {{< imgproc selection.png Resize  "600x" >}}{{< /imgproc >}}
 
-Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Instantiate Template**. A form opens. Check that the first field corresponds to the correct Project and set the **MariaDB Database Name** field to `acend-exampledb` and leave the remaining fields as they are. Finally, click **Create** at the end of the form.
+Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Instantiate Template**. A form opens. Check that the first field corresponds to the correct Project and set the **MariaDB Database Name** field to `acend_exampledb` and leave the remaining fields as they are. Finally, click **Create** at the end of the form.
 
 
 ### Instantiate a template using the CLI
@@ -55,7 +55,7 @@ MARIADB_VERSION         Version of MariaDB image to be used (10.2 or latest).   
 As you might already see, each of the parameters has a default value ("VALUE" column). Also, the parameters `MYSQL_USER`, `MYSQL_PASSWORD` and `MYSQL_ROOT_PASSWORD` are going to be generated ("GENERATOR" is set to `expression` and "VALUE" contains a regular expression). This means we don't necessarily have to overwrite any of them so let's simply use those defaults:
 
 ```bash
-oc process openshift//mariadb-ephemeral -pMYSQL_DATABASE=acend-exampledb  | oc apply --namespace=<namespace> -f -
+oc process openshift//mariadb-ephemeral -pMYSQL_DATABASE=acend_exampledb  | oc apply --namespace=<namespace> -f -
 ```
 
 
@@ -74,7 +74,7 @@ The Template's content reveals a Secret, a Service and a DeploymentConfig.
 We are first going to create a so-called _Secret_ in which we store sensitive data like the database name, the password, the root password, and the username. The secret will be used to access the database and also to create the initial database.
 
 ```bash
-kubectl create secret generic mariadb --from-literal=database-name=acend-exampledb --from-literal=database-password=mysqlpassword --from-literal=database-root-password=mysqlrootpassword --from-literal=database-user=acend-user --namespace <namespace>
+kubectl create secret generic mariadb --from-literal=database-name=acend_exampledb --from-literal=database-password=mysqlpassword --from-literal=database-root-password=mysqlrootpassword --from-literal=database-user=acend-user --namespace <namespace>
 ```
 {{% /onlyWhenNot %}}
 
@@ -212,7 +212,7 @@ By default, our `example-web-python` application uses an SQLite memory database.
 
 ```
 #MYSQL_URI=mysql://<user>:<password>@<host>/<database>
-MYSQL_URI=mysql://acend-user:mysqlpassword@mariadb/acend-exampledb
+MYSQL_URI=mysql://acend-user:mysqlpassword@mariadb/acend_exampledb
 ```
 
 The connection string our `example-web-python` application uses to connect to our new MariaDB, is a concatenated string from the values of the `mariadb` Secret.
@@ -307,7 +307,7 @@ oc rsh --namespace <namespace> mariadb-f845ccdb7-hf2x5
 You are now able to connect to the database and display the tables. Login with:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend-exampledb
+mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend_exampledb
 ```
 
 ```
@@ -319,7 +319,7 @@ Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-MariaDB [acend-exampledb]>
+MariaDB [acend_exampledb]>
 ```
 
 Show all tables with:
@@ -363,19 +363,19 @@ oc rsh <podname> --namespace <namespace>
 This command shows how to drop the whole database:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend-exampledb
+mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend_exampledb
 ```
 
 ```bash
-drop database `acend-exampledb`;
-create database `acend-exampledb`;
+drop database `acend_exampledb`;
+create database `acend_exampledb`;
 exit
 ```
 
 Import a dump:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend-exampledb < /tmp/dump.sql
+mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend_exampledb < /tmp/dump.sql
 ```
 
 {{% alert title="Note" color="primary" %}}
@@ -393,7 +393,7 @@ oc rsh <podname> --namespace <namespace>
 {{% /onlyWhen %}}
 
 ```bash
-mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -hmariadb acend-exampledb > /tmp/dump.sql
+mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -hmariadb acend_exampledb > /tmp/dump.sql
 ```
 
 ```bash
