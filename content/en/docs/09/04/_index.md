@@ -56,7 +56,7 @@ Which should yield output similar to this one:
 
 ## Task {{% param sectionnumber %}}.2: Attach the ConfigMap to a container
 
-Next, we want to make a ConfigMap accessible for a container. There are basically the following possibilities to achieve {{% onlyWhenNot openshift %}}[this](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){{% /onlyWhenNot %}}{{% onlyWhen openshift %}}[this](https://docs.openshift.com/container-platform/latest/builds/builds-configmaps.html#builds-configmaps-consuming-configmap-in-pods){{% /onlyWhen %}}
+Next, we want to make a ConfigMap accessible for a container. There are basically the following possibilities to achieve {{% onlyWhenNot openshift %}}[this](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){{% /onlyWhenNot %}}{{% onlyWhen openshift %}}[this](https://docs.openshift.com/container-platform/latest/applications/config-maps.html){{% /onlyWhen %}}:
 
 * ConfigMap properties as environment variables in a Deployment
 * Command line arguments via environment variables
@@ -134,6 +134,6 @@ kubectl exec -it <pod> --namespace <namespace> -- cat /etc/config/java.propertie
 Like this, the property file can be read and used by the application inside the container. The image stays portable to other environments.
 
 
-## Task {{% param sectionnumber %}}.3: ConfigMap Data Sources
+## Task {{% param sectionnumber %}}.3: ConfigMap environment variables
 
-Create a ConfigMap and use the other kinds of {{% onlyWhenNot openshift %}}[data sources](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/){{% /onlyWhenNot %}}{{% onlyWhen openshift %}}[data sources](https://docs.openshift.com/container-platform/latest/builds/builds-configmaps.html#builds-configmap-create_builds-configmaps){{% /onlyWhen %}}
+Use a ConfigMap by {{% onlyWhenNot openshift %}}[populating environment variables into the container](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#define-container-environment-variables-using-configmap-data){{% /onlyWhenNot %}}{{% onlyWhen openshift %}}[populating environment variables into the container](https://docs.openshift.com/container-platform/latest/applications/config-maps.html#nodes-pods-configmaps-use-case-consuming-in-env-vars_config-maps){{% /onlyWhen %}} instead of a file.
