@@ -15,22 +15,33 @@ After we've familiarized ourselves with the platform, we are going to have a loo
 In OpenShift we have used the `<project>` identifier to select the correct project. Please use the same identifier in the context `<namespace>` to do the same for all upcoming labs. Ask your trainer if you want more information on that.
 {{% /onlyWhen %}}
 
-First, we are going to directly start a new Pod:
-{{% onlyWhenNot mobi %}}
+First, we are going to directly start a new Pod. For this we have to define our Kubernetes Pod resource definition. Create a new file `03_pod.yaml` with the following content:
 
-```bash
-{{% param cliToolName %}} run awesome-app --image={{% param "images.acendAwesomeApp-example-web-go" %}} --restart=Never --requests='cpu=10m,memory=16Mi' --limits='cpu=20m,memory=32Mi' --namespace <namespace>
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: awesome-app
+spec:
+  containers:
+  - image: {{% param "images.acendAwesomeApp-example-web-go" %}}
+    imagePullPolicy: Always
+    name: awesome-app
+    resources:
+      limits:
+        cpu: 20m
+        memory: 32Mi
+      requests:
+        cpu: 10m
+        memory: 16Mi
+
 ```
 
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
+Now we can apply this with:
 
 ```bash
-kubectl run awesome-app --image={{% param "images.acendAwesomeApp-example-web-go" %}} --requests='cpu=10m,memory=16Mi' --limits='cpu=20m,memory=32Mi' --restart=Never --namespace <namespace>
+{{% param cliToolName %}} apply -f 03_pod.yaml --namespace <namespace>
 ```
-
-{{% /onlyWhen %}}
-
 
 Use `{{% param cliToolName %}} get pods --namespace <namespace>` in order to show the running Pod:
 
@@ -205,7 +216,7 @@ Try to display the logs from the example application via the OpenShift web conso
 
 ## Task {{% param sectionnumber %}}.5: Build the image yourself
 
-Up until now, we've used pre-built images from Quay.io. OpenShift offers the ability to build images on the cluster itself using different [strategies](https://docs.openshift.com/container-platform/latest/builds/understanding-image-builds.html):
+Up until now, we've used pre-built images from Quay.io. OpenShift offers the ability to build images on the cluster itself using different [strategies](https://docs.openshift.com/container-platform/latest/cicd/builds/understanding-image-builds.html):
 
 * Docker build strategy
 * Source-to-image build strategy
@@ -220,7 +231,7 @@ All of these requirements are already fulfilled in the [sourcecode repository on
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="primary" %}}
-Have a look at [OpenShift's documentation](https://docs.openshift.com/container-platform/latest/builds/understanding-image-builds.html) to learn more about the other available build strategies.
+Have a look at [OpenShift's documentation](https://docs.openshift.com/container-platform/latest/cicd/builds/understanding-image-builds.html) to learn more about the other available build strategies.
 {{% /alert %}}
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}

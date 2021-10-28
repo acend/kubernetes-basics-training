@@ -43,7 +43,7 @@ The parameter `.spec.template.spec.containers[0].image` shows that we use the sa
 Let's create our Job: Create a file named `job_database-dump.yaml` with the content above and execute the following command:
 
 ```bash
-{{% param cliToolName %}} create -f ./job_database-dump.yaml --namespace <namespace>
+{{% param cliToolName %}} apply -f ./job_database-dump.yaml --namespace <namespace>
 ```
 
 Check if the Job was successful:

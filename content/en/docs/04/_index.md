@@ -164,12 +164,12 @@ In order to create the Ingress resource, we first need to create the file `ingre
 {{% /onlyWhen %}}
 
 
-As you see in the resource definition at `spec.rules[0].http.paths[0].backend.serviceName` we use the previously created `example-web-go` ClusterIP Service.
+As you see in the resource definition at `spec.rules[0].http.paths[0].backend.service.name` we use the previously created `example-web-go` ClusterIP Service.
 
 Let's create the Ingress resource with:
 
 ```bash
-kubectl create -f <path to ingress.yaml> --namespace <namespace>
+kubectl apply -f <path to ingress.yaml> --namespace <namespace>
 ```
 
 {{% onlyWhenNot mobi %}}

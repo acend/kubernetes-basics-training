@@ -140,7 +140,7 @@ and we need to create an Ingress to access the application:
 {{< highlight yaml >}}{{< readfile file="content/en/docs/05/ingress-netcetera.template.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
-Apply this Ingress definition using, e.g., `kubectl create -f ingress.yml --namespace <namespace>`
+Apply this Ingress definition using, e.g., `kubectl create -f ingress.yaml --namespace <namespace>`
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}

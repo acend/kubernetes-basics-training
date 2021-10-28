@@ -18,7 +18,7 @@ spec:
             - name: APPLICATION_NAME
               value: app-base
           command:
-            - bash
+            - sh
             - -c
             - |-
               set -e

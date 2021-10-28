@@ -50,7 +50,7 @@ Save it to `pvc.yaml`:
 And create it with:
 
 ```bash
-kubectl create -f pvc.yaml --namespace <namespace>
+kubectl apply -f pvc.yaml --namespace <namespace>
 ```
 
 We now have to insert the volume definition in the correct section of the MariaDB deployment:
@@ -135,7 +135,7 @@ If the container won't start because the data directory already has files in it,
 
 ### Restore data
 
-Repeat [task 7.4](../07/#task-74-import-a-database-dump).
+Repeat [task 7.5](../07/#task-75-import-a-database-dump).
 
 
 ### Test

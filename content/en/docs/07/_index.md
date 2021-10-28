@@ -25,7 +25,7 @@ Make sure you are in OpenShift's **Developer** view (upper left dropdown) and ha
 
 {{< imgproc selection.png Resize  "600x" >}}{{< /imgproc >}}
 
-Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Instantiate Template**. A form opens. Check that the first field corresponds to the correct Project and set the **MariaDB Database Name** field to `acendexampledb` and leave the remaining fields as they are. Finally, click **Create** at the end of the form.
+Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Instantiate Template**. A form opens. Check that the first field corresponds to the correct Project and set the **MariaDB Database Name** field to `acend_exampledb` and leave the remaining fields as they are. Finally, click **Create** at the end of the form.
 
 
 ### Instantiate a template using the CLI
@@ -55,7 +55,7 @@ MARIADB_VERSION         Version of MariaDB image to be used (10.2 or latest).   
 As you might already see, each of the parameters has a default value ("VALUE" column). Also, the parameters `MYSQL_USER`, `MYSQL_PASSWORD` and `MYSQL_ROOT_PASSWORD` are going to be generated ("GENERATOR" is set to `expression` and "VALUE" contains a regular expression). This means we don't necessarily have to overwrite any of them so let's simply use those defaults:
 
 ```bash
-oc process openshift//mariadb-ephemeral -pMYSQL_DATABASE=acendexampledb  | oc apply --namespace=<namespace> -f -
+oc process openshift//mariadb-ephemeral -pMYSQL_DATABASE=acend_exampledb  | oc apply --namespace=<namespace> -f -
 ```
 
 
@@ -74,7 +74,7 @@ The Template's content reveals a Secret, a Service and a DeploymentConfig.
 We are first going to create a so-called _Secret_ in which we store sensitive data like the database name, the password, the root password, and the username. The secret will be used to access the database and also to create the initial database.
 
 ```bash
-kubectl create secret generic mariadb --from-literal=database-name=acendexampledb --from-literal=database-password=mysqlpassword --from-literal=database-root-password=mysqlrootpassword --from-literal=database-user=acend-user --namespace <namespace>
+kubectl create secret generic mariadb --from-literal=database-name=acend_exampledb --from-literal=database-password=mysqlpassword --from-literal=database-root-password=mysqlrootpassword --from-literal=database-user=acend-user --namespace <namespace>
 ```
 {{% /onlyWhenNot %}}
 
@@ -197,7 +197,7 @@ Save this snippet as `mariadb.yaml`:
 Execute it with:
 
 ```bash
-kubectl create -f mariadb.yaml --namespace <namespace>
+kubectl apply -f mariadb.yaml --namespace <namespace>
 ```
 
 As soon as the container image for `mariadb:10.5` has been pulled, you will see a new Pod using `kubectl get pods`.
@@ -212,7 +212,7 @@ By default, our `example-web-python` application uses an SQLite memory database.
 
 ```
 #MYSQL_URI=mysql://<user>:<password>@<host>/<database>
-MYSQL_URI=mysql://acend-user:mysqlpassword@mariadb-svc/acendexampledb
+MYSQL_URI=mysql://acend-user:mysqlpassword@mariadb/acend_exampledb
 ```
 
 The connection string our `example-web-python` application uses to connect to our new MariaDB, is a concatenated string from the values of the `mariadb` Secret.
@@ -223,7 +223,7 @@ The following commands set the environment variables for the deployment configur
 
 ```bash
 {{% param cliToolName %}} set env --from=secret/mariadb --prefix=MYSQL_ deploy/example-web-python --namespace <namespace>
-{{% param cliToolName %}} set env deploy/example-web-python MYSQL_URI='mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb-svc/$(MYSQL_DATABASE_NAME)' --namespace <namespace>
+{{% param cliToolName %}} set env deploy/example-web-python MYSQL_URI='mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)' --namespace <namespace>
 ```
 
 The first command inserts the values from the Secret, the second finally uses these values to put them in the environment variable `MYSQL_URI` which the application considers.
@@ -259,7 +259,7 @@ You could also do the changes by directly editing the Deployment:
               key: database-user
               name: mariadb
         - name: MYSQL_URI
-          value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb-svc/$(MYSQL_DATABASE_NAME)
+          value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
         image: {{% param "images.acendAwesomeApp-example-web-python" %}}
         imagePullPolicy: Always
         name: example-web-python
@@ -307,7 +307,7 @@ oc rsh --namespace <namespace> mariadb-f845ccdb7-hf2x5
 You are now able to connect to the database and display the tables. Login with:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb-svc acendexampledb
+mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend_exampledb
 ```
 
 ```
@@ -319,7 +319,7 @@ Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-MariaDB [acendexampledb]>
+MariaDB [acend_exampledb]>
 ```
 
 Show all tables with:
@@ -344,38 +344,38 @@ This is how you copy the database dump into the Pod:
 
 ```bash
 curl -O https://raw.githubusercontent.com/acend/kubernetes-basics-training/master/content/en/docs/07/dump.sql
-{{% param cliToolName %}} cp ./dump.sql mysql-f845ccdb7-hf2x5:/tmp/ --namespace <namespace>
+{{% param cliToolName %}} cp ./dump.sql <podname>:/tmp/ --namespace <namespace>
 ```
 
 This is how you log into the MySQL Pod:
 
 {{% onlyWhenNot openshift %}}
 ```bash
-kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
+kubectl exec -it <podname> --namespace <namespace> -- /bin/bash
 ```
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 ```bash
-oc rsh --namespace <namespace> mariadb-f845ccdb7-hf2x5
+oc rsh <podname> --namespace <namespace>
 ```
 {{% /onlyWhen %}}
 
 This command shows how to drop the whole database:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb-svc acendexampledb
+mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend_exampledb
 ```
 
 ```bash
-drop database acendexampledb;
-create database acendexampledb;
+drop database `acend_exampledb`;
+create database `acend_exampledb`;
 exit
 ```
 
 Import a dump:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb-svc acendexampledb < /tmp/dump.sql
+mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend_exampledb < /tmp/dump.sql
 ```
 
 {{% alert title="Note" color="primary" %}}
@@ -383,21 +383,21 @@ A database dump can be created as follows:
 
 {{% onlyWhenNot openshift %}}
 ```bash
-kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
+kubectl exec -it <podname> --namespace <namespace> -- /bin/bash
 ```
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 ```bash
-oc rsh --namespace <namespace> mariadb-f845ccdb7-hf2x5
+oc rsh <podname> --namespace <namespace>
 ```
 {{% /onlyWhen %}}
 
 ```bash
-mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -hmariadb-svc acendexampledb > /tmp/dump.sql
+mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -hmariadb acend_exampledb > /tmp/dump.sql
 ```
 
 ```bash
-{{% param cliToolName %}} cp mariadb-f845ccdb7-hf2x5:/tmp/dump.sql /tmp/dump.sql
+{{% param cliToolName %}} cp <podname>:/tmp/dump.sql /tmp/dump.sql
 ```
 
 {{% /alert %}}
