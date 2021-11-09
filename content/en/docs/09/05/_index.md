@@ -198,7 +198,7 @@ Create a Pod using the stress image:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: stress
+  name: stress2much
 spec:
   containers:
   - command:
@@ -214,10 +214,10 @@ spec:
     name: stress
 ```
 
-apply this resource with:
+Apply this resource with:
 
 ```bash
-{{% param cliToolName %}} apply -f pod_stress.yaml
+{{% param cliToolName %}} apply -f pod_stress2much.yaml
 ```
 
 
@@ -289,7 +289,7 @@ First, delete the `stress2much` pod with:
 
 
 ```bash
-{{% param cliToolName %}} delete Pod stress2much --namespace <namespace>
+{{% param cliToolName %}} delete pod stress2much --namespace <namespace>
 ```
 
 Then create a new Pod where the requests and limits are set:
@@ -324,9 +324,8 @@ spec:
 And apply this again with:
 
 ```bash
-{{% param cliToolName %}} apply -f pod_stress_resources.yaml
+{{% param cliToolName %}} apply -f pod_stress.yaml
 ```
-
 
 {{% alert title="Note" color="primary" %}}
 Remember, if you only set the limit, the request will be set to the same value.
@@ -422,8 +421,10 @@ spec:
     name: overbooked
     resources:
       limits:
+        cpu: 100m
         memory: 16Mi
       requests:
+        cpu: 10m
         memory: 10Mi
 ```
 
