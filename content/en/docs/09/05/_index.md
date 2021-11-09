@@ -12,6 +12,12 @@ Use the existing Namespace `<username>-resources` for this lab.
 {{% /alert %}}
 {{% /onlyWhen %}}
 
+{{% onlyWhenNot openshift %}}
+{{% alert title="Note" color="primary" %}}
+Use the existing Namespace `<username>-quota` for this lab.
+{{% /alert %}}
+{{% /onlyWhenNot %}}
+
 
 {{% onlyWhen rancher %}}
 
