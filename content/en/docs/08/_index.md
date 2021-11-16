@@ -89,17 +89,11 @@ Because we just changed the Deployment a new Pod was automatically redeployed. T
 
 We need to redeploy the application pod, our application automatically creates the database schema at startup time.
 
-{{% onlyWhenNot openshift %}}
-If you want to force a redeployment of a Pod, you could use this:
+If you want to force a redeployment of a Pod, you can use this:
+
 ```bash
-kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
+{{% param cliToolName %}} rollout restart deployment example-web-python --namespace <namespace>
 ```
-{{% /onlyWhenNot %}}
-{{% onlyWhen openshift %}}
-```bash
-oc rollout restart deployment example-web-python --namespace <namespace>
-```
-{{% /onlyWhen %}}
 
 Using the command `{{% param cliToolName %}} get persistentvolumeclaim` or `{{% param cliToolName %}} get pvc`, we can display the freshly created PersistentVolumeClaim:
 
