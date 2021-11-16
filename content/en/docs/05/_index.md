@@ -223,10 +223,19 @@ while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N";
 ```
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
+{{% onlyWhenNot mobi %}}
 ```bash
 URL=example-web-python-<namespace>.<domain>
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
+{{% /onlyWhenNot %}}
+{{% onlyWhen mobi %}}
+```bash
+URL=example-web-python-<namespace>.kubedev.mobicorp.test
+while true; do sleep 1; curl -ks https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+```
+{{% /onlyWhen %}}
+
 {{% /onlyWhenNot %}}
 
 Windows PowerShell:
@@ -268,20 +277,10 @@ The requests get distributed amongst the three Pods. As soon as you scale down t
 
 Let's make another test: What happens if you start a new Deployment while our request generator is still running?
 
-{{% alert title="Warning" color="secondary" %}}
-On Windows, execute the following command in Git Bash; PowerShell doesn't seem to work.
-{{% /alert %}}
 
-
-{{% onlyWhenNot openshift %}}
 ```bash
-kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
+{{% param cliToolName %}} rollout restart deployment example-web-python --namespace <namespace>
 ```
-{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}
-```bash
-oc rollout restart deployment example-web-python --namespace <namespace>
-```
-{{% /onlyWhen %}}
 
 
 During a short period we won't get a response:

@@ -5,7 +5,7 @@ metadata:
   name: example-web-go
 spec:
   rules:
-    - host: example-web-go-<namespace>.phoenix.mobicorp.test
+    - host: example-web-go-<namespace>.kubedev.mobicorp.test
       http:
         paths:
           - path: /

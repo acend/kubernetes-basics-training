@@ -128,6 +128,10 @@ kubectl exec -it <pod> --namespace <namespace> -- cat /etc/config/java.propertie
 ```
 {{% /onlyWhenNot %}}
 
+{{% alert title="Note" color="primary" %}}
+On Windows, you can use Git Bash with `winpty kubectl exec -it <pod> --namespace <namespace> -- cat //etc/config/java.properties`.
+{{% /alert %}}
+
 
 {{< highlight text >}}{{< readfile file="content/en/docs/09/04/java.properties" >}}{{< /highlight >}}
 
