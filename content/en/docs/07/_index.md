@@ -221,6 +221,11 @@ For the actual MariaDB host, you can either use the MariaDB Service's ClusterIP 
 
 The following commands set the environment variables for the deployment configuration of the `example-web-python` application
 
+{{% alert title="Warning" color="secondary" %}}
+Depending on the shell you use, the following `set env` command works but inserts too many apostrophes! Check the deployment's environment variable afterwards or directly edit it as described further down below.
+{{% /alert %}}
+
+
 ```bash
 {{% param cliToolName %}} set env --from=secret/mariadb --prefix=MYSQL_ deploy/example-web-python --namespace <namespace>
 {{% param cliToolName %}} set env deploy/example-web-python MYSQL_URI='mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)' --namespace <namespace>
