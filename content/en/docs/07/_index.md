@@ -219,7 +219,11 @@ The connection string our `example-web-python` application uses to connect to ou
 
 For the actual MariaDB host, you can either use the MariaDB Service's ClusterIP or DNS name as the address. All Services and Pods can be resolved by DNS using their name.
 
-The following commands set the environment variables for the deployment configuration of the `example-web-python` application
+The following commands set the environment variables for the deployment configuration of the `example-web-python` application:
+
+{{% alert title="Warning" color="secondary" %}}
+Depending on the shell you use, the following `set env` command works but inserts too many apostrophes! Check the deployment's environment variable afterwards or directly edit it as described further down below.
+{{% /alert %}}
 
 ```bash
 {{% param cliToolName %}} set env --from=secret/mariadb --prefix=MYSQL_ deploy/example-web-python --namespace <namespace>
