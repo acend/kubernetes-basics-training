@@ -7,17 +7,25 @@ imagePrefix = "puzzle_"
 customer = "mobi"
 
 [params.images]
-acendAwesomeApp-example-web-go = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-go:latest"
-acendAwesomeApp-example-web-python = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-python:latest"
-nginxinc-nginx-unprivileged = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx-unprivileged:latest"
-nginxinc-nginx-unprivileged-fix-version = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx-unprivileged:1.18-alpine"
-nginx = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx:latest"
-stress = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/stress:latest"
-busybox = "docker-registry.mobicorp.ch/puzzle/k8s/kurs/busybox:1.28"
+acendAwesomeApp-example-web-go = "REGISTRY/puzzle/k8s/kurs/example-web-go:latest"
+acendAwesomeApp-example-web-python = "REGISTRY/puzzle/k8s/kurs/example-web-python:latest"
+nginxinc-nginx-unprivileged = "REGISTRY/puzzle/k8s/kurs/nginx-unprivileged:latest"
+nginxinc-nginx-unprivileged-fix-version = "REGISTRY/puzzle/k8s/kurs/nginx-unprivileged:1.18-alpine"
+nginx = "REGISTRY/puzzle/k8s/kurs/nginx:latest"
+stress = "REGISTRY/puzzle/k8s/kurs/stress:latest"
+busybox = "REGISTRY/puzzle/k8s/kurs/busybox:1.28"
 
 [[Languages.en.menu.main]]
 copyright = "Puzzle ITC GmbH"
 url = "https://www.puzzle.ch"
+
+[params.replaceContent]
+allowedHrefHosts = ['localhost', 'puzzle.ch', 'acend.ch']
+
+[[params.replaceContent.placeholders]]
+placeholder = "REGISTRY"
+queryParam = "r"
+defaultValue = "REGISTRY"
 
 ############################## social links ##############################
 [params.links]

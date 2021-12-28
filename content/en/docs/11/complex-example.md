@@ -110,12 +110,12 @@ As we cannot access these images, we'll have to overwrite them. Add the followin
 ```yaml
 [...]
 image:
-  registry: docker-registry.mobicorp.ch
+  registry: REGISTRY
   repository: puzzle/helm-techlab/wordpress
 
 mariadb:
   image:
-    registry: docker-registry.mobicorp.ch
+    registry: REGISTRY
     repository: puzzle/helm-techlab/mariadb
 [...]
 ```
@@ -125,7 +125,7 @@ You have to merge the `mariadb` part with the already defined `mariadb` part fro
 ```yaml
 ---
 image:
-  registry: docker-registry.mobicorp.ch
+  registry: REGISTRY
   repository: puzzle/helm-techlab/wordpress
 
 persistence:
@@ -141,7 +141,7 @@ ingress:
 
 mariadb:
   image:
-    registry: docker-registry.mobicorp.ch
+    registry: REGISTRY
     repository: puzzle/helm-techlab/mariadb
   primary:
     persistence:
