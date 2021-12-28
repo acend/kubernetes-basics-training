@@ -37,6 +37,11 @@ placeholder = "NOPROXYLIST"
 queryParam = "n"
 defaultValue = "NOPROXYLIST"
 
+[[params.replaceContent.placeholders]]
+placeholder = "APPDOMAIN"
+queryParam = "a"
+defaultValue = "APPDOMAIN"
+
 ############################## social links ##############################
 [params.links]
 [[params.links.developer]]

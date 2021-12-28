@@ -231,7 +231,7 @@ while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N";
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
 ```bash
-URL=example-web-python-<namespace>.kubedev.mobicorp.test
+URL=example-web-python-<namespace>.APPDOMAIN
 while true; do sleep 1; curl -ks https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 {{% /onlyWhen %}}
