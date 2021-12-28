@@ -35,9 +35,9 @@ If you have direct access to the internet from your location, the proxy configur
 Set your HTTP proxy environment variables so that a chart repository can be added to your Helm repos in a later lab:
 
 ```bash
-export HTTP_PROXY="http://<username>:<password>@dirproxy.mobi.ch:80"
-export HTTPS_PROXY="http://<username>:<password>@dirproxy.mobi.ch:80"
-export NO_PROXY="localhost,127.0.0.1,.mobicorp.ch,.mobicorp.test,.mobi.ch"
+export HTTP_PROXY="http://<username>:<password>@PROXYANDPORT"
+export HTTPS_PROXY="http://<username>:<password>@PROXYANDPORT"
+export NO_PROXY="NOPROXYLIST"
 ```
 
 Replace `<username`> and `<password>` with your credentials. If you have special characters in your password, escape them with their corresponding hexadecimal values according to [this article](https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters).

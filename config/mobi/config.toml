@@ -27,6 +27,16 @@ placeholder = "REGISTRY"
 queryParam = "r"
 defaultValue = "REGISTRY"
 
+[[params.replaceContent.placeholders]]
+placeholder = "PROXYANDPORT"
+queryParam = "p"
+defaultValue = "PROXYANDPORT"
+
+[[params.replaceContent.placeholders]]
+placeholder = "NOPROXYLIST"
+queryParam = "n"
+defaultValue = "NOPROXYLIST"
+
 ############################## social links ##############################
 [params.links]
 [[params.links.developer]]

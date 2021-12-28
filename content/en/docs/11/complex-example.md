@@ -21,23 +21,23 @@ You have to set your `HTTP_PROXY` environment variable in order to access the bi
 
 ```bash
 # Linux
-export HTTP_PROXY="http://u...:PASSWORD@dirproxy.mobi.ch:80"
-export HTTPS_PROXY="http://u...:PASSWORD@dirproxy.mobi.ch:80"
+export HTTP_PROXY="http://<username>:<password>@PROXYANDPORT"
+export HTTPS_PROXY="http://<username>:<password>@PROXYANDPORT"
 
 # Windows cmd
-setx HTTP_PROXY="http://u...:PASSWORD@dirproxy.mobi.ch:80"
-setx HTTPS_PROXY="http://u...:PASSWORD@dirproxy.mobi.ch:80"
-setx http_proxy="http://u...:PASSWORD@dirproxy.mobi.ch:80"
-setx https_proxy="http://u...:PASSWORD@dirproxy.mobi.ch:80"
+setx HTTP_PROXY="http://<username>:<password>@PROXYANDPORT"
+setx HTTPS_PROXY="http://<username>:<password>@PROXYANDPORT"
+setx http_proxy="http://<username>:<password>@PROXYANDPORT"
+setx https_proxy="http://<username>:<password>@PROXYANDPORT"
 
 # Windows Powershell
-$env:HTTP_PROXY="http://u...:PASSWORD@dirproxy.mobi.ch:80"
-$env:HTTPS_PROXY="http://u...:PASSWORD@dirproxy.mobi.ch:80"
-$env:http_proxy="http://u...:PASSWORD@dirproxy.mobi.ch:80"
-$env:https_proxy="http://u...:PASSWORD@dirproxy.mobi.ch:80"
+$env:HTTP_PROXY="http://<username>:<password>@PROXYANDPORT"
+$env:HTTPS_PROXY="http://<username>:<password>@PROXYANDPORT"
+$env:http_proxy="http://<username>:<password>@PROXYANDPORT"
+$env:https_proxy="http://<username>:<password>@PROXYANDPORT"
 ```
 
-Replace `u...:PASSWORD` with your account details. If you have special chars in your password, you have to escape them with hexadecimal value according to [this](https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters)
+Replace `<username>` and `<password>` with your account details. If you have special chars in your password, you have to escape them with hexadecimal value according to [this](https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters).
 {{% /onlyWhen %}}
 
 ```bash
