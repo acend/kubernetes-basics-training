@@ -29,7 +29,7 @@ spec:
         app: mariadb
     spec:
       containers:
-        - image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/mariadb:10.5
+        - image: <docker-registry>/puzzle/k8s/kurs/mariadb:10.5
           name: mariadb
           args:
             - "--ignore-db-dir=lost+found"
