@@ -15,4 +15,4 @@ The Kubernetes Basics variant of this lab is intended to run on a Kuberntes clus
 
 ### OpenShift Basics
 
-// TODO
+The OpenShift Basics variant of this lab is intended to run on a standard OpenShift cluster. Installation and requisites is currently described in our internal fileshare but will be made public in the future.
