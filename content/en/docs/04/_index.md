@@ -176,7 +176,7 @@ kubectl apply -f <path to ingress.yaml> --namespace <namespace>
 Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<domain>`
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
-Afterwards, we are able to access our app via our freshly created Ingress at `https://example-web-go-<namespace>.kubedev.mobicorp.test`. Although we have not configured the Ingress to use TLS, it is available with a `https` address. This is because of the setup at Mobiliar and not default behaviour.
+Afterwards, we are able to access our app via our freshly created Ingress at `https://example-web-go-<namespace>.<appdomain>`. Although we have not configured the Ingress to use TLS, it is available with a `https` address. This is because of the setup at Mobiliar and not default behaviour.
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}

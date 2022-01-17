@@ -18,12 +18,12 @@ helm create mychart
 You will now find a `mychart` directory with the newly created chart. It already is a valid and fully functional chart which deploys a nginx instance. Have a look at the generated files and their content. For an explanation of the files, visit the [Helm Developer Documentation](https://docs.helm.sh/developing_charts/#the-chart-file-structure). In a later section you'll find all the information about Helm templates.
 
 {{% onlyWhen mobi %}}
-Because you cannot pull the `nginx` container image on your cluster, you have to use the `docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx` container image. Change your `mychart/values.yaml` to match the following:
+Because you cannot pull the `nginx` container image on your cluster, you have to use the `<docker-registry>/puzzle/k8s/kurs/nginx` container image. Change your `mychart/values.yaml` to match the following:
 
 ```yaml
 [...]
 image:
-  repository: docker-registry.mobicorp.ch/puzzle/k8s/kurs/nginx
+  repository: <docker-registry>/puzzle/k8s/kurs/nginx
   tag: stable
   pullPolicy: IfNotPresent
 [...]
@@ -261,7 +261,7 @@ ingress:
 {{% alert title="Note" color="primary" %}}
 Make sure to set the proper value as hostname. `<appdomain>` will be provided by the trainer.
 {{% onlyWhen mobi %}}
-Use `<namespace>.kubedev.mobicorp.test` as your hostname. It might take some time until your ingress hostname is accessible, as the DNS name first has to be propagated correctly.
+Use `<namespace>.<appdomain>` as your hostname. It might take some time until your ingress hostname is accessible, as the DNS name first has to be propagated correctly.
 {{% /onlyWhen %}}
 {{% onlyWhen netcetera %}}
 Use `<namespace>.training.test.netcetera.com` as your hostname.

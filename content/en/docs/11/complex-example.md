@@ -21,23 +21,23 @@ You have to set your `HTTP_PROXY` environment variable in order to access the bi
 
 ```bash
 # Linux
-export HTTP_PROXY="http://u...:PASSWORD@dirproxy.mobi.ch:80"
-export HTTPS_PROXY="http://u...:PASSWORD@dirproxy.mobi.ch:80"
+export HTTP_PROXY="http://<username>:<password>@<proxy>:<port>"
+export HTTPS_PROXY="http://<username>:<password>@<proxy>:<port>"
 
 # Windows cmd
-setx HTTP_PROXY="http://u...:PASSWORD@dirproxy.mobi.ch:80"
-setx HTTPS_PROXY="http://u...:PASSWORD@dirproxy.mobi.ch:80"
-setx http_proxy="http://u...:PASSWORD@dirproxy.mobi.ch:80"
-setx https_proxy="http://u...:PASSWORD@dirproxy.mobi.ch:80"
+setx HTTP_PROXY="http://<username>:<password>@<proxy>:<port>"
+setx HTTPS_PROXY="http://<username>:<password>@<proxy>:<port>"
+setx http_proxy="http://<username>:<password>@<proxy>:<port>"
+setx https_proxy="http://<username>:<password>@<proxy>:<port>"
 
 # Windows Powershell
-$env:HTTP_PROXY="http://u...:PASSWORD@dirproxy.mobi.ch:80"
-$env:HTTPS_PROXY="http://u...:PASSWORD@dirproxy.mobi.ch:80"
-$env:http_proxy="http://u...:PASSWORD@dirproxy.mobi.ch:80"
-$env:https_proxy="http://u...:PASSWORD@dirproxy.mobi.ch:80"
+$env:HTTP_PROXY="http://<username>:<password>@<proxy>:<port>"
+$env:HTTPS_PROXY="http://<username>:<password>@<proxy>:<port>"
+$env:http_proxy="http://<username>:<password>@<proxy>:<port>"
+$env:https_proxy="http://<username>:<password>@<proxy>:<port>"
 ```
 
-Replace `u...:PASSWORD` with your account details. If you have special chars in your password, you have to escape them with hexadecimal value according to [this](https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters)
+Replace `<username>` and `<password>` with your account details. If you have special chars in your password, you have to escape them with hexadecimal value according to [this](https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters).
 {{% /onlyWhen %}}
 
 ```bash
@@ -94,7 +94,7 @@ Make sure to set the proper value as hostname. `<appdomain>` will be provided by
 {{% /alert %}}
 
 {{% onlyWhen mobi %}}
-Use `wordpress-<namespace>.kubedev.mobicorp.test` as your hostname. It might take some time until your ingress hostname is accessible, as the DNS name first has to be propagated correctly.
+Use `wordpress-<namespace>.<appdomain>` as your hostname. It might take some time until your ingress hostname is accessible, as the DNS name first has to be propagated correctly.
 {{% /onlyWhen %}}
 
 If you look inside the [Chart.yaml](https://github.com/bitnami/charts/blob/master/bitnami/wordpress/Chart.yaml) file of the WordPress chart, you'll see a dependency to the [MariaDB Helm chart](https://github.com/bitnami/charts/tree/master/bitnami/mariadb). All the MariaDB values are used by this dependent Helm chart and the chart is automatically deployed when installing WordPress.
@@ -110,12 +110,12 @@ As we cannot access these images, we'll have to overwrite them. Add the followin
 ```yaml
 [...]
 image:
-  registry: docker-registry.mobicorp.ch
+  registry: <docker-registry>
   repository: puzzle/helm-techlab/wordpress
 
 mariadb:
   image:
-    registry: docker-registry.mobicorp.ch
+    registry: <docker-registry>
     repository: puzzle/helm-techlab/mariadb
 [...]
 ```
@@ -125,7 +125,7 @@ You have to merge the `mariadb` part with the already defined `mariadb` part fro
 ```yaml
 ---
 image:
-  registry: docker-registry.mobicorp.ch
+  registry: <docker-registry>
   repository: puzzle/helm-techlab/wordpress
 
 persistence:
@@ -137,11 +137,11 @@ updateStrategy:
 
 ingress:
   enabled: true
-  hostname: wordpress-<namespace>.kubedev.mobicorp.test
+  hostname: wordpress-<namespace>.<appdomain>
 
 mariadb:
   image:
-    registry: docker-registry.mobicorp.ch
+    registry: <docker-registry>
     repository: puzzle/helm-techlab/mariadb
   primary:
     persistence:
