@@ -10,7 +10,7 @@ For this lab to run there is a Kubernetes cluster required to work with.
 
 ### Kubernetes Basics
 
-The Kubernetes Basics variant of this lab is intended to run on a Kuberntes cluster created with the Terrform setup in [this](https://github.com/acend/terraform-k8s-cluster-lab) repository.
+The Kubernetes Basics variant of this training is intended to be performed on a Kubernetes cluster created with the Terraform setup in [this](https://github.com/acend/terraform-k8s-cluster-lab) repository.
 
 
 ### OpenShift Basics
