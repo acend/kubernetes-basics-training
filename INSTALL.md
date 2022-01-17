@@ -5,7 +5,7 @@ This file explains how to set up the infrastructure for running the labs on.
 
 ## Installation
 
-For this lab to run there is an Kubernetes cluster required to work with.
+For this lab to run there is a Kubernetes cluster required to work with.
 
 
 ### Kubernetes Basics
