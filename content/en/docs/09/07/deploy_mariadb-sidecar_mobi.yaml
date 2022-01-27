@@ -1,6 +1,6 @@
       containers:
       - ...
-      - image: <docker-registry>/puzzle/k8s/kurs/mysqld-exporter:v0.12.1
+      - image: <registry-url>/puzzle/k8s/kurs/mysqld-exporter:v0.12.1
         name: mysqld-exporter
         env:
         - name: MYSQL_DATABASE_ROOT_PASSWORD

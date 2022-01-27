@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: mariadb
-        image: <docker-registry>/puzzle/k8s/kurs/mariadb:10.5
+        image: <registry-url>/puzzle/k8s/kurs/mariadb:10.5
         command:
         - 'bash'
         - '-eo'
