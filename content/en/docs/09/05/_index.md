@@ -8,13 +8,13 @@ In this lab, we are going to look at ResourceQuotas and LimitRanges. As {{% para
 
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="primary" %}}
-Use the existing Namespace `<username>-resources` for this lab.
+For this lab to work we are using the existing Namespace `<username>-resources`. Please make sure to always use this namespace with your commands.
 {{% /alert %}}
 {{% /onlyWhen %}}
 
 {{% onlyWhenNot openshift %}}
 {{% alert title="Note" color="primary" %}}
-Use the existing Namespace `<username>-quota` for this lab.
+For this lab to work we are using the existing Namespace `<username>-quota`. Please make sure to always use this namespace with your commands
 {{% /alert %}}
 {{% /onlyWhenNot %}}
 
@@ -178,7 +178,7 @@ Check whether a ResourceQuota exists in your Namespace:
 {{% param cliToolName %}} describe quota --namespace <namespace>
 ```
 
-The command above could (must not) output this (name and Namespace will vary):
+The command above will produce an output similar to the following (name and namespace may vary)
 
 ```
 Name:            lab-quota
