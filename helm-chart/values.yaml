@@ -29,7 +29,7 @@ acendTraining:
         useDefaultSecret: true
         appname: kubernetes-basics-mobi
         domain: k8s.puzzle.ch
-    - 
+    -
       name: rancher
       replicaCount: 1
       image:
@@ -43,7 +43,7 @@ acendTraining:
         secretOverride: acend-wildcard
         appname: kubernetes-basics-rancher
         domain: training.acend.ch
-    - 
+    -
       name: openshift
       replicaCount: 1
       image:
@@ -57,7 +57,7 @@ acendTraining:
         secretOverride: acend-wildcard
         appname: openshift-basics
         domain: training.acend.ch
-    - 
+    -
       name: netcetera
       replicaCount: 1
       image:

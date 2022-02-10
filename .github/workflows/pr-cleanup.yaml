@@ -12,24 +12,24 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
-      - 
+      -
         name: 'Install Helm'
         uses: azure/setup-helm@v1
         with:
           version: v3.6.2
-      - 
+      -
         name: Install Kubectl
         uses: azure/setup-kubectl@v1
         with:
           version: v1.21.2
-      - 
+      -
         name: Create KUBECONFIG
         env:
           KUBE_CONFIG: '${{ secrets.KUBECONFIG_TEST }}'
         run: |
           mkdir -p $HOME/.kube
           echo "$KUBE_CONFIG" > $HOME/.kube/config
-      - 
+      -
         name: Remove PR Environment Helm Release
         env:
           TRAINING_HELM_RELEASE: 'pr-${{ github.event.pull_request.number }}'

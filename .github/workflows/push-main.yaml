@@ -105,24 +105,24 @@ jobs:
           push: true
           tags: |
             quay.io/acend/kubernetes-basics-training:latest-netcetera
-      - 
+      -
         name: 'Install Helm'
         uses: azure/setup-helm@v1
         with:
           version: v3.6.2
-      - 
+      -
         name: Install Kubectl
         uses: azure/setup-kubectl@v1
         with:
           version: v1.21.2
-      - 
+      -
         name: Create KUBECONFIG
         env:
           KUBE_CONFIG: '${{ secrets.KUBECONFIG }}'
         run: |
           mkdir -p $HOME/.kube
           echo "$KUBE_CONFIG" > $HOME/.kube/config
-      - 
+      -
         name: Deploy Helm Release
         env:
           TRAINING_HELM_RELEASE: 'latest'
@@ -130,7 +130,7 @@ jobs:
           TRAINING_VERSION: '${{ github.sha }}'
         run: |
           helm upgrade $TRAINING_HELM_RELEASE acend-training-chart --install --wait --kubeconfig $HOME/.kube/config  --namespace=$TRAINING_NAMESPACE --set=app.name=$HELM_RELEASE --set=app.version=$TRAINING_VERSION --repo=https://acend.github.io/helm-charts/ --values=helm-chart/values.yaml --atomic
-      - 
+      -
         name: Redeploy Deployments
         env:
           TRAINING_HELM_RELEASE: 'latest'
@@ -141,4 +141,3 @@ jobs:
           kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-rancher --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
           kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-openshift --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
           kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-netcetera --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
-
