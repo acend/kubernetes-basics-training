@@ -6,18 +6,9 @@ sectionnumber: 9.5
 
 In this lab, we are going to look at ResourceQuotas and LimitRanges. As {{% param distroName %}} users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.
 
-{{% onlyWhen openshift %}}
-{{% alert title="Note" color="primary" %}}
-For this lab to work we are using the existing Namespace `<username>-resources`. Please make sure to always use this namespace with your commands.
-{{% /alert %}}
-{{% /onlyWhen %}}
-
-{{% onlyWhenNot openshift %}}
 {{% alert title="Note" color="primary" %}}
 For this lab to work we are using the existing Namespace `<username>-quota`. Please make sure to always use this namespace with your commands
 {{% /alert %}}
-{{% /onlyWhenNot %}}
-
 
 {{% onlyWhen rancher %}}
 
