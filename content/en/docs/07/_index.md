@@ -360,7 +360,7 @@ kubectl exec -it <podname> --namespace <namespace> -- /bin/bash
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 ```bash
-oc rsh <podname> --namespace <namespace>
+oc rsh --namespace <namespace> <podname>
 ```
 {{% /onlyWhen %}}
 
@@ -392,7 +392,7 @@ kubectl exec -it <podname> --namespace <namespace> -- /bin/bash
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 ```bash
-oc rsh <podname> --namespace <namespace>
+oc rsh --namespace <namespace> <podname>
 ```
 {{% /onlyWhen %}}
 
