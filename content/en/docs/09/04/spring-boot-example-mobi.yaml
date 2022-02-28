@@ -22,7 +22,7 @@ spec:
         app: spring-boot-example
     spec:
       containers:
-        - image: <registry-url>/puzzle/k8s/kurs/example-spring-boot:latest
+        - image: REGISTRY-URL/puzzle/k8s/kurs/example-spring-boot:latest
           imagePullPolicy: Always
           name: example-spring-boot
           resources: 

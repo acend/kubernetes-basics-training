@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: <registry-url>/puzzle/k8s/kurs/nginx:1.12
+          image: REGISTRY-URL/puzzle/k8s/kurs/nginx:1.12
           ports:
             - containerPort: 80
               name: nginx

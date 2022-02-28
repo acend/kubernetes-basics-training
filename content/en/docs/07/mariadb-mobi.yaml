@@ -29,7 +29,7 @@ spec:
         app: mariadb
     spec:
       containers:
-        - image: <registry-url>/puzzle/k8s/kurs/mariadb:10.5
+        - image: REGISTRY-URL/puzzle/k8s/kurs/mariadb:10.5
           name: mariadb
           args:
             - "--ignore-db-dir=lost+found"
