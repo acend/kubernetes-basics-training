@@ -119,8 +119,15 @@ A look into the file `templates/ingress.yaml` reveals that the rendering of the 
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "mychart.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
-{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+  {{- if not (hasKey .Values.ingress.annotations "kubernetes.io/ingress.class") }}
+  {{- $_ := set .Values.ingress.annotations "kubernetes.io/ingress.class" .Values.ingress.className}}
+  {{- end }}
+{{- end }}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
 {{- else -}}
 apiVersion: extensions/v1beta1
 {{- end }}
@@ -134,6 +141,9 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
   {{- if .Values.ingress.tls }}
   tls:
     {{- range .Values.ingress.tls }}
@@ -151,15 +161,23 @@ spec:
         paths:
           {{- range .paths }}
           - path: {{ .path }}
-            pathType: Prefix
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ .pathType }}
+            {{- end }}
             backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
                 name: {{ $fullName }}
                 port:
                   number: {{ $svcPort }}
+              {{- else }}
+              serviceName: {{ $fullName }}
+              servicePort: {{ $svcPort }}
+              {{- end }}
           {{- end }}
     {{- end }}
-  {{- end }}
+{{- end }}
+
 ```
 
 {{% onlyWhenNot customer %}}
@@ -175,18 +193,19 @@ Make sure to replace the `<namespace>` and `<appdomain>` accordingly.
 [...]
 ingress:
   enabled: true
+  className: ""
   annotations:
-    # kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
   hosts:
     - host: mychart-<namespace>.<appdomain>
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls:
+  tls: []
     - secretName: mychart-<namespace>-<appdomain>
-      hosts:
-        - mychart-<namespace>.<appdomain>
+     hosts:
+        -  mychart-<namespace>.<appdomain>
 [...]
 ```
 
@@ -204,6 +223,7 @@ ingress:
     - host: mychart-<namespace>.<appdomain>
       paths:
         - path: /
+          pathType: ImplementationSpecific
   tls:
     - secretName: mychart-<namespace>-<appdomain>
       hosts:
@@ -227,7 +247,8 @@ ingress:
   hosts:
     - host: mychart-<namespace>.<appdomain>
       paths:
-      - path: /
+        - path: /
+          pathType: ImplementationSpecific
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -248,7 +269,8 @@ ingress:
   hosts:
     - host: mychart-<namespace>.training.test.netcetera.com
       paths:
-      - path: /
+        - path: /
+          pathType: ImplementationSpecific
   tls:
     - secretName: training.test.netcetera.com-cert
       hosts:
