@@ -202,9 +202,9 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls: []
+  tls:
     - secretName: mychart-<namespace>
-     hosts:
+      hosts:
         -  mychart-<namespace>.<appdomain>
 [...]
 ```
