@@ -40,7 +40,7 @@ menu:
 {{% blocks/feature icon="fa-chalkboard-teacher" url="https://drive.google.com/uc?export=download&id=1oCo230r62pfeho_7Yz48dYCc0VWTfz6-" title="OpenShift Architecture" %}}
 {{% /blocks/feature %}}
 
-{{% blocks/feature icon="fa-chalkboard-teacher" url="https://drive.google.com/uc?export=download&id=1vk1SEhPtugvouPC5YpAlhzw6LSUxLKch" title="Helm and Kustomize" %}}
+{{% blocks/feature icon="fa-chalkboard-teacher" url="https://drive.google.com/uc?export=download&id=1OuqogaO20aEbMn66Kna7uAQkjwc_PvPi" title="Kubernetes Best Practices" %}}
 {{% /blocks/feature %}}
 {{% /onlyWhen %}}
 
