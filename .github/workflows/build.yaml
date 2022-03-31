@@ -110,7 +110,7 @@ jobs:
           context: .
           file: ./Dockerfile
           build-args: |
-            ACEND_HUGO_ENV=techlab
+            TRAINING_HUGO_ENV=techlab
           push: true
           tags: |
             quay.io/appuio/techlab:pr-${{ github.event.pull_request.number }}
@@ -150,6 +150,7 @@ jobs:
           kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-rancher --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
           kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-openshift --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
           kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-acend-kubernetes-basics-netcetera --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/$TRAINING_HELM_RELEASE-appuio-techlab --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
       -
         name: Comment PR Environments in PR
         uses: marocchino/sticky-pull-request-comment@v2
@@ -162,4 +163,4 @@ jobs:
            * rancher version <https://kubernetes-basics-rancher-pr-${{ github.event.pull_request.number }}.training.acend.ch>
            * openshift version <https://openshift-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch>
            * netcetera version <https://kubernetes-basics-netcetera-pr-${{ github.event.pull_request.number }}.training.acend.ch>
-           * techlab: <https://pr-${{ github.event.pull_request.number }}.techlab.openshift.ch>
+           * techlab: <https://techlab-pr-${{ github.event.pull_request.number }}.openshift.ch>
