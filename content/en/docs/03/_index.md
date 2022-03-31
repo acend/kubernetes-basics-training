@@ -244,7 +244,7 @@ oc delete deployment example-web-go --namespace <namespace>
 We are now ready to create the build and deployment, all in one command:
 
 ```bash
-oc new-app --name example-web-go --context-dir go/ --strategy docker https://github.com/acend/awesome-apps.git --namespace <namespace>
+oc new-app --name example-web-go --labels app=example-web-go --context-dir go/ --strategy docker https://github.com/acend/awesome-apps.git --namespace <namespace>
 ```
 
 Let's watch the image's build process:

@@ -1,4 +1,4 @@
-FROM klakegg/hugo:0.89.2-ext-ubuntu AS builder
+FROM klakegg/hugo:0.95.0-ext-ubuntu AS builder
 
 ARG TRAINING_HUGO_ENV=default
 
@@ -17,7 +17,6 @@ RUN apt-get update \
 
 COPY --from=builder /src/public /
 
-
 RUN wkhtmltopdf --enable-internal-links --enable-local-file-access \
     --margin-top 35mm --margin-bottom 22mm --margin-left 15mm --margin-right 10mm \
     --enable-internal-links --enable-local-file-access \
@@ -25,6 +24,13 @@ RUN wkhtmltopdf --enable-internal-links --enable-local-file-access \
     /pdf/index.html /pdf.pdf
 
 FROM nginxinc/nginx-unprivileged:1.21-alpine
+
+LABEL maintainer acend.ch
+LABEL org.opencontainers.image.title "acend.ch's Kubernetes Basics Training"
+LABEL org.opencontainers.image.description "Container with acend.ch's Kubernetes Basics Training content"
+LABEL org.opencontainers.image.authors acend.ch
+LABEL org.opencontainers.image.source https://github.com/acend/kubernetes-basics-training/
+LABEL org.opencontainers.image.licenses CC-BY-SA-4.0
 
 EXPOSE 8080
 

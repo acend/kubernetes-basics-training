@@ -34,7 +34,9 @@ We're going to do this with the command `{{% param cliToolName %}} expose`:
 ```
 
 {{% onlyWhen openshift %}}
-You may notice an error like `Error from server (AlreadyExists): services "example-web-go" already exists` here. This is because the `oc new-app` command creates a service, while the `oc create deployment` doesn't.
+You will get the error message reading `Error from server (AlreadyExists): services "example-web-go" already exists` here. This is because the `oc new-app` command you executed during lab 3 already created a service. This is the default behaviour of `oc new-app`  while `oc create deployment` doesn't have this functionality.
+
+As a consequence, the `oc expose` command above doesn't add anything new but it demonstrates how to easily create a service based on a deployment.
 {{% /onlyWhen %}}
 
 Let's have a more detailed look at our Service:
@@ -176,7 +178,7 @@ kubectl apply -f <path to ingress.yaml> --namespace <namespace>
 Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<domain>`
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
-Afterwards, we are able to access our freshly created Ingress at `https://example-web-go-<namespace>.phoenix.mobicorp.test`. It might take some minutes until the DNS for your Ingress is created. You can verify the Ingress later.
+Afterwards, we are able to access our app via our freshly created Ingress at `https://example-web-go-<namespace>.<appdomain>`. Although we have not configured the Ingress to use TLS, it is available with a `https` address. This is because of the setup at Mobiliar and not default behaviour.
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}

@@ -5,7 +5,7 @@ metadata:
   name: example-web-python
 spec:
   rules:
-    - host: example-web-python-<namespace>.phoenix.mobicorp.test
+    - host: example-web-python-<namespace>.<appdomain>
       http:
         paths:
           - path: /

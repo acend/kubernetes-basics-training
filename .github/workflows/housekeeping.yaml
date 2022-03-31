@@ -1,0 +1,63 @@
+name: Housekeeping
+
+on:
+  workflow_dispatch
+
+jobs:
+  deployment:
+    runs-on: 'ubuntu-latest'
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - 
+        name: 'Install Helm'
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.6.2
+      - 
+        name: Install Kubectl
+        uses: azure/setup-kubectl@v1
+        with:
+          version: v1.21.2
+      - 
+        name: Create KUBECONFIG
+        env:
+          KUBE_CONFIG: '${{ secrets.KUBECONFIG_TEST }}'
+        run: |
+          mkdir -p $HOME/.kube
+          echo "$KUBE_CONFIG" > $HOME/.kube/config
+      - 
+        name: List Open PRs
+        id: open_prs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr list --json number -q '.[] | .number' > open_prs
+      - 
+        name: Get all deployed PRs
+        env:
+          TRAINING_NAMESPACE: 'acend-kubernetes-basics-training-test'
+          TRAINING_VERSION: '${{ github.sha }}'
+          OPEN_PRS: '${{ steps.open_prs.pulls }}'
+        run: |
+          for deploy in `helm --kubeconfig $HOME/.kube/config --namespace=$TRAINING_NAMESPACE  ls -o json | jq -r '.[] | .name'`; do; echo $deploy | cut -c 4-; done > open_deployments
+
+      -
+        name: List diff between open_prs and open_deployments
+        run: |
+          echo "The following PRs are still deployed, altough PR is not open."
+          grep -v -f open_prs open_deployments 
+
+      -
+        name: Remove leftofer deployments
+        env:
+          TRAINING_NAMESPACE: 'acend-kubernetes-basics-training-test'
+        run: |
+          TOCLEANUP=$(grep -v -f open_prs open_deployments)
+          for RELEASE in $TOCLEANUP
+          do
+            helm uninstall $RELEASE --kubeconfig $HOME/.kube/config  --namespace=$TRAINING_NAMESPACE
+          done
