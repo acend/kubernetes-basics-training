@@ -83,7 +83,8 @@ acendTraining:
         annotations:
           kubernetes.io/ingress.class: nginx-public
         appname: techlab
-        domain: appuio.ch
+        domain: training.acend.ch
+        domainmain: appuio.ch
 
 nameOverride: "acend-kubernetes-basics"
 fullnameOverride: ""

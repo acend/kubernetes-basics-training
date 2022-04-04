@@ -171,4 +171,4 @@ jobs:
            * rancher version <https://kubernetes-basics-rancher-pr-${{ github.event.pull_request.number }}.training.acend.ch>
            * openshift version <https://openshift-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch>
            * netcetera version <https://kubernetes-basics-netcetera-pr-${{ github.event.pull_request.number }}.training.acend.ch>
-           * techlab: <https://techlab-pr-${{ github.event.pull_request.number }}.openshift.ch>
+           * techlab: <https://techlab-pr-${{ github.event.pull_request.number }}.training.acend.ch>
