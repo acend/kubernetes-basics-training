@@ -1,13 +1,20 @@
-theme = ["docsy-puzzle", "docsy-plus", "docsy"]
+title = "APPUiO OpenShift Techlab"
+theme = ["docsy-appuio", "docsy-plus", "docsy"]
 
-[params]
-enabledModule = "base techlab"
-copyright = "APPUiO"
-imagePrefix = "appuio_"
+[Languages]
+[Languages.en]
+title = "APPUiO OpenShift Techlab"
 
 [[Languages.en.menu.main]]
 copyright = "APPUiO"
 url = "https://appuio.ch"
+
+[params]
+copyright = "APPUiO"
+imagePrefix = "appuio_"
+enabledModule = "base openshift techlab"
+distroName = "OpenShift"
+cliToolName = "oc"
 
 ############################## social links ##############################
 [params.links]
