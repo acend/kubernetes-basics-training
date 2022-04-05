@@ -2,6 +2,7 @@
 title: "12. Kustomize"
 weight: 12
 sectionnumber: 12
+onlyWhenNot: techlab
 ---
 
 

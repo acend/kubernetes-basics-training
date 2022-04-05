@@ -3,6 +3,7 @@ title: "13. Kubernetes and OpenShift differences"
 weight: 13
 sectionnumber: 13
 onlyWhen: openshift
+onlyWhenNot: techlab
 ---
 
 Even though OpenShift is based on Kubernetes, there are some important differences.

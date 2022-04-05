@@ -2,6 +2,7 @@
 title: "9.7 Sidecar containers"
 weight: 97
 sectionnumber: 9.7
+onlyWhenNot: techlab
 ---
 
 Let's first have another look at the Pod's description [on the Kubernetes documentation page](https://kubernetes.io/docs/concepts/workloads/pods/pod/):
