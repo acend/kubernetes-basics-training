@@ -31,6 +31,7 @@ menu:
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen openshift %}}
+{{% onlyWhenNot techlab %}}
 {{% blocks/feature icon="fa-chalkboard-teacher" url="https://drive.google.com/uc?export=download&id=1RAVHNu8rSJZpdUcYnh1sQZPZGohN6Dg7" title="OpenShift Basics" %}}
 {{% /blocks/feature %}}
 
@@ -42,6 +43,11 @@ menu:
 
 {{% blocks/feature icon="fa-chalkboard-teacher" url="https://drive.google.com/uc?export=download&id=1OuqogaO20aEbMn66Kna7uAQkjwc_PvPi" title="Kubernetes Best Practices" %}}
 {{% /blocks/feature %}}
+{{% /onlyWhenNot %}}
+{{% onlyWhen techlab %}}
+{{% blocks/feature icon="fa-chalkboard-teacher" url="https://files.puzzle.ch/s/in5dXMER6J34nt2/download/APPUiO_OpenShift_Techlab_Handout.pdf" title="APPUiO OpenShift Techlab Presentation" %}}
+{{% /blocks/feature %}}
+{{% /onlyWhen %}}
 {{% /onlyWhen %}}
 
 {{% blocks/feature icon="fa-chalkboard-teacher" url="../pdf/pdf.pdf" title="Lab PDF" %}}
