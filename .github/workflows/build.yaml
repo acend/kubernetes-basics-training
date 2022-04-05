@@ -165,10 +165,10 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: |
-           PR Environments: 
-           * acend version <https://kubernetes-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch>
-           * mobi version <https://kubernetes-basics-mobi-pr-${{ github.event.pull_request.number }}.k8s.puzzle.ch>
-           * rancher version <https://kubernetes-basics-rancher-pr-${{ github.event.pull_request.number }}.training.acend.ch>
-           * openshift version <https://openshift-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch>
-           * netcetera version <https://kubernetes-basics-netcetera-pr-${{ github.event.pull_request.number }}.training.acend.ch>
-           * techlab: <https://techlab-pr-${{ github.event.pull_request.number }}.training.acend.ch>
+           PR environments:
+           * [acend](https://kubernetes-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch)
+           * [Mobi](https://kubernetes-basics-mobi-pr-${{ github.event.pull_request.number }}.k8s.puzzle.ch)
+           * [Rancher](https://kubernetes-basics-rancher-pr-${{ github.event.pull_request.number }}.training.acend.ch)
+           * [OpenShift](https://openshift-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch)
+           * [Netcetera](https://kubernetes-basics-netcetera-pr-${{ github.event.pull_request.number }}.training.acend.ch)
+           * [APPUiO Techlab](https://techlab-pr-${{ github.event.pull_request.number }}.training.acend.ch)
