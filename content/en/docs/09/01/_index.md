@@ -141,7 +141,7 @@ Rollback the change:
 
 As with every other {{% param distroName %}} resource you can delete the StatefulSet with:
 
-{{% alert title="Warning" color="secondary" %}}
+{{% alert title="Warning" color="warning" %}}
 To avoid issues on your personal progress dashboard, we would advise not to delete the StatefulSet from this lab
 {{% /alert %}}
 

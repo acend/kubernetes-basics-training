@@ -7,7 +7,7 @@ sectionnumber: 7
 Numerous applications are stateful in some way and want to save data persistently, be it in a database, as files on a filesystem or in an object store. In this lab, we are going to create a MariaDB database and configure our application to store its data in it.
 
 {{% onlyWhen openshift %}}
-{{% alert title="Warning" color="secondary" %}}
+{{% alert title="Warning" color="warning" %}}
 Please make sure you completed labs [2 (Project creation)](../02/), [3 (Deployment creation)](../03/) and [4 (Service and Route creation)](../04/) before you continue with this lab.
 {{% /alert %}}
 {{% /onlyWhen %}}
@@ -30,7 +30,7 @@ Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Inst
 
 ### Instantiate a template using the CLI
 
-{{% alert title="Warning" color="secondary" %}}
+{{% alert title="Warning" color="warning" %}}
 Do not execute these steps if you already have created a MariaDB database using the Web Console.
 {{% /alert %}}
 
@@ -221,7 +221,7 @@ For the actual MariaDB host, you can either use the MariaDB Service's ClusterIP 
 
 The following commands set the environment variables for the deployment configuration of the `example-web-python` application:
 
-{{% alert title="Warning" color="secondary" %}}
+{{% alert title="Warning" color="warning" %}}
 Depending on the shell you use, the following `set env` command works but inserts too many apostrophes! Check the deployment's environment variable afterwards or directly edit it as described further down below.
 {{% /alert %}}
 

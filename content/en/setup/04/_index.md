@@ -34,7 +34,7 @@ Client Version: 4.6.9
 
 If you don't see a similar output, possibly there are issues with the `PATH` variable.
 
-{{% alert title="Warning" color="secondary" %}}
+{{% alert title="Warning" color="warning" %}}
 {{% onlyWhenNot openshift %}}
 Make sure to use at least version 1.16.x for your `kubectl`
 {{% /onlyWhenNot %}}

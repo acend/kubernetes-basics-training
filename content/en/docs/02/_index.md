@@ -6,7 +6,7 @@ sectionnumber: 2
 
 In this lab, we will interact with the {{% param distroName %}} cluster for the first time.
 
-{{% alert title="Warning" color="secondary" %}}
+{{% alert title="Warning" color="warning" %}}
 Please make sure you completed [the setup](../../setup/) before you continue with this lab.
 {{% /alert %}}
 
@@ -78,7 +78,7 @@ We are using the Mobi `kubedev` Kubernetes cluster. Use the following command to
 kubectl config use-context kubedev
 ```
 
-{{% alert title="Warning" color="secondary" %}}
+{{% alert title="Warning" color="warning" %}}
 Make sure you have set up your kubeconfig file correctly. Check your [CWIKI](https://cwiki.mobicorp.ch/confluence/display/ITContSol/Set+up+Kubectl) for instructions on how to configure it.
 {{% /alert %}}
 {{% /onlyWhen %}}
