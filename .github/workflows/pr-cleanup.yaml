@@ -39,7 +39,7 @@ jobs:
           helm uninstall $TRAINING_HELM_RELEASE --kubeconfig $HOME/.kube/config  --namespace=$TRAINING_NAMESPACE
       -
         name: Delete tags in quay.io acend organization
-        id: delete_tags
+        id: delete_tags_acend
         env:
           PR_NUMBER: '${{ github.event.pull_request.number }}'
           QUAYIO_API_TOKEN: '${{ secrets.QUAYIO_API_TOKEN }}'
@@ -48,7 +48,7 @@ jobs:
           curl -X DELETE -H "Authorization: Bearer ${QUAYIO_API_TOKEN}" https://quay.io/api/v1/repository/${REPOSITORY}/tag/pr-${PR_NUMBER}{,-mobi,-rancher,-openshift,-netcetera}
       -
         name: Delete tags in quay.io appuio organization
-        id: delete_tags
+        id: delete_tags_appuio
         env:
           PR_NUMBER: '${{ github.event.pull_request.number }}'
           QUAYIO_API_TOKEN: '${{ secrets.QUAYIO_API_TOKEN_TECHLAB }}'
