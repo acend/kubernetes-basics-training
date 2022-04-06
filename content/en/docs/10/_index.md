@@ -2,6 +2,7 @@
 title: "10. Deployment strategies"
 weight: 10
 sectionnumber: 10
+onlyWhenNot: techlab
 ---
 
 In this lab, we are going to have a look at the different Deployment strategies.

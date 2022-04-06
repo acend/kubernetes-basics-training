@@ -11,3 +11,6 @@
 [submodule "themes/docsy-puzzle"]
 	path = themes/docsy-puzzle
 	url = https://github.com/puzzle/docsy-puzzle.git
+[submodule "docsy-appuio"]
+	path = themes/docsy-appuio
+	url = https://github.com/appuio/docsy-appuio.git

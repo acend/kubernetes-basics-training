@@ -29,8 +29,8 @@ jobs:
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       -
-        name: Login to Quay.io Container Registry
-        uses: docker/login-action@v1 
+        name: Login to quay.io acend organization
+        uses: docker/login-action@v1
         with:
           registry: quay.io
           username: ${{ secrets.QUAYIO_USERNAME }}
@@ -106,6 +106,24 @@ jobs:
           tags: |
             quay.io/acend/kubernetes-basics-training:latest-netcetera
       -
+        name: Login to quay.io appuio organization
+        uses: docker/login-action@v1
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAYIO_USERNAME_TECHLAB }}
+          password: ${{ secrets.QUAYIO_TOKEN_TECHLAB }}
+      -
+        name: Build techlab version
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          build-args: |
+            TRAINING_HUGO_ENV=techlab
+          push: true
+          tags: |
+            quay.io/appuio/techlab:latest
+      -
         name: 'Install Helm'
         uses: azure/setup-helm@v1
         with:
@@ -142,3 +160,4 @@ jobs:
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-rancher --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-openshift --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-acend-kubernetes-basics-netcetera --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-techlab --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE

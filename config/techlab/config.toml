@@ -1,0 +1,34 @@
+title = "APPUiO OpenShift Techlab"
+theme = ["docsy-appuio", "docsy-plus", "docsy"]
+
+[Languages]
+[Languages.en]
+title = "APPUiO OpenShift Techlab"
+
+[[Languages.en.menu.main]]
+copyright = "APPUiO"
+url = "https://appuio.ch"
+
+[params]
+copyright = "APPUiO"
+imagePrefix = "appuio_"
+enabledModule = "base openshift techlab"
+distroName = "OpenShift"
+cliToolName = "oc"
+
+############################## social links ##############################
+[params.links]
+[[params.links.developer]]
+name = "GitHub"
+icon = "fab fa-github"
+url = "https://github.com/acend/kubernetes-basics-training"
+
+[[params.links.user]]
+name = "Twitter"
+icon = "fab fa-twitter"
+url = "https://twitter.com/appuio"
+
+[[params.links.user]]
+name = "LinkedIn"
+icon = "fab fa-linkedin-in"
+url = "https://www.linkedin.com/company/appuio/"

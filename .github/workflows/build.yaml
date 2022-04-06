@@ -27,8 +27,8 @@ jobs:
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       -
-        name: Login to Quay.io Container Registry
-        uses: docker/login-action@v1 
+        name: Login to quay.io acend organization
+        uses: docker/login-action@v1
         with:
           registry: quay.io
           username: ${{ secrets.QUAYIO_USERNAME }}
@@ -104,6 +104,24 @@ jobs:
           tags: |
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-netcetera
       -
+        name: Login to quay.io appuio organization
+        uses: docker/login-action@v1
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAYIO_USERNAME_TECHLAB }}
+          password: ${{ secrets.QUAYIO_TOKEN_TECHLAB }}
+      -
+        name: Build techlab version
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          build-args: |
+            TRAINING_HUGO_ENV=techlab
+          push: true
+          tags: |
+            quay.io/appuio/techlab:pr-${{ github.event.pull_request.number }}
+      -
         name: 'Install Helm'
         uses: azure/setup-helm@v1
         with:
@@ -140,15 +158,17 @@ jobs:
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-rancher --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-openshift --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-netcetera --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-techlab --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
       -
         name: Comment PR Environments in PR
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: |
-           PR Environments: 
-           * acend version <https://kubernetes-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch>
-           * mobi version <https://kubernetes-basics-mobi-pr-${{ github.event.pull_request.number }}.k8s.puzzle.ch>
-           * rancher version <https://kubernetes-basics-rancher-pr-${{ github.event.pull_request.number }}.training.acend.ch>
-           * openshift version <https://openshift-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch>
-           * netcetera version <https://kubernetes-basics-netcetera-pr-${{ github.event.pull_request.number }}.training.acend.ch>
+           PR environments:
+           * [acend](https://kubernetes-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch)
+           * [Mobi](https://kubernetes-basics-mobi-pr-${{ github.event.pull_request.number }}.k8s.puzzle.ch)
+           * [Rancher](https://kubernetes-basics-rancher-pr-${{ github.event.pull_request.number }}.training.acend.ch)
+           * [OpenShift](https://openshift-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch)
+           * [Netcetera](https://kubernetes-basics-netcetera-pr-${{ github.event.pull_request.number }}.training.acend.ch)
+           * [APPUiO Techlab](https://techlab-pr-${{ github.event.pull_request.number }}.training.acend.ch)

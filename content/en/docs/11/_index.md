@@ -2,6 +2,7 @@
 title: "11. Helm"
 weight: 11
 sectionnumber: 11
+onlyWhenNot: techlab
 ---
 
 [Helm](https://github.com/helm/helm) is a [Cloud Native Foundation](https://www.cncf.io/) project to define, install and manage applications in Kubernetes.

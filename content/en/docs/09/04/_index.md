@@ -2,6 +2,7 @@
 title: "9.4 ConfigMap"
 weight: 94
 sectionnumber: 9.4
+onlyWhenNot: techlab
 ---
 
 Similar to environment variables, _ConfigsMaps_ allow you to separate the configuration for an application from the image. Pods can access those variables at runtime which allows maximum portability for applications running in containers.

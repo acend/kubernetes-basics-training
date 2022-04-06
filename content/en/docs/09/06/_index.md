@@ -2,6 +2,7 @@
 title: "9.6 Init containers"
 weight: 96
 sectionnumber: 9.6
+onlyWhenNot: techlab
 ---
 
 
