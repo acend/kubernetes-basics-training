@@ -18,7 +18,7 @@ This is what we are going to do step by step:
 1. Unzip the downloaded archive with a ZIP program.
 1. Move the `oc` binary to a directory that is on your `PATH`.
 
-   {{% alert title="Note" color="primary" %}}
+   {{% alert title="Note" color="info" %}}
    To check your `PATH`, open the command prompt and execute the following command:
 
    ```

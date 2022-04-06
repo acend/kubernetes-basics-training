@@ -108,7 +108,7 @@ Namespaces in Kubernetes represent a logical segregation of unique names for ent
 {{% onlyWhen openshift %}}
 In OpenShift, users do not directly create Namespaces, they create Projects. A Project is a Namespace with additional annotations.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 OpenShift's concept of a Project does not coincide with Rancher's.
 {{% /alert %}}
 {{% /onlyWhen %}}
@@ -120,7 +120,7 @@ Permissions and roles can be bound on a per-namespace basis. This way, a user ca
 Permissions and roles can be bound on a per-project basis. This way, a user can control his own resources inside a Project.
 {{% /onlyWhen %}}
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Some resources are valid cluster-wise and cannot be set and controlled on a namespace basis.
 {{% /alert %}}
 

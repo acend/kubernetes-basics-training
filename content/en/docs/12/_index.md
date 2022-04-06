@@ -16,7 +16,7 @@ Kustomize can be used in two different ways:
 * As a standalone `kustomize` binary, downloadable from [here](https://kubernetes-sigs.github.io/kustomize/installation/)
 * With the parameter `--kustomize` or `-k` in certain `{{% param cliToolName %}}` subcommands such as `apply` or `create`
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 You might get a different behaviour depending on which variant you use. The reason for this is that the version built into `{{% param cliToolName %}}` is usually older than the standalone binary.
 {{% /alert %}}
 
@@ -135,7 +135,7 @@ The same applies to our Service. It also comes in two customizations so that it 
 
 {{< highlight yaml >}}{{< readfile file="content/en/docs/12/kustomize/overlays/production/service-patch.yaml" >}}{{< /highlight >}}
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 All files mentioned above are also directly accessible from [GitHub](https://github.com/acend/kubernetes-basics-training/tree/master/content/en/docs/12/kustomize).
 {{% /alert %}}
 

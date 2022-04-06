@@ -16,7 +16,7 @@ More detailed information can be retrieved from the [Kubernetes documentation](h
 More detailed information can be retrieved from the [OpenShift documentation](https://docs.openshift.com/container-platform/latest/nodes/jobs/nodes-nodes-jobs.html).
 {{% /onlyWhen %}}
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 This lab depends on [lab 7](../../07/) or [lab 8](../../08/).
 {{% /alert %}}
 

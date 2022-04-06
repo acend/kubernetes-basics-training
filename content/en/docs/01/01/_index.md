@@ -7,7 +7,7 @@ sectionnumber: 1.1
 YAML Ain't Markup Language (YAML) is a human-readable data-serialization language.
 YAML is not a programming language. It is mostly used for storing configuration information.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Data serialization is the process of converting data objects, or object states present in complex data structures, into a stream of bytes for storage, transfer, and distribution in a form that can allow recovery of its original structure.
 {{% /alert %}}
 

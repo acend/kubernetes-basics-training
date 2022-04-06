@@ -73,7 +73,7 @@ oc set volume deploy/example-web-python --add --configmap-name=javaconfiguration
 ```
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 This task doesn't have any effect on the Python application inside the container. It is for demonstration purposes only.
 {{% /alert %}}
 {{% /onlyWhen %}}
@@ -129,7 +129,7 @@ kubectl exec -it <pod> --namespace <namespace> -- cat /etc/config/java.propertie
 ```
 {{% /onlyWhenNot %}}
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 On Windows, you can use Git Bash with `winpty kubectl exec -it <pod> --namespace <namespace> -- cat //etc/config/java.properties`.
 {{% /alert %}}
 

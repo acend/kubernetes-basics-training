@@ -10,7 +10,7 @@ However, sometimes your application has to be stateful.
 Examples would be an application that needs a static, non-changing hostname every time it starts or a clustered application with a strict start/stop order of its services (e.g. RabbitMQ).
 These features are offered by StatefulSets.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 This lab does not depend on other labs.
 {{% /alert %}}
 
@@ -94,7 +94,7 @@ To watch the pods' progress, open a second console and execute the watch command
 {{% param cliToolName %}} get pods --selector app=nginx -w --namespace <namespace>
 ```
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Friendly reminder that the `{{% param cliToolName %}} get -w` command will never end unless you terminate it with `CTRL-c`.
 {{% /alert %}}
 
@@ -141,7 +141,7 @@ Rollback the change:
 
 As with every other {{% param distroName %}} resource you can delete the StatefulSet with:
 
-{{% alert title="Warning" color="secondary" %}}
+{{% alert title="Warning" color="warning" %}}
 To avoid issues on your personal progress dashboard, we would advise not to delete the StatefulSet from this lab
 {{% /alert %}}
 

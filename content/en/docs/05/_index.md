@@ -6,7 +6,7 @@ sectionnumber: 5
 
 In this lab, we are going to show you how to scale applications on {{% param distroName %}}. Furthermore, we show you how {{% param distroName %}} makes sure that the number of requested Pods is up and running and how an application can tell the platform that it is ready to receive requests.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 This lab does not depend on previous labs. You can start with an empty Namespace.
 {{% /alert %}}
 
@@ -106,12 +106,12 @@ example-web-python-86d9d584f8-qg499   1/1     Running   0          31s
 ```
 
 {{% onlyWhenNot openshift %}}
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
 {{% /alert %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 OpenShift supports [horizontal](https://docs.openshift.com/container-platform/latest/nodes/pods/nodes-pods-autoscaling.html) and [vertical autoscaling](https://docs.openshift.com/container-platform/latest/nodes/pods/nodes-pods-vertical-autoscaler.html).
 {{% /alert %}}
 {{% /onlyWhen %}}
@@ -205,7 +205,7 @@ Scaling of Pods is fast as {{% param distroName %}} simply creates new container
 You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{% onlyWhenNot openshift %}}http://example-web-python-<namespace>.<domain>{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://<route hostname>{{% /onlyWhen %}}`.
 
 {{% onlyWhen openshift %}}
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 You can find out the route's hostname by looking at the output of `oc get route`.
 {{% /alert %}}
 {{% /onlyWhen %}}
@@ -362,7 +362,7 @@ You can directly edit the deployment (or any resource) with:
 kubectl edit deployment example-web-python --namespace <namespace>
 ```
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 If you're not comfortable with `vi` then you can switch to another editor by setting the environment variable `EDITOR`
 or `KUBE_EDITOR`, e.g. `export EDITOR=nano`.
 {{% /alert %}}

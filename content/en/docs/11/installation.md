@@ -28,7 +28,7 @@ Install the CLI for your **Operating System**
 
 ## Proxy configuration
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 If you have direct access to the internet from your location, the proxy configuration is not required.
 {{% /alert %}}
 

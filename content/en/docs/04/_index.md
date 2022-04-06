@@ -52,7 +52,7 @@ NAME             TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
 example-web-go   ClusterIP  10.43.91.62   <none>        5000/TCP  
 ```
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Service IP (CLUSTER-IP) addresses stay the same for the duration of the Service's lifespan.
 {{% /alert %}}
 
@@ -106,7 +106,7 @@ The Service's `selector` defines which Pods are being used as Endpoints. This ha
 
 With the following command you get details from the Pod:
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 First, get all Pod names from your namespace with (`{{% param cliToolName %}} get pods --namespace <namespace>`) and then replace \<pod\> in the following command. If you have installed and configured the bash completion, you can also press the TAB key for autocompletion of the Pod's name.
 {{% /alert %}}
 
@@ -190,7 +190,7 @@ oc expose service example-web-go --namespace <namespace>
 We are now able to access our app via the freshly created route at `http://example-web-go-<namespace>.<appdomain>`
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 The `<appdomain>` is the default domain under which your applications will be accessible and is provided by your trainer. You can also use `oc get route example-web-go` to see the exact value of the exposed route.
 {{% /alert %}}
 {{% /onlyWhen %}}
@@ -231,7 +231,7 @@ example-web-go   NodePort   10.43.91.62   <none>        5000:30692/TCP
 
 The `NodePort` number is assigned by Kubernetes and stays the same as long as the Service is not deleted. A NodePort Service is more suitable for infrastructure tools than for public URLs.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 If `NodePort` is not supported in your environment then you can use `--type=ClusterIP` (or omit this parameter completely as it is the default) and use port forwarding to the Service instead.
 
 Head over to task 6.3 in [lab 6](../06/) to learn how to use port forwarding.
@@ -255,7 +255,7 @@ lab-3   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.148   <no
 ```
 
 {{% onlyWhen rancher %}}
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 You can also use the Rancher web console to open the exposed application in your browser. The direct link is shown on your **Resources / Workload** page in the tab **Workload**. Look for your namespace and the deployment name. The link looks like `31665/tcp`.
 
 {{< imgproc nodeportrancher.png Resize  "500x" >}}{{< /imgproc >}}
