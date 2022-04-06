@@ -89,7 +89,7 @@ mariadb:
 {{% /onlyWhen %}}
 ```
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Make sure to set the proper value as hostname. `<appdomain>` will be provided by the trainer.
 {{% /alert %}}
 
@@ -174,7 +174,7 @@ version: ~3.5.7
 This is e.g. equivalent to `>= 3.5.7, < 3.6.0`
 Check [this SemVer readme chapter](https://github.com/Masterminds/semver#checking-version-constraints) for more information on version ranges.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 For more details on how to manage **dependencies**, check out the [Helm Dependencies Documentation](https://helm.sh/docs/chart_best_practices/dependencies/).
 {{% /alert %}}
 
@@ -290,7 +290,7 @@ We are now going to upgrade the application to a newer Helm chart version. When 
 * mariadb.auth.rootPassword
 * mariadb.auth.password
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 This is specific to the wordpress Bitami Chart, and might be different when installing other Charts.
 {{% /alert %}}
 

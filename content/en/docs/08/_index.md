@@ -36,7 +36,7 @@ oc set volume dc/mariadb --add --name=mariadb-data --claim-name=mariadb-data --t
 With the instruction above we create a PVC named `mariadb-data` of 1Gi in size, attach it to the DeploymentConfig `mariadb` and mount it at `/var/lib/mysql`. This is where the MariaDB process writes its data by default so after we make this change, the database will not even notice that it is writing in a PersistentVolume.
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Because we just changed the DeploymentConfig with the `oc set` command, a new Pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
 {{% /alert %}}
 {{% /onlyWhen %}}
@@ -82,7 +82,7 @@ Add both parts `volumeMounts` and `volumes`
 ```
 {{% /onlyWhenNot %}}
 {{% onlyWhenNot openshift %}}
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Because we just changed the Deployment a new Pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
 {{% /alert %}}
 {{% /onlyWhenNot %}}
@@ -120,7 +120,7 @@ Check the logs from the container and search for the error.
 {{% param cliToolName %}} logs mariadb-f845ccdb7-hf2x5 --namespace <namespace>
 ```
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 If the container won't start because the data directory already has files in it, use the `{{% onlyWhenNot openshift %}}kubectl exec{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}oc debug{{% /onlyWhen %}}` command mentioned in [lab 7](../07.0/) to check its content and remove it if necessary.{{% /alert %}}
 
 

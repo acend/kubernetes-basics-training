@@ -23,7 +23,7 @@ This is what we are going to do step by step:
 
 1. Place the `oc` binary in a directory that is on your `PATH`.
 
-   {{% alert title="Note" color="primary" %}}
+   {{% alert title="Note" color="info" %}}
    To check your `PATH`, execute the following command:
 
    ```

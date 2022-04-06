@@ -103,12 +103,12 @@ echo "YWNlbmQtZXhhbXBsZS1kYg==" | base64 -d
 ```
 
 {{% onlyWhen openshift %}}
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 There's also the `oc extract` command which can be used to extract the content of Secrets and ConfigMaps into a local directory. Use `oc extract --help` to see how it works.
 {{% /alert %}}
 {{% /onlyWhen %}}
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 By default, Secrets are not encrypted!
 {{% onlyWhen openshift %}}OpenShift [offers this capability](https://docs.openshift.com/container-platform/latest/security/encrypting-etcd.html){{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}Kubernetes 1.13 [offers this capability](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/){{% /onlyWhenNot %}}. Another option would be the use of a secrets management solution like [Vault by HashiCorp](https://www.vaultproject.io/).
@@ -272,7 +272,7 @@ You could also do the changes by directly editing the Deployment:
 
 In order to find out if the change worked we can either look at the container's logs (`{{% param cliToolName %}} logs <pod>`) or we could register some "Hellos" in the application, delete the Pod, wait for the new Pod to be started and check if they are still there.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 This does not work if we delete the database Pod as its data is not yet persisted.
 {{% /alert %}}
 
@@ -337,7 +337,7 @@ show tables;
 
 Our task is now to import this [dump.sql](https://raw.githubusercontent.com/acend/kubernetes-basics-training/master/content/en/docs/07/dump.sql) into the MariaDB database running as a Pod. Use the `mysql` command line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 You can also copy local files into a Pod using `{{% param cliToolName %}} cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the Pod and using `curl -O <url>`.
 {{% /alert %}}
 
@@ -382,7 +382,7 @@ Import a dump:
 mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend_exampledb < /tmp/dump.sql
 ```
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 A database dump can be created as follows:
 
 {{% onlyWhenNot openshift %}}

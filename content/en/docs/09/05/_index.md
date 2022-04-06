@@ -7,7 +7,7 @@ onlyWhenNot: techlab
 
 In this lab, we are going to look at ResourceQuotas and LimitRanges. As {{% param distroName %}} users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 For this lab to work we are using the existing Namespace `<username>-quota`. Please make sure to always use this namespace with your commands
 {{% /alert %}}
 
@@ -67,7 +67,7 @@ As we've already seen, compute ResourceQuotas limit the amount of memory and CPU
 
 Limits and requests on a Pod, or rather on a container in a Pod, define how much memory and CPU this container wants to consume at least (request) and at most (limit). Requests mean that the container will be guaranteed to get at least this amount of resources, limits represent the upper boundary which cannot be crossed. Defining these values helps {{% param distroName %}} in determining on which Node to schedule the Pod because it knows how many resources should be available for it.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Containers using more CPU time than what their limit allows will be throttled.
 Containers using more memory than what they are allowed to use will be killed.
 {{% /alert %}}
@@ -109,7 +109,7 @@ Setting limits and requests on containers has yet another effect: It might chang
 The Guaranteed QoS class is applied to Pods that define both limits and requests for both memory and CPU resources on all their containers. The most important part is that each request has the same value as the limit.
 Pods that belong to this QoS class will never be killed by the scheduler because of resources running out on a Node.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 If a container only defines its limits, {{% param distroName %}} automatically assigns a request that matches the limit.
 {{% /alert %}}
 
@@ -213,7 +213,7 @@ Apply this resource with:
 ```
 
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 You have to actively terminate the following command pressing `CTRL+c` on your keyboard.
 {{% /alert %}}
 
@@ -319,7 +319,7 @@ And apply this again with:
 {{% param cliToolName %}} apply -f pod_stress.yaml
 ```
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Remember, if you only set the limit, the request will be set to the same value.
 {{% /alert %}}
 

@@ -43,7 +43,7 @@ spec:
 ...
 ```
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 This obviously only checks if there is a DNS Record for your MariaDB Service and not if the database is ready. But you get the idea, right?
 {{% /alert %}}
 

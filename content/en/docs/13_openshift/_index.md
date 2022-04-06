@@ -30,7 +30,7 @@ OpenShift extends the Kubernetes API to support certain additional resource type
 In [lab 2](../02/) you created your first Project on OpenShift.
 You won't find the concept of a "Project" in Kubernetes except in other Kubernetes distributions, specifically in Rancher.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 [Rancher's](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/#about-projects) and [OpenShift's](https://docs.openshift.com/container-platform/latest/rest_api/project_apis/project-apis-index.html) concepts of a project have nothing in common.
 {{% /alert %}}
 
@@ -53,7 +53,7 @@ One of the obvious advantages of the Ingress resource type is its compatibility 
 However, different kinds of Ingress controllers support different features making this statement semisolid.
 One of the obvious advantages of using Routes is that they're easy to create using the `oc expose` command.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 In OpenShift, creating an Ingress resource leads to the creation of a corresponding Route in the same Namespace.
 {{% /alert %}}
 
@@ -66,7 +66,7 @@ Expose the application using an Ingress resource.
 It's best to not delete the existing Route, so you can compare them.
 Bear in mind that you need to use another hostname in that case.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Make use of the Kubernetes documentation about Ingress resources.
 {{% /alert %}}
 

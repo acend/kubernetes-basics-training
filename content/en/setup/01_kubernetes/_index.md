@@ -22,7 +22,7 @@ In Windows, the `PATH` can be set in the advanced system settings. It depends on
 * [Windows 8](http://www.itechtics.com/customize-windows-environment-variables/)
 * [Windows 10](http://techmixx.de/windows-10-umgebungsvariablen-bearbeiten/)
 
-{{% alert title="Note: Windows Quick Hack" color="primary" %}}
+{{% alert title="Note: Windows Quick Hack" color="info" %}}
 Copy the `kubectl` binary directly into the folder `C:\Windows`.
 {{% /alert %}}
 

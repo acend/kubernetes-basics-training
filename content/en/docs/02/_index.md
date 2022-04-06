@@ -14,7 +14,7 @@ Please make sure you completed [the setup](../../setup/) before you continue wit
 ## Login
 
 {{% onlyWhenNot openshift %}}
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Authentication depends on the specific Kubernetes cluster environment.
 
 You may need special instructions if you are not using our lab environment.
@@ -27,7 +27,7 @@ You may need special instructions if you are not using our lab environment.
 
 Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cloudscale.ch) (a Swiss IaaS provider) and has been provisioned with [Rancher](https://rancher.com/). You can log in to the cluster with a Rancher user.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Your trainer will provide you with the information needed to log in.
 {{% /alert %}}
 {{% /onlyWhen %}}
@@ -41,7 +41,7 @@ You now see a button at the top right that says **Kubeconfig File**. Click it, s
 
 The copied kubeconfig now needs to be put into a file. The default location for the kubeconfig file is `~/.kube/config`.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 If you already have a kubeconfig file, you might need to merge the Rancher entries with yours or use a dedicated file as described below.
 {{% /alert %}}
 
@@ -52,7 +52,8 @@ If you decide to not use the default kubeconfig location at `~/.kube/config` the
 export KUBECONFIG=$KUBECONFIG:~/.kube-techlab/config
 ```
 
-{{% alert title="Note" color="primary" %}} When using PowerShell on a Windows Computer use the following command. You'll have to replace `<user>` with your actual user
+{{% alert title="Note" color="info" %}}
+When using PowerShell on a Windows Computer use the following command. You'll have to replace `<user>` with your actual user
 
 ```
 $Env:KUBECONFIG = "C:\Users\<user>\.kube-techlab\config"
@@ -90,7 +91,7 @@ As a first step on the cluster, we are going to create a new Namespace.
 A Namespace is a logical design used in Kubernetes to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). Authorized users inside a namespace are able to manage those resources. Namespace names have to be unique in your cluster.
 
 {{% onlyWhen rancher %}}
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Additionally, Rancher knows the concept of a [*Project*](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple Namespaces.
 {{% /alert %}}
 
@@ -107,7 +108,7 @@ We use the project `kubernetes-techlab` on the `kubedev` cluster.
 
 Create a new namespace in the lab environment. The `kubectl help` output can help you figure out the right command.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Please choose an identifying name for your Namespace, e.g. your initials or name as a prefix.
 
 We are going to use `<namespace>` as a placeholder for your created Namespace.
@@ -123,12 +124,12 @@ kubectl create namespace <namespace>
 ```
 
 {{% onlyWhen rancher %}}
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Namespaces created via `kubectl` have to be assigned to the correct Rancher Project in order to be visible in the Rancher web console. Please ask your trainer for this assignment or you can create the Namespace directly within the Rancher web console.
 {{% /alert %}}
 {{% /onlyWhen %}}
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 By using the following command, you can switch into another Namespace instead of specifying it for each `kubectl` command.
 
 Linux:
@@ -169,7 +170,7 @@ With the command `kubectl get` you can display all kinds of resources.
 
 ### Login on the Web Console
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Your trainer will provide you with the information needed to log in.
 {{% /alert %}}
 
@@ -186,7 +187,7 @@ To do that, open the Web Console and click on your username that you see at the 
 
 A new tab or window will open in your browser.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 You might need to log in again.
 {{% /alert %}}
 
@@ -219,7 +220,7 @@ Authorized users inside a Project are able to manage those resources. Project na
 
 Create a new Project in the lab environment. The `oc help` output can help you figure out the right command.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Please choose an identifying name for your Project, e.g. your initials or name as a prefix. We are going to use `<project>` as a placeholder for your created Project.
 {{% /alert %}}
 
@@ -232,7 +233,7 @@ To create a new Project on your cluster use the following command:
 oc new-project <project>
 ```
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Some prefer to explicitly select the Project for each `oc` command by adding `--namespace <project>` or `-n <project>`.
 
 By using the following command, you can switch into another Project instead of specifying it for each `oc` command.
@@ -254,7 +255,7 @@ Display all existing Pods in the previously created Project with `oc` (there sho
 oc get pod --namespace <project>
 ```
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 With the command `oc get` you can display all kinds of resources.
 {{% /alert %}}
 {{% /onlyWhen %}}

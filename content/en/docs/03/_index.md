@@ -125,7 +125,7 @@ We're using a simple sample application written in Go, which you can find built 
 
 Use the command `{{% param cliToolName %}} get` with the `-w` parameter in order to get the requested resources and afterward watch for changes.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 The `{{% param cliToolName %}} get -w` command will never end unless you terminate it with `CTRL-c`.
 {{% /alert %}}
 
@@ -133,7 +133,7 @@ The `{{% param cliToolName %}} get -w` command will never end unless you termina
 {{% param cliToolName %}} get pods -w --namespace <namespace>
 ```
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Instead of using the `-w` parameter you can also use the `watch` command which should be available on most Linux distributions:
 
 ```bash
@@ -144,7 +144,7 @@ watch {{% param cliToolName %}} get pods --namespace <namespace>
 
 This process can last for some time depending on your internet connection and if the image is already available locally.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 If you want to create your own container images and use them with {{% param distroName %}}, you definitely should have a look at [these best practices](https://docs.openshift.com/container-platform/4.4/openshift_images/create-images.html) and apply them. This image creation guide may be for OpenShift, however it also applies to Kubernetes and other container platforms.
 {{% /alert %}}
 
@@ -230,7 +230,7 @@ We are going to use the Docker build strategy. It expects:
 All of these requirements are already fulfilled in the [sourcecode repository on GitHub](https://github.com/acend/awesome-apps/tree/master/go), so let's build the image!
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Have a look at [OpenShift's documentation](https://docs.openshift.com/container-platform/latest/cicd/builds/understanding-image-builds.html) to learn more about the other available build strategies.
 {{% /alert %}}
 {{% /onlyWhen %}}
@@ -284,7 +284,7 @@ It looks the same as before with the only essential exception that it uses the i
 
 ## Save point
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 What's a save point? Save points are intermediate results which you can use if you are stuck. You can compare them with
 your existing resources or you can apply the provided manifests with `{{% param cliToolName %}} apply -f <manifest.yaml>`.
 {{% /alert %}}

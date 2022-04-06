@@ -17,7 +17,7 @@ Running containers should be treated as immutable infrastructure and should ther
 With {{% param distroName %}} you can open a remote shell into a Pod without installing SSH by using the command `{{% onlyWhenNot openshift %}}kubectl exec{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}oc rsh{{% /onlyWhen %}}`. The command can also be used to execute any command in a Pod.
 {{% onlyWhenNot openshift %}}With the parameter `-it` you can leave an open connection.{{% /onlyWhenNot %}}
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 On Windows, you can use Git Bash and `winpty`.
 {{% /alert %}}
 
@@ -34,7 +34,7 @@ oc rsh --namespace <namespace> <pod>
 ```
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 If Bash is not available in the Pod you can fallback to `-- sh` instead of `-- /bin/bash`.
 {{% /alert %}}
 {{% /onlyWhenNot %}}
@@ -148,7 +148,7 @@ Then execute the port forwarding command using the Pod's name:
 {{% param cliToolName %}} port-forward <pod> 5000:5000 --namespace <namespace>
 ```
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 Use the additional parameter `--address <IP address>` (where `<IP address>` refers to a NIC's IP address from your local workstation) if you want to access the forwarded port from outside your own local workstation.
 {{% /alert %}}
 
@@ -171,7 +171,7 @@ With the same concept you can access databases from your local workstation or co
 
 {{% onlyWhenNot openshift %}}[This documentation page](https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster){{% /onlyWhenNot %}}{{% onlyWhen openshift %}}[This documentation page](https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-port-forwarding.html){{% /onlyWhen %}} offers some more details about port forwarding.
 
-{{% alert title="Note" color="primary" %}}
+{{% alert title="Note" color="info" %}}
 The `{{% param cliToolName %}} port-forward` process runs as long as it is not terminated by the user. So when done, stop it with `CTRL-c`.
 {{% /alert %}}
 
