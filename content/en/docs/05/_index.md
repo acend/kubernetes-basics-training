@@ -364,7 +364,7 @@ kubectl edit deployment example-web-python --namespace <namespace>
 
 {{% alert title="Note" color="info" %}}
 If you're not comfortable with `vi` then you can switch to another editor by setting the environment variable `EDITOR`
-or `KUBE_EDITOR`, e.g. `export EDITOR=nano`.
+or `KUBE_EDITOR`, e.g. `export KUBE_EDITOR=nano`.
 {{% /alert %}}
 
 Look for the following section and change the value for `maxUnavailable` to 0:
