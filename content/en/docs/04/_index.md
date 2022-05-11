@@ -265,16 +265,16 @@ Or go to the **Service Discovery** tab and look for your Service name. The link 
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 {{% /onlyWhenNot %}}
-
 {{% onlyWhenNot openshift %}}
 {{% onlyWhenNot netcetera %}}
+
 
 ## Task {{% param sectionnumber %}}.3 (optional): For fast learners
 
 {{% /onlyWhenNot %}}
 {{% /onlyWhenNot %}}
-
 {{% onlyWhen openshift netcetera %}}
+
 
 ## Task {{% param sectionnumber %}}.2 (optional): For fast learners
 
