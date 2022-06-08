@@ -73,13 +73,13 @@ The controllable and predictable behavior can be a perfect match for application
 Create a file named `sts_nginx-cluster.yaml` with the following definition of a StatefulSet:
 
 {{% onlyWhenNot customer %}}
-{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/01/sts_nginx-cluster.yaml" >}}{{< /highlight >}}
+{{< readfile file="/content/en/docs/09/01/sts_nginx-cluster.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
-{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/01/sts_nginx-cluster_mobi.yaml" >}}{{< /highlight >}}
+{{< readfile file="/content/en/docs/09/01/sts_nginx-cluster_mobi.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
 {{% onlyWhen netcetera %}}
-{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/01/sts_nginx-cluster_netcetera.yaml" >}}{{< /highlight >}}
+{{< readfile file="/content/en/docs/09/01/sts_nginx-cluster_netcetera.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
 
 Create the StatefulSet:

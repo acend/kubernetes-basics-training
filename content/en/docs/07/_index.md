@@ -183,14 +183,14 @@ In our case we want to create a deployment including a Service for our MySQL dat
 Save this snippet as `mariadb.yaml`:
 
 {{% onlyWhenNot customer %}}
-{{< highlight yaml >}}{{< readfile file="/content/en/docs/07/mariadb.yaml" >}}{{< /highlight >}}
+{{< readfile file="/content/en/docs/07/mariadb.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen mobi %}}
-{{< highlight yaml >}}{{< readfile file="/content/en/docs/07/mariadb-mobi.yaml" >}}{{< /highlight >}}
+{{< readfile file="/content/en/docs/07/mariadb-mobi.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
 {{% onlyWhen netcetera %}}
-{{< highlight yaml >}}{{< readfile file="/content/en/docs/07/mariadb-netcetera.yaml" >}}{{< /highlight >}}
+{{< readfile file="/content/en/docs/07/mariadb-netcetera.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
 
 
