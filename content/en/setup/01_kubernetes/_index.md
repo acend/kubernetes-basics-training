@@ -18,9 +18,8 @@ C:\Kubernetes\
 
 In Windows, the `PATH` can be set in the advanced system settings. It depends on the version:
 
-* [Windows 7](http://geekswithblogs.net/renso/archive/2009/10/21/how-to-set-the-windows-path-in-windows-7.aspx)
-* [Windows 8](http://www.itechtics.com/customize-windows-environment-variables/)
-* [Windows 10](http://techmixx.de/windows-10-umgebungsvariablen-bearbeiten/)
+* [Windows 10](https://www.thewindowsclub.com/how-to-add-edit-a-path-variable-in-windows)
+* [Windows 11](https://thecategorizer.com/windows/how-to-add-path-and-environment-variables-in-windows/)
 
 {{% alert title="Note: Windows Quick Hack" color="info" %}}
 Copy the `kubectl` binary directly into the folder `C:\Windows`.

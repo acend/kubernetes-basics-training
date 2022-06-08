@@ -72,7 +72,7 @@ A CronJob is nothing else than a resource which creates a Job at a defined time,
 
 The CronJob's definition will remind you of the Deployment's structure, or really any other control resource. There's most importantly the `schedule` specification in [cron schedule format](https://crontab.guru/), some more things you could define and then the Job's definition itself that is going to be created by the CronJob:
 
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/03/cronjob-mariadb-dump.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/03/cronjob-mariadb-dump.yaml" >}}{{< /highlight >}}
 
 {{% onlyWhenNot openshift %}}
 Further information can be found in the [Kubernetes CronJob documentation](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/).

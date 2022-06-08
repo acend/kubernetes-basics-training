@@ -56,7 +56,7 @@ YAML knows four different data types:
 
 You can enclose strings in single or double-quotes or no quotes at all. YAML recognizes unquoted numerals as integers or floating point.
 
-The `cloud-nativ` item is an array with four element, each denoted by an opening dash. The elements in `cloud-nativ` are intdented with two spaces. Indentation is how YAML denotes nesting. The number of spaces can vary from file to file, but tabs are not allowed.
+The `cloud-nativ` item is an array with four element, each denoted by an opening dash. The elements in `cloud-nativ` are indented with two spaces. Indentation is how YAML denotes nesting. The number of spaces can vary from file to file, but tabs are not allowed.
 
 Finally `kubernetes` is a dictionary that containts a string `version`, a boolean `deployed` and an array `applications` where the item of the array contains two `string`s
 

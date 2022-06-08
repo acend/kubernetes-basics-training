@@ -45,13 +45,13 @@ And add a new (sidecar) container into your DeploymentConfig:
 {{% /onlyWhen %}}
 
 {{% onlyWhenNot customer %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/07/deploy_mariadb-sidecar.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/07/deploy_mariadb-sidecar.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/07/deploy_mariadb-sidecar_mobi.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/07/deploy_mariadb-sidecar_mobi.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 {{% onlyWhen netcetera %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/07/deploy_mariadb-sidecar_netcetera.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/07/deploy_mariadb-sidecar_netcetera.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 Your Pod now has two running containers. Verify this with:
