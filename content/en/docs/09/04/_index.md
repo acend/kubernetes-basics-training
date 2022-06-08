@@ -26,7 +26,7 @@ A classic example for ConfigMaps are properties files of Java applications which
 
 First, create a file called `java.properties` with the following content:
 
-{{< highlight text >}}{{< readfile file="content/en/docs/09/04/java.properties" >}}{{< /highlight >}}
+{{< highlight text >}}{{< readfile file="/content/en/docs/09/04/java.properties" >}}{{< /highlight >}}
 Now you can create a ConfigMap based on that file:
 
 ```bash
@@ -52,7 +52,7 @@ Have a look at its content:
 
 Which should yield output similar to this one:
 
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/04/javaconfig.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/04/javaconfig.yaml" >}}{{< /highlight >}}
 
 
 ## Task {{% param sectionnumber %}}.2: Attach the ConfigMap to a container
@@ -103,14 +103,14 @@ Basically, a Deployment has to be extended with the following config:
 Here is a complete example Deployment of a sample Java app:
 
 {{% onlyWhenNot customer %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/04/spring-boot-example.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/04/spring-boot-example.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/04/spring-boot-example-mobi.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/04/spring-boot-example-mobi.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 {{% onlyWhen netcetera %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/04/spring-boot-example-netcetera.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/04/spring-boot-example-netcetera.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 
@@ -134,7 +134,7 @@ On Windows, you can use Git Bash with `winpty kubectl exec -it <pod> --namespace
 {{% /alert %}}
 
 
-{{< highlight text >}}{{< readfile file="content/en/docs/09/04/java.properties" >}}{{< /highlight >}}
+{{< highlight text >}}{{< readfile file="/content/en/docs/09/04/java.properties" >}}{{< /highlight >}}
 
 Like this, the property file can be read and used by the application inside the container. The image stays portable to other environments.
 
