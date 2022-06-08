@@ -28,14 +28,14 @@ Similar to [task 7.4](../../07.0/#task-74-import-a-database-dump), we now want t
 Let's first look at the Job resource that we want to create.
 
 {{% onlyWhenNot customer %}}
-{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/03/job-mariadb-dump.yaml" >}}{{< /highlight >}}
+{{< readfile file="/content/en/docs/09/03/job-mariadb-dump.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen mobi %}}
-{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/03/job-mariadb-dump-mobi.yaml" >}}{{< /highlight >}}
+{{< readfile file="/content/en/docs/09/03/job-mariadb-dump-mobi.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
 {{% onlyWhen netcetera %}}
-{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/03/job-mariadb-dump-netcetera.yaml" >}}{{< /highlight >}}
+{{< readfile file="/content/en/docs/09/03/job-mariadb-dump-netcetera.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
 
 
@@ -72,7 +72,7 @@ A CronJob is nothing else than a resource which creates a Job at a defined time,
 
 The CronJob's definition will remind you of the Deployment's structure, or really any other control resource. There's most importantly the `schedule` specification in [cron schedule format](https://crontab.guru/), some more things you could define and then the Job's definition itself that is going to be created by the CronJob:
 
-{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/03/cronjob-mariadb-dump.yaml" >}}{{< /highlight >}}
+{{< readfile file="/content/en/docs/09/03/cronjob-mariadb-dump.yaml" code="true" lang="yaml" >}}
 
 {{% onlyWhenNot openshift %}}
 Further information can be found in the [Kubernetes CronJob documentation](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/).
