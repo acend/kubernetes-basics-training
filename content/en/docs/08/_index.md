@@ -45,7 +45,7 @@ Because we just changed the DeploymentConfig with the `oc set` command, a new Po
 The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size.  
 Save it to `pvc.yaml`:
 
-{{< highlight yaml >}}{{< readfile file="content/en/docs/08/pvc.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="/content/en/docs/08/pvc.yaml" >}}{{< /highlight >}}
 
 And create it with:
 

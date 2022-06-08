@@ -28,14 +28,14 @@ Similar to [task 7.4](../../07.0/#task-74-import-a-database-dump), we now want t
 Let's first look at the Job resource that we want to create.
 
 {{% onlyWhenNot customer %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/03/job-mariadb-dump.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/03/job-mariadb-dump.yaml" >}}{{< /highlight >}}
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen mobi %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/03/job-mariadb-dump-mobi.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/03/job-mariadb-dump-mobi.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 {{% onlyWhen netcetera %}}
-{{< highlight yaml >}}{{< readfile file="content/en/docs/09/03/job-mariadb-dump-netcetera.yaml" >}}{{< /highlight >}}
+{{< highlight yaml >}}{{< readfile file="/content/en/docs/09/03/job-mariadb-dump-netcetera.yaml" >}}{{< /highlight >}}
 {{% /onlyWhen %}}
 
 
