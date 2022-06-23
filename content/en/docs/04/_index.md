@@ -161,9 +161,6 @@ In order to create the Ingress resource, we first need to create the file `ingre
 {{% onlyWhen mobi %}}
 {{< readfile file="/content/en/docs/04/ingress-mobi.template.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
-{{% onlyWhen netcetera %}}
-{{< readfile file="/content/en/docs/04/ingress-netcetera.template.yaml" code="true" lang="yaml" >}}
-{{% /onlyWhen %}}
 
 
 As you see in the resource definition at `spec.rules[0].http.paths[0].backend.service.name` we use the previously created `example-web-go` ClusterIP Service.
@@ -196,7 +193,6 @@ The `<appdomain>` is the default domain under which your applications will be ac
 {{% /onlyWhen %}}
 
 {{% onlyWhenNot openshift %}}
-{{% onlyWhenNot netcetera %}}
 
 
 ## Task {{% param sectionnumber %}}.2: Expose as NodePort
@@ -264,22 +260,18 @@ Or go to the **Service Discovery** tab and look for your Service name. The link 
 {{% /alert %}}
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
-{{% /onlyWhenNot %}}
 {{% onlyWhenNot openshift %}}
-{{% onlyWhenNot netcetera %}}
 
 
 ## Task {{% param sectionnumber %}}.3 (optional): For fast learners
 
 {{% /onlyWhenNot %}}
-{{% /onlyWhenNot %}}
-{{% onlyWhen openshift netcetera %}}
+{{% onlyWhen openshift %}}
 
 
 ## Task {{% param sectionnumber %}}.2 (optional): For fast learners
 
 {{% /onlyWhen %}}
-
 Have a closer look at the resources created in your namespace `<namespace>` with the following commands and try to understand them:
 
 ```bash
