@@ -128,12 +128,8 @@ image:
   registry: REGISTRY-URL
   repository: puzzle/helm-techlab/wordpress
 
-persistence:
-  size: 1Gi
 service:
   type: ClusterIP
-updateStrategy:
-  type: Recreate
 
 ingress:
   enabled: true
@@ -183,7 +179,7 @@ Subcharts are an alternative way to define dependencies within a chart: A chart 
 We are now going to deploy the application in a specific version (which is not the latest release on purpose). Also note that we define our custom `values.yaml` file with the `-f` parameter:
 
 ```bash
-helm install wordpress bitnami/wordpress -f values.yaml --version 10.7.1 --namespace <namespace>
+helm install wordpress bitnami/wordpress -f values.yaml --version 15.0.6 --namespace <namespace>
 ```
 
 Look for the newly created resources with `helm ls` and `{{% param cliToolName %}} get deploy,pod,ingress,pvc`:
