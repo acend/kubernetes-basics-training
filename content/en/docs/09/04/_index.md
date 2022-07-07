@@ -109,9 +109,6 @@ Here is a complete example Deployment of a sample Java app:
 {{% onlyWhen mobi %}}
 {{< readfile file="/content/en/docs/09/04/spring-boot-example-mobi.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
-{{% onlyWhen netcetera %}}
-{{< readfile file="/content/en/docs/09/04/spring-boot-example-netcetera.yaml" code="true" lang="yaml" >}}
-{{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 
 

@@ -189,9 +189,6 @@ Save this snippet as `mariadb.yaml`:
 {{% onlyWhen mobi %}}
 {{< readfile file="/content/en/docs/07/mariadb-mobi.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
-{{% onlyWhen netcetera %}}
-{{< readfile file="/content/en/docs/07/mariadb-netcetera.yaml" code="true" lang="yaml" >}}
-{{% /onlyWhen %}}
 
 
 Execute it with:

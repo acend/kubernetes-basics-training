@@ -58,20 +58,6 @@ acendTraining:
         appname: openshift-basics
         domain: training.acend.ch
     -
-      name: netcetera
-      replicaCount: 1
-      image:
-        repository: quay.io/acend/kubernetes-basics-training
-        pullPolicy: Always
-        tag: ""
-        tagsuffix: "-netcetera"
-      ingress:
-        annotations:
-          kubernetes.io/ingress.class: nginx-public
-        secretOverride: acend-wildcard
-        appname: kubernetes-basics-netcetera
-        domain: training.acend.ch
-    -
       name: techlab
       replicaCount: 1
       image:

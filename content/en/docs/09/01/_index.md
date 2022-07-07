@@ -78,9 +78,6 @@ Create a file named `sts_nginx-cluster.yaml` with the following definition of a 
 {{% onlyWhen mobi %}}
 {{< readfile file="/content/en/docs/09/01/sts_nginx-cluster_mobi.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
-{{% onlyWhen netcetera %}}
-{{< readfile file="/content/en/docs/09/01/sts_nginx-cluster_netcetera.yaml" code="true" lang="yaml" >}}
-{{% /onlyWhen %}}
 
 Create the StatefulSet:
   

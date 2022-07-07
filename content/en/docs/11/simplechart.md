@@ -30,19 +30,6 @@ image:
 ```
 
 {{% /onlyWhen %}}
-{{% onlyWhen netcetera %}}
-Because you cannot pull the `nginx` container image on your cluster, you have to use the `ddocker-registry-mirror.netcetera.com/nginx/nginx-unprivileged:1.18-alpine` container image. Change your `mychart/values.yaml` to match the following:
-
-```yaml
-[...]
-image:
-  repository: docker-registry-mirror.netcetera.com/nginx/nginx-unprivileged
-  tag: 1.18-alpine
-  pullPolicy: IfNotPresent
-[...]
-```
-
-{{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 The default image freshly created chart deploys is a simple nginx image listening on port `80`.
 
@@ -255,36 +242,11 @@ ingress:
 ```
 
 {{% /onlyWhen %}}
-{{% onlyWhen netcetera %}}
-Therefore, we need to change this value inside our `values.yaml` file.
-
-```yaml
-...
-ingress:
-  enabled: true
-  annotations: {}
-    kubernetes.io/ingress.class: "nginx-external"
-  hosts:
-    - host: mychart-<namespace>.training.test.netcetera.com
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls:
-    - secretName: training.test.netcetera.com-cert
-      hosts:
-        - mychart-<namespace>.training.test.netcetera.com
-...
-```
-
-{{% /onlyWhen %}}
 
 {{% alert title="Note" color="info" %}}
 Make sure to set the proper value as hostname. `<appdomain>` will be provided by the trainer.
 {{% onlyWhen mobi %}}
 Use `<namespace>.<appdomain>` as your hostname. It might take some time until your ingress hostname is accessible, as the DNS name first has to be propagated correctly.
-{{% /onlyWhen %}}
-{{% onlyWhen netcetera %}}
-Use `<namespace>.training.test.netcetera.com` as your hostname.
 {{% /onlyWhen %}}
 {{% /alert %}}
 
@@ -314,10 +276,6 @@ Check whether the ingress was successfully deployed by accessing the URL `http:/
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
 Check whether the ingress was successfully deployed by accessing the URL `https://mychart-<namespace>.<appdomain>/`
-
-{{% /onlyWhen %}}
-{{% onlyWhen netcetera %}}
-Check whether the ingress was successfully deployed by accessing the URL `https://mychart-<namespace>.training.test.netcetera.com`
 
 {{% /onlyWhen %}}
 
