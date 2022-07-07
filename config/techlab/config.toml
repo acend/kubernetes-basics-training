@@ -1,5 +1,21 @@
+[module]
+  [module.hugoVersion]
+    extended = true
+    min = "0.100.0"
+  [[module.imports]]
+    path = "github.com/appuio/docsy-appuio"
+    disable = false
+  [[module.imports]]
+    path = "github.com/acend/docsy-plus"
+    disable = false
+  [[module.imports]]
+    path = "github.com/google/docsy"
+    disable = false
+  [[module.imports]]
+    path = "github.com/google/docsy/dependencies"
+    disable = false
+
 title = "APPUiO OpenShift Techlab"
-theme = ["docsy-appuio", "docsy-plus", "docsy"]
 
 [Languages]
 [Languages.en]
