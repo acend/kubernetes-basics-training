@@ -7,8 +7,8 @@ onlyWhenNot: techlab
 
 In this lab, we are going to look at ResourceQuotas and LimitRanges. As {{% param distroName %}} users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.
 
-{{% alert title="Note" color="info" %}}
-For this lab to work we are using the existing Namespace `<username>-quota`. Please make sure to always use this namespace with your commands
+{{% alert title="Warning" color="warning" %}}
+For this lab to work it is vital that you use the namespace `<username>-quota`!
 {{% /alert %}}
 
 {{% onlyWhen rancher %}}
@@ -146,7 +146,12 @@ The possibility of enforcing minimum and maximum resources and defining Resource
 
 ### Task {{% param sectionnumber %}}.1: Namespace
 
-Check whether your Namespace contains a LimitRange:
+{{% alert title="Warning" color="warning" %}}
+Remember to use the namespace `<username>-quota`, otherwise this lab will not work!
+{{% /alert %}}
+
+
+Analyse the LimitRange in your Namespace (there has to be one, if not you are using the wrong Namespace):
 
 ```bash
 {{% param cliToolName %}} describe limitrange --namespace <namespace>
@@ -164,7 +169,7 @@ Container   cpu       -    -    10m              100m           -
 ```
 
 
-Check whether a ResourceQuota exists in your Namespace:
+Check for the ResourceQuota in your Namespace (there has to be one, if not you are using the wrong Namespace):
 
 ```bash
 {{% param cliToolName %}} describe quota --namespace <namespace>
@@ -209,7 +214,7 @@ spec:
 Apply this resource with:
 
 ```bash
-{{% param cliToolName %}} apply -f pod_stress2much.yaml
+{{% param cliToolName %}} apply -f pod_stress2much.yaml --namespace <namespace>
 ```
 
 
@@ -316,7 +321,7 @@ spec:
 And apply this again with:
 
 ```bash
-{{% param cliToolName %}} apply -f pod_stress.yaml
+{{% param cliToolName %}} apply -f pod_stress.yaml --namespace <namespace>
 ```
 
 {{% alert title="Note" color="info" %}}
@@ -358,7 +363,7 @@ spec:
 ```
 
 ```bash
-{{% param cliToolName %}} apply -f pod_overbooked.yaml
+{{% param cliToolName %}} apply -f pod_overbooked.yaml --namespace <namespace>
 ```
 
 We are immediately confronted with an error message:
@@ -423,7 +428,7 @@ spec:
 And apply with:
 
 ```bash
-{{% param cliToolName %}} apply -f pod_overbooked.yaml
+{{% param cliToolName %}} apply -f pod_overbooked.yaml --namespace <namespace>
 ```
 
 Even though the limits of both Pods combined overstretch the quota, the requests do not and so the Pods are allowed to run.
