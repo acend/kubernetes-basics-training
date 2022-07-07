@@ -7,7 +7,7 @@ onlyWhenNot: techlab
 
 In this lab, we are going to look at ResourceQuotas and LimitRanges. As {{% param distroName %}} users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.
 
-{{% alert title="Note" color="info" %}}
+{{% alert title="Warning" color="warning" %}}
 For this lab to work we are using the existing Namespace `<username>-quota`. Please make sure to always use this namespace with your commands
 {{% /alert %}}
 
