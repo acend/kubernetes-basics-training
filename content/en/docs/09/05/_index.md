@@ -44,13 +44,13 @@ Defining ResourceQuotas makes sense when the cluster administrators want to have
 In order to check for defined quotas in your Namespace, simply see if there are any of type ResourceQuota:
 
 ```bash
-{{% param cliToolName %}} get resourcequota --namespace <namespace>-quota
+{{% param cliToolName %}} get resourcequota --namespace <namespace>
 ```
 
 To show in detail what kinds of limits the quota imposes:
 
 ```bash
-{{% param cliToolName %}} describe resourcequota <quota-name> --namespace <namespace>-quota
+{{% param cliToolName %}} describe resourcequota <quota-name> --namespace <namespace>
 ```
 
 {{% onlyWhenNot openshift %}}
@@ -149,7 +149,7 @@ The possibility of enforcing minimum and maximum resources and defining Resource
 Check whether your Namespace contains a LimitRange:
 
 ```bash
-{{% param cliToolName %}} describe limitrange --namespace <namespace>-quota
+{{% param cliToolName %}} describe limitrange --namespace <namespace>
 ```
 
 The command above should output this (name and Namespace will vary):
@@ -167,7 +167,7 @@ Container   cpu       -    -    10m              100m           -
 Check whether a ResourceQuota exists in your Namespace:
 
 ```bash
-{{% param cliToolName %}} describe quota --namespace <namespace>-quota
+{{% param cliToolName %}} describe quota --namespace <namespace>
 ```
 
 The command above will produce an output similar to the following (name and namespace may vary)
@@ -209,7 +209,7 @@ spec:
 Apply this resource with:
 
 ```bash
-{{% param cliToolName %}} apply -f pod_stress2much.yaml --namespace <namespace>-quota
+{{% param cliToolName %}} apply -f pod_stress2much.yaml --namespace <namespace>
 ```
 
 
@@ -220,7 +220,7 @@ You have to actively terminate the following command pressing `CTRL+c` on your k
 Watch the Pod's creation with:
 
 ```bash
-{{% param cliToolName %}} get pods --watch --namespace <namespace>-quota
+{{% param cliToolName %}} get pods --watch --namespace <namespace>
 ```
 
 You should see something like the following:
@@ -238,7 +238,7 @@ stress2much   0/1     CrashLoopBackOff    1          20s
 The `stress2much` Pod was OOM (out of memory) killed. We can see this in the `STATUS` field. Another way to find out why a Pod was killed is by checking its status. Output the Pod's YAML definition:
 
 ```bash
-{{% param cliToolName %}} get pod stress2much --output yaml --namespace <namespace>-quota
+{{% param cliToolName %}} get pod stress2much --output yaml --namespace <namespace>
 ```
 
 Near the end of the output you can find the relevant status part:
@@ -256,7 +256,7 @@ Near the end of the output you can find the relevant status part:
 So let's look at the numbers to verify the container really had too little memory. We started the `stress` command using the parameter `--vm-bytes 85M` which means the process wants to allocate 85 megabytes of memory. Again looking at the Pod's YAML definition with:
 
 ```bash
-{{% param cliToolName %}} get pod stress2much --output yaml --namespace <namespace>-quota
+{{% param cliToolName %}} get pod stress2much --output yaml --namespace <namespace>
 ```
 
 reveals the following values:
@@ -281,7 +281,7 @@ First, delete the `stress2much` pod with:
 
 
 ```bash
-{{% param cliToolName %}} delete pod stress2much --namespace <namespace>-quota
+{{% param cliToolName %}} delete pod stress2much --namespace <namespace>
 ```
 
 Then create a new Pod where the requests and limits are set:
@@ -316,7 +316,7 @@ spec:
 And apply this again with:
 
 ```bash
-{{% param cliToolName %}} apply -f pod_stress.yaml --namespace <namespace>-quota
+{{% param cliToolName %}} apply -f pod_stress.yaml --namespace <namespace>
 ```
 
 {{% alert title="Note" color="info" %}}
@@ -358,7 +358,7 @@ spec:
 ```
 
 ```bash
-{{% param cliToolName %}} apply -f pod_overbooked.yaml --namespace <namespace>-quota
+{{% param cliToolName %}} apply -f pod_overbooked.yaml --namespace <namespace>
 ```
 
 We are immediately confronted with an error message:
@@ -372,7 +372,7 @@ The default request value of 16 MiB of memory that was automatically set on the 
 Let's have a closer look at the quota with:
 
 ```bash
-{{% param cliToolName %}} get quota --output yaml --namespace <namespace>-quota
+{{% param cliToolName %}} get quota --output yaml --namespace <namespace>
 ```
 
 which should output the following YAML definition:
@@ -423,7 +423,7 @@ spec:
 And apply with:
 
 ```bash
-{{% param cliToolName %}} apply -f pod_overbooked.yaml --namespace <namespace>-quota
+{{% param cliToolName %}} apply -f pod_overbooked.yaml --namespace <namespace>
 ```
 
 Even though the limits of both Pods combined overstretch the quota, the requests do not and so the Pods are allowed to run.
