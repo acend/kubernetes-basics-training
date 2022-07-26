@@ -69,6 +69,7 @@ acendTraining:
         annotations:
           kubernetes.io/ingress.class: nginx-public
           kubernetes.io/tls-acme: "true"
+          cert-manager.io/cluster-issuer: acend-letsencrypt
         appname: techlab
         domain: training.acend.ch
         domainmain: appuio.ch
