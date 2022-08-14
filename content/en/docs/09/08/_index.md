@@ -1,5 +1,5 @@
 ---
-title: "9.8 Security Context"
+title: "9.8 Security Contexts"
 weight: 98
 sectionnumber: 9.8
 onlyWhenNot: techlab
@@ -66,6 +66,6 @@ exit
 
 ## Task {{% param sectionnumber %}}.2: Advanced
 
-As we are limited, in terms of permission, on the lab cluster wa can't show the other security contexts content.
+As we are limited, in terms of permission, on the lab cluster we can't show all the other security contexts in a lab.
 
 Check the documentation at kubernetes.io to view all the examples for [Security Contexts](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/).
