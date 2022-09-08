@@ -1,7 +1,7 @@
 ---
-title: "9.8 Security Contexts"
-weight: 98
-sectionnumber: 9.8
+title: "10.2 Security Contexts"
+weight: 102
+sectionnumber: 10.2
 onlyWhenNot: techlab
 ---
 
@@ -20,7 +20,7 @@ In this lab you will learn where to configure and how to use some of these types
 ## Task {{% param sectionnumber %}}.1: Access Control
 
 Create a new pod by using this example:
-{{< readfile file="/content/en/docs/09/08/control_pod.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/10/02/control_pod.yaml" code="true" lang="yaml" >}}
 
 You can see the different value entries in the 'securityContext' section, let's figure how what do they do. So create the pod and connect into the shell:
 
