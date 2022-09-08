@@ -1,23 +1,15 @@
 ---
-title: "11. Helm"
+title: "11. Deployment strategies"
 weight: 11
 sectionnumber: 11
 onlyWhenNot: techlab
 ---
 
-[Helm](https://github.com/helm/helm) is a [Cloud Native Foundation](https://www.cncf.io/) project to define, install and manage applications in Kubernetes.
+In this lab, we are going to have a look at the different Deployment strategies.
+
+This [document](https://www.cncf.io/wp-content/uploads/2018/03/CNCF-Presentation-Template-K8s-Deployment.pdf) should give you a good start. For more details, have a look at the [examples](https://github.com/ContainerSolutions/k8s-deployment-strategies) or use [this demo](https://github.com/acend/deployment-strategies-demo) in which the different strategies are implemented as Helm charts.
 
 
-## tl;dr
+## Task {{% param sectionnumber %}}.1: Apply deployment strategies
 
-Helm is a Package Manager for Kubernetes
-
-* package multiple K8s resources into a single logical deployment unit
-* ... but it's not just a Package Manager
-
-Helm is a Deployment Management for Kubernetes
-
-* do a repeatable deployment
-* manage dependencies: reuse and share
-* manage multiple configurations
-* update, rollback and test application deployments
+Apply some deployment strategies to the example from [lab 5](../05).

@@ -1,7 +1,7 @@
 ---
-title: "11.1 Helm Overview"
-weight: 111
-sectionnumber: 11.1
+title: "12.1 Helm Overview"
+weight: 121
+sectionnumber: 12.1
 ---
 
 Ok, let's start with Helm.
