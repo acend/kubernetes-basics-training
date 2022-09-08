@@ -1,7 +1,7 @@
 ---
-title: "11.2 CLI Installation"
-weight: 112
-sectionnumber: 11.2
+title: "12.2 CLI Installation"
+weight: 122
+sectionnumber: 12.2
 ---
 
 This guide shows you how to install the `helm` CLI tool. `helm` can be installed either from source or from pre-built binary releases.

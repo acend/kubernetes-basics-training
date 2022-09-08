@@ -1,7 +1,7 @@
 ---
-title: "13. Kubernetes and OpenShift differences"
-weight: 13
-sectionnumber: 13
+title: "14. Kubernetes and OpenShift differences"
+weight: 14
+sectionnumber: 14
 onlyWhen: openshift
 onlyWhenNot: techlab
 ---
@@ -75,7 +75,7 @@ Make use of the Kubernetes documentation about Ingress resources.
 
 Your Ingress resource should look similar to this:
 
-{{< readfile file="/content/en/docs/13_openshift/ingress_v1.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/14_openshift/ingress_v1.yaml" code="true" lang="yaml" >}}
 
 
 ### Deployments and DeploymentConfigs
