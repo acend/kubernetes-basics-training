@@ -8,11 +8,11 @@ menu:
 
 {{< blocks/section color="light">}}
 
+{{% onlyWhenNot openshift %}}
+{{% onlyWhenNot mobi %}}
 {{% blocks/feature icon="fa-magic" url="https://drive.google.com/uc?export=download&id=1UBQgHYKdvWYy5TnUaoBdqMZuKjzIzvqv" title="kubectl Cheat Sheet" %}}
 {{% /blocks/feature %}}
 
-{{% onlyWhenNot openshift %}}
-{{% onlyWhenNot mobi %}}
 {{% blocks/feature icon="fa-chalkboard-teacher" url="https://drive.google.com/uc?export=download&id=1-SQRUoPllLj5ceet00GUk2WiNzzd0EGt" title="Kubernetes Basics" %}}
 {{% /blocks/feature %}}
 
@@ -35,6 +35,9 @@ menu:
 
 {{% onlyWhen openshift %}}
 {{% onlyWhenNot techlab %}}
+{{% blocks/feature icon="fa-magic" url="https://drive.google.com/uc?export=download&id=1UBQgHYKdvWYy5TnUaoBdqMZuKjzIzvqv" title="kubectl Cheat Sheet" %}}
+{{% /blocks/feature %}}
+
 {{% blocks/feature icon="fa-chalkboard-teacher" url="https://drive.google.com/uc?export=download&id=1RAVHNu8rSJZpdUcYnh1sQZPZGohN6Dg7" title="OpenShift Basics" %}}
 {{% /blocks/feature %}}
 
