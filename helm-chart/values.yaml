@@ -58,6 +58,20 @@ acendTraining:
         appname: openshift-basics
         domain: training.acend.ch
     -
+      name: sbb
+      replicaCount: 1
+      image:
+        repository: quay.io/acend/kubernetes-basics-training
+        pullPolicy: Always
+        tag: ""
+        tagsuffix: "-sbb"
+      ingress:
+        annotations:
+          kubernetes.io/ingress.class: nginx-public
+        secretOverride: acend-wildcard
+        appname: openshift-basics-sbb
+        domain: training.acend.ch
+    -
       name: techlab
       replicaCount: 1
       image:
