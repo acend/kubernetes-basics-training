@@ -2,7 +2,7 @@
 title: "10.1 Network Policies"
 weight: 101
 sectionnumber: 10.1
-OnlyWhenNot: techlab
+OnlyWhenNot: techlab,sbb
 ---
 
 ## Network Policies

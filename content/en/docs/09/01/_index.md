@@ -2,7 +2,7 @@
 title: "9.1 StatefulSets"
 weight: 91
 sectionnumber: 9.1
-onlyWhenNot: techlab
+onlyWhenNot: techlab,sbb
 ---
 
 Stateless applications or applications with a stateful backend can be described as Deployments.

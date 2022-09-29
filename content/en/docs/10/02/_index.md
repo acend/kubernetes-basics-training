@@ -2,7 +2,7 @@
 title: "10.2 Security Contexts"
 weight: 102
 sectionnumber: 10.2
-onlyWhenNot: techlab
+onlyWhenNot: techlab,sbb
 ---
 
 In the concept of security context for a pod or container, there are severals thing to consider:
