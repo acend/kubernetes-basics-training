@@ -95,6 +95,17 @@ jobs:
           tags: |
             quay.io/acend/kubernetes-basics-training:latest-openshift
       -
+        name: Build SBB Version
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          build-args: |
+            TRAINING_HUGO_ENV=sbb
+          push: true
+          tags: |
+            quay.io/acend/kubernetes-basics-training:latest-sbb
+      -
         name: Login to quay.io appuio organization
         uses: docker/login-action@v2
         with:
