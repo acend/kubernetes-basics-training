@@ -60,9 +60,6 @@ If you don't want to memorize all `oc` options (and have a Red Hat Login) then u
 
 {{% onlyWhenNot openshift %}}
 Have a look at the optional tools described in {{<link "optional-kubernetes-power-tools">}} if you're interested.
-
-
-
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 Have a look at the optional tools mentioned in {{<link "more-tools-to-work-with-openshift">}} if you're interested.
