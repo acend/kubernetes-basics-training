@@ -6,7 +6,7 @@ languageCode = "en-us"
 title = "Openshift Basics Training"
 
 [params]
-enabledModule = "base openshift sbb"
+enabledModule = "base openshift sbb techlabsbb"
 distroName = "OpenShift"
 cliToolName = "oc"
 automaticSectionNumbers = true
