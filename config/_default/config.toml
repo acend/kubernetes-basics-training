@@ -71,6 +71,7 @@ copyright = "acend gmbh"
 github_repo = "https://github.com/acend/kubernetes-basics-training"
 github_branch = "main"
 
+automaticSectionNumbers = true
 enabledModule = "base cloudscale"
 distroName = "Kubernetes"
 cliToolName = "kubectl"
