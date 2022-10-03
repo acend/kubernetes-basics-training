@@ -1,5 +1,5 @@
 ---
-title: "Installation for Linux"
+title: "Linux"
 weight: 5
 type: docs
 onlyWhen: openshift
@@ -74,4 +74,4 @@ sudo dnf install bash-completion
 
 ## Verification
 
-Now, [verify your installation](../04/).
+Now, verify your installation in {{<link "verify-the-installation">}}.

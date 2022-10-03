@@ -13,4 +13,4 @@ onlyWhen: openshift
 
 ## Next steps
 
-When you're ready to go, head on over to the {{<link "labs">}} and begin with the training!
+When you're ready to go, head on over to the [labs](../../docs/) and begin with the training!

@@ -1,5 +1,5 @@
 ---
-title: "Installation for macOS"
+title: "macOS"
 weight: 4
 type: docs
 onlyWhen: openshift
@@ -40,4 +40,4 @@ With Homebrew, use `brew install openshift-cli`.
    Check if you have a directory `~\.kube` and rename it to something like `~\.kube_backup`.
    You can undo this after the training.
 
-1. [Verify your installation](../04/).
+1. Now, verify your installation in {{<link "verify-the-installation">}}.

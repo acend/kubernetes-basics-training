@@ -1,6 +1,7 @@
 ---
 title: "Installation"
 weight: 1
+type: docs
 ---
 
 ## Command line tool
