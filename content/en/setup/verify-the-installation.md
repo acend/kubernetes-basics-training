@@ -2,7 +2,6 @@
 title: "Verify the installation"
 weight: 6
 type: docs
-sectionnumber: 1
 ---
 
 ## Verify the installation

@@ -2,7 +2,6 @@
 title: "Installation for macOS"
 weight: 4
 type: docs
-sectionnumber: 1
 onlyWhen: openshift
 ---
 

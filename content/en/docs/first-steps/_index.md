@@ -6,7 +6,7 @@ weight: 2
 In this lab, we will interact with the {{% param distroName %}} cluster for the first time.
 
 {{% alert title="Warning" color="warning" %}}
-Please make sure you completed [the setup](../../setup/) before you continue with this lab.
+Please make sure you completed {{<link "setup">}} before you continue with this lab.
 {{% /alert %}}
 
 

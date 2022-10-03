@@ -1,12 +1,11 @@
 ---
-title: "Optional power tools for kubectl"
+title: "Optional Kubernetes power tools"
 weight: 7
 type: docs
-sectionnumber: 1
 onlyWhenNot: openshift
 ---
 
-## Optional power tools for kubectl
+## Optional Kubernetes power tools
 
 `kubectx` and `kubens` are two handy shell scripts which let you easily switch between Kubernetes contexts and namespaces. See <https://github.com/ahmetb/kubectx> for detailed instructions.
 
@@ -32,4 +31,4 @@ chmod +x ~/bin/kubectx ~/bin/kubens
 
 ## Next steps
 
-When you're ready to go, head on over to the [labs](../../docs/) and begin with the training!
+When you're ready to go, head on over to the {{<link "labs">}} and begin with the training!

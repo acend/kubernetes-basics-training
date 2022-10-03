@@ -2,7 +2,6 @@
 title: "Installation for Windows"
 weight: 3
 type: docs
-sectionnumber: 1
 onlyWhenNot: openshift
 ---
 
