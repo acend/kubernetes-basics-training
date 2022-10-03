@@ -1,7 +1,7 @@
 ---
 title: "Deployment strategies"
 weight: 11
-onlyWhenNot: techlabsbb
+onlyWhenNot: groupsbbtechlab
 ---
 
 In this lab, we are going to have a look at the different Deployment strategies.

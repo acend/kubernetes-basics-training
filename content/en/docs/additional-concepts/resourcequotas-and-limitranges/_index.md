@@ -1,7 +1,6 @@
 ---
 title: "ResourceQuotas and LimitRanges"
 weight: 95
-onlyWhenNot: techlab
 ---
 
 In this lab, we are going to look at ResourceQuotas and LimitRanges. As {{% param distroName %}} users, we are most certainly going to encounter the limiting effects that ResourceQuotas and LimitRanges impose.

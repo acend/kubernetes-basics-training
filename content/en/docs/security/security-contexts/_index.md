@@ -1,7 +1,6 @@
 ---
 title: "Security contexts"
 weight: 102
-onlyWhenNot: techlabsbb
 ---
 
 In the concept of security context for a pod or container, there are severals thing to consider:

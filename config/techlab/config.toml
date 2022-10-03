@@ -28,7 +28,7 @@ url = "https://appuio.ch"
 [params]
 copyright = "APPUiO"
 imagePrefix = "appuio_"
-enabledModule = "base openshift techlab techlabsbb"
+enabledModule = "base openshift techlab groupsbbtechlab"
 distroName = "OpenShift"
 cliToolName = "oc"
 

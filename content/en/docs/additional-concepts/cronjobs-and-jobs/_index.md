@@ -1,7 +1,7 @@
 ---
 title: "CronJobs and Jobs"
 weight: 93
-onlyWhenNot: techlabsbb
+onlyWhenNot: sbb
 ---
 
 Jobs are different from normal Deployments: Jobs execute a time-constrained operation and report the result as soon as they are finished; think of a batch job. To achieve this, a Job creates a Pod and runs a defined command. A Job isn't limited to creating a single Pod, it can also create multiple Pods. When a Job is deleted, the Pods started (and stopped) by the Job are also deleted.

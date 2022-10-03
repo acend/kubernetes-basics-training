@@ -1,7 +1,6 @@
 ---
 title: "Network policies"
 weight: 101
-onlyWhenNot: techlabsbb
 ---
 
 ## Network Policies
