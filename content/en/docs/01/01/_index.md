@@ -36,8 +36,8 @@ cloud-nativ:
   - cloud
   - container
 kubernetes:
-version: "1.22.0"
-deployed: true
+  version: "1.22.0"
+  deployed: true
 applications:
   - name: "My App"
     location: "public cloud"
