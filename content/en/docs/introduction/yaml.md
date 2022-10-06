@@ -35,11 +35,11 @@ cloud-nativ:
   - cloud
   - container
 kubernetes:
-version: "1.22.0"
-deployed: true
-applications:
-  - name: "My App"
-    location: "public cloud"
+  version: "1.22.0"
+  deployed: true
+  applications:
+    - name: "My App"
+      location: "public cloud"
 ```
 
 The file starts with three dashes. These dashes indicate the start of a new YAML document. YAML supports multiple documents, and compliant parsers will recognize each set of dashes as the beginning of a new one.
