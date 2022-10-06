@@ -24,6 +24,3 @@ server {
         return 301 /materials/;
     }
 }
-
-
-
