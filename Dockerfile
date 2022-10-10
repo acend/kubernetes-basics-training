@@ -35,4 +35,5 @@ LABEL org.opencontainers.image.licenses CC-BY-SA-4.0
 EXPOSE 8080
 
 COPY --from=builder /src/public /usr/share/nginx/html
+COPY --from=builder /src/nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=wkhtmltopdf /pdf.pdf /usr/share/nginx/html/pdf/pdf.pdf
