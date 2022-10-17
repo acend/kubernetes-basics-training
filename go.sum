@@ -13,8 +13,12 @@ github.com/appuio/docsy-appuio v0.0.0-20220406070952-30ec4d3b2e21 h1:gE7yDOEmP5c
 github.com/appuio/docsy-appuio v0.0.0-20220406070952-30ec4d3b2e21/go.mod h1:woqA4bFiktOhfdbK8X/UUP0aSwF8CbjDn9aVpFl2c0E=
 github.com/google/docsy v0.4.0 h1:Eyt2aiDC1fnw/Qq/9xnIqUU5n5Yyk4c8gX3nBDdTv/4=
 github.com/google/docsy v0.4.0/go.mod h1:vJjGkHNaw9bO42gpFTWwAUzHZWZEVlK46Kx7ikY5c7Y=
+github.com/google/docsy v0.5.0 h1:ND+6sYJD1VYEEM8olBdJLPIyQrPDeDkC0PhzuZTVZMs=
+github.com/google/docsy v0.5.0/go.mod h1:RKikAcSUR3b/40oqYfweD9uiNYTUirEKaCgLiEXMbQo=
 github.com/google/docsy/dependencies v0.4.0 h1:FXwyjtuFfPIPBauU2t7uIAgS6VYfJf+OD5pzxGvkQsQ=
 github.com/google/docsy/dependencies v0.4.0/go.mod h1:2zZxHF+2qvkyXhLZtsbnqMotxMukJXLaf8fAZER48oo=
+github.com/google/docsy/dependencies v0.5.0 h1:Qy8aLsuFHHfUyOfp3i2CDZRCgIKFSvt1M2oEBmh4eZo=
+github.com/google/docsy/dependencies v0.5.0/go.mod h1:2zZxHF+2qvkyXhLZtsbnqMotxMukJXLaf8fAZER48oo=
 github.com/puzzle/docsy-puzzle v0.0.0-20220406081603-2cd9f7c8d79a h1:ivuXhwliGTmfp4Zn9dqHiIHPUbniLhsbSYKrsQIoFKM=
 github.com/puzzle/docsy-puzzle v0.0.0-20220406081603-2cd9f7c8d79a/go.mod h1:FHtQEgHYfsiO5d1XXaF/mD5C51PQw1kea8JwTGBs93o=
 github.com/twbs/bootstrap v4.6.1+incompatible/go.mod h1:fZTSrkpSf0/HkL0IIJzvVspTt1r9zuf7XlZau8kpcY0=
