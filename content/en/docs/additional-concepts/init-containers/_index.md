@@ -1,7 +1,6 @@
 ---
 title: "Init containers"
 weight: 96
-onlyWhenNot: techlab
 ---
 
 

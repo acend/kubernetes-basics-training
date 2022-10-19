@@ -1,0 +1,15 @@
+title = "OpenShift Basics Training"
+languageCode = "en-us"
+
+[Languages]
+[Languages.en]
+title = "Openshift Basics Training"
+
+[params]
+enabledModule = "base openshift sbb ocplight"
+distroName = "OpenShift"
+cliToolName = "oc"
+automaticSectionNumbers = true
+
+[params.pdf]
+title="OpenShift Basics Training"
