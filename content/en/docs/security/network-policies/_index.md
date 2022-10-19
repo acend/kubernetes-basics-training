@@ -1,6 +1,7 @@
 ---
 title: "Network policies"
 weight: 101
+onlyWhenNot: techlab
 ---
 
 ## Network Policies
@@ -8,7 +9,7 @@ weight: 101
 One CNI function is the ability to enforce network policies and implement an in-cluster zero-trust container strategy. Network policies are a default Kubernetes object for controlling network traffic, but a CNI such as [Cilium](https://cilium.io/) or [Calico](https://www.tigera.io/project-calico/) is required to enforce them. We will demonstrate traffic blocking with our simple app.
 
 {{% alert title="Note" color="primary" %}}
-If you are not yet familiar with Kubernetes Network Policies we suggest going to the [Kubernetes Documentation](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
+If you are not yet familiar with Kubernetes Network Policies we suggest going to the [Kubernetes Documentation](https://kubernetes.io/docs/concepts/services-networking/network-policies/).
 {{% /alert %}}
 
 

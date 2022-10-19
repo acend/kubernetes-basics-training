@@ -1,10 +1,12 @@
-FROM klakegg/hugo:0.104.0-ext-ubuntu AS builder
+FROM klakegg/hugo:0.104.3-ext-ubuntu AS builder
 
 ARG TRAINING_HUGO_ENV=default
 
 COPY . /src
 
 RUN hugo --environment ${TRAINING_HUGO_ENV} --minify
+
+RUN find /src/public/docs/ -regex '.*\(jpg\|jpeg\|png\|gif\)' -exec cp "{}" /src/public/pdf/ \; 
 
 FROM ubuntu:jammy AS wkhtmltopdf
 RUN apt-get update \
@@ -35,4 +37,5 @@ LABEL org.opencontainers.image.licenses CC-BY-SA-4.0
 EXPOSE 8080
 
 COPY --from=builder /src/public /usr/share/nginx/html
+COPY --from=builder /src/nginx.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=wkhtmltopdf /pdf.pdf /usr/share/nginx/html/pdf/pdf.pdf

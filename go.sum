@@ -7,8 +7,8 @@ github.com/acend/docsy-plus v0.0.0-20220428195954-da462686a1f4 h1:NH8RTlmPMcTPxf
 github.com/acend/docsy-plus v0.0.0-20220428195954-da462686a1f4/go.mod h1:FUTTPmi3S92rVMbCYqXdGNxixdyqACBrFTK7dOuMttQ=
 github.com/acend/docsy-plus v0.0.0-20220803122230-63e7228e737f h1:RMe3ZZ9KHUImhufaGViI6gnSTraEk+xvlTu9ae1lbys=
 github.com/acend/docsy-plus v0.0.0-20220803122230-63e7228e737f/go.mod h1:YDHqf+DCZcx5HvKGzaBluPmLfgHQ2GKkYjggvF98jR4=
-github.com/acend/docsy-plus v0.0.0-20220929114227-9315faa5e132 h1:tea6FI/G5c3oi/3Es3pMyi95LQJKOHVb2vbnz3yLCBo=
-github.com/acend/docsy-plus v0.0.0-20220929114227-9315faa5e132/go.mod h1:YDHqf+DCZcx5HvKGzaBluPmLfgHQ2GKkYjggvF98jR4=
+github.com/acend/docsy-plus v0.0.0-20221007192802-3b68a39bfb09 h1:6L6dny1gmnYw6sEZBh7gSCzbmdpOVdhN5sR1ZFt1Kj0=
+github.com/acend/docsy-plus v0.0.0-20221007192802-3b68a39bfb09/go.mod h1:YDHqf+DCZcx5HvKGzaBluPmLfgHQ2GKkYjggvF98jR4=
 github.com/appuio/docsy-appuio v0.0.0-20220406070952-30ec4d3b2e21 h1:gE7yDOEmP5ceIXmkC/+h3SqMvEp9PriveOV5BF9X7YA=
 github.com/appuio/docsy-appuio v0.0.0-20220406070952-30ec4d3b2e21/go.mod h1:woqA4bFiktOhfdbK8X/UUP0aSwF8CbjDn9aVpFl2c0E=
 github.com/google/docsy v0.4.0 h1:Eyt2aiDC1fnw/Qq/9xnIqUU5n5Yyk4c8gX3nBDdTv/4=
