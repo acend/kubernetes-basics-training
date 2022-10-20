@@ -66,6 +66,9 @@ url = "https://www.acend.ch"
   # Uncomment if you want your chosen highlight style used for code blocks without a specified language
   # guessSyntax = "true"
 
+[[cascade]]
+no_list = true
+
 [params]
 copyright = "acend gmbh"
 github_repo = "https://github.com/acend/kubernetes-basics-training"
