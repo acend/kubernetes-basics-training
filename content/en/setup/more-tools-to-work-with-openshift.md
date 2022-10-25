@@ -1,6 +1,6 @@
 ---
 title: "More tools to work with OpenShift"
-weight: 7
+weight: 30
 type: docs
 onlyWhen: openshift
 ---

@@ -1,6 +1,6 @@
 ---
 title: "macOS"
-weight: 4
+weight: 12
 type: docs
 onlyWhenNot: openshift
 ---
@@ -38,4 +38,4 @@ export PATH=$PATH:[path to kubectl]
 
 ## Verification
 
-Now, verify your installation in {{<link "verify-the-installation">}}.
+Now, verify your installation in {{<link "verification">}}.

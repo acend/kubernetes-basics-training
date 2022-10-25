@@ -1,6 +1,6 @@
 ---
 title: "Windows"
-weight: 3
+weight: 11
 type: docs
 onlyWhen: openshift
 ---
@@ -31,4 +31,4 @@ This is what we are going to do step by step:
    Check if you have a directory `%HOMEPATH%\.kube` and rename it to something like `%HOMEPATH%\.kube_backup`.
    You can undo this after the training.
 
-1. Now, verify your installation in {{<link "verify-the-installation">}}.
+1. Now, verify your installation in {{<link "verification">}}.

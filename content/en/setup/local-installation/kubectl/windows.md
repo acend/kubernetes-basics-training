@@ -1,6 +1,6 @@
 ---
 title: "Windows"
-weight: 3
+weight: 11
 type: docs
 onlyWhenNot: openshift
 ---
@@ -27,4 +27,4 @@ Copy the `kubectl` binary directly into the folder `C:\Windows`.
 
 ## Verification
 
-Now, verify your installation in {{<link "verify-the-installation">}}.
+Now, verify your installation in {{<link "verification">}}.

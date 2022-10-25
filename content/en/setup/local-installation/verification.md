@@ -1,6 +1,6 @@
 ---
-title: "Verify the installation"
-weight: 6
+title: "Verification"
+weight: 20
 type: docs
 ---
 
