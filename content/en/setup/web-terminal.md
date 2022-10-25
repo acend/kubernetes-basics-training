@@ -10,9 +10,10 @@ onlyWhen: openshift
 Using OpenShift's web terminal might be more convenient for you as it doesn't require you to install `{{% param cliToolName %}}` locally on your computer.
 
 
-### {{% task %}} Login
+### {{% task %}} Login on the web console
 
-First of all, log in on OpenShift's web console using the URL and credentials provided by your trainer.
+First of all, open your browser.
+Then, log in on OpenShift's web console using the URL and credentials provided by your trainer.
 
 
 ### {{% task %}} Initialize terminal
@@ -22,7 +23,7 @@ In OpenShift's web console:
 1. Click on the terminal icon on the upper right
 2. Choose to create a new project
 3. Name your project `<username>-terminal` where `<username>` is the username given to you during this training
-4. Click start
+4. Click **Start**
 
 ![Web terminal in the OpenShift console](../web-terminal.png)
 

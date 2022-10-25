@@ -72,6 +72,6 @@ sudo dnf install bash-completion
 ```
 
 
-## Verification
+## Login
 
-Now, verify your installation in {{<link "verification">}}.
+Now, head over to the {{<link "console-login">}} page.

@@ -40,4 +40,4 @@ With Homebrew, use `brew install openshift-cli`.
    Check if you have a directory `~\.kube` and rename it to something like `~\.kube_backup`.
    You can undo this after the training.
 
-1. Now, verify your installation in {{<link "verification">}}.
+1. Now, head over to the {{<link "console-login">}} page.
