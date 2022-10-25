@@ -1,6 +1,6 @@
 ---
 title: "Optional Kubernetes power tools"
-weight: 7
+weight: 30
 type: docs
 onlyWhenNot: openshift
 ---

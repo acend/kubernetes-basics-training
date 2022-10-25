@@ -8,19 +8,17 @@ In this lab, we will interact with the {{% param distroName %}} cluster for the 
 {{% alert title="Warning" color="warning" %}}
 Please make sure you completed {{<link "setup">}} before you continue with this lab.
 {{% /alert %}}
+{{% onlyWhenNot openshift %}}
 
 
 ## Login
 
-{{% onlyWhenNot openshift %}}
 {{% alert title="Note" color="info" %}}
 Authentication depends on the specific Kubernetes cluster environment.
 
 You may need special instructions if you are not using our lab environment.
 {{% /alert %}}
-{{% /onlyWhenNot %}}
 
-{{% onlyWhenNot openshift %}}
 {{% onlyWhen rancher %}}
 {{% onlyWhen cloudscale %}}
 
@@ -165,46 +163,6 @@ With the command `kubectl get` you can display all kinds of resources.
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
-
-
-### Login on the Web Console
-
-{{% alert title="Note" color="info" %}}
-Your trainer will provide you with the information needed to log in.
-{{% /alert %}}
-
-Open your browser, open the OpenShift cluster URL and log in using the provided credentials.
-
-
-### Login on the command line
-
-In order to log in on the command line, copy the login command from the Web Console.
-
-To do that, open the Web Console and click on your username that you see at the top right, then choose **Copy Login Command**.
-
-{{% imgproc login-ocp.png Resize  "400x" %}}{{% /imgproc %}}
-
-A new tab or window will open in your browser.
-
-{{% alert title="Note" color="info" %}}
-You might need to log in again.
-{{% /alert %}}
-
-The page now displays a link **Display token**.
-Click on it and copy the command under **Log in with this token**.
-
-Now paste the copied command on the command line.
-
-
-### Verify login
-
-If you now execute `oc version` you should see something like this (your output may vary):
-
-```
-Client Version: 4.6.9
-Server Version: 4.6.9
-Kubernetes Version: v1.19.0+7070803
-```
 
 
 ## Projects

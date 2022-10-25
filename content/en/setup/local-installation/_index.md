@@ -1,6 +1,6 @@
 ---
-title: "Installation"
-weight: 1
+title: "Local installation"
+weight: 10
 type: docs
 ---
 
