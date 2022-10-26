@@ -331,7 +331,7 @@ show tables;
 
 ## {{% task %}} Import a database dump
 
-Our task is now to import this [dump.sql](https://raw.githubusercontent.com/acend/kubernetes-basics-training/master/content/en/docs/attaching-a-database/dump.sql) into the MariaDB database running as a Pod. Use the `mysql` command line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
+Our task is now to import this [dump.sql](https://raw.githubusercontent.com/acend/kubernetes-basics-training/main/content/en/docs/attaching-a-database/dump.sql) into the MariaDB database running as a Pod. Use the `mysql` command line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
 
 {{% alert title="Note" color="info" %}}
 You can also copy local files into a Pod using `{{% param cliToolName %}} cp`. Be aware that the `tar` binary has to be present inside the container and on your operating system in order for this to work! Install `tar` on UNIX systems with e.g. your package manager, on Windows there's e.g. [cwRsync](https://www.itefix.net/cwrsync). If you cannot install `tar` on your host, there's also the possibility of logging into the Pod and using `curl -O <url>`.
@@ -343,7 +343,7 @@ You can also copy local files into a Pod using `{{% param cliToolName %}} cp`. B
 This is how you copy the database dump into the Pod:
 
 ```bash
-curl -O https://raw.githubusercontent.com/acend/kubernetes-basics-training/master/content/en/docs/07/dump.sql
+curl -O https://raw.githubusercontent.com/acend/kubernetes-basics-training/main/content/en/docs/attaching-a-database/dump.sql
 {{% param cliToolName %}} cp ./dump.sql <podname>:/tmp/ --namespace <namespace>
 ```
 
