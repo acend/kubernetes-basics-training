@@ -156,7 +156,7 @@ You've already seen one way: Writing the resource's definition in YAML (or JSON)
 The other variant is to use helper commands. These are more straightforward: You don't have to copy a YAML definition from somewhere else and then adapt it.
 However, the result is the same. The helper commands just simplify the process of creating the YAML definitions.
 
-As an example, let's look at creating above deployment, this time using a helper command instead:
+As an example, let's look at creating above deployment, this time using a helper command instead. If you already created the Deployment using above YAML definition, you don't have to execute this command:
 
 ```yaml
 {{% param cliToolName %}} create deployment example-web-go --image={{% param "images.acendAwesomeApp-example-web-go" %}} --namespace <namespace>
