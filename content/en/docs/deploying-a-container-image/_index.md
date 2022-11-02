@@ -148,18 +148,26 @@ If you want to create your own container images and use them with {{% param dist
 {{% /alert %}}
 
 
+### Creating Kubernetes resources
+
+There are two fundamentally different ways to create Kubernetes resources.
+You've already seen one way: Writing the resource's definition in YAML (or JSON) and then applying it on the cluster using `{{% param cliToolName %}} apply`.
+
+The other variant is to use helper commands. These are more straightforward: You don't have to copy a YAML definition from somewhere else and then adapt it.
+However, the result is the same. The helper commands just simplify the process of creating the YAML definitions.
+
+As an example, let's look at creating above deployment, this time using a helper command instead. If you already created the Deployment using above YAML definition, you don't have to execute this command:
+
+```yaml
+{{% param cliToolName %}} create deployment example-web-go --image={{% param "images.acendAwesomeApp-example-web-go" %}} --namespace <namespace>
+```
+
+It's important to know that these helper commands exist.
+However, in a world where GitOps concepts have an ever-increasing presence, the idea is not to constantly create these resources with helper commands.
+Instead, we save the resources' YAML definitions in a Git repository and leave the creation and management of those resources to a tool.
+
+
 ## {{% task %}} Viewing the created resources
-
-{{% onlyWhenNot mobi %}}
-When we executed the command `{{% param cliToolName %}} create deployment example-web-go --image={{% param "images.acendAwesomeApp-example-web-go" %}} --namespace <namespace>`, {{% param distroName %}} created a Deployment resource.
-{{% /onlyWhenNot %}}
-
-{{% onlyWhen mobi %}}
-When we executed the command `kubectl create deployment example-web-go --image={{% param "images.acendAwesomeApp-example-web-go" %}} --namespace <namespace>`, kubectl created a Deployment resource.
-{{% /onlyWhen %}}
-
-
-### Deployment
 
 Display the created Deployment using the following command:
 
