@@ -112,7 +112,7 @@ By default, Secrets are not encrypted!
 {{% onlyWhen openshift %}}OpenShift [offers this capability](https://docs.openshift.com/container-platform/latest/security/encrypting-etcd.html).{{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}Kubernetes 1.13 [offers this capability](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/).{{% /onlyWhenNot %}} Another option would be the use of a secrets management solution like [Vault by HashiCorp](https://www.vaultproject.io/).
 {{% onlyWhen baloise %}}
-At Baloise, secrets are managed by HashiCorp Vault and integrated into OpenShift by use of the [External Secrets Operator](https://external-secrets.io/). 
+At Baloise, secrets are managed by HashiCorp Vault and integrated into OpenShift by use of the [External Secrets Operator](https://external-secrets.io/).
 {{% /onlyWhen %}}
 {{% /alert %}}
 {{% onlyWhen openshift %}}
