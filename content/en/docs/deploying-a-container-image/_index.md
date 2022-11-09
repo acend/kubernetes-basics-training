@@ -289,7 +289,7 @@ It looks the same as before with the only essential exception that it uses the i
       ...
 ```
 
-{{% /onlyWhen %}}
+{{% /onlyWhenNot %}}
 {{% /onlyWhen %}}
 
 
