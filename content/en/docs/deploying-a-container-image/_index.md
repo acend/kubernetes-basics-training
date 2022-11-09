@@ -221,6 +221,9 @@ Try to display the logs from the example application in the Rancher web console.
 Try to display the logs from the example application via the OpenShift web console.
 
 
+{{% onlyWhenNot baloise %}}
+
+
 ## {{% task %}} Build the image yourself
 
 Up until now, we've used pre-built images from Quay.io. OpenShift offers the ability to build images on the cluster itself using different [strategies](https://docs.openshift.com/container-platform/latest/cicd/builds/understanding-image-builds.html):
@@ -286,6 +289,7 @@ It looks the same as before with the only essential exception that it uses the i
       ...
 ```
 
+{{% /onlyWhen %}}
 {{% /onlyWhen %}}
 
 
