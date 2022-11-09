@@ -212,6 +212,7 @@ The Deployment defines that one replica should be deployed --- which is running 
 
 Try to display the logs from the example application in the {{% param distroName %}} web console.
 {{% /onlyWhen %}}
+{{% onlyWhen openshift %}}
 {{% onlyWhenNot baloise %}}
 
 
