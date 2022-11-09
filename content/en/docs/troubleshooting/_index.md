@@ -130,6 +130,10 @@ When a Pod is in state `CrashLoopBackOff` it means that although multiple attemp
 {{% param cliToolName %}} logs -p <pod> --namespace <namespace>
 ```
 
+{{% onlyWhen baloise %}}
+Baloise uses [Splunk](https://www.splunk.com/) to aggregate and visualize all logs, including those of Pods. If you do not have access to the appropriate Splunk index, contact the owner of the application to request access.
+{{% /onlyWhen %}}
+
 
 ## {{% task %}} Port forwarding
 
