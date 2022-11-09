@@ -174,7 +174,7 @@ kubectl apply -f <path to ingress.yaml> --namespace <namespace>
 Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<domain>`
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
-Afterwards, we are able to access our app via our freshly created Ingress at `https://example-web-go-<namespace>.<appdomain>`. Although we have not configured the Ingress to use TLS, it is available with a `https` address. This is because of the setup at Mobiliar and not default behaviour.
+Afterwards, we are able to access our app via our freshly created Ingress at `https://example-web-go-<namespace>.<appdomain>`. Although we have not configured the Ingress to use TLS, it is available with a `https` address. This is because of the setup at Mobiliar and not default behavior.
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
@@ -190,6 +190,14 @@ route.route.openshift.io/example-web-go exposed
 ```
 
 We are now able to access our app via the freshly created route at `http://example-web-go-<namespace>.<appdomain>`
+
+Find your actual app URL by looking at your route (HOST/PORT):
+
+```bash
+oc get route --namespace <namespace>
+```
+
+Browse to the URL and check the output of your app.
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}
