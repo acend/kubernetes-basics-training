@@ -109,12 +109,18 @@ There's also the `oc extract` command which can be used to extract the content o
 
 {{% alert title="Note" color="info" %}}
 By default, Secrets are not encrypted!
-{{% onlyWhen openshift %}}OpenShift [offers this capability](https://docs.openshift.com/container-platform/latest/security/encrypting-etcd.html).{{% /onlyWhen %}}
-{{% onlyWhenNot openshift %}}Kubernetes 1.13 [offers this capability](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/).{{% /onlyWhenNot %}} Another option would be the use of a secrets management solution like [Vault by HashiCorp](https://www.vaultproject.io/).
+
+However, both [OpenShift](https://docs.openshift.com/container-platform/latest/security/encrypting-etcd.html) and [Kubernetes (1.13 and later)](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/) offer the capability to encrypt data in etcd.
+
+{{% onlyWhenNot baloise %}}
+Another option would be the use of a secrets management solution like [Vault by HashiCorp](https://www.vaultproject.io/).
+{{% /onlyWhenNot %}}
+
 {{% onlyWhen baloise %}}
 At Baloise, secrets are managed by HashiCorp Vault and integrated into OpenShift by use of the [External Secrets Operator](https://external-secrets.io/).
 {{% /onlyWhen %}}
 {{% /alert %}}
+
 {{% onlyWhen openshift %}}
 The interesting thing about Secrets is that they can be reused. We could extract all the plaintext values from the Secret, but it's way easier to instead simply refer to its values inside the Deployment or DeploymentConfig (as in this lab):
 
