@@ -57,6 +57,14 @@ As you might already see, each of the parameters has a default value ("VALUE" co
 oc process openshift//mariadb-ephemeral -pMYSQL_DATABASE=acend_exampledb  | oc apply --namespace=<namespace> -f -
 ```
 
+The output should be:
+
+```
+secret/mariadb created
+service/mariadb created
+deploymentconfig.apps.openshift.io/mariadb created
+```
+
 
 ## {{% task %}} Inspection
 
@@ -103,7 +111,7 @@ echo "YWNlbmQtZXhhbXBsZS1kYg==" | base64 -d
 
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}
-There's also the `oc extract` command which can be used to extract the content of Secrets and ConfigMaps into a local directory. Use `oc extract --help` to see how it works.
+There's also the `oc extract` command which can be used to extract the content of Secrets and ConfigMaps into a local directory. Use `oc extract \--help` to see how it works.
 {{% /alert %}}
 {{% /onlyWhen %}}
 
@@ -275,6 +283,25 @@ You could also do the changes by directly editing the Deployment:
         ...
 ```
 
+{{% alert title="Note" color="info" %}}
+The environment can also be checked with the `set env` command and the `--list` parameter:
+
+```bash
+{{% param cliToolName %}} set env deploy/example-web-python --list --namespace <namespace>
+```
+
+This will show the environment as follows:
+
+```
+# deployments/example-web-python, container example-web-python
+# MYSQL_DATABASE_PASSWORD from secret mariadb, key database-password
+# MYSQL_DATABASE_ROOT_PASSWORD from secret mariadb, key database-root-password
+# MYSQL_DATABASE_USER from secret mariadb, key database-user
+# MYSQL_DATABASE_NAME from secret mariadb, key database-name
+MYSQL_URI=mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
+```
+{{% /alert %}}
+
 In order to find out if the change worked we can either look at the container's logs (`{{% param cliToolName %}} logs <pod>`) or we could register some "Hellos" in the application, delete the Pod, wait for the new Pod to be started and check if they are still there.
 
 {{% alert title="Note" color="info" %}}
@@ -313,7 +340,7 @@ oc rsh --namespace <namespace> mariadb-f845ccdb7-hf2x5
 ```
 {{% /onlyWhen %}}
 
-You are now able to connect to the database and display the tables. Login with:
+You are now able to connect to the database and display the data. Login with:
 
 ```bash
 mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend_exampledb
@@ -335,6 +362,12 @@ Show all tables with:
 
 ```bash
 show tables;
+```
+
+Show any entered "Hellos" with:
+
+```bash
+select * from hello;
 ```
 
 
@@ -386,6 +419,8 @@ Import a dump:
 ```bash
 mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend_exampledb < /tmp/dump.sql
 ```
+
+Check your app to see the imported "Hellos".
 
 {{% alert title="Note" color="info" %}}
 A database dump can be created as follows:

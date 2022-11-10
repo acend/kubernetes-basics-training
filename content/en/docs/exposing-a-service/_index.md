@@ -33,7 +33,7 @@ We're going to do this with the command `{{% param cliToolName %}} expose`:
 ```
 
 {{% onlyWhen openshift %}}
-You will get the error message reading `Error from server (AlreadyExists): services "example-web-go" already exists` here. This is because the `oc new-app` command you executed during lab 3 already created a service. This is the default behaviour of `oc new-app`  while `oc create deployment` doesn't have this functionality.
+You will get the error message reading `Error from server (AlreadyExists): services "example-web-go" already exists` here. This is because the `oc new-app` command you executed during lab 3 already created a service. This is the default behavior of `oc new-app`  while `oc create deployment` doesn't have this functionality.
 
 As a consequence, the `oc expose` command above doesn't add anything new but it demonstrates how to easily create a service based on a deployment.
 {{% /onlyWhen %}}
@@ -174,7 +174,7 @@ kubectl apply -f <path to ingress.yaml> --namespace <namespace>
 Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<domain>`
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
-Afterwards, we are able to access our app via our freshly created Ingress at `https://example-web-go-<namespace>.<appdomain>`. Although we have not configured the Ingress to use TLS, it is available with a `https` address. This is because of the setup at Mobiliar and not default behaviour.
+Afterwards, we are able to access our app via our freshly created Ingress at `https://example-web-go-<namespace>.<appdomain>`. Although we have not configured the Ingress to use TLS, it is available with a `https` address. This is because of the setup at Mobiliar and not default behavior.
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
@@ -183,7 +183,21 @@ Afterwards, we are able to access our app via our freshly created Ingress at `ht
 oc expose service example-web-go --namespace <namespace>
 ```
 
+The output should be:
+
+```
+route.route.openshift.io/example-web-go exposed
+```
+
 We are now able to access our app via the freshly created route at `http://example-web-go-<namespace>.<appdomain>`
+
+Find your actual app URL by looking at your route (HOST/PORT):
+
+```bash
+oc get route --namespace <namespace>
+```
+
+Browse to the URL and check the output of your app.
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}
