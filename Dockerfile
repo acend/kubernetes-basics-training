@@ -1,4 +1,4 @@
-FROM klakegg/hugo:0.105.0-ext-ubuntu AS builder
+FROM docker.io/klakegg/hugo:0.105.0-ext-ubuntu AS builder
 
 ARG TRAINING_HUGO_ENV=default
 
@@ -11,7 +11,7 @@ RUN apt-get update \
 
 RUN find /src/public/docs/ -regex '.*\(jpg\|jpeg\|png\|gif\)' -exec mogrify -path /src/public/pdf -resize 800\> -unsharp 0.25x0.25+8+0.065 "{}" \;
 
-FROM ubuntu:jammy AS wkhtmltopdf
+FROM docker.io/ubuntu:jammy AS wkhtmltopdf
 RUN apt-get update \
     && apt-get install -y curl \
     && curl -L https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb --output wkhtmltox_0.12.6.1-2.jammy_amd64.deb \
@@ -29,7 +29,7 @@ RUN wkhtmltopdf --enable-internal-links --enable-local-file-access \
     --dpi 600 \
     /pdf/index.html /pdf.pdf
 
-FROM nginxinc/nginx-unprivileged:1.23-alpine
+FROM docker.io/nginxinc/nginx-unprivileged:1.23-alpine
 
 LABEL maintainer acend.ch
 LABEL org.opencontainers.image.title "acend.ch's Kubernetes Basics Training"

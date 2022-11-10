@@ -45,21 +45,21 @@ CRI-O doesn't exist as long as Docker does. It is a "lightweight container runti
 ## Overview
 
 {{% onlyWhenNot openshift %}}
-Kubernetes consists of master and worker (minion, compute) nodes.
+Kubernetes consists of control plane and worker (minion, compute) nodes.
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
-OpenShift basically consists of master and worker nodes.
+OpenShift basically consists of control plane and worker nodes.
 {{% /onlyWhen %}}
 
 
-### Master and worker nodes
+### Control plane and worker nodes
 
-The master components are the _API server_, the _scheduler_ and the _controller manager_.
+The control plane components are the _API server_, the _scheduler_ and the _controller manager_.
 The API server itself represents the management interface.
-The scheduler and the controller manager decide how applications should be deployed on the cluster. Additionally, the state and configuration of the cluster itself are controlled in the master components.
+The scheduler and the controller manager decide how applications should be deployed on the cluster. Additionally, the state and configuration of the cluster itself are controlled in the control plane components.
 
 Worker nodes are also known as compute nodes, application nodes or minions, and are responsible for running the container workload (applications).
-The _control plane_ for the worker nodes is implemented in the master components.
+The _control plane_ for the worker nodes is implemented in the control plane components. The hosts running these components were historically called masters.
 
 
 ### Containers and images
