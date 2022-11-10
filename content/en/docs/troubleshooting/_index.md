@@ -199,3 +199,89 @@ Use the following command to list the events in chronological order:
 ```bash
 {{% param cliToolName %}} get events --sort-by=.metadata.creationTimestamp --namespace <namespace>
 ```
+
+
+## Dry-run
+
+To help verify changes, you can use the optional `{{% param cliToolName %}}` flag `--dry-run=client -o yaml` to see the rendered YAML definition of your Kubernetes objects, without sending it to the API.
+
+The following `{{% param cliToolName %}}` subcommands support this flag (non-final list):
+
+* `apply`
+* `create`
+* `expose`
+* `patch`
+* `replace`
+* `run`
+* `set`
+
+For example, we can use the `--dry-run=client` flag to create a template for our Deployment:
+
+```bash
+{{% param cliToolName %}} create deployment example-web-go --image=quay.io/acend/example-web-go:latest --namespace acend-test --dry-run=client -o yaml
+```
+
+The result is the following YAML output:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: example-web-go
+  name: example-web-go
+  namespace: acend-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-web-go
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: example-web-go
+    spec:
+      containers:
+      - image: quay.io/acend/example-web-go:latest
+        name: example-web-go
+        resources: {}
+status: {}
+```
+
+
+## `{{% param cliToolName %}}` API requests
+
+If you want to see the HTTP requests `{{% param cliToolName %}}` sends to the Kubernetes API in detail, you can use the optional flag `--v=10`.
+
+For example, to see the API request for creating a namespace:
+
+```bash
+{{% param cliToolName %}} create namespace acend-test --v=10
+```
+
+The resulting output looks like this:
+
+```bash
+I1109 16:42:21.438803  268345 request.go:1073] Request Body: {"kind":"Namespace","apiVersion":"v1","metadata":{"name":"acend-test","creationTimestamp":null},"spec":{},"status":{}}
+I1109 16:42:21.438862  268345 round_trippers.go:466] curl -v -XPOST  -H "Accept: application/json, */*" -H "Content-Type: application/json" -H "User-Agent: oc/4.11.0 (linux/amd64) kubernetes/7075089" -H "Authorization: Bearer <masked>" 'https://api.training.openshift.ch:6443/api/v1/namespaces?fieldManager=kubectl-create&fieldValidation=Ignore'
+I1109 16:42:21.468590  268345 round_trippers.go:495] HTTP Trace: DNS Lookup for api.training.openshift.ch resolved to [{16.170.14.174 } {13.53.141.154 } {13.49.184.94 }]
+I1109 16:42:21.520614  268345 round_trippers.go:510] HTTP Trace: Dial to tcp:16.170.14.174:6443 succeed
+I1109 16:42:21.705733  268345 round_trippers.go:553] POST https://api.training.openshift.ch:6443/api/v1/namespaces?fieldManager=kubectl-create&fieldValidation=Ignore 201 Created in 266 milliseconds
+I1109 16:42:21.705849  268345 round_trippers.go:570] HTTP Statistics: DNSLookup 29 ms Dial 51 ms TLSHandshake 103 ms ServerProcessing 81 ms Duration 266 ms
+I1109 16:42:21.705900  268345 round_trippers.go:577] Response Headers:
+I1109 16:42:21.705955  268345 round_trippers.go:580]     Audit-Id: dd52d6eb-5479-4960-9367-09f5571dd779
+I1109 16:42:21.705999  268345 round_trippers.go:580]     Cache-Control: no-cache, private
+I1109 16:42:21.706049  268345 round_trippers.go:580]     Content-Type: application/json
+I1109 16:42:21.706154  268345 round_trippers.go:580]     X-Kubernetes-Pf-Flowschema-Uid: 950aa9cf-a0c2-4b42-943b-41b1b73921bf
+I1109 16:42:21.706216  268345 round_trippers.go:580]     X-Kubernetes-Pf-Prioritylevel-Uid: ff295cbf-f8c0-4327-9ec6-625f04de293d
+I1109 16:42:21.706277  268345 round_trippers.go:580]     Content-Length: 530
+I1109 16:42:21.706336  268345 round_trippers.go:580]     Date: Wed, 09 Nov 2022 15:42:21 GMT
+I1109 16:42:21.706527  268345 request.go:1073] Response Body: {"kind":"Namespace","apiVersion":"v1","metadata":{"name":"acend-test","uid":"19edb3ff-0beb-4c72-a2bb-297c5bde08c5","resourceVersion":"8783080","creationTimestamp":"2022-11-09T15:42:21Z","labels":{"kubernetes.io/metadata.name":"acend-test"},"managedFields":[{"manager":"kubectl-create","operation":"Update","apiVersion":"v1","time":"2022-11-09T15:42:21Z","fieldsType":"FieldsV1","fieldsV1":{"f:metadata":{"f:labels":{".":{},"f:kubernetes.io/metadata.name":{}}}}}]},"spec":{"finalizers":["kubernetes"]},"status":{"phase":"Active"}}
+namespace/acend-test created
+```
+
+As you can see, the output conveniently contains the corresponding `curl` commands which we could use in our own code, tools, pipelines etc.
+
