@@ -12,7 +12,7 @@ Data serialization is the process of converting data objects, or object states p
 
 As you will see a lot of YAML in our Kubernetes basics course, we want to make sure you can read and write YAML. If you are not yet familiar with YAML, this introduction is waiting for you. Otherwise, feel free to skip it or come back later if you meet some less familiar YAML stuff.
 
-This introcution is based on the [YAML Tutorial from cloudbees.com](https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started)
+This introduction is based on the [YAML Tutorial from cloudbees.com](https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started).
 
 For more information and the full spec have a look at https://yaml.org/
 
@@ -29,7 +29,7 @@ bar: "bar is not foo"
 pi: 3.14159
 awesome: true
 kubernetes-birth-year: 2015
-cloud-nativ:
+cloud-native:
   - scalable
   - dynamic
   - cloud
@@ -55,9 +55,9 @@ YAML knows four different data types:
 
 You can enclose strings in single or double-quotes or no quotes at all. YAML recognizes unquoted numerals as integers or floating point.
 
-The `cloud-nativ` item is an array with four element, each denoted by an opening dash. The elements in `cloud-nativ` are indented with two spaces. Indentation is how YAML denotes nesting. The number of spaces can vary from file to file, but tabs are not allowed.
+The `cloud-native` item is an array with four elements, each denoted by an opening dash. The elements in `cloud-native` are indented with two spaces. Indentation is how YAML denotes nesting. The number of spaces can vary from file to file, but tabs are not allowed.
 
-Finally `kubernetes` is a dictionary that containts a string `version`, a boolean `deployed` and an array `applications` where the item of the array contains two `string`s
+Finally, `kubernetes` is a dictionary that contains a string `version`, a boolean `deployed` and an array `applications` where the item of the array contains two `string`s.
 
 YAML supports nesting of key-values, and mixing types.
 
@@ -79,7 +79,7 @@ foo: bar # this is a comment, too
 ```
 
 
-### YAML Datatypes
+### YAML data types
 
 Values in YAML's key-value pairs are scalar. They act like the scalar types in languages like Perl, Javascript, and Python. It's usually good enough to enclose strings in quotes, leave numbers unquoted, and let the parser figure it out. But that's only the tip of the iceberg. YAML is capable of a great deal more.
 
@@ -91,7 +91,7 @@ The key-value is YAML's basic building block. Every item in a YAML document is a
 
 #### Numeric types
 
-YAML recognizes numeric types. We saw floating point and integers above. YAML supports several other numeric types. An integer can be decimal, hexidecimal, or octal.
+YAML recognizes numeric types. We saw floating point and integers above. YAML supports several other numeric types. An integer can be decimal, hexadecimal, or octal.
 
 ```yaml
 ---

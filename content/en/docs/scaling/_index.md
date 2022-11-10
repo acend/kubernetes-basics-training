@@ -85,7 +85,7 @@ Check the number of desired, current and ready replicas:
 
 ```
 NAME                            DESIRED   CURRENT   READY   AGE
-example-web-python-86d9d584f8   3         3         1       4m33s
+example-web-python-86d9d584f8   3         3         3       4m33s
 
 ```
 
@@ -187,10 +187,11 @@ Labels:            app=example-web-python
 Annotations:       <none>
 Selector:          app=example-web-python
 Type:              ClusterIP
-IP:                172.30.177.212
+IP:                172.30.89.44
+IPs:               172.30.89.44
 Port:              <unset>  5000/TCP
 TargetPort:        5000/TCP
-Endpoints:         10.124.4.137:5000
+Endpoints:         10.125.4.70:5000,10.126.4.137:5000,10.126.4.138:5000
 Session Affinity:  None
 Events:            <none>
 ```
@@ -248,25 +249,25 @@ Scale from 3 replicas to 1.
 The output shows which Pod is still alive and is responding to requests:
 
 ```
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:07,289
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:08,357
-POD: example-web-python-86d9d584f8-hbvlv TIME: 17:33:09,423
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:10,494
-POD: example-web-python-86d9d584f8-qg499 TIME: 17:33:11,559
-POD: example-web-python-86d9d584f8-hbvlv TIME: 17:33:12,629
-POD: example-web-python-86d9d584f8-qg499 TIME: 17:33:13,695
-POD: example-web-python-86d9d584f8-hbvlv TIME: 17:33:14,771
-POD: example-web-python-86d9d584f8-hbvlv TIME: 17:33:15,840
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:16,912
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:17,980
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:19,051
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:20,119
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:21,182
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:22,248
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:23,313
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:24,377
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:25,445
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:33:26,513
+example-web-python-86d9d584f8-7vjcj TIME: 17:33:07,289
+example-web-python-86d9d584f8-7vjcj TIME: 17:33:08,357
+example-web-python-86d9d584f8-hbvlv TIME: 17:33:09,423
+example-web-python-86d9d584f8-7vjcj TIME: 17:33:10,494
+example-web-python-86d9d584f8-qg499 TIME: 17:33:11,559
+example-web-python-86d9d584f8-hbvlv TIME: 17:33:12,629
+example-web-python-86d9d584f8-qg499 TIME: 17:33:13,695
+example-web-python-86d9d584f8-hbvlv TIME: 17:33:14,771
+example-web-python-86d9d584f8-hbvlv TIME: 17:33:15,840
+example-web-python-86d9d584f8-7vjcj TIME: 17:33:16,912
+example-web-python-86d9d584f8-7vjcj TIME: 17:33:17,980
+example-web-python-86d9d584f8-7vjcj TIME: 17:33:19,051
+example-web-python-86d9d584f8-7vjcj TIME: 17:33:20,119
+example-web-python-86d9d584f8-7vjcj TIME: 17:33:21,182
+example-web-python-86d9d584f8-7vjcj TIME: 17:33:22,248
+example-web-python-86d9d584f8-7vjcj TIME: 17:33:23,313
+example-web-python-86d9d584f8-7vjcj TIME: 17:33:24,377
+example-web-python-86d9d584f8-7vjcj TIME: 17:33:25,445
+example-web-python-86d9d584f8-7vjcj TIME: 17:33:26,513
 ```
 
 The requests get distributed amongst the three Pods. As soon as you scale down to one Pod, there should be only one remaining Pod that responds.
@@ -282,35 +283,35 @@ Let's make another test: What happens if you start a new Deployment while our re
 During a short period we won't get a response:
 
 ```
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:24,121
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:25,189
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:26,262
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:27,328
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:28,395
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:29,459
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:30,531
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:31,596
-POD: example-web-python-86d9d584f8-7vjcj TIME: 17:37:32,662
+example-web-python-86d9d584f8-7vjcj TIME: 17:37:24,121
+example-web-python-86d9d584f8-7vjcj TIME: 17:37:25,189
+example-web-python-86d9d584f8-7vjcj TIME: 17:37:26,262
+example-web-python-86d9d584f8-7vjcj TIME: 17:37:27,328
+example-web-python-86d9d584f8-7vjcj TIME: 17:37:28,395
+example-web-python-86d9d584f8-7vjcj TIME: 17:37:29,459
+example-web-python-86d9d584f8-7vjcj TIME: 17:37:30,531
+example-web-python-86d9d584f8-7vjcj TIME: 17:37:31,596
+example-web-python-86d9d584f8-7vjcj TIME: 17:37:32,662
 # no answer
-POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:33,729
-POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:34,794
-POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:35,862
-POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:36,929
-POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:37,995
-POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:39,060
-POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:40,118
-POD: example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:41,187
+example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:33,729
+example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:34,794
+example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:35,862
+example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:36,929
+example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:37,995
+example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:39,060
+example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:40,118
+example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:41,187
 ```
 
 In our example, we use a very lightweight Pod. If we had used a more heavyweight Pod that needed a longer time to respond to requests, we would of course see a larger gap.
 An example for this would be a Java application with a startup time of 30 seconds:
 
 ```
-Pod: example-spring-boot-2-73aln TIME: 16:48:25,251
-Pod: example-spring-boot-2-73aln TIME: 16:48:26,305
-Pod: example-spring-boot-2-73aln TIME: 16:48:27,400
-Pod: example-spring-boot-2-73aln TIME: 16:48:28,463
-Pod: example-spring-boot-2-73aln TIME: 16:48:29,507
+example-spring-boot-2-73aln TIME: 16:48:25,251
+example-spring-boot-2-73aln TIME: 16:48:26,305
+example-spring-boot-2-73aln TIME: 16:48:27,400
+example-spring-boot-2-73aln TIME: 16:48:28,463
+example-spring-boot-2-73aln TIME: 16:48:29,507
 <html><body><h1>503 Service Unavailable</h1>
 No server is available to handle this request.
 </body></html>
@@ -320,9 +321,9 @@ No server is available to handle this request.
 </body></html>
  TIME: 16:48:34,601
  ...
-Pod: example-spring-boot-3-tjdkj TIME: 16:49:20,114
-Pod: example-spring-boot-3-tjdkj TIME: 16:49:21,181
-Pod: example-spring-boot-3-tjdkj TIME: 16:49:22,231
+example-spring-boot-3-tjdkj TIME: 16:49:20,114
+example-spring-boot-3-tjdkj TIME: 16:49:21,181
+example-spring-boot-3-tjdkj TIME: 16:49:22,231
 
 ```
 

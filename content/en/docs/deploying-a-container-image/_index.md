@@ -42,6 +42,12 @@ Now we can apply this with:
 {{% param cliToolName %}} apply -f 03_pod.yaml --namespace <namespace>
 ```
 
+The output should be:
+
+```
+pod/awesome-app created
+```
+
 Use `{{% param cliToolName %}} get pods --namespace <namespace>` in order to show the running Pod:
 
 ```bash
@@ -234,7 +240,7 @@ We are going to use the Docker build strategy. It expects:
 
 > [...] a repository with a Dockerfile and all required artifacts in it to produce a runnable image.
 
-All of these requirements are already fulfilled in the [sourcecode repository on GitHub](https://github.com/acend/awesome-apps/tree/master/go), so let's build the image!
+All of these requirements are already fulfilled in the [source code repository on GitHub](https://github.com/acend/awesome-apps/tree/main/go), so let's build the image!
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}
