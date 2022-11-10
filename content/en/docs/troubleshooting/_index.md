@@ -201,7 +201,7 @@ Use the following command to list the events in chronological order:
 ```
 
 
-## See what would happen with `--dry-run=client`
+## Dry-run
 
 To help verify changes, you can use the optional `{{% param cliToolName %}}` flag `--dry-run=client -o yaml` to see the rendered YAML definition of your Kubernetes objects, without sending it to the API.
 
