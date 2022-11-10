@@ -283,5 +283,5 @@ I1109 16:42:21.706527  268345 request.go:1073] Response Body: {"kind":"Namespace
 namespace/acend-test created
 ```
 
-As you can see, the {{% param cliToolName %}} binary uses `cURL` to send requests to the Kubernetes API.
+As you can see, the output conveniently contains the corresponding `curl` commands which we could use in our own code, tools, pipelines etc.
 
