@@ -252,7 +252,7 @@ status: {}
 ```
 
 
-## See the API requests of `{{% param cliToolName %}}`
+## `{{% param cliToolName %}}` API requests
 
 If you want to see the HTTPS requests to the Kubernetes API in detail, you can use the optional `{{% param cliToolName %}}` flag `--v=10`.
 
