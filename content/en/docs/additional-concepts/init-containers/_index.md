@@ -29,7 +29,7 @@ Edit your existing `example-web-python` Deployment with:
 {{% param cliToolName %}} edit deployment example-web-python --namespace <namespace>
 ```
 
-Add the init container into the existing Deployment:
+Add the init container into the existing Deployment (same indentation level as containers):
 
 ```yaml
 ...

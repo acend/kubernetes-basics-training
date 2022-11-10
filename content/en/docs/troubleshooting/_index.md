@@ -133,7 +133,7 @@ When a Pod is in state `CrashLoopBackOff` it means that although multiple attemp
 
 ## {{% task %}} Port forwarding
 
-{{% param distroName %}} allows you to forward arbitrary ports to your development workstation. This allows you to access admin consoles, databases, etc., even when they are not exposed externally. Port forwarding is handled by the {{% param distroName %}} master and therefore tunneled from the client via HTTPS. This allows you to access the {{% param distroName %}} platform even when there are restrictive firewalls or proxies between your workstation and {{% param distroName %}}.
+{{% param distroName %}} allows you to forward arbitrary ports to your development workstation. This allows you to access admin consoles, databases, etc., even when they are not exposed externally. Port forwarding is handled by the {{% param distroName %}} control plane nodes and therefore tunneled from the client via HTTPS. This allows you to access the {{% param distroName %}} platform even when there are restrictive firewalls or proxies between your workstation and {{% param distroName %}}.
 
 Get the name of the Pod:
 
