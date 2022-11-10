@@ -254,7 +254,7 @@ status: {}
 
 ## `{{% param cliToolName %}}` API requests
 
-If you want to see the HTTPS requests to the Kubernetes API in detail, you can use the optional `{{% param cliToolName %}}` flag `--v=10`.
+If you want to see the HTTP requests `{{% param cliToolName %}}` sends to the Kubernetes API in detail, you can use the optional flag `--v=10`.
 
 For example, to see the API request for creating a namespace:
 
