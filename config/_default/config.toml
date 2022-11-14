@@ -81,8 +81,8 @@ cliToolName = "kubectl"
 customer = "none"
 
 [params.images]
-acendAwesomeApp-example-web-go = "quay.io/acend/example-web-go:latest"
-acendAwesomeApp-example-web-python = "quay.io/acend/example-web-python:latest"
+deployment-image-url = "quay.io/acend/example-web-go:latest"
+training-image-url = "quay.io/acend/example-web-python:latest"
 nginxinc-nginx-unprivileged = "docker.io/nginxinc/nginx-unprivileged:latest"
 nginxinc-nginx-unprivileged-fix-version = "docker.io/nginxinc/nginx-unprivileged:1.18-alpine"
 nginx = "docker.io/nginx:latest"

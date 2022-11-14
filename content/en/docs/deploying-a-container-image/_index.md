@@ -23,7 +23,7 @@ metadata:
   name: awesome-app
 spec:
   containers:
-  - image: {{% param "images.acendAwesomeApp-example-web-go" %}}
+  - image: {{% param "images.deployment-image-url" %}}
     imagePullPolicy: Always
     name: awesome-app
     resources:
@@ -100,7 +100,7 @@ spec:
         app: example-web-go
     spec:
       containers:
-      - image: {{% param "images.acendAwesomeApp-example-web-go" %}}
+      - image: {{% param "images.deployment-image-url" %}}
         name: example-web-go
         resources:
           requests:
@@ -165,7 +165,7 @@ However, the result is the same. The helper commands just simplify the process o
 As an example, let's look at creating above deployment, this time using a helper command instead. If you already created the Deployment using above YAML definition, you don't have to execute this command:
 
 ```yaml
-{{% param cliToolName %}} create deployment example-web-go --image={{% param "images.acendAwesomeApp-example-web-go" %}} --namespace <namespace>
+{{% param cliToolName %}} create deployment example-web-go --image={{% param "images.deployment-image-url" %}} --namespace <namespace>
 ```
 
 It's important to know that these helper commands exist.
