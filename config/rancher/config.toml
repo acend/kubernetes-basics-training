@@ -1,4 +1,2 @@
 [params]
 enabledModule = "base rancher"
-distroName = "Rancher"
-cliToolName = "kubectl"

@@ -211,7 +211,7 @@ example-web-go-69b658f647-xnm94   1/1     Running   0          39s
 
 The Deployment defines that one replica should be deployed --- which is running as we can see in the output. This Pod is not yet reachable from outside the cluster.
 
-{{% onlyWhen openshift rancher %}}
+{{% onlyWhen openshift %}}
 
 
 ## {{% task %}} Verify the Deployment in the {{% param distroName %}} web console
