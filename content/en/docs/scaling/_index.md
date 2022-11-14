@@ -19,21 +19,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: example-web-python
-  name: example-web-python
+    app: example-web-app
+  name: example-web-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: example-web-python
+      app: example-web-app
   template:
     metadata:
       labels:
-        app: example-web-python
+        app: example-web-app
     spec:
       containers:
       - image: {{% param "images.training-image-url" %}}
-        name: example-web-python
+        name: example-web-app
         resources:
           limits:
             cpu: 100m
@@ -58,7 +58,7 @@ Which will give you an output similar to this:
 
 ```
 NAME                            DESIRED   CURRENT   READY   AGE
-example-web-python-86d9d584f8   1         1         1       110s
+example-web-app-86d9d584f8      1         1         1       110s
 ```
 
 
@@ -74,7 +74,7 @@ The ReplicaSet shows how many instances of a Pod are desired, current and ready.
 Now we scale our application to three replicas:
 
 ```bash
-{{% param cliToolName %}} scale deployment example-web-python --replicas=3 --namespace <namespace>
+{{% param cliToolName %}} scale deployment example-web-app --replicas=3 --namespace <namespace>
 ```
 
 Check the number of desired, current and ready replicas:
@@ -85,7 +85,7 @@ Check the number of desired, current and ready replicas:
 
 ```
 NAME                            DESIRED   CURRENT   READY   AGE
-example-web-python-86d9d584f8   3         3         3       4m33s
+example-web-app-86d9d584f8      3         3         3       4m33s
 
 ```
 
@@ -99,9 +99,9 @@ Which gives you an output similar to this:
 
 ```
 NAME                                  READY   STATUS    RESTARTS   AGE
-example-web-python-86d9d584f8-7vjcj   1/1     Running   0          5m2s
-example-web-python-86d9d584f8-hbvlv   1/1     Running   0          31s
-example-web-python-86d9d584f8-qg499   1/1     Running   0          31s
+example-web-app-86d9d584f8-7vjcj      1/1     Running   0          5m2s
+example-web-app-86d9d584f8-hbvlv      1/1     Running   0          31s
+example-web-app-86d9d584f8-qg499      1/1     Running   0          31s
 ```
 
 {{% onlyWhenNot openshift %}}
@@ -123,7 +123,7 @@ Now we create a new Service of the type `ClusterIP`:
 
 
 ```bash
-kubectl expose deployment example-web-python --type="ClusterIP" --name="example-web-python" --port=5000 --target-port=5000 --namespace <namespace>
+kubectl expose deployment example-web-app --type="ClusterIP" --name="example-web-app" --port=5000 --target-port=5000 --namespace <namespace>
 ```
 
 and we need to create an Ingress to access the application:
@@ -145,28 +145,28 @@ Now we expose our application to the internet by creating a service and a route.
 First the Service:
 
 ```bash
-oc expose deployment example-web-python --name="example-web-python" --port=5000 --namespace <namespace>
+oc expose deployment example-web-app --name="example-web-app" --port=5000 --namespace <namespace>
 ```
 
 Then the Route:
 
 ```bash
-oc expose service example-web-python --namespace <namespace>
+oc expose service example-web-app --namespace <namespace>
 ```
 {{% /onlyWhen %}}
 
 Let's look at our Service. We should see all three corresponding Endpoints:
 
 ```bash
-{{% param cliToolName %}} describe service example-web-python --namespace <namespace>
+{{% param cliToolName %}} describe service example-web-app --namespace <namespace>
 ```
 {{% onlyWhenNot openshift %}}
 ```
-Name:                     example-web-python
+Name:                     example-web-app
 Namespace:                acend-scale
-Labels:                   app=example-web-python
+Labels:                   app=example-web-app
 Annotations:              <none>
-Selector:                 app=example-web-python
+Selector:                 app=example-web-app
 Type:                     ClusterIP
 IP:                       10.39.245.205
 Port:                     <unset>  5000/TCP
@@ -181,11 +181,11 @@ Events:
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 ```
-Name:              example-web-python
+Name:              example-web-app
 Namespace:         acend-test
-Labels:            app=example-web-python
+Labels:            app=example-web-app
 Annotations:       <none>
-Selector:          app=example-web-python
+Selector:          app=example-web-app
 Type:              ClusterIP
 IP:                172.30.89.44
 IPs:               172.30.89.44
@@ -199,7 +199,7 @@ Events:            <none>
 
 Scaling of Pods is fast as {{% param distroName %}} simply creates new containers.
 
-You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{% onlyWhenNot openshift %}}http://example-web-python-<namespace>.<domain>{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://<route hostname>{{% /onlyWhen %}}`.
+You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{% onlyWhenNot openshift %}}http://example-web-app-<namespace>.<domain>{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://<route hostname>{{% /onlyWhen %}}`.
 
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}
@@ -215,20 +215,20 @@ Linux:
 
 {{% onlyWhen openshift %}}
 ```bash
-URL=$(oc get routes example-web-python -o go-template='{{ .spec.host }}' --namespace <namespace>)
+URL=$(oc get routes example-web-app -o go-template='{{ .spec.host }}' --namespace <namespace>)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 {{% onlyWhenNot mobi %}}
 ```bash
-URL=example-web-python-<namespace>.<domain>
+URL=example-web-app-<namespace>.<domain>
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
 ```bash
-URL=example-web-python-<namespace>.<appdomain>
+URL=example-web-app-<namespace>.<appdomain>
 while true; do sleep 1; curl -ks https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 {{% /onlyWhen %}}
@@ -249,25 +249,25 @@ Scale from 3 replicas to 1.
 The output shows which Pod is still alive and is responding to requests:
 
 ```
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:07,289
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:08,357
-example-web-python-86d9d584f8-hbvlv TIME: 17:33:09,423
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:10,494
-example-web-python-86d9d584f8-qg499 TIME: 17:33:11,559
-example-web-python-86d9d584f8-hbvlv TIME: 17:33:12,629
-example-web-python-86d9d584f8-qg499 TIME: 17:33:13,695
-example-web-python-86d9d584f8-hbvlv TIME: 17:33:14,771
-example-web-python-86d9d584f8-hbvlv TIME: 17:33:15,840
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:16,912
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:17,980
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:19,051
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:20,119
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:21,182
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:22,248
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:23,313
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:24,377
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:25,445
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:26,513
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:07,289
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:08,357
+example-web-app-86d9d584f8-hbvlv TIME: 17:33:09,423
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:10,494
+example-web-app-86d9d584f8-qg499 TIME: 17:33:11,559
+example-web-app-86d9d584f8-hbvlv TIME: 17:33:12,629
+example-web-app-86d9d584f8-qg499 TIME: 17:33:13,695
+example-web-app-86d9d584f8-hbvlv TIME: 17:33:14,771
+example-web-app-86d9d584f8-hbvlv TIME: 17:33:15,840
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:16,912
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:17,980
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:19,051
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:20,119
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:21,182
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:22,248
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:23,313
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:24,377
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:25,445
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:26,513
 ```
 
 The requests get distributed amongst the three Pods. As soon as you scale down to one Pod, there should be only one remaining Pod that responds.
@@ -276,31 +276,31 @@ Let's make another test: What happens if you start a new Deployment while our re
 
 
 ```bash
-{{% param cliToolName %}} rollout restart deployment example-web-python --namespace <namespace>
+{{% param cliToolName %}} rollout restart deployment example-web-app --namespace <namespace>
 ```
 
 
 During a short period we won't get a response:
 
 ```
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:24,121
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:25,189
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:26,262
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:27,328
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:28,395
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:29,459
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:30,531
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:31,596
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:32,662
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:24,121
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:25,189
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:26,262
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:27,328
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:28,395
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:29,459
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:30,531
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:31,596
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:32,662
 # no answer
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:33,729
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:34,794
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:35,862
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:36,929
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:37,995
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:39,060
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:40,118
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:41,187
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:33,729
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:34,794
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:35,862
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:36,929
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:37,995
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:39,060
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:40,118
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:41,187
 ```
 
 In our example, we use a very lightweight Pod. If we had used a more heavyweight Pod that needed a longer time to respond to requests, we would of course see a larger gap.
@@ -356,7 +356,7 @@ In our deployment configuration inside the rolling update strategy section, we d
 You can directly edit the deployment (or any resource) with:
 
 ```bash
-kubectl edit deployment example-web-python --namespace <namespace>
+kubectl edit deployment example-web-app --namespace <namespace>
 ```
 
 {{% alert title="Note" color="info" %}}
@@ -384,7 +384,7 @@ Now insert the readiness probe at `.spec.template.spec.containers` above the `re
      containers:
       - image: {{% param "images.training-image-url" %}}
         imagePullPolicy: Always
-        name: example-web-python
+        name: example-web-app
         # start to copy here
         readinessProbe:
           httpGet:
@@ -405,7 +405,7 @@ The `containers` configuration then looks like:
       containers:
       - image: {{% param "images.training-image-url" %}}
         imagePullPolicy: Always
-        name: example-web-python
+        name: example-web-app
         readinessProbe:
           failureThreshold: 3
           httpGet:
@@ -426,7 +426,7 @@ The `containers` configuration then looks like:
 Define the readiness probe on the Deployment using the following command:
 
 ```bash
-oc set probe deploy/example-web-python --readiness --get-url=http://:5000/health --initial-delay-seconds=10 --timeout-seconds=1 --namespace <namespace>
+oc set probe deploy/example-web-app --readiness --get-url=http://:5000/health --initial-delay-seconds=10 --timeout-seconds=1 --namespace <namespace>
 ```
 
 The command above results in the following `readinessProbe` snippet being inserted into the Deployment:
@@ -436,7 +436,7 @@ The command above results in the following `readinessProbe` snippet being insert
      containers:
       - image: {{% param "images.training-image-url" %}}
         imagePullPolicy: Always
-        name: example-web-python
+        name: example-web-app
         readinessProbe:
           httpGet:
             path: /health
@@ -455,13 +455,13 @@ Set up the loop again to periodically check the application's response (you don'
 
 {{% onlyWhen openshift %}}
 ```bash
-URL=$(oc get routes example-web-python -o go-template='{{ .spec.host }}' --namespace <namespace>)
+URL=$(oc get routes example-web-app -o go-template='{{ .spec.host }}' --namespace <namespace>)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 ```bash
-URL=example-web-python-<namespace>.<domain>
+URL=example-web-app-<namespace>.<domain>
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 {{% /onlyWhenNot %}}
@@ -482,14 +482,14 @@ while(1) {
 Start a new deployment by editing it (the so-called _ConfigChange_ trigger creates the new Deployment automatically):
 
 ```bash
-kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
+kubectl patch deployment example-web-app -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
 ```
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 Start a new deployment:
 
 ```bash
-oc rollout restart deployment example-web-python --namespace <namespace>
+oc rollout restart deployment example-web-app --namespace <namespace>
 ```
 {{% /onlyWhen %}}
 
@@ -519,4 +519,4 @@ Observe how {{% param distroName %}} instantly creates a new Pod in order to ful
 
 You should now have the following resources in place:
 
-* [example-web-python.yaml](example-web-python.yaml)
+* [example-web-app.yaml](example-web-app.yaml)

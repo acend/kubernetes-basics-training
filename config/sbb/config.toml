@@ -11,5 +11,8 @@ distroName = "OpenShift"
 cliToolName = "oc"
 automaticSectionNumbers = true
 
+[params.images]
+training-image-url = "quay.io/appuio/example-spring-boot:latest"
+
 [params.pdf]
 title="OpenShift Basics Training"

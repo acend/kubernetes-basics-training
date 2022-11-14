@@ -100,15 +100,15 @@ spec:
         app: example-web-go
     spec:
       containers:
-      - image: {{% param "images.deployment-image-url" %}}
-        name: example-web-go
-        resources:
-          requests:
-            cpu: 10m
-            memory: 16Mi
-          limits:
-            cpu: 20m
-            memory: 32Mi
+        - image: {{% param "images.deployment-image-url" %}}
+          name: example-web-go
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 20m
+              memory: 32Mi
 ```
 
 And with this we create our Deployment inside our already created namespace:

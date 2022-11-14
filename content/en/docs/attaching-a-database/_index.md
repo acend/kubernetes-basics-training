@@ -221,26 +221,26 @@ The environment variables defined in the deployment configure the MariaDB Pod an
 
 ## {{% task %}} Attach the database to the application
 
-By default, our `example-web-python` application uses an SQLite memory database. However, this can be changed by defining the following environment variable(`MYSQL_URI`) to use the newly created MariaDB database:
+By default, our `example-web-app` application uses an SQLite memory database. However, this can be changed by defining the following environment variable(`MYSQL_URI`) to use the newly created MariaDB database:
 
 ```
 #MYSQL_URI=mysql://<user>:<password>@<host>/<database>
 MYSQL_URI=mysql://acend-user:mysqlpassword@mariadb/acend_exampledb
 ```
 
-The connection string our `example-web-python` application uses to connect to our new MariaDB, is a concatenated string from the values of the `mariadb` Secret.
+The connection string our `example-web-app` application uses to connect to our new MariaDB, is a concatenated string from the values of the `mariadb` Secret.
 
 For the actual MariaDB host, you can either use the MariaDB Service's ClusterIP or DNS name as the address. All Services and Pods can be resolved by DNS using their name.
 
-The following commands set the environment variables for the deployment configuration of the `example-web-python` application:
+The following commands set the environment variables for the deployment configuration of the `example-web-app` application:
 
 {{% alert title="Warning" color="warning" %}}
 Depending on the shell you use, the following `set env` command works but inserts too many apostrophes! Check the deployment's environment variable afterwards or directly edit it as described further down below.
 {{% /alert %}}
 
 ```bash
-{{% param cliToolName %}} set env --from=secret/mariadb --prefix=MYSQL_ deploy/example-web-python --namespace <namespace>
-{{% param cliToolName %}} set env deploy/example-web-python MYSQL_URI='mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)' --namespace <namespace>
+{{% param cliToolName %}} set env --from=secret/mariadb --prefix=MYSQL_ deploy/example-web-app --namespace <namespace>
+{{% param cliToolName %}} set env deploy/example-web-app MYSQL_URI='mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)' --namespace <namespace>
 ```
 
 The first command inserts the values from the Secret, the second finally uses these values to put them in the environment variable `MYSQL_URI` which the application considers.
@@ -248,7 +248,7 @@ The first command inserts the values from the Secret, the second finally uses th
 You could also do the changes by directly editing the Deployment:
 
 ```bash
-{{% param cliToolName %}} edit deployment example-web-python --namespace <namespace>
+{{% param cliToolName %}} edit deployment example-web-app --namespace <namespace>
 ```
 
 ```yaml
@@ -279,7 +279,7 @@ You could also do the changes by directly editing the Deployment:
           value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
         image: {{% param "images.training-image-url" %}}
         imagePullPolicy: Always
-        name: example-web-python
+        name: example-web-app
         ...
 ```
 
@@ -287,13 +287,13 @@ You could also do the changes by directly editing the Deployment:
 The environment can also be checked with the `set env` command and the `--list` parameter:
 
 ```bash
-{{% param cliToolName %}} set env deploy/example-web-python --list --namespace <namespace>
+{{% param cliToolName %}} set env deploy/example-web-app --list --namespace <namespace>
 ```
 
 This will show the environment as follows:
 
 ```
-# deployments/example-web-python, container example-web-python
+# deployments/example-web-app, container example-web-app
 # MYSQL_DATABASE_PASSWORD from secret mariadb, key database-password
 # MYSQL_DATABASE_ROOT_PASSWORD from secret mariadb, key database-root-password
 # MYSQL_DATABASE_USER from secret mariadb, key database-user
@@ -322,9 +322,9 @@ Show all Pods:
 Which gives you an output similar to this:
 
 ```
-NAME                                  READY   STATUS    RESTARTS   AGE
-example-web-python-574544fd68-qfkcm   1/1     Running   0          2m20s
-mariadb-f845ccdb7-hf2x5               1/1     Running   0          31m
+NAME                                  READY   STATUS      RESTARTS   AGE
+example-web-app-574544fd68-qfkcm      1/1     Running     0          2m20s
+mariadb-f845ccdb7-hf2x5               1/1     Running     0          31m
 mariadb-1-deploy                      0/1     Completed   0          11m
 ```
 
@@ -451,7 +451,7 @@ mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -hmariadb acend_exampled
 
 You should now have the following resources in place:
 
-* [example-web-python.yaml](example-web-python.yaml)
+* [example-web-app.yaml](example-web-app.yaml)
 * [mariadb-secret.yaml](mariadb-secret.yaml)
 * {{% onlyWhenNot openshift %}}
   {{% onlyWhenNot customer %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}

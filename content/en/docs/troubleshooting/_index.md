@@ -71,9 +71,9 @@ kubectl exec <pod> --namespace <namespace> -- env
 Example:
 
 ```bash
-$ kubectl exec example-web-python-69b658f647-xnm94 --namespace <namespace> -- env
+$ kubectl exec example-web-app-69b658f647-xnm94 --namespace <namespace> -- env
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-HOSTNAME=example-web-python-xnm94
+HOSTNAME=example-web-app-xnm94
 KUBERNETES_SERVICE_PORT_DNS_TCP=53
 KUBERNETES_PORT_443_TCP_PROTO=tcp
 KUBERNETES_PORT_443_TCP_ADDR=172.30.0.1
@@ -92,14 +92,14 @@ oc rsh --namespace <namespace> <pod> <command>
 Example:
 
 ```
-oc rsh --namespace acend-test example-web-python-8b465c687-t9g7b env
+oc rsh --namespace acend-test example-web-app-8b465c687-t9g7b env
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 TERM=xterm
-HOSTNAME=example-web-python-8b465c687-t9g7b
+HOSTNAME=example-web-app-8b465c687-t9g7b
 NSS_SDB_USE_CACHE=no
 KUBERNETES_PORT_443_TCP=tcp://172.30.0.1:443
 KUBERNETES_PORT_443_TCP_PORT=443
-EXAMPLE_WEB_PYTHON_PORT_5000_TCP_PORT=5000
+EXAMPLE_WEB_APP_PORT_5000_TCP_PORT=5000
 ...
 ```
 
@@ -185,7 +185,7 @@ The `{{% param cliToolName %}} port-forward` process runs as long as it is not t
 
 At this point, you are able to visualize your progress on the labs by browsing through the following page <http://localhost:5000/progress>
 
-If you are not able to open your awesome-app with localhost, because you are using a webshell, you can also use the ingress address like: `example-web-python-<namespace>.<domain>/progress` to access the dashboard.
+If you are not able to open your awesome-app with localhost, because you are using a webshell, you can also use the ingress address like: `example-web-app-<namespace>.<domain>/progress` to access the dashboard.
 
 You may need to set some extra permissions to let the dashboard monitor your progress. Have fun!
 

@@ -67,17 +67,17 @@ As in {{<link "persistent-storage">}}, we can use the `oc set volume` command to
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 ```bash
-oc set volume deploy/example-web-python --add --configmap-name=javaconfiguration --mount-path=/etc/config --name=config-volume --type configmap --namespace <namespace>
+oc set volume deploy/example-web-app --add --configmap-name=javaconfiguration --mount-path=/etc/config --name=config-volume --type configmap --namespace <namespace>
 ```
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}
-This task doesn't have any effect on the Python application inside the container. It is for demonstration purposes only.
+This task doesn't have any effect on the example application inside the container. It is for demonstration purposes only.
 {{% /alert %}}
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 
-This results in the addition of the following parts to the Deployment (check with `oc get deploy example-web-python -o yaml`):
+This results in the addition of the following parts to the Deployment (check with `oc get deploy example-web-app -o yaml`):
 
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
