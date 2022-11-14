@@ -61,9 +61,6 @@ NAME          READY   STATUS    RESTARTS   AGE
 awesome-app   1/1     Running   0          1m24s
 ```
 
-{{% onlyWhen rancher %}}
-Have a look at your awesome-app Pod inside the Rancher web console under **Workloads**.
-{{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 Have a look at your awesome-app Pod inside the OpenShift web console.
 {{% /onlyWhen %}}
@@ -210,15 +207,6 @@ example-web-go-69b658f647-xnm94   1/1     Running   0          39s
 ```
 
 The Deployment defines that one replica should be deployed --- which is running as we can see in the output. This Pod is not yet reachable from outside the cluster.
-
-{{% onlyWhen rancher %}}
-
-
-## {{% task %}} Verify the Deployment in the Rancher web console
-
-Try to display the logs from the example application in the Rancher web console.
-{{% /onlyWhen %}}
-
 {{% onlyWhen openshift %}}
 
 

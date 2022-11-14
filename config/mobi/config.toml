@@ -16,7 +16,7 @@
     disable = false
 
 [params]
-enabledModule = "base rancher customer mobi"
+enabledModule = "base customer mobi"
 copyright = "Puzzle ITC GmbH"
 imagePrefix = "puzzle_"
 customer = "mobi"

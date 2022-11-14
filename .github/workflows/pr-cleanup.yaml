@@ -45,7 +45,7 @@ jobs:
           QUAYIO_API_TOKEN: '${{ secrets.QUAYIO_API_TOKEN }}'
           REPOSITORY: '${{ github.repository }}'
         run: |
-          curl -X DELETE -H "Authorization: Bearer ${QUAYIO_API_TOKEN}" https://quay.io/api/v1/repository/${REPOSITORY}/tag/pr-${PR_NUMBER}{,-mobi,-rancher,-openshift,-sbb}
+          curl -X DELETE -H "Authorization: Bearer ${QUAYIO_API_TOKEN}" https://quay.io/api/v1/repository/${REPOSITORY}/tag/pr-${PR_NUMBER}{,-mobi,-openshift,-sbb}
       -
         name: Delete tags in quay.io appuio organization
         id: delete_tags_appuio
