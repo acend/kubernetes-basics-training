@@ -112,8 +112,10 @@ A look into the file `templates/ingress.yaml` reveals that the rendering of the 
 {{- end }}
 {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1
-{{- else -}}
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
@@ -281,7 +283,7 @@ Check whether the ingress was successfully deployed by accessing the URL `https:
 
 ## {{% task %}} Overwrite value using commandline param
 
-An alternative way to set or overwrite values for charts we want to deploy is the `--set name=value` parameter. `--set name=value` can be used when installing a chart as well as upgrading.
+An alternative way to set or overwrite values for charts we want to deploy is the `--set name=value` parameter. This parameter can be used when installing a chart as well as upgrading.
 
 Update the replica count of your nginx Deployment to 2 using `--set name=value`
 
