@@ -211,20 +211,15 @@ example-web-go-69b658f647-xnm94   1/1     Running   0          39s
 
 The Deployment defines that one replica should be deployed --- which is running as we can see in the output. This Pod is not yet reachable from outside the cluster.
 
-{{% onlyWhen rancher %}}
-
-
-## {{% task %}} Verify the Deployment in the Rancher web console
-
-Try to display the logs from the example application in the Rancher web console.
-{{% /onlyWhen %}}
-
 {{% onlyWhen openshift %}}
 
 
-## {{% task %}} Verify the Deployment in the OpenShift web console
+## {{% task %}} Verify the Deployment in the {{% param distroName %}} web console
 
-Try to display the logs from the example application via the OpenShift web console.
+Try to display the logs from the example application in the {{% param distroName %}} web console.
+{{% /onlyWhen %}}
+{{% onlyWhen openshift %}}
+{{% onlyWhenNot baloise %}}
 
 
 ## {{% task %}} Build the image yourself
@@ -292,6 +287,7 @@ It looks the same as before with the only essential exception that it uses the i
       ...
 ```
 
+{{% /onlyWhenNot %}}
 {{% /onlyWhen %}}
 
 
