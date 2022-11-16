@@ -5,6 +5,7 @@ type: docs
 menu:
   main:
     weight: 1
+onlyWhenNot: nosetup
 ---
 
 ## Setup instructions
