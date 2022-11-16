@@ -355,7 +355,7 @@ These probes can be implemented as HTTP checks, container execution checks (the 
 In our example, we want the application to tell {{% param distroName %}} that it is ready for requests with an appropriate readiness probe.
 {{% onlyWhenNot sbb %}}
 Our example application has a health check context named health: `{{% onlyWhenNot openshift %}}http://<node-ip>:<node-port>/health{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://${URL}/health{{% /onlyWhen %}}`
-{{% /onlyWhenNot%}}
+{{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
 Our example application has a health check context named health: `http://localhost:{{% param "images.training-image-probe-port" %}}/health`. This port is not exposed by a service. It is only accessible inside the cluster.
 {{% /onlyWhen %}}
