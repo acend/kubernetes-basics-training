@@ -221,17 +221,28 @@ The environment variables defined in the deployment configure the MariaDB Pod an
 
 ## {{% task %}} Attach the database to the application
 
-By default, our `example-web-app` application uses an SQLite memory database. However, this can be changed by defining the following environment variable(`MYSQL_URI`) to use the newly created MariaDB database:
+By default, our `example-web-app` application uses an SQLite memory database.
 
+However, this can be changed by defining the following environment variable to use the newly created MariaDB database:
+
+{{% onlyWhenNot sbb %}}
 ```
 #MYSQL_URI=mysql://<user>:<password>@<host>/<database>
 MYSQL_URI=mysql://acend-user:mysqlpassword@mariadb/acend_exampledb
 ```
+{{% /onlyWhenNot %}}
+{{% onlyWhen sbb %}}
+```
+#SPRING_DATASOURCE_URL=jdbc:mysql://<host>/<database>
+SPRING_DATASOURCE_URL=jdbc:mysql://mariadb/acend_exampledb
+```
+{{% /onlyWhen %}}
 
 The connection string our `example-web-app` application uses to connect to our new MariaDB, is a concatenated string from the values of the `mariadb` Secret.
 
 For the actual MariaDB host, you can either use the MariaDB Service's ClusterIP or DNS name as the address. All Services and Pods can be resolved by DNS using their name.
 
+{{% onlyWhenNot sbb %}}
 The following commands set the environment variables for the deployment configuration of the `example-web-app` application:
 
 {{% alert title="Warning" color="warning" %}}
@@ -282,6 +293,43 @@ You could also do the changes by directly editing the Deployment:
         name: example-web-app
         ...
 ```
+{{% /onlyWhenNot %}}
+{{% onlyWhen sbb %}}
+Add the environment variables by directly editing the Deployment:
+
+```bash
+{{% param cliToolName %}} edit deployment example-web-app --namespace <namespace>
+```
+
+```yaml
+      ...
+      containers:
+      - env:
+        - name: SPRING_DATASOURCE_DATABASE_NAME
+          valueFrom:
+            secretKeyRef:
+              key: database-name
+              name: mariadb
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: database-user
+              name: mariadb
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: database-password
+              name: mariadb
+        - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+          value: com.mysql.cj.jdbc.Driver
+        - name: SPRING_DATASOURCE_URL
+          value: jdbc:mysql://mariadb/$(SPRING_DATASOURCE_DATABASE_NAME)?autoReconnect=true
+        image: {{% param "images.training-image-url" %}}
+        imagePullPolicy: Always
+        name: example-web-app
+        ...
+```
+{{% /onlyWhen %}}
 
 {{% alert title="Note" color="info" %}}
 The environment can also be checked with the `set env` command and the `--list` parameter:
@@ -292,6 +340,7 @@ The environment can also be checked with the `set env` command and the `--list` 
 
 This will show the environment as follows:
 
+{{% onlyWhenNot sbb %}}
 ```
 # deployments/example-web-app, container example-web-app
 # MYSQL_DATABASE_PASSWORD from secret mariadb, key database-password
@@ -300,6 +349,18 @@ This will show the environment as follows:
 # MYSQL_DATABASE_NAME from secret mariadb, key database-name
 MYSQL_URI=mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
 ```
+{{% /onlyWhenNot %}}
+{{% onlyWhen sbb %}}
+```
+# deployments/example-web-app, container example-web-app
+# SPRING_DATASOURCE_DATABASE_NAME from secret mariadb, key database-name
+# SPRING_DATASOURCE_USERNAME from secret mariadb, key database-user
+# SPRING_DATASOURCE_PASSWORD from secret mariadb, key database-password
+SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
+SPRING_DATASOURCE_URL=jdbc:mysql://mariadb/$(SPRING_DATASOURCE_DATABASE_NAME)?autoReconnect=true
+```
+{{% /onlyWhen %}}
+
 {{% /alert %}}
 
 In order to find out if the change worked we can either look at the container's logs (`{{% param cliToolName %}} logs <pod>`) or we could register some "Hellos" in the application, delete the Pod, wait for the new Pod to be started and check if they are still there.
@@ -343,7 +404,8 @@ oc rsh --namespace <namespace> mariadb-f845ccdb7-hf2x5
 You are now able to connect to the database and display the data. Login with:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend_exampledb
+mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST $MYSQL_DATABASE
+
 ```
 
 ```
@@ -405,7 +467,7 @@ oc rsh --namespace <namespace> <podname>
 This command shows how to drop the whole database:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend_exampledb
+mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST $MYSQL_DATABASE
 ```
 
 ```bash
@@ -417,7 +479,7 @@ exit
 Import a dump:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -hmariadb acend_exampledb < /tmp/dump.sql
+mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST $MYSQL_DATABASE < /tmp/dump.sql
 ```
 
 Check your app to see the imported "Hellos".
@@ -437,7 +499,7 @@ oc rsh --namespace <namespace> <podname>
 {{% /onlyWhen %}}
 
 ```bash
-mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -hmariadb acend_exampledb > /tmp/dump.sql
+mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST $MYSQL_DATABASE > /tmp/dump.sql
 ```
 
 ```bash
