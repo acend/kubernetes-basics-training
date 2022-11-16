@@ -14,6 +14,7 @@ This lab does not depend on previous labs. You can start with an empty Namespace
 
 Create a new Deployment in your Namespace. So again, lets define the Deployment using YAML in a file `05_deployment.yaml` with the following content:
 
+{{% onlyWhenNot sbb %}}
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -42,6 +43,10 @@ spec:
             cpu: 50m
             memory: 128Mi
 ```
+{{% /onlyWhenNot %}}
+{{% onlyWhen sbb %}}
+{{< readfile file="/content/en/docs/scaling/example-web-app-deployment-java.yaml" code="true" lang="yaml" >}}
+{{% /onlyWhen %}}
 
 ```bash
 {{% param cliToolName %}} apply -f 05_deployment.yaml --namespace <namespace>
@@ -123,7 +128,7 @@ Now we create a new Service of the type `ClusterIP`:
 
 
 ```bash
-kubectl expose deployment example-web-app --type="ClusterIP" --name="example-web-app" --port=5000 --target-port=5000 --namespace <namespace>
+kubectl expose deployment example-web-app --type="ClusterIP" --name="example-web-app" --port={{% param "images.training-image-port" %}} --target-port={{% param "images.training-image-port" %}} --namespace <namespace>
 ```
 
 and we need to create an Ingress to access the application:
@@ -145,7 +150,7 @@ Now we expose our application to the internet by creating a service and a route.
 First the Service:
 
 ```bash
-oc expose deployment example-web-app --name="example-web-app" --port=5000 --namespace <namespace>
+oc expose deployment example-web-app --name="example-web-app" --port={{% param "images.training-image-port" %}} --namespace <namespace>
 ```
 
 Then the Route:
@@ -169,9 +174,9 @@ Annotations:              <none>
 Selector:                 app=example-web-app
 Type:                     ClusterIP
 IP:                       10.39.245.205
-Port:                     <unset>  5000/TCP
-TargetPort:               5000/TCP
-Endpoints:                10.36.0.10:5000,10.36.0.11:5000,10.36.0.9:5000
+Port:                     <unset>  {{% param "images.training-image-port" %}}/TCP
+TargetPort:               {{% param "images.training-image-port" %}}/TCP
+Endpoints:                10.36.0.10:{{% param "images.training-image-port" %}},10.36.0.11:{{% param "images.training-image-port" %}},10.36.0.9:{{% param "images.training-image-port" %}}
 Session Affinity:         None
 External Traffic Policy:  Cluster
 Events:
@@ -189,9 +194,9 @@ Selector:          app=example-web-app
 Type:              ClusterIP
 IP:                172.30.89.44
 IPs:               172.30.89.44
-Port:              <unset>  5000/TCP
-TargetPort:        5000/TCP
-Endpoints:         10.125.4.70:5000,10.126.4.137:5000,10.126.4.138:5000
+Port:              <unset>  {{% param "images.training-image-port" %}}/TCP
+TargetPort:        {{% param "images.training-image-port" %}}/TCP
+Endpoints:         10.125.4.70:{{% param "images.training-image-port" %}},10.126.4.137:{{% param "images.training-image-port" %}},10.126.4.138:{{% param "images.training-image-port" %}}
 Session Affinity:  None
 Events:            <none>
 ```
@@ -282,6 +287,7 @@ Let's make another test: What happens if you start a new Deployment while our re
 
 During a short period we won't get a response:
 
+{{% onlyWhenNot sbb %}}
 ```
 example-web-app-86d9d584f8-7vjcj TIME: 17:37:24,121
 example-web-app-86d9d584f8-7vjcj TIME: 17:37:25,189
@@ -305,6 +311,7 @@ example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:41,187
 
 In our example, we use a very lightweight Pod. If we had used a more heavyweight Pod that needed a longer time to respond to requests, we would of course see a larger gap.
 An example for this would be a Java application with a startup time of 30 seconds:
+{{% /onlyWhenNot %}}
 
 ```
 example-spring-boot-2-73aln TIME: 16:48:25,251
@@ -345,7 +352,13 @@ Basically, there are two different kinds of checks that can be implemented:
 
 These probes can be implemented as HTTP checks, container execution checks (the execution of a command or script inside a container) or TCP socket checks.
 
-In our example, we want the application to tell {{% param distroName %}} that it is ready for requests with an appropriate readiness probe. Our example application has a health check context named health: `{{% onlyWhenNot openshift %}}http://<node-ip>:<node-port>/health{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://${URL}/health{{% /onlyWhen %}}`
+In our example, we want the application to tell {{% param distroName %}} that it is ready for requests with an appropriate readiness probe.
+{{% onlyWhenNot sbb %}}
+Our example application has a health check context named health: `{{% onlyWhenNot openshift %}}http://<node-ip>:<node-port>/health{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://${URL}/health{{% /onlyWhen %}}`
+{{% /onlyWhenNot%}}
+{{% onlyWhen sbb %}}
+Our example application has a health check context named health: `http://localhost:{{% param "images.training-image-probe-port" %}}/health`. This port is not exposed by a service. It is only accessible inside the cluster.
+{{% /onlyWhen %}}
 
 
 ## {{% task %}} Availability during deployment
@@ -389,7 +402,7 @@ Now insert the readiness probe at `.spec.template.spec.containers` above the `re
         readinessProbe:
           httpGet:
             path: /health
-            port: 5000
+            port: {{% param "images.training-image-probe-port" %}}
             scheme: HTTP
           initialDelaySeconds: 10
           timeoutSeconds: 1
@@ -410,7 +423,7 @@ The `containers` configuration then looks like:
           failureThreshold: 3
           httpGet:
             path: /health
-            port: 5000
+            port: {{% param "images.training-image-probe-port" %}}
             scheme: HTTP
           initialDelaySeconds: 10
           periodSeconds: 10
@@ -426,7 +439,7 @@ The `containers` configuration then looks like:
 Define the readiness probe on the Deployment using the following command:
 
 ```bash
-oc set probe deploy/example-web-app --readiness --get-url=http://:5000/health --initial-delay-seconds=10 --timeout-seconds=1 --namespace <namespace>
+oc set probe deploy/example-web-app --readiness --get-url=http://:{{% param "images.training-image-probe-port" %}}/health --initial-delay-seconds=10 --timeout-seconds=1 --namespace <namespace>
 ```
 
 The command above results in the following `readinessProbe` snippet being inserted into the Deployment:
@@ -440,7 +453,7 @@ The command above results in the following `readinessProbe` snippet being insert
         readinessProbe:
           httpGet:
             path: /health
-            port: 5000
+            port: {{% param "images.training-image-probe-port" %}}
             scheme: HTTP
           initialDelaySeconds: 10
           timeoutSeconds: 1

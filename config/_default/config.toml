@@ -83,6 +83,8 @@ customer = "none"
 [params.images]
 deployment-image-url = "quay.io/acend/example-web-go:latest"
 training-image-url = "quay.io/acend/example-web-python:latest"
+training-image-port = "5000"
+training-image-probe-port = "5000"
 nginxinc-nginx-unprivileged = "docker.io/nginxinc/nginx-unprivileged:latest"
 nginxinc-nginx-unprivileged-fix-version = "docker.io/nginxinc/nginx-unprivileged:1.18-alpine"
 nginx = "docker.io/nginx:latest"
