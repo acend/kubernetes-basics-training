@@ -6,7 +6,7 @@ weight: 4
 In this lab, we are going to make the freshly deployed application from the last lab available online.
 
 
-## {{% task %}} Create a ClusterIP Service with an Ingress
+## {{% task %}} Create a ClusterIP Service
 
 The command `{{% param cliToolName %}} apply -f 03_deployment.yaml` from the last lab creates a Deployment but no Service. A {{% param distroName %}} Service is an abstract way to expose an application running on a set of Pods as a network service. For some parts of your application (for example, frontends) you may want to expose a Service to an external IP address which is outside your cluster.
 
@@ -148,6 +148,9 @@ Events:
 ```
 
 The `Endpoints` show the IP addresses of all currently matched Pods.
+
+
+## {{% task %}} Expose the Service
 
 With the ClusterIP Service ready, we can now create the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhen %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}} resource.
 {{% onlyWhenNot openshift %}}
