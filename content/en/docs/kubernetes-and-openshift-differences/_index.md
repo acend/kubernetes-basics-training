@@ -5,6 +5,12 @@ onlyWhen: openshift
 onlyWhenNot: ocplight
 ---
 
+{{% onlyWhen baloise %}}
+{{% alert title="Note" color="info" %}}
+This lab is optional.
+{{% /alert %}}
+{{% /onlyWhen %}}
+
 Even though OpenShift is based on Kubernetes, there are some important differences.
 As a concluding lab, we are going to have a look at these differences.
 
