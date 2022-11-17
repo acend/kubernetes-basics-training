@@ -4,6 +4,11 @@ weight: 13
 onlyWhenNot: techlab
 ---
 
+{{% onlyWhen baloise %}}
+{{% alert title="Note" color="info" %}}
+This lab is optional.
+{{% /alert %}}
+{{% /onlyWhen %}}
 
 [Kustomize](https://kustomize.io/) is a tool to manage YAML configurations for Kubernetes objects in a declarative and reusable manner. In this lab, we will use Kustomize to deploy the same app for two different environments.
 
