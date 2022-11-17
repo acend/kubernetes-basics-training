@@ -6,7 +6,7 @@ onlyWhenNot: techlab
 
 {{% onlyWhen baloise %}}
 {{% alert title="Note" color="info" %}}
-This is lab is optional.
+This lab is optional.
 {{% /alert %}}
 {{% /onlyWhen %}}
 
