@@ -236,7 +236,7 @@ By default, our `example-web-python` application uses an SQLite memory database.
 
 ```
 #MYSQL_URI=mysql://<user>:<password>@<host>/<database>
-MYSQL_URI=mysql://acend-user:mysqlpassword@mariadb/acend_exampledb
+MYSQL_URI=mysql://acend_user:mysqlpassword@mariadb/acend_exampledb
 ```
 
 The connection string our `example-web-python` application uses to connect to our new MariaDB, is a concatenated string from the values of the `mariadb` Secret.
