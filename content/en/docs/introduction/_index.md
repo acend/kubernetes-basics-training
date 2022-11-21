@@ -13,9 +13,8 @@ All explanations and resources used in this lab give only a quick and not detail
 In this lab, we will introduce the core concepts of OpenShift.
 
 All explanations and resources used in this lab give only a quick and not detailed overview.
-As OpenShift is based on Kubernetes, its concepts also apply to OpenShift which you find in [the official Kubernetes documentation](https://kubernetes.io/docs/concepts/).
+As OpenShift is based on Kubernetes, its concepts also apply to OpenShift which you can find in [the official Kubernetes documentation](https://kubernetes.io/docs/concepts/).
 {{% /onlyWhen %}}
-
 
 ## Core concepts
 
@@ -29,7 +28,6 @@ Therefore, OpenShift is also called a _Container Platform_, or the term _Contain
 {{% /onlyWhen %}}
 Depending on the configuration the term _Platform-as-a-Service_ (PaaS) works as well.
 
-
 ### Container engine
 
 {{% onlyWhenNot openshift %}}
@@ -41,16 +39,14 @@ OpenShift's underlying container engine is [CRI-O](https://cri-o.io/). Earlier r
 Docker was originally created to help developers test their applications in their continuous integration environments. Nowadays, system admins also use it.
 CRI-O doesn't exist as long as Docker does. It is a "lightweight container runtime for Kubernetes" and is fully [OCI-compliant](https://github.com/opencontainers/runtime-spec).
 
-
 ## Overview
 
 {{% onlyWhenNot openshift %}}
-Kubernetes consists of control plane and worker (minion, compute) nodes.
+Kubernetes consists of a control plane and worker (minion, compute) nodes.
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
-OpenShift basically consists of control plane and worker nodes.
+OpenShift basically consists of a control plane and worker nodes.
 {{% /onlyWhen %}}
-
 
 ### Control plane and worker nodes
 
@@ -60,7 +56,6 @@ The scheduler and the controller manager decide how applications should be deplo
 
 Worker nodes are also known as compute nodes, application nodes or minions, and are responsible for running the container workload (applications).
 The _control plane_ for the worker nodes is implemented in the control plane components. The hosts running these components were historically called masters.
-
 
 ### Containers and images
 
@@ -93,12 +88,10 @@ Layer example for a Tomcat application:
 The pre-built images under version control can be saved in an image registry and can then be used by the container platform.
 {{% onlyWhenNot openshift %}}
 
-
 ### Namespaces
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
-
 
 ### Namespaces and Projects
 
@@ -123,7 +116,6 @@ Permissions and roles can be bound on a per-project basis. This way, a user can 
 Some resources are valid cluster-wise and cannot be set and controlled on a namespace basis.
 {{% /alert %}}
 
-
 ### Pods
 
 {{% onlyWhenNot openshift %}}
@@ -138,20 +130,18 @@ The so-called infrastructure container (or pause container) is therefore automat
 
 The application ports from inside the Pod are exposed via Services.
 
-
 ### Services
 
 A service represents a static endpoint for your application in the Pod. As a Pod and its IP address typically are considered dynamic, the IP address of the Service does not change when changing the application inside the Pod. If you scale up your Pods, you have an automatic internal load balancing towards all Pod IP addresses.
 
 There are different kinds of Services:
 
-* `ClusterIP`: Default virtual IP address range
-* `NodePort`: Same as `ClusterIP` plus open ports on the nodes
-* `LoadBalancer`: An external load balancer is created, only works in cloud environments, e.g. AWS ELB
-* `ExternalName`: A DNS entry is created, also only works in cloud environments
+- `ClusterIP`: Default virtual IP address range
+- `NodePort`: Same as `ClusterIP` plus open ports on the nodes
+- `LoadBalancer`: An external load balancer is created, only works in cloud environments, e.g. AWS ELB
+- `ExternalName`: A DNS entry is created, also only works in cloud environments
 
 A Service is unique inside a Namespace.
-
 
 ### Deployment
 
@@ -162,7 +152,6 @@ Have a look at the [official documentation](https://kubernetes.io/docs/concepts/
 Have a look at the [official documentation](https://docs.openshift.com/container-platform/latest/applications/deployments/what-deployments-are.html).
 {{% /onlyWhen %}}
 
-
 ### Volume
 
 {{% onlyWhenNot openshift %}}
@@ -171,7 +160,6 @@ Have a look at the [official documentation](https://kubernetes.io/docs/concepts/
 {{% onlyWhen openshift %}}
 Have a look at the [official documentation](https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-volumes.html).
 {{% /onlyWhen %}}
-
 
 ### Job
 

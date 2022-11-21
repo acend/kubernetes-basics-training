@@ -12,7 +12,6 @@ Please make sure you completed {{<link "setup">}} before you continue with this 
 {{% /onlyWhenNot %}}
 {{% onlyWhenNot openshift %}}
 
-
 ## Login
 
 {{% alert title="Note" color="info" %}}
@@ -30,7 +29,6 @@ Our Kubernetes cluster of the lab environment runs on [cloudscale.ch](https://cl
 Your trainer will provide you with the information needed to log in.
 {{% /alert %}}
 {{% /onlyWhen %}}
-
 
 Log in to the Rancher web console and choose the desired cluster.
 
@@ -62,9 +60,9 @@ To set the environment variable (`KUBECONFIG` = `C:\Users\<user>\.kube-techlab\c
 
 The `PATH` can be set in Windows in the advanced system settings. It depends on the version:
 
-* [Windows 7](http://geekswithblogs.net/renso/archive/2009/10/21/how-to-set-the-windows-path-in-windows-7.aspx)
-* [Windows 8](http://www.itechtics.com/customize-windows-environment-variables/)
-* [Windows 10](http://techmixx.de/windows-10-umgebungsvariablen-bearbeiten/)
+- [Windows 7](http://geekswithblogs.net/renso/archive/2009/10/21/how-to-set-the-windows-path-in-windows-7.aspx)
+- [Windows 8](http://www.itechtics.com/customize-windows-environment-variables/)
+- [Windows 10](http://techmixx.de/windows-10-umgebungsvariablen-bearbeiten/)
 
 {{% /alert %}}
 
@@ -82,7 +80,6 @@ Make sure you have set up your kubeconfig file correctly. Check your [CWIKI](htt
 {{% /alert %}}
 {{% /onlyWhen %}}
 
-
 ## Namespaces
 
 As a first step on the cluster, we are going to create a new Namespace.
@@ -91,7 +88,7 @@ A Namespace is a logical design used in Kubernetes to organize and separate your
 
 {{% onlyWhen rancher %}}
 {{% alert title="Note" color="info" %}}
-Additionally, Rancher knows the concept of a [*Project*](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple Namespaces.
+Additionally, Rancher knows the concept of a [_Project_](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple Namespaces.
 {{% /alert %}}
 
 In the Rancher web console choose the Project called `Training`.
@@ -102,7 +99,6 @@ We use the project `kubernetes-techlab` on the `kubedev` cluster.
 
 {{% /onlyWhen %}}
 
-
 ### {{% task %}} Create a Namespace
 
 Create a new namespace in the lab environment. The `kubectl help` output can help you figure out the right command.
@@ -112,7 +108,6 @@ Please choose an identifying name for your Namespace, e.g. your initials or name
 
 We are going to use `<namespace>` as a placeholder for your created Namespace.
 {{% /alert %}}
-
 
 ### Solution
 
@@ -150,7 +145,6 @@ Some prefer to explicitly select the Namespace for each `kubectl` command by add
 
 {{% onlyWhen rancher %}}
 
-
 ## {{% task %}} Discover the Rancher web console
 
 Check the menu entries, there should neither be any Deployments nor any Pods or Services in your Namespace.
@@ -166,14 +160,12 @@ With the command `kubectl get` you can display all kinds of resources.
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 
-
 ## Projects
 
 As a first step on the cluster, we are going to create a new Project.
 
 A Project is a logical design used in OpenShift to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis.
 Authorized users inside a Project are able to manage those resources. Project names have to be unique in your cluster.
-
 
 ### {{% task %}} Create a Project
 
@@ -182,7 +174,6 @@ Create a new Project in the lab environment. The `oc help` output can help you f
 {{% alert title="Note" color="info" %}}
 Please choose an identifying name for your Project, e.g. your initials or name as a prefix. We are going to use `<project>` as a placeholder for your created Project.
 {{% /alert %}}
-
 
 ### Solution
 
@@ -202,7 +193,6 @@ oc project <project>
 ```
 
 {{% /alert %}}
-
 
 ## {{% task %}} Discover the OpenShift web console
 
