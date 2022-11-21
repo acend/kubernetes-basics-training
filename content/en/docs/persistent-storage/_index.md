@@ -86,7 +86,7 @@ Because we just changed the Deployment a new Pod was automatically redeployed. T
 {{% /alert %}}
 {{% /onlyWhenNot %}}
 
-We need to redeploy the application pod, our application automatically creates the database schema at startup time.
+We need to redeploy the application pod, our application automatically creates the database schema at startup time. Wait for the database pod to be started fully before restarting the application pod.
 
 If you want to force a redeployment of a Pod, you can use this:
 
