@@ -15,6 +15,7 @@ Please make sure you completed labs {{<link "first-steps">}}, {{<link "deploying
 ## {{% task %}} Instantiate a MariaDB database
 
 {{% onlyWhen openshift %}}
+{{% onlyWhenNot baloise %}}
 We are going to use an OpenShift template to create the database. This can be done by either using the Web Console or the CLI. Both are going to be explained in this lab, so pick the one you are more comfortable with.
 
 
@@ -76,14 +77,32 @@ oc get templates -n openshift mariadb-ephemeral -o yaml
 
 The Template's content reveals a Secret, a Service and a DeploymentConfig.
 {{% /onlyWhen %}}
+{{% /onlyWhenNot %}}
 {{% onlyWhenNot openshift %}}
 
-We are first going to create a so-called _Secret_ in which we store sensitive data like the database name, the password, the root password, and the username. The secret will be used to access the database and also to create the initial database.
+We are first going to create a so-called _Secret_ in which we store sensitive data. The secret will be used to access the database and also to create the initial database.
 
 ```bash
-kubectl create secret generic mariadb --from-literal=database-name=acend_exampledb --from-literal=database-password=mysqlpassword --from-literal=database-root-password=mysqlrootpassword --from-literal=database-user=acend-user --namespace <namespace>
+kubectl create secret generic mariadb --from-literal=database-name=acend_exampledb --from-literal=database-password=mysqlpassword --from-literal=database-root-password=mysqlrootpassword --from-literal=database-user=acend_user --namespace <namespace>
 ```
 {{% /onlyWhenNot %}}
+{{% onlyWhen baloise %}}
+We are first going to create a so-called _Secret_ in which we store sensitive data. The secret will be used to access the database and also to create the initial database.
+The `oc create secret` command helps us create the secret like so:
+
+```bash
+oc create secret generic mariadb --from-literal=database-name=acend_exampledb --from-literal=database-password=mysqlpassword --from-literal=database-root-password=mysqlrootpassword --from-literal=database-user=acend_user --dry-run=client -o yaml --namespace <namespace> > secret_mariadb.yaml
+```
+
+Above command has not yet created any resources on our cluster as we used the `--dry-run=client` parameter and redirected the output into the file `secret_mariadb.yaml`.
+
+The reason we haven't actually created the Secret yet but instead put the resource definition in a file has to do with the way things work at Baloise. The file will help you later.
+But for now, create the Secret by applying the file's content:
+
+```bash
+oc apply -f secret_mariadb.yaml
+```
+{{% /onlyWhen %}}
 
 The Secret contains the database name, user, password, and the root password. However, these values will neither be shown with `{{% param cliToolName %}} get` nor with `{{% param cliToolName %}} describe`:
 
@@ -97,7 +116,7 @@ data:
   database-name: YWNlbmQtZXhhbXBsZS1kYg==
   database-password: bXlzcWxwYXNzd29yZA==
   database-root-password: bXlzcWxyb290cGFzc3dvcmQ=
-  database-user: YWNlbmQtdXNlcg==
+  database-user: YWNlbmRfdXNlcg==
 kind: Secret
 metadata:
   ...
@@ -129,31 +148,58 @@ At Baloise, secrets are managed by HashiCorp Vault and integrated into OpenShift
 {{% /onlyWhen %}}
 {{% /alert %}}
 
-{{% onlyWhen openshift %}}
-The interesting thing about Secrets is that they can be reused. We could extract all the plaintext values from the Secret, but it's way easier to instead simply refer to its values inside the Deployment or DeploymentConfig (as in this lab):
+{{% onlyWhenNot openshift %}}
+We are now going to create a Deployment and a Service. As a first example, we use a database without persistent storage. Only use an ephemeral database for testing purposes as a restart of the Pod leads to data loss. We are going to look at how to persist this data in a persistent volume later on.
+
+As we had seen in the earlier labs, all resources like Deployments, Services, Secrets and so on can be displayed in YAML or JSON format. It doesn't end there, capabilities also include the creation and exportation of resources using YAML or JSON files.
+
+In our case we want to create a Deployment and Service for our MariaDB database.
+Save this snippet as `mariadb.yaml`:
+
+{{% onlyWhenNot customer %}}
+{{< readfile file="/content/en/docs/attaching-a-database/mariadb.yaml" code="true" lang="yaml" >}}
+{{% /onlyWhenNot %}}
+
+{{% onlyWhen mobi %}}
+{{< readfile file="/content/en/docs/attaching-a-database/mariadb-mobi.yaml" code="true" lang="yaml" >}}
+{{% /onlyWhen %}}
+
+Apply it with:
 
 ```bash
-oc get dc mariadb --output yaml --namespace <namespace>
+kubectl apply -f mariadb.yaml --namespace <namespace>
 ```
 
+As soon as the container image for `mariadb:10.5` has been pulled, you will see a new Pod using `kubectl get pods`.
+
+The environment variables defined in the deployment configure the MariaDB Pod and how our frontend will be able to access it.
+{{% /onlyWhenNot %}}
+{{% onlyWhen baloise %}}
+We are now going to create a Deployment and a Service. As a first example, we use a database without persistent storage. Only use an ephemeral database for testing purposes as a restart of the Pod leads to data loss. We are going to look at how to persist this data in a persistent volume later on.
+
+In our case we want to create a Deployment and Service for our MariaDB database.
+Save this snippet as `mariadb.yaml`:
+
+{{< readfile file="/content/en/docs/attaching-a-database/mariadb-baloise.yaml" code="true" lang="yaml" >}}
+
+Apply it with:
+
+```bash
+oc apply -f mariadb.yaml --namespace <namespace>
 ```
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
-metadata:
-  annotations:
-    template.alpha.openshift.io/wait-for-ready: "true"
-  labels:
-    template: mariadb-ephemeral-template
-    template.openshift.io/template-instance-owner: 763195be-4429-462d-bb26-70d199f5dbe0
-  ...
-  name: mariadb
-  namespace: acend-test
+
+As soon as the container image has been pulled, you will see a new Pod using `oc get pods`.
+
+The environment variables defined in the deployment configure the MariaDB Pod and how our frontend will be able to access it.
+{{% /onlyWhen %}}
+
+
+The interesting thing about Secrets is that they can be reused, e.g., in different Deployments. We could extract all the plaintext values from the Secret and put them as environment variables into the Deployments, but it's way easier to instead simply refer to its values inside the Deployment (as in this lab) like this:
+
+```
+...
 spec:
-  replicas: 1
-  ...
   template:
-    metadata:
-      ...
     spec:
       containers:
       - name: mariadb
@@ -178,45 +224,10 @@ spec:
             secretKeyRef:
               key: database-name
               name: mariadb
-        image: image-registry.openshift-image-registry.svc:5000/openshift/mariadb@sha256:44292f3eeaa3729372eee6fde9e1f07719172a1ca759f399619660bf1949192e
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 3306
-          protocol: TCP
-        ...
-status:
-  ...
+...
 ```
 
-Above DeploymentConfig is the output you get from the command before. Most parts have been cut out to focus on the relevant lines: The references to the `mariadb` Secret. As you can see, instead of directly defining environment variables you can refer to a specific key inside a Secret. We are going to make use of this concept for our own application.
-{{% /onlyWhen %}}
-{{% onlyWhenNot openshift %}}
-We are now going to create a Deployment and a Service. As a first example, we use a database without persistent storage. Only use an ephemeral database for testing purposes as a restart of the Pod leads to data loss. We are going to look at how to persist this data in a persistent volume later on.
-
-As we had seen in the earlier labs, all resources like Deployments, Services, Secrets and so on can be displayed in YAML or JSON format. It doesn't end there, capabilities also include the creation and exportation of resources using YAML or JSON files.
-
-In our case we want to create a deployment including a Service for our MySQL database.
-Save this snippet as `mariadb.yaml`:
-
-{{% onlyWhenNot customer %}}
-{{< readfile file="/content/en/docs/attaching-a-database/mariadb.yaml" code="true" lang="yaml" >}}
-{{% /onlyWhenNot %}}
-
-{{% onlyWhen mobi %}}
-{{< readfile file="/content/en/docs/attaching-a-database/mariadb-mobi.yaml" code="true" lang="yaml" >}}
-{{% /onlyWhen %}}
-
-
-Execute it with:
-
-```bash
-kubectl apply -f mariadb.yaml --namespace <namespace>
-```
-
-As soon as the container image for `mariadb:10.5` has been pulled, you will see a new Pod using `kubectl get pods`.
-
-The environment variables defined in the deployment configure the MariaDB Pod and how our frontend will be able to access it.
-{{% /onlyWhenNot %}}
+Above lines are an excerpt of the MariaDB Deployment. Most parts have been cut out to focus on the relevant lines: The references to the `mariadb` Secret. As you can see, instead of directly defining environment variables you can refer to a specific key inside a Secret. We are going to make further use of this concept for our Python application.
 
 
 ## {{% task %}} Attach the database to the application
@@ -228,7 +239,7 @@ However, this can be changed by defining the following environment variable to u
 {{% onlyWhenNot sbb %}}
 ```
 #MYSQL_URI=mysql://<user>:<password>@<host>/<database>
-MYSQL_URI=mysql://acend-user:mysqlpassword@mariadb/acend_exampledb
+MYSQL_URI=mysql://acend_user:mysqlpassword@mariadb/acend_exampledb
 ```
 {{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
@@ -451,7 +462,7 @@ curl -O https://raw.githubusercontent.com/acend/kubernetes-basics-training/main/
 {{% param cliToolName %}} cp ./dump.sql <podname>:/tmp/ --namespace <namespace>
 ```
 
-This is how you log into the MySQL Pod:
+This is how you log into the MariaDB Pod:
 
 {{% onlyWhenNot openshift %}}
 ```bash
