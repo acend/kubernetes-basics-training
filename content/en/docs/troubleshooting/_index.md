@@ -40,6 +40,7 @@ If Bash is not available in the Pod you can fallback to `-- sh` instead of `-- /
 
 You now have a running shell session inside the container in which you can execute every binary available, e.g.:
 
+{{% onlyWhenNot sbb %}}
 ```bash
 ls -l
 ```
@@ -57,6 +58,22 @@ With `exit` or `CTRL+d` you can leave the container and close the connection:
 ```bash
 exit
 ```
+{{% /onlyWhenNot %}}
+{{% onlyWhen sbb %}}
+```bash
+pwd
+```
+
+```
+/home/default
+```
+
+With `exit` or `CTRL+d` you can leave the container and close the connection:
+
+```bash
+exit
+```
+{{% /onlyWhen %}}
 
 
 ## {{% task %}} Single commands
@@ -71,9 +88,9 @@ kubectl exec <pod> --namespace <namespace> -- env
 Example:
 
 ```bash
-$ kubectl exec example-web-python-69b658f647-xnm94 --namespace <namespace> -- env
+$ kubectl exec example-web-app-69b658f647-xnm94 --namespace <namespace> -- env
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-HOSTNAME=example-web-python-xnm94
+HOSTNAME=example-web-app-xnm94
 KUBERNETES_SERVICE_PORT_DNS_TCP=53
 KUBERNETES_PORT_443_TCP_PROTO=tcp
 KUBERNETES_PORT_443_TCP_ADDR=172.30.0.1
@@ -92,14 +109,14 @@ oc rsh --namespace <namespace> <pod> <command>
 Example:
 
 ```
-oc rsh --namespace acend-test example-web-python-8b465c687-t9g7b env
+oc rsh --namespace acend-test example-web-app-8b465c687-t9g7b env
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 TERM=xterm
-HOSTNAME=example-web-python-8b465c687-t9g7b
+HOSTNAME=example-web-app-8b465c687-t9g7b
 NSS_SDB_USE_CACHE=no
 KUBERNETES_PORT_443_TCP=tcp://172.30.0.1:443
 KUBERNETES_PORT_443_TCP_PORT=443
-EXAMPLE_WEB_PYTHON_PORT_5000_TCP_PORT=5000
+EXAMPLE_WEB_APP_PORT_5000_TCP_PORT=5000
 ...
 ```
 
@@ -149,13 +166,11 @@ Get the name of the Pod:
 
 Then execute the port forwarding command using the Pod's name:
 
+{{% onlyWhenNot sbb %}}
 ```bash
 {{% param cliToolName %}} port-forward <pod> 5000:5000 --namespace <namespace>
 ```
-
-{{% alert title="Note" color="info" %}}
-Use the additional parameter `--address <IP address>` (where `<IP address>` refers to a NIC's IP address from your local workstation) if you want to access the forwarded port from outside your own local workstation.
-{{% /alert %}}
+Don't forget to change the Pod name to your own installation. If configured, you can use auto-completion.
 
 The output of the command should look like this:
 
@@ -163,14 +178,43 @@ The output of the command should look like this:
 Forwarding from 127.0.0.1:5000 -> 5000
 Forwarding from [::1]:5000 -> 5000
 ```
-
+{{% /onlyWhenNot %}}
+{{% onlyWhen sbb %}}
+```bash
+{{% param cliToolName %}} port-forward <pod> {{% param "images.training-image-probe-port" %}}:{{% param "images.training-image-probe-port" %}} --namespace <namespace>
+```
 Don't forget to change the Pod name to your own installation. If configured, you can use auto-completion.
 
+The output of the command should look like this:
+
+```
+Forwarding from 127.0.0.1:{{% param "images.training-image-probe-port" %}} -> {{% param "images.training-image-probe-port" %}}
+Forwarding from [::1]:{{% param "images.training-image-probe-port" %}} -> {{% param "images.training-image-probe-port" %}}
+```
+{{% /onlyWhen %}}
+
+{{% alert title="Note" color="info" %}}
+Use the additional parameter `--address <IP address>` (where `<IP address>` refers to a NIC's IP address from your local workstation) if you want to access the forwarded port from outside your own local workstation.
+{{% /alert %}}
+
+{{% onlyWhenNot sbb %}}
 The application is now available with the following link: <http://localhost:5000/>. Or try a `curl` command:
 
 ```bash
 curl localhost:5000
 ```
+{{% /onlyWhenNot %}}
+{{% onlyWhen sbb %}}
+Now the health endpoint is available at: <http://localhost:{{% param "images.training-image-probe-port" %}}/>.
+
+We could not access this endpoint before because it is only exposed inside the cluster.
+
+The application probe endpoint is now available with the following link: <http://localhost:{{% param "images.training-image-probe-port" %}}/health>. Or try a `curl` command:
+
+```bash
+curl localhost:{{% param "images.training-image-probe-port" %}}/health
+```
+{{% /onlyWhen %}}
 
 With the same concept you can access databases from your local workstation or connect your local development environment via remote debugging to your application in the Pod.
 
@@ -211,7 +255,7 @@ The following `{{% param cliToolName %}}` subcommands support this flag (non-fin
 For example, we can use the `--dry-run=client` flag to create a template for our Deployment:
 
 ```bash
-{{% param cliToolName %}} create deployment example-web-go --image={{% param "images.acendAwesomeApp-example-web-go" %}} --namespace acend-test --dry-run=client -o yaml
+{{% param cliToolName %}} create deployment example-web-app --image={{% param "images.training-image-url" %}} --namespace acend-test --dry-run=client -o yaml
 ```
 
 The result is the following YAML output:
@@ -222,24 +266,24 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: example-web-go
-  name: example-web-go
+    app: example-web-app
+  name: example-web-app
   namespace: acend-test
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: example-web-go
+      app: example-web-app
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: example-web-go
+        app: example-web-app
     spec:
       containers:
-      - image: quay.io/acend/example-web-go:latest
-        name: example-web-go
+      - image: {{% param "images.training-image-url" %}}
+        name: example-web
         resources: {}
 status: {}
 ```
@@ -249,16 +293,16 @@ status: {}
 
 If you want to see the HTTP requests `{{% param cliToolName %}}` sends to the Kubernetes API in detail, you can use the optional flag `--v=10`.
 
-For example, to see the API request for creating a namespace:
+For example, to see the API request for creating a deployment:
 
 ```bash
-{{% param cliToolName %}} create deployment example-web-go --image={{% param "images.acendAwesomeApp-example-web-go" %}} --namespace acend-test --replicas=0 --v=10
+{{% param cliToolName %}} create deployment test-deployment --image={{% param "images.training-image-url" %}} --namespace <namespace> --replicas=0 --v=10
 ```
 
 The resulting output looks like this:
 
 ```bash
-I1114 15:31:13.605759   85289 request.go:1073] Request Body: {"kind":"Deployment","apiVersion":"apps/v1","metadata":{"name":"test-deployment","namespace":"acend-test","creationTimestamp":null,"labels":{"app":"test-deployment"}},"spec":{"replicas":0,"selector":{"matchLabels":{"app":"test-deployment"}},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"test-deployment"}},"spec":{"containers":[{"name":"example-web-go","image":"quay.io/acend/example-web-go:latest","resources":{}}]}},"strategy":{}},"status":{}}
+I1114 15:31:13.605759   85289 request.go:1073] Request Body: {"kind":"Deployment","apiVersion":"apps/v1","metadata":{"name":"test-deployment","namespace":"acend-test","creationTimestamp":null,"labels":{"app":"test-deployment"}},"spec":{"replicas":0,"selector":{"matchLabels":{"app":"test-deployment"}},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"test-deployment"}},"spec":{"containers":[{"name":"example-web","image":"{{% param "images.training-image-url" %}}","resources":{}}]}},"strategy":{}},"status":{}}
 I1114 15:31:13.605817   85289 round_trippers.go:466] curl -v -XPOST  -H "Accept: application/json, */*" -H "Content-Type: application/json" -H "User-Agent: oc/4.11.0 (linux/amd64) kubernetes/262ac9c" -H "Authorization: Bearer <masked>" 'https://api.ocp-staging.cloudscale.puzzle.ch:6443/apis/apps/v1/namespaces/acend-test/deployments?fieldManager=kubectl-create&fieldValidation=Ignore'
 I1114 15:31:13.607320   85289 round_trippers.go:495] HTTP Trace: DNS Lookup for api.ocp-staging.cloudscale.puzzle.ch resolved to [{5.102.150.82 }]
 I1114 15:31:13.611279   85289 round_trippers.go:510] HTTP Trace: Dial to tcp:5.102.150.82:6443 succeed
@@ -272,7 +316,7 @@ I1114 15:31:13.675200   85289 round_trippers.go:580]     X-Kubernetes-Pf-Flowsch
 I1114 15:31:13.675215   85289 round_trippers.go:580]     X-Kubernetes-Pf-Prioritylevel-Uid: 47f392da-68d1-4e43-9d77-ff5f7b7ecd2e
 I1114 15:31:13.675230   85289 round_trippers.go:580]     Content-Length: 1739
 I1114 15:31:13.675244   85289 round_trippers.go:580]     Date: Mon, 14 Nov 2022 14:31:13 GMT
-I1114 15:31:13.676116   85289 request.go:1073] Response Body: {"kind":"Deployment","apiVersion":"apps/v1","metadata":{"name":"test-deployment","namespace":"acend-test","uid":"a6985d28-3caa-451f-a648-4c7cde3b51ac","resourceVersion":"2069385577","generation":1,"creationTimestamp":"2022-11-14T14:31:13Z","labels":{"app":"test-deployment"},"managedFields":[{"manager":"kubectl-create","operation":"Update","apiVersion":"apps/v1","time":"2022-11-14T14:31:13Z","fieldsType":"FieldsV1","fieldsV1":{"f:metadata":{"f:labels":{".":{},"f:app":{}}},"f:spec":{"f:progressDeadlineSeconds":{},"f:replicas":{},"f:revisionHistoryLimit":{},"f:selector":{},"f:strategy":{"f:rollingUpdate":{".":{},"f:maxSurge":{},"f:maxUnavailable":{}},"f:type":{}},"f:template":{"f:metadata":{"f:labels":{".":{},"f:app":{}}},"f:spec":{"f:containers":{"k:{\"name\":\"example-web-go\"}":{".":{},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:resources":{},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{}}},"f:dnsPolicy":{},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:terminationGracePeriodSeconds":{}}}}}}]},"spec":{"replicas":0,"selector":{"matchLabels":{"app":"test-deployment"}},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"test-deployment"}},"spec":{"containers":[{"name":"example-web-go","image":"quay.io/acend/example-web-go:latest","resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"Always"}],"restartPolicy":"Always","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}},"strategy":{"type":"RollingUpdate","rollingUpdate":{"maxUnavailable":"25%","maxSurge":"25%"}},"revisionHistoryLimit":10,"progressDeadlineSeconds":600},"status":{}}
+I1114 15:31:13.676116   85289 request.go:1073] Response Body: {"kind":"Deployment","apiVersion":"apps/v1","metadata":{"name":"test-deployment","namespace":"acend-test","uid":"a6985d28-3caa-451f-a648-4c7cde3b51ac","resourceVersion":"2069385577","generation":1,"creationTimestamp":"2022-11-14T14:31:13Z","labels":{"app":"test-deployment"},"managedFields":[{"manager":"kubectl-create","operation":"Update","apiVersion":"apps/v1","time":"2022-11-14T14:31:13Z","fieldsType":"FieldsV1","fieldsV1":{"f:metadata":{"f:labels":{".":{},"f:app":{}}},"f:spec":{"f:progressDeadlineSeconds":{},"f:replicas":{},"f:revisionHistoryLimit":{},"f:selector":{},"f:strategy":{"f:rollingUpdate":{".":{},"f:maxSurge":{},"f:maxUnavailable":{}},"f:type":{}},"f:template":{"f:metadata":{"f:labels":{".":{},"f:app":{}}},"f:spec":{"f:containers":{"k:{\"name\":\"example-web\"}":{".":{},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:resources":{},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{}}},"f:dnsPolicy":{},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:terminationGracePeriodSeconds":{}}}}}}]},"spec":{"replicas":0,"selector":{"matchLabels":{"app":"test-deployment"}},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"test-deployment"}},"spec":{"containers":[{"name":"example-web","image":"{{% param "images.training-image-url" %}}","resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"Always"}],"restartPolicy":"Always","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}},"strategy":{"type":"RollingUpdate","rollingUpdate":{"maxUnavailable":"25%","maxSurge":"25%"}},"revisionHistoryLimit":10,"progressDeadlineSeconds":600},"status":{}}
 deployment.apps/test-deployment created
 ```
 
@@ -282,7 +326,7 @@ As you can see, the output conveniently contains the corresponding `curl` comman
 If you created the deployment to see the output, you can delete it again as it's not used anywhere else (which is also the reason why the replicas are set to `0`):
 
 ```bash
-{{% param cliToolName %}} delete test-deployment
+{{% param cliToolName %}} delete deploy/test-deployment --namespace <namespace>
 ```
 
 {{% /alert %}}
