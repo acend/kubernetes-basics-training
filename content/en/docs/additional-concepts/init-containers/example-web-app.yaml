@@ -1,3 +1,4 @@
+# Secrets are stored in the same file as the Deployment for demo purposes. Don't do this for production workloads!
 ---
 apiVersion: v1
 data:
@@ -9,11 +10,11 @@ metadata:
 apiVersion: v1
 kind: Service
 metadata:
-  name: example-web-python
+  name: example-web-app
 spec:
   type: NodePort
   selector:
-    app: example-web-python
+    app: example-web-app
   ports:
     - port: 5000
       targetPort: 5000
@@ -21,12 +22,12 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: example-web-python
+  name: example-web-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: example-web-python
+      app: example-web-app
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -35,15 +36,15 @@ spec:
   template:
     metadata:
       labels:
-        app: example-web-python
+        app: example-web-app
     spec:
       initContainers:
         - name: wait-for-db
-          image: docker-registry.mobicorp.ch/cop/curl-and-provide:latest
+          image: busybox:1.28
           command: ['sh', '-c', "until nslookup mysql.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
       containers:
-        - name: example-web-python
-          image: docker-registry.mobicorp.ch/puzzle/k8s/kurs/example-web-python
+        - name: example-web-app
+          image: quay.io/acend/example-web-python
           env:
             - name: MYSQL_URI
               valueFrom:

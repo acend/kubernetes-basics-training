@@ -22,8 +22,8 @@ imagePrefix = "puzzle_"
 customer = "mobi"
 
 [params.images]
-acendAwesomeApp-example-web-go = "REGISTRY-URL/puzzle/k8s/kurs/example-web-go:latest"
-acendAwesomeApp-example-web-python = "REGISTRY-URL/puzzle/k8s/kurs/example-web-python:latest"
+deployment-image-url = "REGISTRY-URL/puzzle/k8s/kurs/example-web-go:latest"
+training-image-url = "REGISTRY-URL/puzzle/k8s/kurs/example-web-python:latest"
 nginxinc-nginx-unprivileged = "REGISTRY-URL/puzzle/k8s/kurs/nginx-unprivileged:latest"
 nginxinc-nginx-unprivileged-fix-version = "REGISTRY-URL/puzzle/k8s/kurs/nginx-unprivileged:1.18-alpine"
 nginx = "REGISTRY-URL/puzzle/k8s/kurs/nginx:latest"
