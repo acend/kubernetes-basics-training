@@ -83,7 +83,12 @@ The Template's content reveals a Secret, a Service and a DeploymentConfig.
 We are first going to create a so-called _Secret_ in which we store sensitive data. The secret will be used to access the database and also to create the initial database.
 
 ```bash
-kubectl create secret generic mariadb --from-literal=database-name=acend_exampledb --from-literal=database-password=mysqlpassword --from-literal=database-root-password=mysqlrootpassword --from-literal=database-user=acend_user --namespace <namespace>
+kubectl create secret generic mariadb \
+  --from-literal=database-name=acend_exampledb \
+  --from-literal=database-password=mysqlpassword \
+  --from-literal=database-root-password=mysqlrootpassword \
+  --from-literal=database-user=acend_user \
+  --namespace <namespace>
 ```
 {{% /onlyWhenNot %}}
 {{% onlyWhen baloise %}}
@@ -91,7 +96,13 @@ We are first going to create a so-called _Secret_ in which we store sensitive da
 The `oc create secret` command helps us create the secret like so:
 
 ```bash
-oc create secret generic mariadb --from-literal=database-name=acend_exampledb --from-literal=database-password=mysqlpassword --from-literal=database-root-password=mysqlrootpassword --from-literal=database-user=acend_user --dry-run=client -o yaml --namespace <namespace> > secret_mariadb.yaml
+oc create secret generic mariadb \
+  --from-literal=database-name=acend_exampledb \
+  --from-literal=database-password=mysqlpassword \
+  --from-literal=database-root-password=mysqlrootpassword \
+  --from-literal=database-user=acend_user \
+  --namespace <namespace> \
+  --dry-run=client -o yaml > secret_mariadb.yaml
 ```
 
 Above command has not yet created any resources on our cluster as we used the `--dry-run=client` parameter and redirected the output into the file `secret_mariadb.yaml`.
