@@ -14,7 +14,7 @@ First, let's create our chart. Open your favorite terminal and make sure you're 
 helm create mychart
 ```
 
-You will now find a `mychart` directory with the newly created chart. It already is a valid and fully functional chart which deploys a nginx instance. Have a look at the generated files and their content. For an explanation of the files, visit the [Helm Developer Documentation](https://docs.helm.sh/developing_charts/#the-chart-file-structure). In a later section you'll find all the information about Helm templates.
+You will now find a `mychart` directory with the newly created chart. It already is a valid and fully functional chart which deploys an nginx instance. Have a look at the generated files and their content. For an explanation of the files, visit the [Helm Developer Documentation](https://docs.helm.sh/developing_charts/#the-chart-file-structure). In a later section you'll find all the information about Helm templates.
 
 {{% onlyWhen mobi %}}
 Because you cannot pull the `nginx` container image on your cluster, you have to use the `REGISTRY-URL/puzzle/k8s/kurs/nginx` container image. Change your `mychart/values.yaml` to match the following:

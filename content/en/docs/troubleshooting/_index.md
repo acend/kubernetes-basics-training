@@ -223,21 +223,6 @@ With the same concept you can access databases from your local workstation or co
 {{% alert title="Note" color="info" %}}
 The `{{% param cliToolName %}} port-forward` process runs as long as it is not terminated by the user. So when done, stop it with `CTRL-c`.
 {{% /alert %}}
-{{% onlyWhenNot sbb %}}
-
-
-## Progress
-
-At this point, you are able to visualize your progress on the labs by browsing through the following page <http://localhost:5000/progress>
-
-If you are not able to open your awesome-app with localhost, because you are using a webshell, you can also use the ingress address like: `example-web-app-<namespace>.<domain>/progress` to access the dashboard.
-
-You may need to set some extra permissions to let the dashboard monitor your progress. Have fun!
-
-```bash
-{{% param cliToolName %}} create rolebinding progress --clusterrole=view --serviceaccount=<namespace>:default --namespace=<namespace>
-```
-{{% /onlyWhenNot %}}
 
 
 ## Events
@@ -345,3 +330,16 @@ If you created the deployment to see the output, you can delete it again as it's
 ```
 
 {{% /alert %}}
+
+
+## Progress
+
+At this point, you are able to visualize your progress on the labs by browsing through the following page <http://localhost:5000/progress>
+
+If you are not able to open your awesome-app with localhost, because you are using a webshell, you can also use the ingress address like: `example-web-python-<namespace>.<domain>/progress` to access the dashboard.
+
+You may need to set some extra permissions to let the dashboard monitor your progress. Have fun!
+
+```bash
+{{% param cliToolName %}} create rolebinding progress --clusterrole=view --serviceaccount=<namespace>:default --namespace=<namespace>
+```

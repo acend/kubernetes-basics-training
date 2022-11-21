@@ -3,7 +3,7 @@ languageCode = "en-us"
 
 [Languages]
 [Languages.en]
-title = "Openshift Basics Training"
+title = "OpenShift Basics Training"
 
 [params]
 enabledModule = "base ocplight openshift sbb"
