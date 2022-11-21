@@ -3,13 +3,12 @@ title: "Init containers"
 weight: 96
 ---
 
-
-A Pod can have multiple containers running apps within it, but it can also have one or more *init containers*, which are run before the app container is started.
+A Pod can have multiple containers running apps within it, but it can also have one or more _init containers_, which are run before the app container is started.
 
 Init containers are exactly like regular containers, except:
 
-* Init containers always run to completion.
-* Each init container must complete successfully before the next one starts.
+- Init containers always run to completion.
+- Each init container must complete successfully before the next one starts.
 
 {{% onlyWhenNot openshift %}}
 Check [Init Containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes documentation for more details.
@@ -17,7 +16,6 @@ Check [Init Containers](https://kubernetes.io/docs/concepts/workloads/pods/init-
 {{% onlyWhen openshift %}}
 Check out the [Init Containers documentation](https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-init.html) for more details.
 {{% /onlyWhen %}}
-
 
 ## {{% task %}} Add an init container
 
@@ -32,20 +30,25 @@ Edit your existing `example-web-app` Deployment with:
 Add the init container into the existing Deployment (same indentation level as containers):
 
 ```yaml
-...
+
+---
 spec:
   initContainers:
-  - name: wait-for-db
-    image: {{% param "images.busybox" %}}
-    command: ['sh', '-c', "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
-...
+    - name: wait-for-db
+      image: { { % param "images.busybox" % } }
+      command:
+        [
+          "sh",
+          "-c",
+          "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done",
+        ]
 ```
 
 {{% alert title="Note" color="info" %}}
 This obviously only checks if there is a DNS Record for your MariaDB Service and not if the database is ready. But you get the idea, right?
 {{% /alert %}}
 
-Let's see what has changed by analyzing your `example-web-app` Pod with the following command (use `{{% param cliToolName %}} get pod` or auto-completion to get the Pod name):
+Let's see what has changed by analyzing your newly created `example-web-app` Pod with the following command (use `{{% param cliToolName %}} get pod` or auto-completion to get the Pod name):
 
 ```bash
 {{% param cliToolName %}} describe pod <pod> --namespace <namespace>
@@ -103,7 +106,6 @@ Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-c
 
 {{% onlyWhen openshift %}}
 
-
 ## Deployment hooks on OpenShift
 
 A similar concept are the so-called pre and post deployment hooks. Those hooks basically give the possibility to execute Pods before and after a deployment is in progress.
@@ -111,10 +113,9 @@ A similar concept are the so-called pre and post deployment hooks. Those hooks b
 Check out the [official documentation](https://docs.openshift.com/container-platform/latest/applications/deployments/deployment-strategies.html) for further information.
 {{% /onlyWhen %}}
 
-
 ## Save point
 
 You should now have the following resources in place:
 
-* {{% onlyWhenNot customer %}}[example-web-app.yaml](example-web-app.yaml){{% /onlyWhenNot %}}
+- {{% onlyWhenNot customer %}}[example-web-app.yaml](example-web-app.yaml){{% /onlyWhenNot %}}
   {{% onlyWhen customer %}}[example-web-app-{{% param customer %}}.yaml](example-web-app-{{% param customer %}}.yaml){{% /onlyWhen %}}
