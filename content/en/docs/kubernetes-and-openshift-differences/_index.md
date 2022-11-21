@@ -65,7 +65,7 @@ In OpenShift, creating an Ingress resource leads to the creation of a correspond
 
 #### {{% task %}} Create an Ingress resource
 
-In {{<link "scaling">}} you exposed the example-web-python application via Route using the `oc expose` command.
+In {{<link "scaling">}} you exposed the example-web-app application via Route using the `oc expose` command.
 
 Expose the application using an Ingress resource.
 It's best to not delete the existing Route, so you can compare them.

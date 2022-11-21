@@ -21,12 +21,12 @@ Check out the [Init Containers documentation](https://docs.openshift.com/contain
 
 ## {{% task %}} Add an init container
 
-In {{<link "attaching-a-database">}} you created the `example-web-python` application. In this task, you are going to add an init container which checks if the MariaDB database is ready to be used before actually starting your Python application.
+In {{<link "attaching-a-database">}} you created the `example-web-app` application. In this task, you are going to add an init container which checks if the MariaDB database is ready to be used before actually starting your example application.
 
-Edit your existing `example-web-python` Deployment with:
+Edit your existing `example-web-app` Deployment with:
 
 ```bash
-{{% param cliToolName %}} edit deployment example-web-python --namespace <namespace>
+{{% param cliToolName %}} edit deployment example-web-app --namespace <namespace>
 ```
 
 Add the init container into the existing Deployment (same indentation level as containers):
@@ -45,7 +45,7 @@ spec:
 This obviously only checks if there is a DNS Record for your MariaDB Service and not if the database is ready. But you get the idea, right?
 {{% /alert %}}
 
-Let's see what has changed by analyzing your `example-web-python` Pod with the following command (use `{{% param cliToolName %}} get pod` or auto-completion to get the Pod name):
+Let's see what has changed by analyzing your `example-web-app` Pod with the following command (use `{{% param cliToolName %}} get pod` or auto-completion to get the Pod name):
 
 ```bash
 {{% param cliToolName %}} describe pod <pod> --namespace <namespace>
@@ -116,5 +116,5 @@ Check out the [official documentation](https://docs.openshift.com/container-plat
 
 You should now have the following resources in place:
 
-* {{% onlyWhenNot customer %}}[example-web-python.yaml](example-web-python.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen customer %}}[example-web-python-{{% param customer %}}.yaml](example-web-python-{{% param customer %}}.yaml){{% /onlyWhen %}}
+* {{% onlyWhenNot customer %}}[example-web-app.yaml](example-web-app.yaml){{% /onlyWhenNot %}}
+  {{% onlyWhen customer %}}[example-web-app-{{% param customer %}}.yaml](example-web-app-{{% param customer %}}.yaml){{% /onlyWhen %}}
