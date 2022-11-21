@@ -5,9 +5,11 @@ weight: 2
 
 In this lab, we will interact with the {{% param distroName %}} cluster for the first time.
 
+{{% onlyWhenNot nosetup %}}
 {{% alert title="Warning" color="warning" %}}
 Please make sure you completed {{<link "setup">}} before you continue with this lab.
 {{% /alert %}}
+{{% /onlyWhenNot %}}
 {{% onlyWhenNot openshift %}}
 
 

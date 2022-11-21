@@ -6,10 +6,9 @@
 {{< onlyWhen openshift >}}
 {{< onlyWhenNot techlab >}}
 {{< blocks/cover title="Welcome to the OpenShift Basics Training" image_anchor="top" height="full" color="primary" image="featured-background-openshift.jpg" >}}
-<div class="mx-auto">
-	<a class="btn btn-lg btn-primary mr-3 mb-4" href="{{< relref "/setup" >}}">
+<div class="mx-auto">{{< onlyWhenNot nosetup >}}<a class="btn btn-lg btn-primary mr-3 mb-4" href="{{< relref "/setup" >}}">
 		Setup <i class="fas fa-cogs ml-2 "></i>
-	</a>
+	</a>{{< /onlyWhenNot >}}
 	<a class="btn btn-lg btn-primary mr-3 mb-4" href="{{< relref "/docs" >}}">
 		Labs <i class="fas fa-flask ml-2"></i>
 	</a>
@@ -21,10 +20,9 @@
 {{< /onlyWhenNot >}}
 {{< onlyWhen techlab >}}
 {{< blocks/cover title="Welcome to the APPUiO OpenShift Techlab" image_anchor="top" height="full" color="primary" image="featured-background-openshift.jpg" >}}
-<div class="mx-auto">
-	<a class="btn btn-lg btn-primary mr-3 mb-4" href="{{< relref "/setup" >}}">
+<div class="mx-auto">{{< onlyWhenNot nosetup >}}<a class="btn btn-lg btn-primary mr-3 mb-4" href="{{< relref "/setup" >}}">
 		Setup <i class="fas fa-cogs ml-2 "></i>
-	</a>
+	</a>{{< /onlyWhenNot >}}
 	<a class="btn btn-lg btn-primary mr-3 mb-4" href="{{< relref "/docs" >}}">
 		Labs <i class="fas fa-flask ml-2"></i>
 	</a>
@@ -37,10 +35,9 @@
 {{< /onlyWhen >}}
 {{< onlyWhenNot openshift >}}
 {{< blocks/cover title="Welcome to the Kubernetes Basics Training" image_anchor="top" height="full" color="primary" image="featured-background-kubernetes.jpg" >}}
-<div class="mx-auto">
-	<a class="btn btn-lg btn-primary mr-3 mb-4" href="{{< relref "/setup" >}}">
+<div class="mx-auto">{{< onlyWhenNot nosetup >}}<a class="btn btn-lg btn-primary mr-3 mb-4" href="{{< relref "/setup" >}}">
 		Setup <i class="fas fa-cogs ml-2 "></i>
-	</a>
+	</a>{{< /onlyWhenNot >}}
 	<a class="btn btn-lg btn-primary mr-3 mb-4" href="{{< relref "/docs" >}}">
 		Labs <i class="fas fa-flask ml-2"></i>
 	</a>
