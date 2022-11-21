@@ -196,7 +196,7 @@ Find your actual app URL by looking at your route (HOST/PORT):
 oc get route --namespace <namespace>
 ```
 
-Browse to the URL and check the output of your app.
+Browse to the URL and check the output of your app. (Hint: If the site doesn't load, check if you are using the http:// , not the https:// protocol, which might be the default in your browser.)
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}

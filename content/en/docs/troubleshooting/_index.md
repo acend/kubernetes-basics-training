@@ -5,11 +5,9 @@ weight: 6
 
 This lab helps you troubleshoot your application and shows you some tools to make troubleshooting easier.
 
-
 ## Logging into a container
 
 Running containers should be treated as immutable infrastructure and should therefore not be modified. However, there are some use cases in which you have to log into your running container. Debugging and analyzing is one example for this.
-
 
 ## {{% task %}} Shell into Pod
 
@@ -22,15 +20,19 @@ On Windows, you can use Git Bash and `winpty`.
 
 Choose a Pod with `{{% param cliToolName %}} get pods --namespace <namespace>` and execute the following command:
 {{% onlyWhenNot openshift %}}
+
 ```bash
 kubectl exec -it <pod> --namespace <namespace> -- /bin/bash
 ```
+
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen openshift %}}
+
 ```bash
 oc rsh --namespace <namespace> <pod>
 ```
+
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 {{% alert title="Note" color="info" %}}
@@ -41,6 +43,7 @@ If Bash is not available in the Pod you can fallback to `-- sh` instead of `-- /
 You now have a running shell session inside the container in which you can execute every binary available, e.g.:
 
 {{% onlyWhenNot sbb %}}
+
 ```bash
 ls -l
 ```
@@ -58,8 +61,10 @@ With `exit` or `CTRL+d` you can leave the container and close the connection:
 ```bash
 exit
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
+
 ```bash
 pwd
 ```
@@ -73,8 +78,8 @@ With `exit` or `CTRL+d` you can leave the container and close the connection:
 ```bash
 exit
 ```
-{{% /onlyWhen %}}
 
+{{% /onlyWhen %}}
 
 ## {{% task %}} Single commands
 
@@ -98,6 +103,7 @@ KUBERNETES_PORT_53_UDP_PROTO=udp
 KUBERNETES_PORT_53_TCP=tcp://172.30.0.1:53
 ...
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 Single commands inside a container can also be executed with `oc rsh`:
@@ -120,7 +126,6 @@ EXAMPLE_WEB_APP_PORT_5000_TCP_PORT=5000
 ...
 ```
 
-
 ## The debug command
 
 One of the disadvantages of using the `oc rsh` command is that it depends on the container to actually run. If the Pod can't even start, this is a problem but also where the `oc debug` command comes in.
@@ -129,11 +134,9 @@ The `oc debug` command starts an interactive shell using the definition of a Dep
 The quick way of using it is `oc debug RESOURCE/NAME` but have a good look at its help page. There are some very interesting parameters like `--as-root` that give you (depending on your permissions on the cluster) a very powerful means of debugging a Pod.
 {{% /onlyWhen %}}
 
-
 ## Watching log files
 
 Log files of a Pod can be shown with the following command:
-
 
 ```bash
 {{% param cliToolName %}} logs <pod> --namespace <namespace>
@@ -143,7 +146,7 @@ The parameter `-f` allows you to follow the log file (same as `tail -f`). With t
 
 When a Pod is in state `CrashLoopBackOff` it means that although multiple attempts have been made, no container inside the Pod could be started successfully. Now even though no container might be running at the moment the `{{% param cliToolName %}} logs` command is executed, there is a way to view the logs the application might have generated. This is achieved using the `-p` or `--previous` parameter:
 
- ```bash
+```bash
 {{% param cliToolName %}} logs -p <pod> --namespace <namespace>
 ```
 
@@ -152,7 +155,6 @@ When a Pod is in state `CrashLoopBackOff` it means that although multiple attemp
 Baloise uses [Splunk](https://www.splunk.com/) to aggregate and visualize all logs, including those of Pods.
 {{% /alert %}}
 {{% /onlyWhen %}}
-
 
 ## {{% task %}} Port forwarding
 
@@ -165,11 +167,14 @@ Get the name of the Pod:
 ```
 
 Then execute the port forwarding command using the Pod's name:
+Hint: Best run this command in a separate shell, or in the background by adding a ` &` at the end of the command.
 
 {{% onlyWhenNot sbb %}}
+
 ```bash
 {{% param cliToolName %}} port-forward <pod> 5000:5000 --namespace <namespace>
 ```
+
 Don't forget to change the Pod name to your own installation. If configured, you can use auto-completion.
 
 The output of the command should look like this:
@@ -178,11 +183,14 @@ The output of the command should look like this:
 Forwarding from 127.0.0.1:5000 -> 5000
 Forwarding from [::1]:5000 -> 5000
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
+
 ```bash
 {{% param cliToolName %}} port-forward <pod> {{% param "images.training-image-probe-port" %}}:{{% param "images.training-image-probe-port" %}} --namespace <namespace>
 ```
+
 Don't forget to change the Pod name to your own installation. If configured, you can use auto-completion.
 
 The output of the command should look like this:
@@ -191,6 +199,7 @@ The output of the command should look like this:
 Forwarding from 127.0.0.1:{{% param "images.training-image-probe-port" %}} -> {{% param "images.training-image-probe-port" %}}
 Forwarding from [::1]:{{% param "images.training-image-probe-port" %}} -> {{% param "images.training-image-probe-port" %}}
 ```
+
 {{% /onlyWhen %}}
 
 {{% alert title="Note" color="info" %}}
@@ -203,6 +212,7 @@ The application is now available with the following link: <http://localhost:5000
 ```bash
 curl localhost:5000
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
 Now the health endpoint is available at: <http://localhost:{{% param "images.training-image-probe-port" %}}/>.
@@ -214,6 +224,7 @@ The application probe endpoint is now available with the following link: <http:/
 ```bash
 curl localhost:{{% param "images.training-image-probe-port" %}}/health
 ```
+
 {{% /onlyWhen %}}
 
 With the same concept you can access databases from your local workstation or connect your local development environment via remote debugging to your application in the Pod.
@@ -223,7 +234,6 @@ With the same concept you can access databases from your local workstation or co
 {{% alert title="Note" color="info" %}}
 The `{{% param cliToolName %}} port-forward` process runs as long as it is not terminated by the user. So when done, stop it with `CTRL-c`.
 {{% /alert %}}
-
 
 ## Events
 
@@ -237,20 +247,19 @@ Use the following command to list the events in chronological order:
 {{% param cliToolName %}} get events --sort-by=.metadata.creationTimestamp --namespace <namespace>
 ```
 
-
 ## Dry-run
 
 To help verify changes, you can use the optional `{{% param cliToolName %}}` flag `--dry-run=client -o yaml` to see the rendered YAML definition of your Kubernetes objects, without sending it to the API.
 
 The following `{{% param cliToolName %}}` subcommands support this flag (non-final list):
 
-* `apply`
-* `create`
-* `expose`
-* `patch`
-* `replace`
-* `run`
-* `set`
+- `apply`
+- `create`
+- `expose`
+- `patch`
+- `replace`
+- `run`
+- `set`
 
 For example, we can use the `--dry-run=client` flag to create a template for our Deployment:
 
@@ -282,12 +291,11 @@ spec:
         app: example-web-app
     spec:
       containers:
-      - image: {{% param "images.training-image-url" %}}
-        name: example-web
-        resources: {}
+        - image: { { % param "images.training-image-url" % } }
+          name: example-web
+          resources: {}
 status: {}
 ```
-
 
 ## `{{% param cliToolName %}}` API requests
 
@@ -330,7 +338,6 @@ If you created the deployment to see the output, you can delete it again as it's
 ```
 
 {{% /alert %}}
-
 
 ## Progress
 
