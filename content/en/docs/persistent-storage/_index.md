@@ -86,12 +86,12 @@ Because we just changed the Deployment a new Pod was automatically redeployed. T
 {{% /alert %}}
 {{% /onlyWhenNot %}}
 
-We need to redeploy the application pod, our application automatically creates the database schema at startup time.
+We need to redeploy the application pod, our application automatically creates the database schema at startup time. Wait for the database pod to be started fully before restarting the application pod.
 
 If you want to force a redeployment of a Pod, you can use this:
 
 ```bash
-{{% param cliToolName %}} rollout restart deployment example-web-python --namespace <namespace>
+{{% param cliToolName %}} rollout restart deployment example-web-app --namespace <namespace>
 ```
 
 Using the command `{{% param cliToolName %}} get persistentvolumeclaim` or `{{% param cliToolName %}} get pvc`, we can display the freshly created PersistentVolumeClaim:
@@ -148,4 +148,4 @@ You should now have the following resources in place:
   {{% onlyWhen openshift %}}[mariadb-openshift.yaml](mariadb-openshift.yaml){{% /onlyWhen %}}
 
 
-* [example-web-python.yaml](../attaching-a-database/example-web-python.yaml) (from {{<link "attaching-a-database">}})
+* [example-web-app.yaml](../attaching-a-database/example-web-app.yaml) (from {{<link "attaching-a-database">}})

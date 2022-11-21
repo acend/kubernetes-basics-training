@@ -6,10 +6,15 @@ languageCode = "en-us"
 title = "Openshift Basics Training"
 
 [params]
-enabledModule = "base openshift sbb ocplight"
+enabledModule = "base ocplight openshift sbb"
 distroName = "OpenShift"
 cliToolName = "oc"
 automaticSectionNumbers = true
+
+[params.images]
+training-image-url = "quay.io/appuio/example-spring-boot:latest"
+training-image-port = "8080"
+training-image-probe-port = "9000"
 
 [params.pdf]
 title="OpenShift Basics Training"

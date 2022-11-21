@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: example-web-app
+  name: example-web-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-web-app
+  template:
+    metadata:
+      labels:
+        app: example-web-app
+    spec:
+      containers:
+      - image: quay.io/appuio/example-spring-boot:latest
+        name: example-web-app
+        resources:
+          limits:
+            cpu: 750m
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 128Mi
