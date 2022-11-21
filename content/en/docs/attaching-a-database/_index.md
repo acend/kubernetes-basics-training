@@ -472,7 +472,7 @@ kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
 {{% onlyWhen openshift %}}
 
 ```bash
-oc rsh --namespace <namespace> mariadb-f845ccdb7-hf2x5
+oc rsh --namespace <namespace> <mariadb-pod-name>
 ```
 
 {{% /onlyWhen %}}
@@ -508,6 +508,13 @@ Show any entered "Hellos" with:
 select * from hello;
 ```
 
+Hint: If your database is empty you can generate some hellos by visiting the Service you exposed in Task 4.2.
+You can find your app URL by looking at your route:
+
+```bash
+oc get route --namespace <namespace>
+```
+
 ## {{% task %}} Import a database dump
 
 Our task is now to import this [dump.sql](https://raw.githubusercontent.com/acend/kubernetes-basics-training/main/content/en/docs/attaching-a-database/dump.sql) into the MariaDB database running as a Pod. Use the `mysql` command line utility to do this. Make sure the database is empty beforehand. You could also delete and recreate the database.
@@ -518,7 +525,7 @@ You can also copy local files into a Pod using `{{% param cliToolName %}} cp`. B
 
 ### Solution
 
-This is how you copy the database dump into the Pod:
+This is how you copy the database dump into the MariaDB Pod:
 
 ```bash
 curl -O https://raw.githubusercontent.com/acend/kubernetes-basics-training/main/content/en/docs/attaching-a-database/dump.sql
@@ -561,6 +568,12 @@ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST $MYSQL_DATABASE < 
 ```
 
 Check your app to see the imported "Hellos".
+
+Hint: You can find your app URL by looking at your route:
+
+```bash
+oc get route --namespace <namespace>
+```
 
 {{% alert title="Note" color="info" %}}
 A database dump can be created as follows:
