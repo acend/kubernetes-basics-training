@@ -6,7 +6,7 @@ languageCode = "en-us"
 title = "OpenShift Basics Training"
 
 [params]
-enabledModule = "base openshift nosetup baloise"
+enabledModule = "base openshift nosetup nosecurity baloise"
 distroName = "OpenShift"
 cliToolName = "oc"
 automaticSectionNumbers = true
