@@ -93,11 +93,3 @@ By using the `port-forward` subcommand, you can even have a look at the Promethe
 ```
 
 Now open <http://localhost:9104/metrics> in your browser.
-
-
-## Save point
-
-You should now have the following resources in place:
-
-{{% onlyWhenNot openshift %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
-{{% onlyWhen openshift %}}[mariadb.yaml](mariadb_openshift.yaml){{% /onlyWhenNot %}}

@@ -289,15 +289,3 @@ It looks the same as before with the only essential exception that it uses the i
 
 {{% /onlyWhenNot %}}
 {{% /onlyWhen %}}
-
-
-## Save point
-
-{{% alert title="Note" color="info" %}}
-What's a save point? Save points are intermediate results which you can use if you are stuck. You can compare them with
-your existing resources or you can apply the provided manifests with `{{% param cliToolName %}} apply -f <manifest.yaml>`.
-{{% /alert %}}
-
-You should now have the following resources in place:
-
-* [deployment.yaml](deployment.yaml)

@@ -110,11 +110,3 @@ A similar concept are the so-called pre and post deployment hooks. Those hooks b
 
 Check out the [official documentation](https://docs.openshift.com/container-platform/latest/applications/deployments/deployment-strategies.html) for further information.
 {{% /onlyWhen %}}
-
-
-## Save point
-
-You should now have the following resources in place:
-
-* {{% onlyWhenNot customer %}}[example-web-app.yaml](example-web-app.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen customer %}}[example-web-app-{{% param customer %}}.yaml](example-web-app-{{% param customer %}}.yaml){{% /onlyWhen %}}
