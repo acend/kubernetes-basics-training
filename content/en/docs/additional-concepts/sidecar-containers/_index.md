@@ -34,13 +34,23 @@ kubectl edit deployment mariadb --namespace <namespace>
 And add a new (sidecar) container into your Deployment:
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
+{{% onlyWhenNot baloise %}}
 Change the existing `mariadb` DeploymentConfig using:
 
 ```bash
 oc edit dc mariadb --namespace <namespace>
 ```
 
-And add a new (sidecar) container into your DeploymentConfig:
+{{% /onlyWhenNot %}}
+{{% onlyWhen baloise %}}
+Change the existing `mariadb` Deployment using:
+
+```bash
+oc edit deploy mariadb --namespace <namespace>
+```
+
+{{% /onlyWhen %}}
+And add a new (sidecar) container to it:
 {{% /onlyWhen %}}
 
 {{% onlyWhenNot customer %}}

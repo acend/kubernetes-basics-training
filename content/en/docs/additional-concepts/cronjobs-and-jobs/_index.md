@@ -26,9 +26,13 @@ Similar to [the task to import a database dump](../../attaching-a-database/#task
 
 Let's first look at the Job resource that we want to create.
 
-{{% onlyWhenNot customer %}}
+{{% onlyWhenNot customer baloise %}}
 {{< readfile file="/content/en/docs/additional-concepts/cronjobs-and-jobs/job-mariadb-dump.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhenNot %}}
+
+{{% onlyWhen baloise %}}
+{{< readfile file="/content/en/docs/additional-concepts/cronjobs-and-jobs/job-mariadb-dump-baloise.yaml" code="true" lang="yaml" >}}
+{{% /onlyWhen %}}
 
 {{% onlyWhen mobi %}}
 {{< readfile file="/content/en/docs/additional-concepts/cronjobs-and-jobs/job-mariadb-dump-mobi.yaml" code="true" lang="yaml" >}}
@@ -68,7 +72,7 @@ A CronJob is nothing else than a resource which creates a Job at a defined time,
 
 The CronJob's definition will remind you of the Deployment's structure, or really any other control resource. There's most importantly the `schedule` specification in [cron schedule format](https://crontab.guru/), some more things you could define and then the Job's definition itself that is going to be created by the CronJob:
 
-{{< readfile file="/content/en/docs/09/03/cronjob-mariadb-dump.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/additional-concepts/cronjobs-and-jobs/cronjob-mariadb-dump.yaml" code="true" lang="yaml" >}}
 
 {{% onlyWhenNot openshift %}}
 Further information can be found in the [Kubernetes CronJob documentation](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/).
