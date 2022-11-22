@@ -526,10 +526,3 @@ Now delete a Pod (in another terminal) with the following command:
 ```
 
 Observe how {{% param distroName %}} instantly creates a new Pod in order to fulfill the desired number of running instances.
-
-
-## Save point
-
-You should now have the following resources in place:
-
-* [example-web-app.yaml](example-web-app.yaml)

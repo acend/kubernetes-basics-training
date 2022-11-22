@@ -529,16 +529,3 @@ mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST 
 ```
 
 {{% /alert %}}
-
-
-## Save point
-
-You should now have the following resources in place:
-
-* [example-web-app.yaml](example-web-app.yaml)
-* [mariadb-secret.yaml](mariadb-secret.yaml)
-* {{% onlyWhenNot openshift %}}
-  {{% onlyWhenNot customer %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen customer %}}[mariadb-{{% param customer %}}.yaml](mariadb-{{% param customer %}}.yaml){{% /onlyWhen %}}
-  {{% /onlyWhenNot %}}
-  {{% onlyWhen openshift %}}[mariadb-openshift.yaml](mariadb-openshift.yaml){{% /onlyWhen %}}
