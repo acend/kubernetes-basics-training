@@ -18,10 +18,10 @@ Make sure you're logged in on the Rancher web console. Choose the appropriate cl
 
 Choose a name for your Namespace, e.g. in the form of `<yourname>`-quota, expand the **Container Default Resource Limit** view and set the following values:
 
-- **CPU Limit**: 100
-- **CPU Reservation**: 10
-- **Memory Limit**: 32
-- **Memory Reservation**: 16
+* **CPU Limit**: 100
+* **CPU Reservation**: 10
+* **Memory Limit**: 32
+* **Memory Reservation**: 16
 
 {{< imgproc create_quotalab_namespace.png Resize  "1000x" >}}{{< /imgproc >}}
 
@@ -132,10 +132,10 @@ This is exactly what _LimitRanges_ are for.
 
 Quoting the [Kubernetes documentation](https://kubernetes.io/docs/concepts/policy/limit-range/), LimitRanges can be used to:
 
-- Enforce minimum and maximum compute resource usage per Pod or container in a Namespace
-- Enforce minimum and maximum storage requests per PersistentVolumeClaim in a Namespace
-- Enforce a ratio between request and limit for a resource in a Namespace
-- Set default request/limit for compute resources in a Namespace and automatically inject them to containers at runtime
+* Enforce minimum and maximum compute resource usage per Pod or container in a Namespace
+* Enforce minimum and maximum storage requests per PersistentVolumeClaim in a Namespace
+* Enforce a ratio between request and limit for a resource in a Namespace
+* Set default request/limit for compute resources in a Namespace and automatically inject them to containers at runtime
 
 If for example a container did not define any requests or limits and there was a LimitRange defining the default values, these default values would be used when deploying said container. However, as soon as limits or requests were defined, the default values would no longer be applied.
 
