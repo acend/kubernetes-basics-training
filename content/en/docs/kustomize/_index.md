@@ -73,7 +73,7 @@ Change to the folder `content/en/docs/kustomize/kustomize` to execute the kustom
 {{% alert title="Note" color="info" %}}
 Commands for git checkout and folder switch:
 
-```s
+```bash
 git clone https://github.com/acend/kubernetes-basics-training.git
 cd kubernetes-basics-training/content/en/docs/kustomize/kustomize/
 ```
