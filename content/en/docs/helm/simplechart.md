@@ -32,14 +32,14 @@ image:
 {{% onlyWhen openshift %}}
 The default image freshly created chart deploys is a simple nginx image listening on port `80`.
 
-Since OpenShift doesn't allow to run containers as root by default, we need to change the default image to an unprivileged one (`nginxinc/nginx-unprivileged:latest`) and also change the containerPort to `8080`.
+Since OpenShift doesn't allow to run containers as root by default, we need to change the default image to an unprivileged one (`{{% param "images.nginxinc-nginx-unprivileged" %}}`) and also change the containerPort to `8080`.
 
 Change the image in the `mychart/values.yaml`
 
 ```yaml
 ...
 image:
-  repository: nginxinc/nginx-unprivileged
+  repository: {{% param "images.nginxinc-nginx-unprivileged" %}}
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"

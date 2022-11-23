@@ -35,7 +35,7 @@ Add the init container into the existing Deployment (same indentation level as c
 spec:
   initContainers:
     - name: wait-for-db
-      image: { { % param "images.busybox" % } }
+      image: {{% param "images.busybox" %}}
       command:
         [
           "sh",
