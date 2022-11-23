@@ -48,7 +48,7 @@ CRI-O doesn't exist as long as Docker does. It is a "lightweight container runti
 Kubernetes consists of control plane and worker (minion, compute) nodes.
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
-OpenShift basically consists of a control plane and worker nodes.
+OpenShift basically consists of control plane and worker nodes.
 {{% /onlyWhen %}}
 
 
