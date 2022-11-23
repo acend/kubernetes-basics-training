@@ -435,7 +435,7 @@ containers:
       failureThreshold: 3
       httpGet:
         path: /health
-        port: { { % param "images.training-image-probe-port" % } }
+        port: {{% param "images.training-image-probe-port" %}}
         scheme: HTTP
       initialDelaySeconds: 10
       periodSeconds: 10
