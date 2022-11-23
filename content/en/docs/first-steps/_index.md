@@ -173,6 +173,7 @@ As a first step on the cluster, we are going to create a new Project.
 A Project is a logical design used in OpenShift to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis.
 Authorized users inside a Project are able to manage those resources. Project names have to be unique in your cluster.
 
+
 ### {{% task %}} Create a Project
 
 Create a new Project in the lab environment. The `oc help` output can help you figure out the right command.
@@ -200,6 +201,7 @@ oc project <project>
 ```
 
 {{% /alert %}}
+
 
 ## {{% task %}} Discover the OpenShift web console
 
