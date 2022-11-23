@@ -135,17 +135,3 @@ Repeat [the task to import a database dump](../attaching-a-database/#task-75-imp
 ### Test
 
 Scale your MariaDB Pod to 0 replicas and back to 1. Observe that the new Pod didn't loose any data.
-
-
-## Save point
-
-You should now have the following resources in place:
-
-* [pvc.yaml](pvc.yaml)
-* {{% onlyWhenNot openshift %}}
-  {{% onlyWhenNot customer %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen customer %}}[mariadb-{{% param customer %}}.yaml](mariadb-{{% param customer %}}.yaml){{% /onlyWhen %}}
-  {{% /onlyWhenNot %}}
-  {{% onlyWhen openshift %}}[mariadb-openshift.yaml](mariadb-openshift.yaml){{% /onlyWhen %}}
-
-* [example-web-app.yaml](../attaching-a-database/example-web-app.yaml) (from {{<link "attaching-a-database">}})
