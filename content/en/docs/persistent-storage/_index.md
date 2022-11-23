@@ -5,11 +5,13 @@ weight: 8
 
 By default, data in containers is not persistent as was the case e.g. in {{<link "attaching-a-database">}}. This means that the data written in a container is lost as soon as it does not exist anymore. We want to prevent this from happening. One possible solution to this problem is to use persistent storage.
 
+
 ## Request storage
 
 Attaching persistent storage to a Pod happens in two steps. The first step includes the creation of a so-called _PersistentVolumeClaim_ (PVC) in our namespace. This claim defines amongst other things what size we would like to get.
 
 The PersistentVolumeClaim only represents a request but not the storage itself. It is automatically going to be bound to a _PersistentVolume_ by {{% param distroName %}}, one that has at least the requested size. If only volumes exist that have a bigger size than was requested, one of these volumes is going to be used. The claim will automatically be updated with the new size. If there are only smaller volumes available, the claim cannot be fulfilled as long as no volume with the exact same or larger size is created.
+
 
 ## Attaching a volume to a Pod
 
@@ -19,6 +21,7 @@ In a second step, the PVC from before is going to be attached to the Pod. In {{<
 {{% onlyWhen openshift %}}
 In a second step, the PVC from before is going to be attached to the Pod. In {{<link "scaling">}} we used `{{% param cliToolName %}} set` to add a readiness probe to the Deployment. We are now going to do the same and insert the PersistentVolume.
 {{% /onlyWhen %}}
+
 
 ## {{% task %}} Add a PersistentVolume
 
@@ -107,6 +110,7 @@ mariadb-data     Bound    pvc-2cb78deb-d157-11e8-a406-42010a840034   1Gi        
 
 The two columns `STATUS` and `VOLUME` show us that our claim has been bound to the PersistentVolume `pvc-2cb78deb-d157-11e8-a406-42010a840034`.
 
+
 ## Error case
 
 If the container is not able to start it is the right moment to debug it!
@@ -119,25 +123,29 @@ Check the logs from the container and search for the error.
 {{% alert title="Note" color="info" %}}
 If the container won't start because the data directory already has files in it, use the `{{% onlyWhenNot openshift %}}kubectl exec{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}oc debug{{% /onlyWhen %}}` command mentioned in {{<link "attaching-a-database">}} to check its content and remove it if necessary.{{% /alert %}}
 
+
 ## {{% task %}} Persistence check
+
 
 ### Restore data
 
 Repeat [the task to import a database dump](../attaching-a-database/#task-75-import-a-database-dump).
 
+
 ### Test
 
 Scale your MariaDB Pod to 0 replicas and back to 1. Observe that the new Pod didn't loose any data.
+
 
 ## Save point
 
 You should now have the following resources in place:
 
-- [pvc.yaml](pvc.yaml)
-- {{% onlyWhenNot openshift %}}
+* [pvc.yaml](pvc.yaml)
+* {{% onlyWhenNot openshift %}}
   {{% onlyWhenNot customer %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
   {{% onlyWhen customer %}}[mariadb-{{% param customer %}}.yaml](mariadb-{{% param customer %}}.yaml){{% /onlyWhen %}}
   {{% /onlyWhenNot %}}
   {{% onlyWhen openshift %}}[mariadb-openshift.yaml](mariadb-openshift.yaml){{% /onlyWhen %}}
 
-- [example-web-app.yaml](../attaching-a-database/example-web-app.yaml) (from {{<link "attaching-a-database">}})
+* [example-web-app.yaml](../attaching-a-database/example-web-app.yaml) (from {{<link "attaching-a-database">}})
