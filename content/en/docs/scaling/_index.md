@@ -461,7 +461,7 @@ The command above results in the following `readinessProbe` snippet being insert
 
 ...
 containers:
-  - image: { { % param "images.training-image-url" % } }
+  - image: {{% param "images.training-image-url" %}}
     imagePullPolicy: Always
     name: example-web-app
     readinessProbe:
