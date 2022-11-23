@@ -11,11 +11,13 @@ Please make sure you completed labs {{<link "first-steps">}}, {{<link "deploying
 {{% /alert %}}
 {{% /onlyWhen %}}
 
+
 ## {{% task %}} Instantiate a MariaDB database
 
 {{% onlyWhen openshift %}}
 {{% onlyWhenNot baloise %}}
 We are going to use an OpenShift template to create the database. This can be done by either using the Web Console or the CLI. Both are going to be explained in this lab, so pick the one you are more comfortable with.
+
 
 ### Instantiate a template using the Web Console
 
@@ -24,6 +26,7 @@ Make sure you are in OpenShift's **Developer** view (upper left dropdown) and ha
 {{< imgproc selection.png Resize  "600x" >}}{{< /imgproc >}}
 
 Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Instantiate Template**. A form opens. Check that the first field corresponds to the correct Project and set the **MariaDB Database Name** field to `acend_exampledb` and leave the remaining fields as they are. Finally, click **Create** at the end of the form.
+
 
 ### Instantiate a template using the CLI
 
@@ -62,6 +65,7 @@ secret/mariadb created
 service/mariadb created
 deploymentconfig.apps.openshift.io/mariadb created
 ```
+
 
 ## {{% task %}} Inspection
 
@@ -238,6 +242,7 @@ spec:
 
 Above lines are an excerpt of the MariaDB Deployment. Most parts have been cut out to focus on the relevant lines: The references to the `mariadb` Secret. As you can see, instead of directly defining environment variables you can refer to a specific key inside a Secret. We are going to make further use of this concept for our Python application.
 
+
 ## {{% task %}} Attach the database to the application
 
 By default, our `example-web-app` application uses an SQLite memory database.
@@ -285,7 +290,7 @@ You could also do the changes by directly editing the Deployment:
 {{% param cliToolName %}} edit deployment example-web-app --namespace <namespace>
 ```
 
-In the file find the section, which defines the containers. You should find it under:
+In the file, find the section which defines the containers. You should find it under:
 
 ```
 ...
@@ -442,6 +447,7 @@ In order to find out if the change worked we can either look at the container's 
 This does not work if we delete the database Pod as its data is not yet persisted.
 {{% /alert %}}
 
+
 ## {{% task %}} Manual database connection
 
 As described in {{<link "troubleshooting">}} we can log into a Pod with {{% onlyWhenNot openshift %}}`kubectl exec -it <pod> -- /bin/bash`.{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}`oc rsh <pod>`.{{% /onlyWhen %}}
@@ -510,12 +516,13 @@ select * from hello;
 
 {{% alert title="Note" color="info" %}}
 If your database is empty you can generate some hellos by visiting the Service you exposed in lab {{<link "exposing-a-service" >}} task "Expose the Service".
-{{% /alert %}}
 You can find your app URL by looking at your route:
 
 ```bash
 oc get route --namespace <namespace>
 ```
+{{% /alert %}}
+
 
 ## {{% task %}} Import a database dump
 
@@ -571,11 +578,13 @@ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST $MYSQL_DATABASE < 
 
 Check your app to see the imported "Hellos".
 
-Hint: You can find your app URL by looking at your route:
+{{% alert title="Note" color="info" %}}
+You can find your app URL by looking at your route:
 
 ```bash
 oc get route --namespace <namespace>
 ```
+{{% /alert %}}
 
 {{% alert title="Note" color="info" %}}
 A database dump can be created as follows:
@@ -605,13 +614,14 @@ mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST 
 
 {{% /alert %}}
 
+
 ## Save point
 
 You should now have the following resources in place:
 
-- [example-web-app.yaml](example-web-app.yaml)
-- [mariadb-secret.yaml](mariadb-secret.yaml)
-- {{% onlyWhenNot openshift %}}
+* [example-web-app.yaml](example-web-app.yaml)
+* [mariadb-secret.yaml](mariadb-secret.yaml)
+* {{% onlyWhenNot openshift %}}
   {{% onlyWhenNot customer %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
   {{% onlyWhen customer %}}[mariadb-{{% param customer %}}.yaml](mariadb-{{% param customer %}}.yaml){{% /onlyWhen %}}
   {{% /onlyWhenNot %}}
