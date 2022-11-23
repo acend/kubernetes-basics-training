@@ -175,7 +175,7 @@ Get the name of the Pod:
 Then execute the port forwarding command using the Pod's name:
 
 {{% alert title="Note" color="info" %}}
-Best run this command in a separate shell, or in the background by adding a `  & ` at the end of the command.
+Best run this command in a separate shell, or in the background by adding a `&` at the end of the command.
 {{% /alert %}}
 
 {{% onlyWhenNot sbb %}}
