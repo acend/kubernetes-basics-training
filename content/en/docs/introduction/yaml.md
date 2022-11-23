@@ -16,6 +16,7 @@ This introduction is based on the [YAML Tutorial from cloudbees.com](https://www
 
 For more information and the full spec have a look at https://yaml.org/
 
+
 ## A simple file
 
 Let's look at a YAML file for an overview:
@@ -46,10 +47,10 @@ Then we see the construct that makes up most of a typical YAML document: a key-v
 
 YAML knows four different data types:
 
-- `foo` & `bar` are strings.
-- `pi` is a floating-point number
-- `awesome` is a boolean
-- `kubernetes-birth-year` is an integer
+* `foo` & `bar` are strings.
+* `pi` is a floating-point number
+* `awesome` is a boolean
+* `kubernetes-birth-year` is an integer
 
 You can enclose strings in single or double-quotes or no quotes at all. YAML recognizes unquoted numerals as integers or floating point.
 
@@ -59,9 +60,11 @@ Finally, `kubernetes` is a dictionary that contains a string `version`, a boolea
 
 YAML supports nesting of key-values, and mixing types.
 
+
 ### Indentation and Whitespace
 
 Whitespace is part of YAML's formatting. Unless otherwise indicated, newlines indicate the end of a field. You structure a YAML document with indentation. The indentation level can be one or more spaces. The specification forbids tabs because tools treat them differently.
+
 
 ### Comments
 
@@ -73,13 +76,16 @@ Comments begin with a pound sign. They can appear after a document value or take
 foo: bar # this is a comment, too
 ```
 
+
 ### YAML data types
 
 Values in YAML's key-value pairs are scalar. They act like the scalar types in languages like Perl, Javascript, and Python. It's usually good enough to enclose strings in quotes, leave numbers unquoted, and let the parser figure it out. But that's only the tip of the iceberg. YAML is capable of a great deal more.
 
+
 #### Key-Value Pairs and Dictionaries
 
 The key-value is YAML's basic building block. Every item in a YAML document is a member of at least one dictionary. The key is always a string. The value is a scalar so that it can be any datatype. So, as we've already seen, the value can be a string, a number, or another dictionary.
+
 
 #### Numeric types
 
@@ -110,6 +116,7 @@ plop: .NAN
 ```
 
 Foo is infinity. Bar is negative infinity, and plop is NAN.
+
 
 #### Strings
 
@@ -167,6 +174,7 @@ one line
 see?
 ```
 
+
 ### Nulls
 
 You enter nulls with a tilde or the unquoted null string literal.
@@ -176,6 +184,7 @@ You enter nulls with a tilde or the unquoted null string literal.
 foo: ~
 bar: null
 ```
+
 
 ### Booleans
 
@@ -189,14 +198,15 @@ light: On
 TV: Off
 ```
 
+
 ### Arrays
 
 You can specify arrays or lists on a single line.
 
 ```yaml
 ---
-items: [1, 2, 3, 4, 5]
-names: ["one", "two", "three", "four"]
+items: [ 1, 2, 3, 4, 5 ]
+names: [ "one", "two", "three", "four" ]
 ```
 
 Or, you can put them on multiple lines.
@@ -230,6 +240,7 @@ items:
 ```
 
 An array can contain any valid YAML value. The values in a list do not have to be the same type.
+
 
 #### Dictionaries
 
