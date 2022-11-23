@@ -15,6 +15,7 @@ This lab does not depend on previous labs. You can start with an empty Namespace
 Create a new Deployment in your Namespace. So again, lets define the Deployment using YAML in a file `05_deployment.yaml` with the following content:
 
 {{% onlyWhenNot sbb %}}
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -33,16 +34,17 @@ spec:
         app: example-web-app
     spec:
       containers:
-      - image: {{% param "images.training-image-url" %}}
-        name: example-web-app
-        resources:
-          limits:
-            cpu: 100m
-            memory: 128Mi
-          requests:
-            cpu: 50m
-            memory: 128Mi
+        - image: {{% param "images.training-image-url" %}}
+          name: example-web-app
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 50m
+              memory: 128Mi
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
 {{< readfile file="/content/en/docs/scaling/example-web-app-deployment-java.yaml" code="true" lang="yaml" >}}
@@ -66,7 +68,6 @@ NAME                            DESIRED   CURRENT   READY   AGE
 example-web-app-86d9d584f8      1         1         1       110s
 ```
 
-
 Or for even more details:
 
 ```bash
@@ -74,7 +75,6 @@ Or for even more details:
 ```
 
 The ReplicaSet shows how many instances of a Pod are desired, current and ready.
-
 
 Now we scale our application to three replicas:
 
@@ -126,7 +126,6 @@ OpenShift supports [horizontal](https://docs.openshift.com/container-platform/la
 {{% onlyWhenNot openshift %}}
 Now we create a new Service of the type `ClusterIP`:
 
-
 ```bash
 kubectl expose deployment example-web-app --type="ClusterIP" --name="example-web-app" --port={{% param "images.training-image-port" %}} --target-port={{% param "images.training-image-port" %}} --namespace <namespace>
 ```
@@ -158,6 +157,7 @@ Then the Route:
 ```bash
 oc expose service example-web-app --namespace <namespace>
 ```
+
 {{% /onlyWhen %}}
 
 Let's look at our Service. We should see all three corresponding Endpoints:
@@ -165,7 +165,9 @@ Let's look at our Service. We should see all three corresponding Endpoints:
 ```bash
 {{% param cliToolName %}} describe service example-web-app --namespace <namespace>
 ```
+
 {{% onlyWhenNot openshift %}}
+
 ```
 Name:                     example-web-app
 Namespace:                acend-scale
@@ -183,8 +185,10 @@ Events:
   Type    Reason                Age   From                Message
   ----    ------                ----  ----                -------
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
+
 ```
 Name:              example-web-app
 Namespace:         acend-test
@@ -192,6 +196,8 @@ Labels:            app=example-web-app
 Annotations:       <none>
 Selector:          app=example-web-app
 Type:              ClusterIP
+IP Family Policy:  SingleStack
+IP Families:       IPv4
 IP:                172.30.89.44
 IPs:               172.30.89.44
 Port:              <unset>  {{% param "images.training-image-port" %}}/TCP
@@ -200,6 +206,7 @@ Endpoints:         10.125.4.70:{{% param "images.training-image-port" %}},10.126
 Session Affinity:  None
 Events:            <none>
 ```
+
 {{% /onlyWhen %}}
 
 Scaling of Pods is fast as {{% param distroName %}} simply creates new containers.
@@ -212,30 +219,34 @@ You can find out the route's hostname by looking at the output of `oc get route`
 {{% /alert %}}
 {{% /onlyWhen %}}
 
-
 Now, execute the corresponding loop command for your operating system in another console.
 
 Linux:
 
-
 {{% onlyWhen openshift %}}
+
 ```bash
 URL=$(oc get routes example-web-app -o go-template='{{ .spec.host }}' --namespace <namespace>)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
+
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 {{% onlyWhenNot mobi %}}
+
 ```bash
 URL=example-web-app-<namespace>.<domain>
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
+
 ```bash
 URL=example-web-app-<namespace>.<appdomain>
 while true; do sleep 1; curl -ks https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
+
 {{% /onlyWhen %}}
 
 {{% /onlyWhenNot %}}
@@ -279,15 +290,14 @@ The requests get distributed amongst the three Pods. As soon as you scale down t
 
 Let's make another test: What happens if you start a new Deployment while our request generator is still running?
 
-
 ```bash
 {{% param cliToolName %}} rollout restart deployment example-web-app --namespace <namespace>
 ```
 
-
 During a short period we won't get a response:
 
 {{% onlyWhenNot sbb %}}
+
 ```
 example-web-app-86d9d584f8-7vjcj TIME: 17:37:24,121
 example-web-app-86d9d584f8-7vjcj TIME: 17:37:25,189
@@ -393,47 +403,50 @@ spec:
 Now insert the readiness probe at `.spec.template.spec.containers` above the `resources: {}` line:
 
 ```yaml
+
 ...
-     containers:
-      - image: {{% param "images.training-image-url" %}}
-        imagePullPolicy: Always
-        name: example-web-app
-        # start to copy here
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: {{% param "images.training-image-probe-port" %}}
-            scheme: HTTP
-          initialDelaySeconds: 10
-          timeoutSeconds: 1
-        # stop to copy here
-        resources: {}
+containers:
+  - image: {{% param "images.training-image-url" %}}
+    imagePullPolicy: Always
+    name: example-web-app
+    # start to copy here
+    readinessProbe:
+      httpGet:
+        path: /health
+        port: {{% param "images.training-image-probe-port" %}}
+        scheme: HTTP
+      initialDelaySeconds: 10
+      timeoutSeconds: 1
+    # stop to copy here
+    resources: {}
 ...
 ```
 
 The `containers` configuration then looks like:
 
 ```yaml
+
 ...
-      containers:
-      - image: {{% param "images.training-image-url" %}}
-        imagePullPolicy: Always
-        name: example-web-app
-        readinessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /health
-            port: {{% param "images.training-image-probe-port" %}}
-            scheme: HTTP
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 1
-        resources: {}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
+containers:
+  - image: {{% param "images.training-image-url" %}}
+    imagePullPolicy: Always
+    name: example-web-app
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /health
+        port: {{% param "images.training-image-probe-port" %}}
+        scheme: HTTP
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
 ...
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 Define the readiness probe on the Deployment using the following command:
@@ -445,40 +458,44 @@ oc set probe deploy/example-web-app --readiness --get-url=http://:{{% param "ima
 The command above results in the following `readinessProbe` snippet being inserted into the Deployment:
 
 ```yaml
+
 ...
-     containers:
-      - image: {{% param "images.training-image-url" %}}
-        imagePullPolicy: Always
-        name: example-web-app
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: {{% param "images.training-image-probe-port" %}}
-            scheme: HTTP
-          initialDelaySeconds: 10
-          timeoutSeconds: 1
+containers:
+  - image: {{% param "images.training-image-url" %}}
+    imagePullPolicy: Always
+    name: example-web-app
+    readinessProbe:
+      httpGet:
+        path: /health
+        port: {{% param "images.training-image-probe-port" %}}
+        scheme: HTTP
+      initialDelaySeconds: 10
+      timeoutSeconds: 1
 ...
 ```
+
 {{% /onlyWhen %}}
 
 We are now going to verify that a redeployment of the application does not lead to an interruption.
 
 Set up the loop again to periodically check the application's response (you don't have to set the `$URL` variable again if it is still defined):
 
-
 {{% onlyWhen openshift %}}
+
 ```bash
 URL=$(oc get routes example-web-app -o go-template='{{ .spec.host }}' --namespace <namespace>)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
+
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
+
 ```bash
 URL=example-web-app-<namespace>.<domain>
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
-{{% /onlyWhenNot %}}
 
+{{% /onlyWhenNot %}}
 
 Windows PowerShell:
 
@@ -490,13 +507,13 @@ while(1) {
 }
 ```
 
-
 {{% onlyWhenNot openshift %}}
 Start a new deployment by editing it (the so-called _ConfigChange_ trigger creates the new Deployment automatically):
 
 ```bash
 kubectl patch deployment example-web-app -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 Start a new deployment:
@@ -504,6 +521,7 @@ Start a new deployment:
 ```bash
 oc rollout restart deployment example-web-app --namespace <namespace>
 ```
+
 {{% /onlyWhen %}}
 
 

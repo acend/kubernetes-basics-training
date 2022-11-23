@@ -22,15 +22,19 @@ On Windows, you can use Git Bash and `winpty`.
 
 Choose a Pod with `{{% param cliToolName %}} get pods --namespace <namespace>` and execute the following command:
 {{% onlyWhenNot openshift %}}
+
 ```bash
 kubectl exec -it <pod> --namespace <namespace> -- /bin/bash
 ```
+
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen openshift %}}
+
 ```bash
 oc rsh --namespace <namespace> <pod>
 ```
+
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 {{% alert title="Note" color="info" %}}
@@ -41,6 +45,7 @@ If Bash is not available in the Pod you can fallback to `-- sh` instead of `-- /
 You now have a running shell session inside the container in which you can execute every binary available, e.g.:
 
 {{% onlyWhenNot sbb %}}
+
 ```bash
 ls -l
 ```
@@ -58,8 +63,10 @@ With `exit` or `CTRL+d` you can leave the container and close the connection:
 ```bash
 exit
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
+
 ```bash
 pwd
 ```
@@ -73,6 +80,7 @@ With `exit` or `CTRL+d` you can leave the container and close the connection:
 ```bash
 exit
 ```
+
 {{% /onlyWhen %}}
 
 
@@ -98,6 +106,7 @@ KUBERNETES_PORT_53_UDP_PROTO=udp
 KUBERNETES_PORT_53_TCP=tcp://172.30.0.1:53
 ...
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 Single commands inside a container can also be executed with `oc rsh`:
@@ -134,7 +143,6 @@ The quick way of using it is `oc debug RESOURCE/NAME` but have a good look at it
 
 Log files of a Pod can be shown with the following command:
 
-
 ```bash
 {{% param cliToolName %}} logs <pod> --namespace <namespace>
 ```
@@ -143,7 +151,7 @@ The parameter `-f` allows you to follow the log file (same as `tail -f`). With t
 
 When a Pod is in state `CrashLoopBackOff` it means that although multiple attempts have been made, no container inside the Pod could be started successfully. Now even though no container might be running at the moment the `{{% param cliToolName %}} logs` command is executed, there is a way to view the logs the application might have generated. This is achieved using the `-p` or `--previous` parameter:
 
- ```bash
+```bash
 {{% param cliToolName %}} logs -p <pod> --namespace <namespace>
 ```
 
@@ -166,10 +174,16 @@ Get the name of the Pod:
 
 Then execute the port forwarding command using the Pod's name:
 
+{{% alert title="Note" color="info" %}}
+Best run this command in a separate shell, or in the background by adding a "&" at the end of the command.
+{{% /alert %}}
+
 {{% onlyWhenNot sbb %}}
+
 ```bash
 {{% param cliToolName %}} port-forward <pod> 5000:5000 --namespace <namespace>
 ```
+
 Don't forget to change the Pod name to your own installation. If configured, you can use auto-completion.
 
 The output of the command should look like this:
@@ -178,11 +192,14 @@ The output of the command should look like this:
 Forwarding from 127.0.0.1:5000 -> 5000
 Forwarding from [::1]:5000 -> 5000
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
+
 ```bash
 {{% param cliToolName %}} port-forward <pod> {{% param "images.training-image-probe-port" %}}:{{% param "images.training-image-probe-port" %}} --namespace <namespace>
 ```
+
 Don't forget to change the Pod name to your own installation. If configured, you can use auto-completion.
 
 The output of the command should look like this:
@@ -191,6 +208,7 @@ The output of the command should look like this:
 Forwarding from 127.0.0.1:{{% param "images.training-image-probe-port" %}} -> {{% param "images.training-image-probe-port" %}}
 Forwarding from [::1]:{{% param "images.training-image-probe-port" %}} -> {{% param "images.training-image-probe-port" %}}
 ```
+
 {{% /onlyWhen %}}
 
 {{% alert title="Note" color="info" %}}
@@ -203,6 +221,7 @@ The application is now available with the following link: <http://localhost:5000
 ```bash
 curl localhost:5000
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
 Now the health endpoint is available at: <http://localhost:{{% param "images.training-image-probe-port" %}}/>.
@@ -214,6 +233,7 @@ The application probe endpoint is now available with the following link: <http:/
 ```bash
 curl localhost:{{% param "images.training-image-probe-port" %}}/health
 ```
+
 {{% /onlyWhen %}}
 
 With the same concept you can access databases from your local workstation or connect your local development environment via remote debugging to your application in the Pod.
@@ -282,9 +302,9 @@ spec:
         app: example-web-app
     spec:
       containers:
-      - image: {{% param "images.training-image-url" %}}
-        name: example-web
-        resources: {}
+        - image: {{% param "images.training-image-url" %}}
+          name: example-web
+          resources: {}
 status: {}
 ```
 

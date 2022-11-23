@@ -3,14 +3,14 @@ title: "Persistent storage"
 weight: 8
 ---
 
-By default, data in containers is not persistent as was the case e.g. in {{<link "attaching-a-database">}}. This means that data that was written in a container is lost as soon as it does not exist anymore. We want to prevent this from happening. One possible solution to this problem is to use persistent storage.
+By default, data in containers is not persistent as was the case e.g. in {{<link "attaching-a-database">}}. This means that the data written in a container is lost as soon as it does not exist anymore. We want to prevent this from happening. One possible solution to this problem is to use persistent storage.
 
 
 ## Request storage
 
 Attaching persistent storage to a Pod happens in two steps. The first step includes the creation of a so-called _PersistentVolumeClaim_ (PVC) in our namespace. This claim defines amongst other things what size we would like to get.
 
-The PersistentVolumeClaim only represents a request but not the storage itself. It is automatically going to be bound to a _PersistentVolume_ by {{% param distroName %}}, one that has at least the requested size. If only volumes exist that have a bigger size than was requested, one of these volumes is going to be used. The claim will automatically be updated with the new size. If there are only smaller volumes available, the claim cannot be fulfilled as long as no volume the exact same or larger size is created.
+The PersistentVolumeClaim only represents a request but not the storage itself. It is automatically going to be bound to a _PersistentVolume_ by {{% param distroName %}}, one that has at least the requested size. If only volumes exist that have a bigger size than was requested, one of these volumes is going to be used. The claim will automatically be updated with the new size. If there are only smaller volumes available, the claim cannot be fulfilled as long as no volume with the exact same or larger size is created.
 
 
 ## Attaching a volume to a Pod
@@ -41,7 +41,7 @@ Because we just changed the DeploymentConfig with the `oc set` command, a new Po
 {{% /onlyWhen %}}
 
 {{% onlyWhenNot openshift %}}
-The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size.  
+The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size.
 Save it to `pvc.yaml`:
 
 {{< readfile file="/content/en/docs/persistent-storage/pvc.yaml" code="true" lang="yaml" >}}
@@ -79,6 +79,7 @@ Add both parts `volumeMounts` and `volumes`
       schedulerName: default-scheduler
 ...
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhenNot openshift %}}
 {{% alert title="Note" color="info" %}}

@@ -3,8 +3,7 @@ title: "Init containers"
 weight: 96
 ---
 
-
-A Pod can have multiple containers running apps within it, but it can also have one or more *init containers*, which are run before the app container is started.
+A Pod can have multiple containers running apps within it, but it can also have one or more _init containers_, which are run before the app container is started.
 
 Init containers are exactly like regular containers, except:
 
@@ -35,9 +34,14 @@ Add the init container into the existing Deployment (same indentation level as c
 ...
 spec:
   initContainers:
-  - name: wait-for-db
-    image: {{% param "images.busybox" %}}
-    command: ['sh', '-c', "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
+    - name: wait-for-db
+      image: { { % param "images.busybox" % } }
+      command:
+        [
+          "sh",
+          "-c",
+          "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done",
+        ]
 ...
 ```
 
@@ -45,7 +49,7 @@ spec:
 This obviously only checks if there is a DNS Record for your MariaDB Service and not if the database is ready. But you get the idea, right?
 {{% /alert %}}
 
-Let's see what has changed by analyzing your `example-web-app` Pod with the following command (use `{{% param cliToolName %}} get pod` or auto-completion to get the Pod name):
+Let's see what has changed by analyzing your newly created `example-web-app` Pod with the following command (use `{{% param cliToolName %}} get pod` or auto-completion to get the Pod name):
 
 ```bash
 {{% param cliToolName %}} describe pod <pod> --namespace <namespace>

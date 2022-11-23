@@ -31,7 +31,6 @@ Your trainer will provide you with the information needed to log in.
 {{% /alert %}}
 {{% /onlyWhen %}}
 
-
 Log in to the Rancher web console and choose the desired cluster.
 
 You now see a button at the top right that says **Kubeconfig File**. Click it, scroll down to the bottom and click **Copy to Clipboard**.
@@ -91,7 +90,7 @@ A Namespace is a logical design used in Kubernetes to organize and separate your
 
 {{% onlyWhen rancher %}}
 {{% alert title="Note" color="info" %}}
-Additionally, Rancher knows the concept of a [*Project*](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple Namespaces.
+Additionally, Rancher knows the concept of a [_Project_](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/) which encapsulates multiple Namespaces.
 {{% /alert %}}
 
 In the Rancher web console choose the Project called `Training`.

@@ -33,7 +33,7 @@ We're going to do this with the command `{{% param cliToolName %}} expose`:
 ```
 
 {{% onlyWhen openshift %}}
-You will get the error message reading `Error from server (AlreadyExists): services "example-web-go" already exists` here. This is because the `oc new-app` command you executed during lab 3 already created a service. This is the default behavior of `oc new-app`  while `oc create deployment` doesn't have this functionality.
+You will get the error message reading `Error from server (AlreadyExists): services "example-web-go" already exists` here. This is because the `oc new-app` command you executed during lab 3 already created a service. This is the default behavior of `oc new-app` while `oc create deployment` doesn't have this functionality.
 
 As a consequence, the `oc expose` command above doesn't add anything new but it demonstrates how to easily create a service based on a deployment.
 {{% /onlyWhen %}}
@@ -48,7 +48,7 @@ Which gives you an output similar to this:
 
 ```bash
 NAME             TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
-example-web-go   ClusterIP  10.43.91.62   <none>        5000/TCP  
+example-web-go   ClusterIP  10.43.91.62   <none>        5000/TCP
 ```
 
 {{% alert title="Note" color="info" %}}
@@ -124,7 +124,6 @@ Let's have a look at the label section of the Pod and verify that the Service se
 
 This link between Service and Pod can also be displayed in an easier fashion with the `{{% param cliToolName %}} describe` command:
 
-
 ```bash
 {{% param cliToolName %}} describe service example-web-go --namespace <namespace>
 ```
@@ -164,7 +163,6 @@ In order to create the Ingress resource, we first need to create the file `ingre
 {{< readfile file="/content/en/docs/exposing-a-service/ingress-mobi.template.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
 
-
 As you see in the resource definition at `spec.rules[0].http.paths[0].backend.service.name` we use the previously created `example-web-go` ClusterIP Service.
 
 Let's create the Ingress resource with:
@@ -201,6 +199,10 @@ oc get route --namespace <namespace>
 ```
 
 Browse to the URL and check the output of your app.
+{{% alert title="Note" color="info" %}}
+If the site doesn't load, check if you are using the http:// , not the https:// protocol, which might be the default in your browser.
+{{% /alert %}}
+
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}
@@ -216,7 +218,6 @@ The `<appdomain>` is the default domain under which your applications will be ac
 There's a second option to make a Service accessible from outside: Use a [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport).
 
 In order to switch the Service type, we are going to delete the `ClusterIP` Service that we've created before:
-
 
 ```bash
 kubectl delete service example-web-go --namespace=<namespace>
@@ -238,7 +239,7 @@ Which gives you an output similar to this:
 
 ```bash
 NAME             TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
-example-web-go   NodePort   10.43.91.62   <none>        5000:30692/TCP  
+example-web-go   NodePort   10.43.91.62   <none>        5000:30692/TCP
 ```
 
 The `NodePort` number is assigned by Kubernetes and stays the same as long as the Service is not deleted. A NodePort Service is more suitable for infrastructure tools than for public URLs.
@@ -248,7 +249,6 @@ If `NodePort` is not supported in your environment then you can use `--type=Clus
 
 Head over to task 6.3 in [lab 6](../06/) to learn how to use port forwarding.
 {{% /alert %}}
-
 
 Open `http://<node-ip>:<node-port>` in your browser.
 You can use any node IP as the Service is exposed on all nodes using the same `NodePort`. Use `kubectl get nodes -o wide` to display the IPs (`INTERNAL-IP`) of the available nodes.

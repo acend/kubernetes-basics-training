@@ -3,7 +3,7 @@ title: "ConfigMaps"
 weight: 94
 ---
 
-Similar to environment variables, _ConfigsMaps_ allow you to separate the configuration for an application from the image. Pods can access those variables at runtime which allows maximum portability for applications running in containers.
+Similar to environment variables, _ConfigMaps_ allow you to separate the configuration for an application from the image. Pods can access those variables at runtime which allows maximum portability for applications running in containers.
 In this lab, you will learn how to create and use ConfigMaps.
 
 
@@ -66,9 +66,11 @@ In this example, we want the file to be mounted as a volume inside the container
 As in {{<link "persistent-storage">}}, we can use the `oc set volume` command to achieve this:
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
+
 ```bash
 oc set volume deploy/example-web-app --add --configmap-name=javaconfiguration --mount-path=/etc/config --name=config-volume --type configmap --namespace <namespace>
 ```
+
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}
@@ -97,6 +99,7 @@ Basically, a Deployment has to be extended with the following config:
         name: config-volume
       ...
 ```
+
 {{% onlyWhenNot openshift %}}
 Here is a complete example Deployment of a sample Java app:
 
@@ -109,25 +112,26 @@ Here is a complete example Deployment of a sample Java app:
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 
-
 This means that the container should now be able to access the ConfigMap's content in `/etc/config/java.properties`. Let's check:
 
-
 {{% onlyWhen openshift %}}
+
 ```bash
 oc exec <pod name> --namespace <namespace> -- cat /etc/config/java.properties
 ```
+
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
+
 ```bash
 kubectl exec -it <pod> --namespace <namespace> -- cat /etc/config/java.properties
 ```
+
 {{% /onlyWhenNot %}}
 
 {{% alert title="Note" color="info" %}}
 On Windows, you can use Git Bash with `winpty kubectl exec -it <pod> --namespace <namespace> -- cat //etc/config/java.properties`.
 {{% /alert %}}
-
 
 {{< readfile file="/content/en/docs/additional-concepts/configmaps/java.properties" code="true" lang="yaml" >}}
 

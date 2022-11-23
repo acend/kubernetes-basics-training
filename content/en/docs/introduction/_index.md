@@ -13,7 +13,7 @@ All explanations and resources used in this lab give only a quick and not detail
 In this lab, we will introduce the core concepts of OpenShift.
 
 All explanations and resources used in this lab give only a quick and not detailed overview.
-As OpenShift is based on Kubernetes, its concepts also apply to OpenShift which you find in [the official Kubernetes documentation](https://kubernetes.io/docs/concepts/).
+As OpenShift is based on Kubernetes, its concepts also apply to OpenShift which you can find in [the official Kubernetes documentation](https://kubernetes.io/docs/concepts/).
 {{% /onlyWhen %}}
 
 

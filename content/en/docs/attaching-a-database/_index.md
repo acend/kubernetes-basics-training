@@ -90,6 +90,7 @@ kubectl create secret generic mariadb \
   --from-literal=database-user=acend_user \
   --namespace <namespace>
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen baloise %}}
 We are first going to create a so-called _Secret_ in which we store sensitive data. The secret will be used to access the database and also to create the initial database.
@@ -113,6 +114,7 @@ But for now, create the Secret by applying the file's content:
 ```bash
 oc apply -f secret_mariadb.yaml
 ```
+
 {{% /onlyWhen %}}
 
 The Secret contains the database name, user, password, and the root password. However, these values will neither be shown with `{{% param cliToolName %}} get` nor with `{{% param cliToolName %}} describe`:
@@ -133,6 +135,7 @@ metadata:
   ...
 type: Opaque
 ```
+
 The reason is that all the values in the `.data` section are base64 encoded. Even though we cannot see the true values, they can easily be decoded:
 
 ```bash
@@ -204,7 +207,6 @@ As soon as the container image has been pulled, you will see a new Pod using `oc
 The environment variables defined in the deployment configure the MariaDB Pod and how our frontend will be able to access it.
 {{% /onlyWhen %}}
 
-
 The interesting thing about Secrets is that they can be reused, e.g., in different Deployments. We could extract all the plaintext values from the Secret and put them as environment variables into the Deployments, but it's way easier to instead simply refer to its values inside the Deployment (as in this lab) like this:
 
 ```
@@ -248,16 +250,20 @@ By default, our `example-web-app` application uses an SQLite memory database.
 However, this can be changed by defining the following environment variable to use the newly created MariaDB database:
 
 {{% onlyWhenNot sbb %}}
+
 ```
 #MYSQL_URI=mysql://<user>:<password>@<host>/<database>
 MYSQL_URI=mysql://acend_user:mysqlpassword@mariadb/acend_exampledb
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
+
 ```
 #SPRING_DATASOURCE_URL=jdbc:mysql://<host>/<database>
 SPRING_DATASOURCE_URL=jdbc:mysql://mariadb/acend_exampledb
 ```
+
 {{% /onlyWhen %}}
 
 The connection string our `example-web-app` application uses to connect to our new MariaDB, is a concatenated string from the values of the `mariadb` Secret.
@@ -284,7 +290,51 @@ You could also do the changes by directly editing the Deployment:
 {{% param cliToolName %}} edit deployment example-web-app --namespace <namespace>
 ```
 
+In the file, find the section which defines the containers. You should find it under:
+
+```
+...
+spec:
+...
+ template:
+ ...
+  spec:
+    containers:
+    - image: ...
+...
+```
+
+The dash defines the beginning of a separate container definition. The following specifications should be inserted into this container definition:
+
 ```yaml
+- env:
+    - name: MYSQL_DATABASE_NAME
+      valueFrom:
+        secretKeyRef:
+          key: database-name
+          name: mariadb
+    - name: MYSQL_DATABASE_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: database-password
+          name: mariadb
+    - name: MYSQL_DATABASE_ROOT_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: database-root-password
+          name: mariadb
+    - name: MYSQL_DATABASE_USER
+      valueFrom:
+        secretKeyRef:
+          key: database-user
+          name: mariadb
+    - name: MYSQL_URI
+      value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
+```
+
+Your file should now look like this:
+
+```
       ...
       containers:
       - env:
@@ -315,6 +365,7 @@ You could also do the changes by directly editing the Deployment:
         name: example-web-app
         ...
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
 Add the environment variables by directly editing the Deployment:
@@ -351,6 +402,7 @@ Add the environment variables by directly editing the Deployment:
         name: example-web-app
         ...
 ```
+
 {{% /onlyWhen %}}
 
 {{% alert title="Note" color="info" %}}
@@ -363,6 +415,7 @@ The environment can also be checked with the `set env` command and the `--list` 
 This will show the environment as follows:
 
 {{% onlyWhenNot sbb %}}
+
 ```
 # deployments/example-web-app, container example-web-app
 # MYSQL_DATABASE_PASSWORD from secret mariadb, key database-password
@@ -371,8 +424,10 @@ This will show the environment as follows:
 # MYSQL_DATABASE_NAME from secret mariadb, key database-name
 MYSQL_URI=mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
+
 ```
 # deployments/example-web-app, container example-web-app
 # SPRING_DATASOURCE_DATABASE_NAME from secret mariadb, key database-name
@@ -381,6 +436,7 @@ MYSQL_URI=mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MY
 SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
 SPRING_DATASOURCE_URL=jdbc:mysql://mariadb/$(SPRING_DATASOURCE_DATABASE_NAME)?autoReconnect=true
 ```
+
 {{% /onlyWhen %}}
 
 {{% /alert %}}
@@ -413,14 +469,18 @@ mariadb-1-deploy                      0/1     Completed   0          11m
 
 Log into the MariaDB Pod:
 {{% onlyWhenNot openshift %}}
+
 ```bash
 kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
+
 ```bash
-oc rsh --namespace <namespace> mariadb-f845ccdb7-hf2x5
+oc rsh --namespace <namespace> <mariadb-pod-name>
 ```
+
 {{% /onlyWhen %}}
 
 You are now able to connect to the database and display the data. Login with:
@@ -454,6 +514,15 @@ Show any entered "Hellos" with:
 select * from hello;
 ```
 
+{{% alert title="Note" color="info" %}}
+If your database is empty you can generate some hellos by visiting the Service you exposed in lab {{<link "exposing-a-service" >}} task "Expose the Service".
+You can find your app URL by looking at your route:
+
+```bash
+oc get route --namespace <namespace>
+```
+{{% /alert %}}
+
 
 ## {{% task %}} Import a database dump
 
@@ -466,7 +535,7 @@ You can also copy local files into a Pod using `{{% param cliToolName %}} cp`. B
 
 ### Solution
 
-This is how you copy the database dump into the Pod:
+This is how you copy the database dump into the MariaDB Pod:
 
 ```bash
 curl -O https://raw.githubusercontent.com/acend/kubernetes-basics-training/main/content/en/docs/attaching-a-database/dump.sql
@@ -476,14 +545,18 @@ curl -O https://raw.githubusercontent.com/acend/kubernetes-basics-training/main/
 This is how you log into the MariaDB Pod:
 
 {{% onlyWhenNot openshift %}}
+
 ```bash
 kubectl exec -it <podname> --namespace <namespace> -- /bin/bash
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
+
 ```bash
 oc rsh --namespace <namespace> <podname>
 ```
+
 {{% /onlyWhen %}}
 
 This command shows how to drop the whole database:
@@ -507,17 +580,29 @@ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST $MYSQL_DATABASE < 
 Check your app to see the imported "Hellos".
 
 {{% alert title="Note" color="info" %}}
+You can find your app URL by looking at your route:
+
+```bash
+oc get route --namespace <namespace>
+```
+{{% /alert %}}
+
+{{% alert title="Note" color="info" %}}
 A database dump can be created as follows:
 
 {{% onlyWhenNot openshift %}}
+
 ```bash
 kubectl exec -it <podname> --namespace <namespace> -- /bin/bash
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
+
 ```bash
 oc rsh --namespace <namespace> <podname>
 ```
+
 {{% /onlyWhen %}}
 
 ```bash
