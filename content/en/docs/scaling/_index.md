@@ -428,7 +428,7 @@ The `containers` configuration then looks like:
 
 ...
 containers:
-  - image: { { % param "images.training-image-url" % } }
+  - image: {{% param "images.training-image-url" %}}
     imagePullPolicy: Always
     name: example-web-app
     readinessProbe:
