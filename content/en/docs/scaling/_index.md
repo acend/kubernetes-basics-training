@@ -9,6 +9,7 @@ In this lab, we are going to show you how to scale applications on {{% param dis
 This lab does not depend on previous labs. You can start with an empty Namespace.
 {{% /alert %}}
 
+
 ## {{% task %}} Scale the example application
 
 Create a new Deployment in your Namespace. So again, lets define the Deployment using YAML in a file `05_deployment.yaml` with the following content:
@@ -33,7 +34,7 @@ spec:
         app: example-web-app
     spec:
       containers:
-        - image: { { % param "images.training-image-url" % } }
+        - image: {{% param "images.training-image-url" %}}
           name: example-web-app
           resources:
             limits:
@@ -118,6 +119,7 @@ Kubernetes even supports [autoscaling](https://kubernetes.io/docs/tasks/run-appl
 OpenShift supports [horizontal](https://docs.openshift.com/container-platform/latest/nodes/pods/nodes-pods-autoscaling.html) and [vertical autoscaling](https://docs.openshift.com/container-platform/latest/nodes/pods/nodes-pods-vertical-autoscaler.html).
 {{% /alert %}}
 {{% /onlyWhen %}}
+
 
 ## Check for uninterruptible Deployments
 
@@ -346,6 +348,7 @@ It is even possible that the Service gets down, and the routing layer responds w
 
 In the following chapter we are going to look at how a Service can be configured to be highly available.
 
+
 ## Uninterruptible Deployments
 
 The [rolling update strategy](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/) makes it possible to deploy Pods without interruption. The rolling update strategy means that the new version of an application gets deployed and started. As soon as the application says it is ready, {{% param distroName %}} forwards requests to the new instead of the old version of the Pod, and the old Pod gets terminated.
@@ -354,8 +357,8 @@ Additionally, [container health checks](https://kubernetes.io/docs/tasks/configu
 
 Basically, there are two different kinds of checks that can be implemented:
 
-- Liveness probes are used to find out if an application is still running
-- Readiness probes tell us if the application is ready to receive requests (which is especially relevant for the above-mentioned rolling updates)
+* Liveness probes are used to find out if an application is still running
+* Readiness probes tell us if the application is ready to receive requests (which is especially relevant for the above-mentioned rolling updates)
 
 These probes can be implemented as HTTP checks, container execution checks (the execution of a command or script inside a container) or TCP socket checks.
 
@@ -366,6 +369,7 @@ Our example application has a health check context named health: `{{% onlyWhenNo
 {{% onlyWhen sbb %}}
 Our example application has a health check context named health: `http://localhost:{{% param "images.training-image-probe-port" %}}/health`. This port is not exposed by a service. It is only accessible inside the cluster.
 {{% /onlyWhen %}}
+
 
 ## {{% task %}} Availability during deployment
 
@@ -400,7 +404,7 @@ Now insert the readiness probe at `.spec.template.spec.containers` above the `re
 
 ```yaml
 
----
+...
 containers:
   - image: { { % param "images.training-image-url" % } }
     imagePullPolicy: Always
@@ -415,13 +419,14 @@ containers:
       timeoutSeconds: 1
     # stop to copy here
     resources: {}
+...
 ```
 
 The `containers` configuration then looks like:
 
 ```yaml
 
----
+...
 containers:
   - image: { { % param "images.training-image-url" % } }
     imagePullPolicy: Always
@@ -439,6 +444,7 @@ containers:
     resources: {}
     terminationMessagePath: /dev/termination-log
     terminationMessagePolicy: File
+...
 ```
 
 {{% /onlyWhenNot %}}
@@ -453,7 +459,7 @@ The command above results in the following `readinessProbe` snippet being insert
 
 ```yaml
 
----
+...
 containers:
   - image: { { % param "images.training-image-url" % } }
     imagePullPolicy: Always
@@ -465,6 +471,7 @@ containers:
         scheme: HTTP
       initialDelaySeconds: 10
       timeoutSeconds: 1
+...
 ```
 
 {{% /onlyWhen %}}
@@ -517,6 +524,7 @@ oc rollout restart deployment example-web-app --namespace <namespace>
 
 {{% /onlyWhen %}}
 
+
 ## Self-healing
 
 Via the {{% onlyWhenNot openshift %}}Replicaset{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Deployment definition{{% /onlyWhen %}} we told {{% param distroName %}} how many replicas we want. So what happens if we simply delete a Pod?
@@ -537,8 +545,9 @@ Now delete a Pod (in another terminal) with the following command:
 
 Observe how {{% param distroName %}} instantly creates a new Pod in order to fulfill the desired number of running instances.
 
+
 ## Save point
 
 You should now have the following resources in place:
 
-- [example-web-app.yaml](example-web-app.yaml)
+* [example-web-app.yaml](example-web-app.yaml)
