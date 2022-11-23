@@ -7,8 +7,8 @@ A Pod can have multiple containers running apps within it, but it can also have 
 
 Init containers are exactly like regular containers, except:
 
-- Init containers always run to completion.
-- Each init container must complete successfully before the next one starts.
+* Init containers always run to completion.
+* Each init container must complete successfully before the next one starts.
 
 {{% onlyWhenNot openshift %}}
 Check [Init Containers](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) from the Kubernetes documentation for more details.
@@ -16,6 +16,7 @@ Check [Init Containers](https://kubernetes.io/docs/concepts/workloads/pods/init-
 {{% onlyWhen openshift %}}
 Check out the [Init Containers documentation](https://docs.openshift.com/container-platform/latest/nodes/containers/nodes-containers-init.html) for more details.
 {{% /onlyWhen %}}
+
 
 ## {{% task %}} Add an init container
 
@@ -31,7 +32,7 @@ Add the init container into the existing Deployment (same indentation level as c
 
 ```yaml
 
----
+...
 spec:
   initContainers:
     - name: wait-for-db
@@ -42,6 +43,7 @@ spec:
           "-c",
           "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done",
         ]
+...
 ```
 
 {{% alert title="Note" color="info" %}}
@@ -106,6 +108,7 @@ Check [Init Container](https://kubernetes.io/docs/concepts/workloads/pods/init-c
 
 {{% onlyWhen openshift %}}
 
+
 ## Deployment hooks on OpenShift
 
 A similar concept are the so-called pre and post deployment hooks. Those hooks basically give the possibility to execute Pods before and after a deployment is in progress.
@@ -113,9 +116,10 @@ A similar concept are the so-called pre and post deployment hooks. Those hooks b
 Check out the [official documentation](https://docs.openshift.com/container-platform/latest/applications/deployments/deployment-strategies.html) for further information.
 {{% /onlyWhen %}}
 
+
 ## Save point
 
 You should now have the following resources in place:
 
-- {{% onlyWhenNot customer %}}[example-web-app.yaml](example-web-app.yaml){{% /onlyWhenNot %}}
+* {{% onlyWhenNot customer %}}[example-web-app.yaml](example-web-app.yaml){{% /onlyWhenNot %}}
   {{% onlyWhen customer %}}[example-web-app-{{% param customer %}}.yaml](example-web-app-{{% param customer %}}.yaml){{% /onlyWhen %}}
