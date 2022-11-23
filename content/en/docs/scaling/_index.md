@@ -406,7 +406,7 @@ Now insert the readiness probe at `.spec.template.spec.containers` above the `re
 
 ...
 containers:
-  - image: { { % param "images.training-image-url" % } }
+  - image: {{% param "images.training-image-url" %}}
     imagePullPolicy: Always
     name: example-web-app
     # start to copy here
