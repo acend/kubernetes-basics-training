@@ -297,16 +297,3 @@ Have a closer look at the resources created in your namespace `<namespace>` with
 ```bash
 {{% param cliToolName %}} get <resource> <name> -o yaml --namespace <namespace>
 ```
-
-
-## Save point
-
-You should now have the following resources in place:
-
-* [deployment.yaml](../deploying-a-container-image/deployment.yaml) (from {{<link "deploying-a-container-image">}})
-* [service.yaml](service.yaml)
-* {{% onlyWhenNot openshift %}}
-  {{% onlyWhenNot customer %}}[ingress.template.yaml](ingress.template.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen customer %}}[ingress-{{% param customer %}}.template.yaml](ingress-{{% param customer %}}.template.yaml){{% /onlyWhen %}}
-  {{% /onlyWhenNot %}}
-  {{% onlyWhen openshift %}}An exposed Route{{% /onlyWhen %}}

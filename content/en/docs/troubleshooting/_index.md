@@ -351,6 +351,8 @@ If you created the deployment to see the output, you can delete it again as it's
 
 {{% /alert %}}
 
+{{% onlyWhenNot sbb %}}
+
 
 ## Progress
 
@@ -363,3 +365,4 @@ You may need to set some extra permissions to let the dashboard monitor your pro
 ```bash
 {{% param cliToolName %}} create rolebinding progress --clusterrole=view --serviceaccount=<namespace>:default --namespace=<namespace>
 ```
+{{% /onlyWhenNot %}}

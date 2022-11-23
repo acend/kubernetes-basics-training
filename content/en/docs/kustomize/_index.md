@@ -64,6 +64,22 @@ Kustomize allows inheriting Kubernetes configurations. We are going to use this 
 Note that Kustomize does not use templating. Instead, smart patch and extension mechanisms are used on plain YAML manifests to keep things as simple as possible.
 
 
+### Get the example config
+
+Find the needed resource files inside the folder `content/en/docs/kustomize/kustomize` of the techlab github repository. Clone the [repository](https://github.com/acend/kubernetes-basics-training) or get the content as [zip](https://github.com/acend/kubernetes-basics-training/archive/refs/heads/main.zip)
+
+Change to the folder `content/en/docs/kustomize/kustomize` to execute the kustomize commands.
+
+{{% alert title="Note" color="info" %}}
+Commands for git checkout and folder switch:
+
+```bash
+git clone https://github.com/acend/kubernetes-basics-training.git
+cd kubernetes-basics-training/content/en/docs/kustomize/kustomize/
+```
+{{% /alert %}}
+
+
 ### File structure
 
 The structure of a Kustomize configuration typically looks like this:
