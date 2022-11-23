@@ -5,6 +5,7 @@ weight: 4
 
 In this lab, we are going to make the freshly deployed application from the last lab available online.
 
+
 ## {{% task %}} Create a ClusterIP Service
 
 The command `{{% param cliToolName %}} apply -f 03_deployment.yaml` from the last lab creates a Deployment but no Service. A {{% param distroName %}} Service is an abstract way to expose an application running on a set of Pods as a network service. For some parts of your application (for example, frontends) you may want to expose a Service to an external IP address which is outside your cluster.
@@ -13,13 +14,13 @@ The command `{{% param cliToolName %}} apply -f 03_deployment.yaml` from the las
 
 `Type` values and their behaviors are:
 
-- `ClusterIP`: Exposes the Service on a cluster-internal IP. Choosing this value only makes the Service reachable from within the cluster. This is the default ServiceType.
+* `ClusterIP`: Exposes the Service on a cluster-internal IP. Choosing this value only makes the Service reachable from within the cluster. This is the default ServiceType.
 
-- `NodePort`: Exposes the Service on each Node's IP at a static port (the NodePort). A ClusterIP Service, to which the NodePort Service routes, is automatically created. You'll be able to contact the NodePort Service from outside the cluster, by requesting \<NodeIP\>:\<NodePort\>.
+* `NodePort`: Exposes the Service on each Node's IP at a static port (the NodePort). A ClusterIP Service, to which the NodePort Service routes, is automatically created. You'll be able to contact the NodePort Service from outside the cluster, by requesting \<NodeIP\>:\<NodePort\>.
 
-- `LoadBalancer`: Exposes the Service externally using a cloud provider's load balancer. NodePort and ClusterIP Services, to which the external load balancer routes, are automatically created.
+* `LoadBalancer`: Exposes the Service externally using a cloud provider's load balancer. NodePort and ClusterIP Services, to which the external load balancer routes, are automatically created.
 
-- `ExternalName`: Maps the Service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. No proxying of any kind is set up.
+* `ExternalName`: Maps the Service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. No proxying of any kind is set up.
 
 You can also use Ingress to expose your Service. Ingress is not a Service type, but it acts as the entry point for your cluster. [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.
 Traffic routing is controlled by rules defined on the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}} resource. {{% onlyWhenNot openshift %}}An Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}A Route{{% /onlyWhen %}} may be configured to give Services externally reachable URLs, load balance traffic, terminate SSL / TLS, and offer name-based virtual hosting. An Ingress controller is responsible for fulfilling the route, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic.
@@ -131,21 +132,22 @@ This link between Service and Pod can also be displayed in an easier fashion wit
 Name:                     example-web-go
 Namespace:                example-ns
 Labels:                   app=example-web-go
-Annotations:       openshift.io/generated-by: OpenShiftNewApp
-Selector:          app=example-web-go,deployment=example-web-go
-Type:              ClusterIP
-IP Family Policy:  SingleStack
-IP Families:       IPv4
-IP:                172.30.118.125
-IPs:               172.30.118.125
-Port:              5000-tcp  5000/TCP
-TargetPort:        5000/TCP
-Endpoints:         10.128.2.45:5000
-Session Affinity:  None
-Events:            <none>
+Annotations:              <none>
+Selector:                 app=example-web-go
+Type:                     ClusterIP
+IP:                       10.39.240.212
+Port:                     <unset>  5000/TCP
+TargetPort:               5000/TCP
+Endpoints:                10.36.0.8:5000
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:
+  Type    Reason                Age    From                Message
+  ----    ------                ----   ----                -------
 ```
 
 The `Endpoints` show the IP addresses of all currently matched Pods.
+
 
 ## {{% task %}} Expose the Service
 
@@ -196,7 +198,11 @@ Find your actual app URL by looking at your route (HOST/PORT):
 oc get route --namespace <namespace>
 ```
 
-Browse to the URL and check the output of your app. (Hint: If the site doesn't load, check if you are using the http:// , not the https:// protocol, which might be the default in your browser.)
+Browse to the URL and check the output of your app.
+{{% alert title="Note" color="info" %}}
+If the site doesn't load, check if you are using the http:// , not the https:// protocol, which might be the default in your browser.
+{{% /alert %}}
+
 {{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}
@@ -205,6 +211,7 @@ The `<appdomain>` is the default domain under which your applications will be ac
 {{% /onlyWhen %}}
 
 {{% onlyWhenNot openshift %}}
+
 
 ## {{% task %}} Expose as NodePort
 
@@ -270,6 +277,7 @@ Or go to the **Service Discovery** tab and look for your Service name. The link 
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 
+
 ## {{% task %}} For fast learners
 
 Have a closer look at the resources created in your namespace `<namespace>` with the following commands and try to understand them:
@@ -290,13 +298,14 @@ Have a closer look at the resources created in your namespace `<namespace>` with
 {{% param cliToolName %}} get <resource> <name> -o yaml --namespace <namespace>
 ```
 
+
 ## Save point
 
 You should now have the following resources in place:
 
-- [deployment.yaml](../deploying-a-container-image/deployment.yaml) (from {{<link "deploying-a-container-image">}})
-- [service.yaml](service.yaml)
-- {{% onlyWhenNot openshift %}}
+* [deployment.yaml](../deploying-a-container-image/deployment.yaml) (from {{<link "deploying-a-container-image">}})
+* [service.yaml](service.yaml)
+* {{% onlyWhenNot openshift %}}
   {{% onlyWhenNot customer %}}[ingress.template.yaml](ingress.template.yaml){{% /onlyWhenNot %}}
   {{% onlyWhen customer %}}[ingress-{{% param customer %}}.template.yaml](ingress-{{% param customer %}}.template.yaml){{% /onlyWhen %}}
   {{% /onlyWhenNot %}}
