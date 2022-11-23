@@ -508,7 +508,9 @@ Show any entered "Hellos" with:
 select * from hello;
 ```
 
-Hint: If your database is empty you can generate some hellos by visiting the Service you exposed in Task 4.2.
+{{% alert title="Note" color="info" %}}
+If your database is empty you can generate some hellos by visiting the Service you exposed in lab {{<link "exposing-a-service" >}} task "Expose the Service".
+{{% /alert %}}
 You can find your app URL by looking at your route:
 
 ```bash
