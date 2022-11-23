@@ -31,7 +31,6 @@ Edit your existing `example-web-app` Deployment with:
 Add the init container into the existing Deployment (same indentation level as containers):
 
 ```yaml
-
 ...
 spec:
   initContainers:
