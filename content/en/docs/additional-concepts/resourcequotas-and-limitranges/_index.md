@@ -11,6 +11,7 @@ For this lab to work it is vital that you use the namespace `<username>-quota`!
 
 {{% onlyWhen rancher %}}
 
+
 ## Namespace creation
 
 Make sure you're logged in on the Rancher web console. Choose the appropriate cluster and click on **Projects/Namespaces**. Under the Project `kubernetes-quotalab` click on **Add Namespace**.
@@ -27,13 +28,14 @@ Choose a name for your Namespace, e.g. in the form of `<yourname>`-quota, expand
 Finally, click on **Create**.
 {{% /onlyWhen %}}
 
+
 ## ResourceQuotas
 
 ResourceQuotas among other things limit the amount of resources Pods can use in a Namespace. They can also be used to limit the total number of a certain resource type in a {{% onlyWhenNot openshift %}}Namespace{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Project{{% /onlyWhen %}}. In more detail, there are these kinds of quotas:
 
-- _Compute ResourceQuotas_ can be used to limit the amount of memory and CPU
-- _Storage ResourceQuotas_ can be used to limit the total amount of storage and the number of PersistentVolumeClaims, generally or specific to a StorageClass
-- _Object count quotas_ can be used to limit the number of a certain resource type such as Services, Pods or Secrets
+* _Compute ResourceQuotas_ can be used to limit the amount of memory and CPU
+* _Storage ResourceQuotas_ can be used to limit the total amount of storage and the number of PersistentVolumeClaims, generally or specific to a StorageClass
+* _Object count quotas_ can be used to limit the number of a certain resource type such as Services, Pods or Secrets
 
 Defining ResourceQuotas makes sense when the cluster administrators want to have better control over consumed resources. A typical use case are public offerings where users pay for a certain guaranteed amount of resources which must not be exceeded.
 
@@ -55,6 +57,7 @@ For more details, have look at [Kubernetes' documentation about resource quotas]
 {{% onlyWhen openshift %}}
 For more details, have look into [OpenShift's documentation about resource quotas](https://docs.openshift.com/container-platform/latest/applications/quotas/quotas-setting-per-project.html).
 {{% /onlyWhen %}}
+
 
 ## Requests and limits
 
@@ -92,13 +95,14 @@ You can see the familiar binary unit "Mi" is used for the memory value. Other bi
 
 The CPU value is denoted as "m". "m" stands for _millicpu_ or sometimes also referred to as _millicores_ where `"1000m"` is equal to one core/vCPU/hyperthread.
 
+
 ### Quality of service
 
 Setting limits and requests on containers has yet another effect: It might change the Pod's _Quality of Service_ class. There are three such _QoS_ classes:
 
-- _Guaranteed_
-- _Burstable_
-- _BestEffort_
+* _Guaranteed_
+* _Burstable_
+* _BestEffort_
 
 The Guaranteed QoS class is applied to Pods that define both limits and requests for both memory and CPU resources on all their containers. The most important part is that each request has the same value as the limit.
 Pods that belong to this QoS class will never be killed by the scheduler because of resources running out on a Node.
@@ -115,6 +119,7 @@ As its class name suggests, these are the kinds of Pods that will be killed by t
 {{% onlyWhenNot openshift %}}
 For more examples have a look at the [Kubernetes documentation about Quality of Service](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/).
 {{% /onlyWhenNot %}}
+
 
 ## LimitRanges
 
@@ -135,6 +140,7 @@ Quoting the [Kubernetes documentation](https://kubernetes.io/docs/concepts/polic
 If for example a container did not define any requests or limits and there was a LimitRange defining the default values, these default values would be used when deploying said container. However, as soon as limits or requests were defined, the default values would no longer be applied.
 
 The possibility of enforcing minimum and maximum resources and defining ResourceQuotas per Namespace allows for many combinations of resource control.
+
 
 ### {{% task %}} Namespace
 
@@ -176,6 +182,7 @@ requests.cpu     0     100m
 requests.memory  0     100Mi
 ```
 
+
 ## {{% task %}} Default memory limit
 
 Create a Pod using the stress image:
@@ -195,7 +202,7 @@ spec:
         - 85M
         - --vm-hang
         - "1"
-      image: { { % param "images.stress" % } }
+      image: {{% param "images.stress" %}}
       imagePullPolicy: Always
       name: stress
 ```
@@ -294,7 +301,7 @@ spec:
         - 85M
         - --vm-hang
         - "1"
-      image: { { % param "images.stress" % } }
+      image: {{% param "images.stress" %}}
       imagePullPolicy: Always
       name: stress
       resources:
@@ -323,6 +330,7 @@ NAME     READY   STATUS    RESTARTS   AGE
 stress   1/1     Running   0          25s
 ```
 
+
 ## {{% task %}} Hitting the quota
 
 Create another Pod, again using the `stress` image. This time our application is less demanding and only needs 10 MB of memory (`--vm-bytes 10M`):
@@ -344,7 +352,7 @@ spec:
         - 10M
         - --vm-hang
         - "1"
-      image: { { % param "images.stress" % } }
+      image: {{% param "images.stress" %}}
       imagePullPolicy: Always
       name: overbooked
 ```
@@ -400,7 +408,7 @@ spec:
         - 10M
         - --vm-hang
         - "1"
-      image: { { % param "images.stress" % } }
+      image: {{% param "images.stress" %}}
       imagePullPolicy: Always
       name: overbooked
       resources:
