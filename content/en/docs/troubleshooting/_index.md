@@ -5,9 +5,11 @@ weight: 6
 
 This lab helps you troubleshoot your application and shows you some tools to make troubleshooting easier.
 
+
 ## Logging into a container
 
 Running containers should be treated as immutable infrastructure and should therefore not be modified. However, there are some use cases in which you have to log into your running container. Debugging and analyzing is one example for this.
+
 
 ## {{% task %}} Shell into Pod
 
@@ -81,6 +83,7 @@ exit
 
 {{% /onlyWhen %}}
 
+
 ## {{% task %}} Single commands
 
 {{% onlyWhenNot openshift %}}
@@ -126,6 +129,7 @@ EXAMPLE_WEB_APP_PORT_5000_TCP_PORT=5000
 ...
 ```
 
+
 ## The debug command
 
 One of the disadvantages of using the `oc rsh` command is that it depends on the container to actually run. If the Pod can't even start, this is a problem but also where the `oc debug` command comes in.
@@ -133,6 +137,7 @@ The `oc debug` command starts an interactive shell using the definition of a Dep
 
 The quick way of using it is `oc debug RESOURCE/NAME` but have a good look at its help page. There are some very interesting parameters like `--as-root` that give you (depending on your permissions on the cluster) a very powerful means of debugging a Pod.
 {{% /onlyWhen %}}
+
 
 ## Watching log files
 
@@ -156,6 +161,7 @@ Baloise uses [Splunk](https://www.splunk.com/) to aggregate and visualize all lo
 {{% /alert %}}
 {{% /onlyWhen %}}
 
+
 ## {{% task %}} Port forwarding
 
 {{% param distroName %}} allows you to forward arbitrary ports to your development workstation. This allows you to access admin consoles, databases, etc., even when they are not exposed externally. Port forwarding is handled by the {{% param distroName %}} control plane nodes and therefore tunneled from the client via HTTPS. This allows you to access the {{% param distroName %}} platform even when there are restrictive firewalls or proxies between your workstation and {{% param distroName %}}.
@@ -167,7 +173,10 @@ Get the name of the Pod:
 ```
 
 Then execute the port forwarding command using the Pod's name:
-Hint: Best run this command in a separate shell, or in the background by adding a ` &` at the end of the command.
+
+{{% alert title="Note" color="info" %}}
+Best run this command in a separate shell, or in the background by adding a ` &` at the end of the command.
+{{% /alert %}}
 
 {{% onlyWhenNot sbb %}}
 
@@ -235,6 +244,7 @@ With the same concept you can access databases from your local workstation or co
 The `{{% param cliToolName %}} port-forward` process runs as long as it is not terminated by the user. So when done, stop it with `CTRL-c`.
 {{% /alert %}}
 
+
 ## Events
 
 {{% param distroName %}} maintains an event log with high-level information on what's going on in the cluster.
@@ -247,19 +257,20 @@ Use the following command to list the events in chronological order:
 {{% param cliToolName %}} get events --sort-by=.metadata.creationTimestamp --namespace <namespace>
 ```
 
+
 ## Dry-run
 
 To help verify changes, you can use the optional `{{% param cliToolName %}}` flag `--dry-run=client -o yaml` to see the rendered YAML definition of your Kubernetes objects, without sending it to the API.
 
 The following `{{% param cliToolName %}}` subcommands support this flag (non-final list):
 
-- `apply`
-- `create`
-- `expose`
-- `patch`
-- `replace`
-- `run`
-- `set`
+* `apply`
+* `create`
+* `expose`
+* `patch`
+* `replace`
+* `run`
+* `set`
 
 For example, we can use the `--dry-run=client` flag to create a template for our Deployment:
 
@@ -291,11 +302,12 @@ spec:
         app: example-web-app
     spec:
       containers:
-        - image: { { % param "images.training-image-url" % } }
+        - image: {{% param "images.training-image-url" %}}
           name: example-web
           resources: {}
 status: {}
 ```
+
 
 ## `{{% param cliToolName %}}` API requests
 
@@ -338,6 +350,7 @@ If you created the deployment to see the output, you can delete it again as it's
 ```
 
 {{% /alert %}}
+
 
 ## Progress
 
