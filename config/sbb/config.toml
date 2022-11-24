@@ -15,6 +15,3 @@ automaticSectionNumbers = true
 training-image-url = "quay.io/appuio/example-spring-boot:latest"
 training-image-port = "8080"
 training-image-probe-port = "9000"
-
-[params.pdf]
-title="OpenShift Basics Training"

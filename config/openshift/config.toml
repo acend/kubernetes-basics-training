@@ -9,6 +9,3 @@ title = "OpenShift Basics Training"
 enabledModule = "base openshift"
 distroName = "OpenShift"
 cliToolName = "oc"
-
-[params.pdf]
-title="OpenShift Basics Training"

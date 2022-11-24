@@ -10,6 +10,3 @@ enabledModule = "base openshift nosetup nosecurity baloise"
 distroName = "OpenShift"
 cliToolName = "oc"
 automaticSectionNumbers = true
-
-[params.pdf]
-title="OpenShift Basics Training"
