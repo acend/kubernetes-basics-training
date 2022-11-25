@@ -32,7 +32,7 @@ spec:
         app: mariadb
     spec:
       containers:
-        - image: registry.redhat.io/rhel9/mariadb-105:1
+        - image: REGISTRY-URL/acend/mariadb-105:1
           name: mariadb
           env:
           - name: MYSQL_USER

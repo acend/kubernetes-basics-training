@@ -26,14 +26,13 @@ Similar to [the task to import a database dump](../../attaching-a-database/#task
 
 Let's first look at the Job resource that we want to create.
 
-{{% onlyWhenNot customer baloise %}}
+{{% onlyWhenNot customer %}}
 {{< readfile file="/content/en/docs/additional-concepts/cronjobs-and-jobs/job-mariadb-dump.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen baloise %}}
 {{< readfile file="/content/en/docs/additional-concepts/cronjobs-and-jobs/job-mariadb-dump-baloise.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
-
 {{% onlyWhen mobi %}}
 {{< readfile file="/content/en/docs/additional-concepts/cronjobs-and-jobs/job-mariadb-dump-mobi.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}

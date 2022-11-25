@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx-cluster
+spec:
+  serviceName: "nginx"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: REGISTRY-URL/acend/nginx-unprivileged:1.18-alpine
+          ports:
+            - containerPort: 80
+              name: nginx
+          resources:
+            limits:
+              cpu: 40m
+              memory: 64Mi
+            requests:
+              cpu: 10m
+              memory: 32Mi
