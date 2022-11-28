@@ -217,8 +217,7 @@ The Deployment defines that one replica should be deployed --- which is running 
 ## {{% task %}} Verify the Deployment in the {{% param distroName %}} web console
 
 Try to display the logs from the example application in the {{% param distroName %}} web console.
-{{% /onlyWhen %}}
-{{% onlyWhen openshift %}}
+
 {{% onlyWhenNot baloise %}}
 
 
@@ -236,13 +235,11 @@ We are going to use the Docker build strategy. It expects:
 > [...] a repository with a Dockerfile and all required artifacts in it to produce a runnable image.
 
 All of these requirements are already fulfilled in the [source code repository on GitHub](https://github.com/acend/awesome-apps/tree/main/go), so let's build the image!
-{{% /onlyWhen %}}
-{{% onlyWhen openshift %}}
+
 {{% alert title="Note" color="info" %}}
 Have a look at [OpenShift's documentation](https://docs.openshift.com/container-platform/latest/cicd/builds/understanding-image-builds.html) to learn more about the other available build strategies.
 {{% /alert %}}
-{{% /onlyWhen %}}
-{{% onlyWhen openshift %}}
+
 First we clean up the already existing Deployment:
 
 ```bash
