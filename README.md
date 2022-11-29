@@ -155,6 +155,28 @@ helm install --dry-run --repo https://acend.github.io/helm-charts/  <release> ac
 ```
 
 
+## Training parameters
+
+Call the training site's URL and add the following parameters where appropriate in the form of:
+
+`<URL>/?<Parameter 1>=<Value 1>[&<Parameter n>=<Value n>]`
+
+e.g.:
+
+`<URL>/r=registry.example.com&a=appdomain.example.com`
+
+This will replace the placeholders with the values given.
+
+
+### Baloise
+
+* `REGISTRY-URL`: Internal container image registry URL, e.g. `registry.example.com`
+
+| Parameter | Placeholder  | Example              |
+| --------- | ------------ | -------------------- |
+| r         | REGISTRY-URL | registry.example.com |
+
+
 ## Contributions
 
 If you find errors, bugs or missing information please help us improve and have a look at the [Contribution Guide](CONTRIBUTING.md).

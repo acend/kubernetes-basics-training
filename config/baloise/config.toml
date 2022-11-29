@@ -6,7 +6,25 @@ languageCode = "en-us"
 title = "OpenShift Basics Training"
 
 [params]
-enabledModule = "base openshift nosetup nosecurity baloise"
+enabledModule = "base openshift customer baloise nosetup nosecurity"
 distroName = "OpenShift"
 cliToolName = "oc"
 automaticSectionNumbers = true
+customer = "baloise"
+
+[params.images]
+deployment-image-url = "REGISTRY-URL/acend/example-web-go:latest"
+training-image-url = "REGISTRY-URL/acend/example-web-python:latest"
+training-image-port = "5000"
+training-image-probe-port = "5000"
+nginxinc-nginx-unprivileged = "REGISTRY-URL/acend/nginx-unprivileged:latest"
+nginxinc-nginx-unprivileged-fix-version = "REGISTRY-URL/acend/nginx-unprivileged:1.18-alpine"
+stress = "REGISTRY-URL/acend/stress:latest"
+
+[params.replaceContent]
+allowedHrefHosts = ['localhost', 'puzzle.ch', 'acend.ch']
+
+[[params.replaceContent.placeholders]]
+placeholder = "REGISTRY-URL"
+queryParam = "r"
+defaultValue = "REGISTRY-URL"
