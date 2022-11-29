@@ -25,6 +25,11 @@ stress = "REGISTRY-URL/acend/stress:latest"
 allowedHrefHosts = ['localhost', 'puzzle.ch', 'acend.ch']
 
 [[params.replaceContent.placeholders]]
+placeholder = "CHART-REPOSITORY-URL"
+queryParam = "c"
+defaultValue = "CHART-REPOSITORY-URL"
+
+[[params.replaceContent.placeholders]]
 placeholder = "REGISTRY-URL"
 queryParam = "r"
 defaultValue = "REGISTRY-URL"

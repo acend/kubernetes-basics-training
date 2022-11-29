@@ -1,6 +1,7 @@
 ---
 title: "Create a chart"
 weight: 123
+onlyWhenNot: baloise
 ---
 
 In this lab we are going to create our very first Helm chart and deploy it.
@@ -297,7 +298,7 @@ helm upgrade --namespace <namespace> --set replicaCount=2 myfirstrelease ./mycha
 Values that have been set using `--set` can be reset by helm upgrade with `--reset-values`.
 
 
-## {{% task %}}
+## {{% task %}} Values
 
 Have a look at the `values.yaml` file in your chart and study all the possible configuration params introduced in a freshly created chart.
 

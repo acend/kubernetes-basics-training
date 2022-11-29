@@ -1,6 +1,7 @@
 ---
 title: "Complex example"
 weight: 124
+onlyWhenNot: baloise
 ---
 
 In this extended lab, we are going to deploy an existing, more complex application with a Helm chart from the Artifact Hub.
