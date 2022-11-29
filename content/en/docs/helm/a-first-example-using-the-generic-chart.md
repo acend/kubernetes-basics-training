@@ -44,6 +44,9 @@ first-example-app:
       memory: 32Mi
 ```
 
+
+## {{% task %}} A first test
+
 Before applying anything to the cluster, you should test if the current values have the desired effect.
 In order to do so, execute the following command:
 
@@ -57,6 +60,9 @@ helm template my-first-release-<username> .
 
 Executing above command will output the rendered templates from the Generic Chart with the values you defined inside `values.yaml`.
 Check what would be created and if the values are correct.
+
+
+## {{% task %}} Install the chart
 
 If you are satisfied with the output, install the release on the cluster:
 
