@@ -20,3 +20,11 @@ training-image-probe-port = "5000"
 nginxinc-nginx-unprivileged = "REGISTRY-URL/acend/nginx-unprivileged:latest"
 nginxinc-nginx-unprivileged-fix-version = "REGISTRY-URL/acend/nginx-unprivileged:1.18-alpine"
 stress = "REGISTRY-URL/acend/stress:latest"
+
+[params.replaceContent]
+allowedHrefHosts = ['localhost', 'puzzle.ch', 'acend.ch']
+
+[[params.replaceContent.placeholders]]
+placeholder = "REGISTRY-URL"
+queryParam = "r"
+defaultValue = "REGISTRY-URL"
