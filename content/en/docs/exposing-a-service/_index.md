@@ -179,10 +179,20 @@ Afterwards, we are able to access our app via our freshly created Ingress at `ht
 {{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
+{{% onlyWhenNot baloise %}}
 
 ```bash
 oc expose service example-web-go --namespace <namespace>
 ```
+
+{{% /onlyWhenNot %}}
+{{% onlyWhen baloise %}}
+
+```bash
+oc create route edge example-web-go --service example-web-go --namespace <namespace>
+```
+
+{{% /onlyWhen %}}
 
 The output should be:
 
