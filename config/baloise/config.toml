@@ -30,6 +30,11 @@ queryParam = "c"
 defaultValue = "CHART-REPOSITORY-URL"
 
 [[params.replaceContent.placeholders]]
+placeholder = "CLUSTER-NAME"
+queryParam = "n"
+defaultValue = "CLUSTER-NAME"
+
+[[params.replaceContent.placeholders]]
 placeholder = "REGISTRY-URL"
 queryParam = "r"
 defaultValue = "REGISTRY-URL"

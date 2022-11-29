@@ -173,6 +173,7 @@ This will replace the placeholders with the values given.
 | Parameter | Placeholder          | Example              |
 | --------- | -------------------- | -------------------- |
 | c         | CHART-REPOSITORY-URL | charts.example.com   |
+| n         | CLUSTER-NAME         | osp1                 |
 | r         | REGISTRY-URL         | registry.example.com |
 
 

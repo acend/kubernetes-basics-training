@@ -45,7 +45,7 @@ dependencies:
   - name:  generic-chart
     version: 3.13.0
     repository: https://CHART-REPOSITORY-URL/shared/release/
-    alias: app
+    alias: first-example-app
 ```
 
 Save and close the file. You can check if you added the dependency correctly be executing:
@@ -69,5 +69,3 @@ helm dependency update
 ```
 
 Note that `helm dependency list` now shows `ok` under `STATUS` and the `charts/` directory contains a gzipped tarball.
-
-You're all set now to begin with a first example!
