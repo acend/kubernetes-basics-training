@@ -58,8 +58,8 @@ Above command should show you the dependency:
 
 ```
 helm dependency list
-NAME         	VERSION	REPOSITORY                                             	STATUS
-generic-chart	3.13.0 	https://CHART-REPOSITORY-URL/shared/release/	missing
+NAME           VERSION REPOSITORY                                              STATUS
+generic-chart  3.13.0  https://CHART-REPOSITORY-URL/shared/release/    missing
 ```
 
 Note the `STATUS` field and its `missing` value. This is because the dependency has not yet been downloaded. Let's change this, execute:
