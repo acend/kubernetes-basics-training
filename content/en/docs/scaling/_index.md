@@ -154,9 +154,20 @@ oc expose deployment example-web-app --name="example-web-app" --port={{% param "
 
 Then the Route:
 
+{{% onlyWhenNot baloise %}}
+
 ```bash
 oc expose service example-web-app --namespace <namespace>
 ```
+
+{{% /onlyWhenNot %}}
+{{% onlyWhen baloise %}}
+
+```bash
+oc create route edge example-web-app --service example-web-app --namespace <namespace>
+```
+
+{{% /onlyWhen %}}
 
 {{% /onlyWhen %}}
 

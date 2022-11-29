@@ -468,6 +468,11 @@ mariadb-1-deploy                      0/1     Completed   0          11m
 ```
 
 Log into the MariaDB Pod:
+
+{{% alert title="Note" color="info" %}}
+As mentioned in {{<link "troubleshooting">}}, remember to append the command with `winpty` if you're using Git Bash on Windows.
+{{% /alert %}}
+
 {{% onlyWhenNot openshift %}}
 
 ```bash

@@ -17,7 +17,7 @@ With {{% param distroName %}} you can open a remote shell into a Pod without ins
 {{% onlyWhenNot openshift %}}With the parameter `-it` you can leave an open connection.{{% /onlyWhenNot %}}
 
 {{% alert title="Note" color="info" %}}
-On Windows, you can use Git Bash and `winpty`.
+If you're using Git Bash on Windows, you need to append the command with `winpty`.
 {{% /alert %}}
 
 Choose a Pod with `{{% param cliToolName %}} get pods --namespace <namespace>` and execute the following command:
