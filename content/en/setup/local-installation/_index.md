@@ -2,6 +2,7 @@
 title: "Local installation"
 weight: 10
 type: docs
+onlyWhenNot: nolocalinstallation
 ---
 
 ## Command line tool
