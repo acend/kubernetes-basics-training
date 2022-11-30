@@ -29,3 +29,7 @@ If you haven't done so already and wish to install `{{% param cliToolName %}}`, 
 {{% onlyWhenNot openshift %}}
 Follow the instructions on the subsequent pages to complete the setup on your platform of choice.
 {{% /onlyWhenNot %}}
+
+{{% alert title="Warning" color="warning" %}}
+If you have already installed `{{% param cliToolName %}}`, please make sure you have an up-to-date version.
+{{% /alert %}}
