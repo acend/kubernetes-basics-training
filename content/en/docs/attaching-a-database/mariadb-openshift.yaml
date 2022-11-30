@@ -11,7 +11,7 @@ spec:
     protocol: TCP
     targetPort: 3306
   selector:
-    name: mariadb
+    app: mariadb
   type: ClusterIP
 ---
 apiVersion: apps.openshift.io/v1
@@ -22,11 +22,11 @@ metadata:
   name: mariadb
 spec:
   selector:
-    name: mariadb
+    app: mariadb
   template:
     metadata:
       labels:
-        name: mariadb
+        app: mariadb
     spec:
       containers:
       - env:
