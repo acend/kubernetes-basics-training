@@ -170,11 +170,11 @@ This will replace the placeholders with the values given.
 
 ### Baloise
 
-* `REGISTRY-URL`: Internal container image registry URL, e.g. `registry.example.com`
-
-| Parameter | Placeholder  | Example              |
-| --------- | ------------ | -------------------- |
-| r         | REGISTRY-URL | registry.example.com |
+| Parameter | Placeholder          | Example              |
+| --------- | -------------------- | -------------------- |
+| c         | CHART-REPOSITORY-URL | charts.example.com   |
+| n         | CLUSTER-NAME         | osp1                 |
+| r         | REGISTRY-URL         | registry.example.com |
 
 
 ## Contributions
