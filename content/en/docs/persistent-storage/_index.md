@@ -28,9 +28,17 @@ In a second step, the PVC from before is going to be attached to the Pod. In {{<
 {{% onlyWhen openshift %}}
 The `oc set volume` command makes it possible to create a PVC and attach it to a Deployment in one fell swoop:
 
+{{% onlyWhenNot baloise %}}
 ```bash
 oc set volume dc/mariadb --add --name=mariadb-data --claim-name=mariadb-data --type persistentVolumeClaim --mount-path=/var/lib/mysql --claim-size=1G --overwrite --namespace <namespace>
 ```
+{{% /onlyWhenNot %}}
+
+{{% onlyWhen baloise %}}
+```bash
+oc set volume deploy/mariadb --add --name=mariadb-data --claim-name=mariadb-data --type persistentVolumeClaim --mount-path=/var/lib/mysql --claim-size=1G --overwrite --namespace <namespace>
+```
+{{% /onlyWhen %}}
 
 With the instruction above we create a PVC named `mariadb-data` of 1Gi in size, attach it to the DeploymentConfig `mariadb` and mount it at `/var/lib/mysql`. This is where the MariaDB process writes its data by default so after we make this change, the database will not even notice that it is writing in a PersistentVolume.
 {{% /onlyWhen %}}

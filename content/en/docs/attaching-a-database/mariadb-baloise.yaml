@@ -11,7 +11,7 @@ spec:
     protocol: TCP
     targetPort: 3306
   selector:
-    name: mariadb
+    app: mariadb
   type: ClusterIP
 ---
 apiVersion: apps/v1
