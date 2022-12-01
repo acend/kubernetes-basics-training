@@ -61,7 +61,7 @@ The executed Pod can be shown as follows:
 To show all Pods belonging to a Job in a human-readable format, the following command can be used:
 
 ```bash
-{{% param cliToolName %}} get pods --selector=job-name=database-dump --output=go-template='{{range .items}}{{.metadata.name}}{{end}}' --namespace <namespace>
+{{% param cliToolName %}} get pods --selector=job-name=database-dump --output=go-template="{{range .items}}{{.metadata.name}}{{end}}" --namespace <namespace>
 ```
 
 
