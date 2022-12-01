@@ -33,9 +33,11 @@ We're going to do this with the command `{{% param cliToolName %}} expose`:
 ```
 
 {{% onlyWhen openshift %}}
+{{% onlyWhenNot baloise %}}
 You will get the error message reading `Error from server (AlreadyExists): services "example-web-go" already exists` here. This is because the `oc new-app` command you executed during lab 3 already created a service. This is the default behavior of `oc new-app` while `oc create deployment` doesn't have this functionality.
 
 As a consequence, the `oc expose` command above doesn't add anything new but it demonstrates how to easily create a service based on a deployment.
+{{% /onlyWhenNot %}}
 {{% /onlyWhen %}}
 
 Let's have a more detailed look at our Service:
