@@ -28,6 +28,13 @@ In a second step, the PVC from before is going to be attached to the Pod. In {{<
 {{% onlyWhen openshift %}}
 The `oc set volume` command makes it possible to create a PVC and attach it to a Deployment in one fell swoop:
 
+{{% alert title="Note" color="info" %}}
+If you are using Windows, your shell might assume that it has to use the POSIX-to-Windows path conversion for the mount path `/var/lib/mysql`.
+PowerShell is known to not do this while, e.g., Git Bash does.
+
+Prepend your command with `MSYS_NO_PATHCONV=1` if the resulting mount path was mistakenly converted.
+{{% /alert %}}
+
 {{% onlyWhenNot baloise %}}
 ```bash
 oc set volume dc/mariadb --add --name=mariadb-data --claim-name=mariadb-data --type persistentVolumeClaim --mount-path=/var/lib/mysql --claim-size=1G --overwrite --namespace <namespace>
