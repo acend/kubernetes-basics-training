@@ -237,7 +237,7 @@ Linux:
 {{% onlyWhen openshift %}}
 
 ```bash
-URL=$(oc get routes example-web-app -o go-template='{{ .spec.host }}' --namespace <namespace>)
+URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace <namespace>)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
@@ -494,7 +494,7 @@ Set up the loop again to periodically check the application's response (you don'
 {{% onlyWhen openshift %}}
 
 ```bash
-URL=$(oc get routes example-web-app -o go-template='{{ .spec.host }}' --namespace <namespace>)
+URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace <namespace>)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
