@@ -62,26 +62,26 @@ Next, we want to make a ConfigMap accessible for a container. There are basicall
 * Mounted as volumes in the container
 
 In this example, we want the file to be mounted as a volume inside the container.
+
 {{% onlyWhen openshift %}}
 As in {{<link "persistent-storage">}}, we can use the `oc set volume` command to achieve this:
-{{% /onlyWhen %}}
-{{% onlyWhen openshift %}}
+
+{{% alert title="Note" color="info" %}}
+If you are using Windows and your shell uses the POSIX-to-Windows path conversion, remember to append your command with `MSYS_NO_PATHCONV=1` if the resulting mount path was mistakenly converted.
+{{% /alert %}}
 
 ```bash
 oc set volume deploy/example-web-app --add --configmap-name=javaconfiguration --mount-path=/etc/config --name=config-volume --type configmap --namespace <namespace>
 ```
 
-{{% /onlyWhen %}}
-{{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}
 This task doesn't have any effect on the example application inside the container. It is for demonstration purposes only.
 {{% /alert %}}
-{{% /onlyWhen %}}
-{{% onlyWhen openshift %}}
 
 This results in the addition of the following parts to the Deployment (check with `oc get deploy example-web-app -o yaml`):
 
 {{% /onlyWhen %}}
+
 {{% onlyWhenNot openshift %}}
 Basically, a Deployment has to be extended with the following config:
 {{% /onlyWhenNot %}}
