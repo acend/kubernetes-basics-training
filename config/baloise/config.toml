@@ -20,6 +20,7 @@ training-image-probe-port = "5000"
 nginxinc-nginx-unprivileged = "REGISTRY-URL/acend/nginx-unprivileged:latest"
 nginxinc-nginx-unprivileged-fix-version = "REGISTRY-URL/acend/nginx-unprivileged:1.18-alpine"
 stress = "REGISTRY-URL/acend/stress:latest"
+busybox = "REGISTRY-URL/acend/busybox:1.28"
 
 [params.replaceContent]
 allowedHrefHosts = ['localhost', 'puzzle.ch', 'acend.ch']
