@@ -32,7 +32,7 @@ The `oc set volume` command makes it possible to create a PVC and attach it to a
 If you are using Windows, your shell might assume that it has to use the POSIX-to-Windows path conversion for the mount path `/var/lib/mysql`.
 PowerShell is known to not do this while, e.g., Git Bash does.
 
-Append your command with `MSYS_NO_PATHCONV=1` if the resulting mount path was mistakenly converted.
+Prepend your command with `MSYS_NO_PATHCONV=1` if the resulting mount path was mistakenly converted.
 {{% /alert %}}
 
 {{% onlyWhenNot baloise %}}

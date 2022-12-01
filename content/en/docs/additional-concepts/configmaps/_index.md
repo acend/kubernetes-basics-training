@@ -67,7 +67,7 @@ In this example, we want the file to be mounted as a volume inside the container
 As in {{<link "persistent-storage">}}, we can use the `oc set volume` command to achieve this:
 
 {{% alert title="Note" color="info" %}}
-If you are using Windows and your shell uses the POSIX-to-Windows path conversion, remember to append your command with `MSYS_NO_PATHCONV=1` if the resulting mount path was mistakenly converted.
+If you are using Windows and your shell uses the POSIX-to-Windows path conversion, remember to prepend your command with `MSYS_NO_PATHCONV=1` if the resulting mount path was mistakenly converted.
 {{% /alert %}}
 
 ```bash
