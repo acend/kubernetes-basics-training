@@ -40,6 +40,13 @@ Run the following command to update all hugo modules with their newest upstream 
 hugo mod get -u
 ```
 
+Command without hugo installation:
+
+```bash
+export HUGO_VERSION=$(grep "FROM docker.io/klakegg/hugo" Dockerfile | sed 's/FROM docker.io\/klakegg\/hugo://g' | sed 's/ AS builder//g')
+docker run --rm --interactive -v $(pwd):/src docker.io/klakegg/hugo:${HUGO_VERSION} mod get -u
+```
+
 
 ## Build using Docker
 
