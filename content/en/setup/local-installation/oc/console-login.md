@@ -51,4 +51,4 @@ The `{{% param cliToolName %}}` binary has many subcommands. Invoke `{{% param c
 
 If you're interested, have a look at the {{<link "more-tools-to-work-with-openshift">}}, which is however totally optional.
 
-When you're ready to go, head on over to the [labs](../../docs/) and begin with the training!
+When you're ready to go, head on over to the [labs](../../../../docs/) and begin with the training!
