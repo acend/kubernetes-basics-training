@@ -7,7 +7,12 @@ Numerous applications are stateful in some way and want to save data persistentl
 
 {{% onlyWhen openshift %}}
 {{% alert title="Warning" color="warning" %}}
+{{% onlyWhenNot sbb %}}
 Please make sure you completed labs {{<link "first-steps">}}, {{<link "deploying-a-container-image">}} and {{<link "exposing-a-service">}} before you continue with this lab.
+{{% /onlyWhenNot %}}
+{{% onlyWhen sbb %}}
+Please make sure you completed labs {{<link "first-steps">}} and {{<link "scaling">}} before you continue with this lab.
+{{% /onlyWhen %}}
 {{% /alert %}}
 {{% /onlyWhen %}}
 
