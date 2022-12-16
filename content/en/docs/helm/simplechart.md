@@ -1,6 +1,7 @@
 ---
 title: "Create a chart"
 weight: 123
+onlyWhenNot: baloise
 ---
 
 In this lab we are going to create our very first Helm chart and deploy it.
@@ -14,7 +15,7 @@ First, let's create our chart. Open your favorite terminal and make sure you're 
 helm create mychart
 ```
 
-You will now find a `mychart` directory with the newly created chart. It already is a valid and fully functional chart which deploys a nginx instance. Have a look at the generated files and their content. For an explanation of the files, visit the [Helm Developer Documentation](https://docs.helm.sh/developing_charts/#the-chart-file-structure). In a later section you'll find all the information about Helm templates.
+You will now find a `mychart` directory with the newly created chart. It already is a valid and fully functional chart which deploys an nginx instance. Have a look at the generated files and their content. For an explanation of the files, visit the [Helm Developer Documentation](https://docs.helm.sh/developing_charts/#the-chart-file-structure). In a later section you'll find all the information about Helm templates.
 
 {{% onlyWhen mobi %}}
 Because you cannot pull the `nginx` container image on your cluster, you have to use the `REGISTRY-URL/puzzle/k8s/kurs/nginx` container image. Change your `mychart/values.yaml` to match the following:
@@ -32,14 +33,14 @@ image:
 {{% onlyWhen openshift %}}
 The default image freshly created chart deploys is a simple nginx image listening on port `80`.
 
-Since OpenShift doesn't allow to run containers as root by default, we need to change the default image to an unprivileged one (`nginxinc/nginx-unprivileged:latest`) and also change the containerPort to `8080`.
+Since OpenShift doesn't allow to run containers as root by default, we need to change the default image to an unprivileged one (`{{% param "images.nginxinc-nginx-unprivileged" %}}`) and also change the containerPort to `8080`.
 
 Change the image in the `mychart/values.yaml`
 
 ```yaml
 ...
 image:
-  repository: nginxinc/nginx-unprivileged
+  repository: {{% param "images.nginxinc-nginx-unprivileged" %}}
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
@@ -297,7 +298,7 @@ helm upgrade --namespace <namespace> --set replicaCount=2 myfirstrelease ./mycha
 Values that have been set using `--set` can be reset by helm upgrade with `--reset-values`.
 
 
-## {{% task %}}
+## {{% task %}} Values
 
 Have a look at the `values.yaml` file in your chart and study all the possible configuration params introduced in a freshly created chart.
 

@@ -1,4 +1,4 @@
-FROM docker.io/klakegg/hugo:0.105.0-ext-ubuntu AS builder
+FROM docker.io/klakegg/hugo:0.107.0-ext-ubuntu AS builder
 
 ARG TRAINING_HUGO_ENV=default
 
@@ -10,6 +10,7 @@ RUN apt-get update \
     && apt-get install -y imagemagick
 
 RUN find /src/public/docs/ -regex '.*\(jpg\|jpeg\|png\|gif\)' -exec mogrify -path /src/public/pdf -resize 800\> -unsharp 0.25x0.25+8+0.065 "{}" \;
+RUN find /src/public/setup/ -regex '.*\(jpg\|jpeg\|png\|gif\)' -exec mogrify -path /src/public -resize 800\> -unsharp 0.25x0.25+8+0.065 "{}" \;
 
 FROM docker.io/ubuntu:jammy AS wkhtmltopdf
 RUN apt-get update \

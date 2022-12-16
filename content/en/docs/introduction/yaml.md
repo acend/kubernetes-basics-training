@@ -19,10 +19,9 @@ For more information and the full spec have a look at https://yaml.org/
 
 ## A simple file
 
-Let's look at a YAML file for a overview:
+Let's look at a YAML file for an overview:
 
 ```yaml
-
 ---
 foo: "foo is not bar"
 bar: "bar is not foo"
@@ -57,7 +56,7 @@ You can enclose strings in single or double-quotes or no quotes at all. YAML rec
 
 The `cloud-native` item is an array with four elements, each denoted by an opening dash. The elements in `cloud-native` are indented with two spaces. Indentation is how YAML denotes nesting. The number of spaces can vary from file to file, but tabs are not allowed.
 
-Finally, `kubernetes` is a dictionary that contains a string `version`, a boolean `deployed` and an array `applications` where the item of the array contains two `string`s.
+Finally, `kubernetes` is a dictionary that contains a string `version`, a boolean `deployed` and an array `applications` where the item of the array contains two `strings`.
 
 YAML supports nesting of key-values, and mixing types.
 
@@ -70,7 +69,6 @@ Whitespace is part of YAML's formatting. Unless otherwise indicated, newlines in
 ### Comments
 
 Comments begin with a pound sign. They can appear after a document value or take up an entire line.
-
 
 ```yaml
 ---
@@ -105,7 +103,7 @@ YAML supports both fixed and exponential floating point numbers.
 ```yaml
 ---
 foo: 1230.15
-bar:  12.3015e+05
+bar: 12.3015e+05
 ```
 
 Finally, we can represent not-a-number (NAN) or infinity.
@@ -141,7 +139,7 @@ YAML processes the first value as ending with a carriage return and linefeed. Si
 
 ```yaml
 foo: this is not a normal string
-bar : this is not a normal string\n
+bar: this is not a normal string\n
 ```
 
 YAML will not escape strings with single quotes, but the single quotes do avoid having string contents interpreted as document formatting. String values can span more than one line. With the fold (greater than) character, you can specify a string in a block.

@@ -23,7 +23,7 @@ metadata:
   name: awesome-app
 spec:
   containers:
-  - image: {{% param "images.acendAwesomeApp-example-web-go" %}}
+  - image: {{% param "images.deployment-image-url" %}}
     imagePullPolicy: Always
     name: awesome-app
     resources:
@@ -97,15 +97,15 @@ spec:
         app: example-web-go
     spec:
       containers:
-      - image: {{% param "images.acendAwesomeApp-example-web-go" %}}
-        name: example-web-go
-        resources:
-          requests:
-            cpu: 10m
-            memory: 16Mi
-          limits:
-            cpu: 20m
-            memory: 32Mi
+        - image: {{% param "images.deployment-image-url" %}}
+          name: example-web-go
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 20m
+              memory: 32Mi
 ```
 
 And with this we create our Deployment inside our already created namespace:
@@ -162,7 +162,7 @@ However, the result is the same. The helper commands just simplify the process o
 As an example, let's look at creating above deployment, this time using a helper command instead. If you already created the Deployment using above YAML definition, you don't have to execute this command:
 
 ```yaml
-{{% param cliToolName %}} create deployment example-web-go --image={{% param "images.acendAwesomeApp-example-web-go" %}} --namespace <namespace>
+{{% param cliToolName %}} create deployment example-web-go --image={{% param "images.deployment-image-url" %}} --namespace <namespace>
 ```
 
 It's important to know that these helper commands exist.
@@ -210,9 +210,11 @@ The Deployment defines that one replica should be deployed --- which is running 
 {{% onlyWhen openshift %}}
 
 
-## {{% task %}} Verify the Deployment in the OpenShift web console
+## {{% task %}} Verify the Deployment in the {{% param distroName %}} web console
 
-Try to display the logs from the example application via the OpenShift web console.
+Try to display the logs from the example application in the {{% param distroName %}} web console.
+
+{{% onlyWhenNot baloise %}}
 
 
 ## {{% task %}} Build the image yourself
@@ -229,13 +231,11 @@ We are going to use the Docker build strategy. It expects:
 > [...] a repository with a Dockerfile and all required artifacts in it to produce a runnable image.
 
 All of these requirements are already fulfilled in the [source code repository on GitHub](https://github.com/acend/awesome-apps/tree/main/go), so let's build the image!
-{{% /onlyWhen %}}
-{{% onlyWhen openshift %}}
+
 {{% alert title="Note" color="info" %}}
 Have a look at [OpenShift's documentation](https://docs.openshift.com/container-platform/latest/cicd/builds/understanding-image-builds.html) to learn more about the other available build strategies.
 {{% /alert %}}
-{{% /onlyWhen %}}
-{{% onlyWhen openshift %}}
+
 First we clean up the already existing Deployment:
 
 ```bash
@@ -280,16 +280,5 @@ It looks the same as before with the only essential exception that it uses the i
       ...
 ```
 
+{{% /onlyWhenNot %}}
 {{% /onlyWhen %}}
-
-
-## Save point
-
-{{% alert title="Note" color="info" %}}
-What's a save point? Save points are intermediate results which you can use if you are stuck. You can compare them with
-your existing resources or you can apply the provided manifests with `{{% param cliToolName %}} apply -f <manifest.yaml>`.
-{{% /alert %}}
-
-You should now have the following resources in place:
-
-* [deployment.yaml](deployment.yaml)

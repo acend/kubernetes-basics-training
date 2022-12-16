@@ -34,18 +34,31 @@ kubectl edit deployment mariadb --namespace <namespace>
 And add a new (sidecar) container into your Deployment:
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
+{{% onlyWhenNot baloise %}}
 Change the existing `mariadb` DeploymentConfig using:
 
 ```bash
 oc edit dc mariadb --namespace <namespace>
 ```
 
-And add a new (sidecar) container into your DeploymentConfig:
+{{% /onlyWhenNot %}}
+{{% onlyWhen baloise %}}
+Change the existing `mariadb` Deployment using:
+
+```bash
+oc edit deploy mariadb --namespace <namespace>
+```
+
+{{% /onlyWhen %}}
+And add a new (sidecar) container to it:
 {{% /onlyWhen %}}
 
 {{% onlyWhenNot customer %}}
 {{< readfile file="/content/en/docs/additional-concepts/sidecar-containers/deploy_mariadb-sidecar.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhenNot %}}
+{{% onlyWhen baloise %}}
+{{< readfile file="/content/en/docs/additional-concepts/sidecar-containers/deploy_mariadb-sidecar_baloise.yaml" code="true" lang="yaml" >}}
+{{% /onlyWhen %}}
 {{% onlyWhen mobi %}}
 {{< readfile file="/content/en/docs/additional-concepts/sidecar-containers/deploy_mariadb-sidecar_mobi.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
@@ -93,11 +106,3 @@ By using the `port-forward` subcommand, you can even have a look at the Promethe
 ```
 
 Now open <http://localhost:9104/metrics> in your browser.
-
-
-## Save point
-
-You should now have the following resources in place:
-
-{{% onlyWhenNot openshift %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
-{{% onlyWhen openshift %}}[mariadb.yaml](mariadb_openshift.yaml){{% /onlyWhenNot %}}

@@ -40,6 +40,13 @@ Run the following command to update all hugo modules with their newest upstream 
 hugo mod get -u
 ```
 
+Command without hugo installation:
+
+```bash
+export HUGO_VERSION=$(grep "FROM docker.io/klakegg/hugo" Dockerfile | sed 's/FROM docker.io\/klakegg\/hugo://g' | sed 's/ AS builder//g')
+docker run --rm --interactive -v $(pwd):/src docker.io/klakegg/hugo:${HUGO_VERSION} mod get -u
+```
+
 
 ## Build using Docker
 
@@ -77,15 +84,15 @@ To develop locally we don't want to rebuild the entire container image every tim
 We simply mount the working directory into a running container, where hugo is started in the server mode.
 
 ```bash
-export HUGO_VERSION=$(grep "FROM klakegg/hugo" Dockerfile | sed 's/FROM klakegg\/hugo://g' | sed 's/ AS builder//g')
-docker run --rm --interactive --publish 8080:8080 -v $(pwd):/src klakegg/hugo:${HUGO_VERSION} server -p 8080 --bind 0.0.0.0
+export HUGO_VERSION=$(grep "FROM docker.io/klakegg/hugo" Dockerfile | sed 's/FROM docker.io\/klakegg\/hugo://g' | sed 's/ AS builder//g')
+docker run --rm --interactive --publish 8080:8080 -v $(pwd):/src docker.io/klakegg/hugo:${HUGO_VERSION} server -p 8080 --bind 0.0.0.0
 ```
 
 use the following command to set the hugo environment
 
 ```bash
-export HUGO_VERSION=$(grep "FROM klakegg/hugo" Dockerfile | sed 's/FROM klakegg\/hugo://g' | sed 's/ AS builder//g')
-docker run --rm --interactive --publish 8080:8080 -v $(pwd):/src klakegg/hugo:${HUGO_VERSION} server --environment=<environment> -p 8080 --bind 0.0.0.0
+export HUGO_VERSION=$(grep "FROM docker.io/klakegg/hugo" Dockerfile | sed 's/FROM docker.io\/klakegg\/hugo://g' | sed 's/ AS builder//g')
+docker run --rm --interactive --publish 8080:8080 -v $(pwd):/src docker.io/klakegg/hugo:${HUGO_VERSION} server --environment=<environment> -p 8080 --bind 0.0.0.0
 ```
 
 
@@ -153,6 +160,28 @@ For debugging purposes use the `--dry-run` parameter
 ```bash
 helm install --dry-run --repo https://acend.github.io/helm-charts/  <release> acend-training-chart --values helm-chart/values.yaml -n <namespace>
 ```
+
+
+## Training parameters
+
+Call the training site's URL and add the following parameters where appropriate in the form of:
+
+`<URL>/?<Parameter 1>=<Value 1>[&<Parameter n>=<Value n>]`
+
+e.g.:
+
+`<URL>/r=registry.example.com&a=appdomain.example.com`
+
+This will replace the placeholders with the values given.
+
+
+### Baloise
+
+| Parameter | Placeholder          | Example              |
+| --------- | -------------------- | -------------------- |
+| c         | CHART-REPOSITORY-URL | charts.example.com   |
+| n         | CLUSTER-NAME         | osp1                 |
+| r         | REGISTRY-URL         | registry.example.com |
 
 
 ## Contributions

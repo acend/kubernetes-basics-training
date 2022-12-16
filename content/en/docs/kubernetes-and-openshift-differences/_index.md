@@ -5,6 +5,12 @@ onlyWhen: openshift
 onlyWhenNot: ocplight
 ---
 
+{{% onlyWhen baloise %}}
+{{% alert title="Note" color="info" %}}
+This lab is optional.
+{{% /alert %}}
+{{% /onlyWhen %}}
+
 Even though OpenShift is based on Kubernetes, there are some important differences.
 As a concluding lab, we are going to have a look at these differences.
 
@@ -59,7 +65,7 @@ In OpenShift, creating an Ingress resource leads to the creation of a correspond
 
 #### {{% task %}} Create an Ingress resource
 
-In {{<link "scaling">}} you exposed the example-web-python application via Route using the `oc expose` command.
+In {{<link "scaling">}} you exposed the example-web-app application via Route using the `oc expose` command.
 
 Expose the application using an Ingress resource.
 It's best to not delete the existing Route, so you can compare them.

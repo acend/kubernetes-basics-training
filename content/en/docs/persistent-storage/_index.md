@@ -3,14 +3,14 @@ title: "Persistent storage"
 weight: 8
 ---
 
-By default, data in containers is not persistent as was the case e.g. in {{<link "attaching-a-database">}}. This means that data that was written in a container is lost as soon as it does not exist anymore. We want to prevent this from happening. One possible solution to this problem is to use persistent storage.
+By default, data in containers is not persistent as was the case e.g. in {{<link "attaching-a-database">}}. This means that the data written in a container is lost as soon as it does not exist anymore. We want to prevent this from happening. One possible solution to this problem is to use persistent storage.
 
 
 ## Request storage
 
 Attaching persistent storage to a Pod happens in two steps. The first step includes the creation of a so-called _PersistentVolumeClaim_ (PVC) in our namespace. This claim defines amongst other things what size we would like to get.
 
-The PersistentVolumeClaim only represents a request but not the storage itself. It is automatically going to be bound to a _PersistentVolume_ by {{% param distroName %}}, one that has at least the requested size. If only volumes exist that have a bigger size than was requested, one of these volumes is going to be used. The claim will automatically be updated with the new size. If there are only smaller volumes available, the claim cannot be fulfilled as long as no volume the exact same or larger size is created.
+The PersistentVolumeClaim only represents a request but not the storage itself. It is automatically going to be bound to a _PersistentVolume_ by {{% param distroName %}}, one that has at least the requested size. If only volumes exist that have a bigger size than was requested, one of these volumes is going to be used. The claim will automatically be updated with the new size. If there are only smaller volumes available, the claim cannot be fulfilled as long as no volume with the exact same or larger size is created.
 
 
 ## Attaching a volume to a Pod
@@ -28,9 +28,24 @@ In a second step, the PVC from before is going to be attached to the Pod. In {{<
 {{% onlyWhen openshift %}}
 The `oc set volume` command makes it possible to create a PVC and attach it to a Deployment in one fell swoop:
 
+{{% alert title="Note" color="info" %}}
+If you are using Windows, your shell might assume that it has to use the POSIX-to-Windows path conversion for the mount path `/var/lib/mysql`.
+PowerShell is known to not do this while, e.g., Git Bash does.
+
+Prepend your command with `MSYS_NO_PATHCONV=1` if the resulting mount path was mistakenly converted.
+{{% /alert %}}
+
+{{% onlyWhenNot baloise %}}
 ```bash
 oc set volume dc/mariadb --add --name=mariadb-data --claim-name=mariadb-data --type persistentVolumeClaim --mount-path=/var/lib/mysql --claim-size=1G --overwrite --namespace <namespace>
 ```
+{{% /onlyWhenNot %}}
+
+{{% onlyWhen baloise %}}
+```bash
+oc set volume deploy/mariadb --add --name=mariadb-data --claim-name=mariadb-data --type persistentVolumeClaim --mount-path=/var/lib/mysql --claim-size=1G --overwrite --namespace <namespace>
+```
+{{% /onlyWhen %}}
 
 With the instruction above we create a PVC named `mariadb-data` of 1Gi in size, attach it to the DeploymentConfig `mariadb` and mount it at `/var/lib/mysql`. This is where the MariaDB process writes its data by default so after we make this change, the database will not even notice that it is writing in a PersistentVolume.
 {{% /onlyWhen %}}
@@ -41,7 +56,7 @@ Because we just changed the DeploymentConfig with the `oc set` command, a new Po
 {{% /onlyWhen %}}
 
 {{% onlyWhenNot openshift %}}
-The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size.  
+The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size.
 Save it to `pvc.yaml`:
 
 {{< readfile file="/content/en/docs/persistent-storage/pvc.yaml" code="true" lang="yaml" >}}
@@ -79,6 +94,7 @@ Add both parts `volumeMounts` and `volumes`
       schedulerName: default-scheduler
 ...
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhenNot openshift %}}
 {{% alert title="Note" color="info" %}}
@@ -86,12 +102,12 @@ Because we just changed the Deployment a new Pod was automatically redeployed. T
 {{% /alert %}}
 {{% /onlyWhenNot %}}
 
-We need to redeploy the application pod, our application automatically creates the database schema at startup time.
+We need to redeploy the application pod, our application automatically creates the database schema at startup time. Wait for the database pod to be started fully before restarting the application pod.
 
 If you want to force a redeployment of a Pod, you can use this:
 
 ```bash
-{{% param cliToolName %}} rollout restart deployment example-web-python --namespace <namespace>
+{{% param cliToolName %}} rollout restart deployment example-web-app --namespace <namespace>
 ```
 
 Using the command `{{% param cliToolName %}} get persistentvolumeclaim` or `{{% param cliToolName %}} get pvc`, we can display the freshly created PersistentVolumeClaim:
@@ -134,18 +150,3 @@ Repeat [the task to import a database dump](../attaching-a-database/#task-75-imp
 ### Test
 
 Scale your MariaDB Pod to 0 replicas and back to 1. Observe that the new Pod didn't loose any data.
-
-
-## Save point
-
-You should now have the following resources in place:
-
-* [pvc.yaml](pvc.yaml)
-* {{% onlyWhenNot openshift %}}
-  {{% onlyWhenNot customer %}}[mariadb.yaml](mariadb.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen customer %}}[mariadb-{{% param customer %}}.yaml](mariadb-{{% param customer %}}.yaml){{% /onlyWhen %}}
-  {{% /onlyWhenNot %}}
-  {{% onlyWhen openshift %}}[mariadb-openshift.yaml](mariadb-openshift.yaml){{% /onlyWhen %}}
-
-
-* [example-web-python.yaml](../attaching-a-database/example-web-python.yaml) (from {{<link "attaching-a-database">}})

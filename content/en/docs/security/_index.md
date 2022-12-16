@@ -1,6 +1,6 @@
 ---
 title: "Security"
 weight: 10
-onlyWhenNot: ocplight
+onlyWhenNot: nosecurity
 ---
 

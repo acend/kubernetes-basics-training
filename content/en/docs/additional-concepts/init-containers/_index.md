@@ -3,8 +3,7 @@ title: "Init containers"
 weight: 96
 ---
 
-
-A Pod can have multiple containers running apps within it, but it can also have one or more *init containers*, which are run before the app container is started.
+A Pod can have multiple containers running apps within it, but it can also have one or more _init containers_, which are run before the app container is started.
 
 Init containers are exactly like regular containers, except:
 
@@ -21,12 +20,12 @@ Check out the [Init Containers documentation](https://docs.openshift.com/contain
 
 ## {{% task %}} Add an init container
 
-In {{<link "attaching-a-database">}} you created the `example-web-python` application. In this task, you are going to add an init container which checks if the MariaDB database is ready to be used before actually starting your Python application.
+In {{<link "attaching-a-database">}} you created the `example-web-app` application. In this task, you are going to add an init container which checks if the MariaDB database is ready to be used before actually starting your example application.
 
-Edit your existing `example-web-python` Deployment with:
+Edit your existing `example-web-app` Deployment with:
 
 ```bash
-{{% param cliToolName %}} edit deployment example-web-python --namespace <namespace>
+{{% param cliToolName %}} edit deployment example-web-app --namespace <namespace>
 ```
 
 Add the init container into the existing Deployment (same indentation level as containers):
@@ -35,9 +34,14 @@ Add the init container into the existing Deployment (same indentation level as c
 ...
 spec:
   initContainers:
-  - name: wait-for-db
-    image: {{% param "images.busybox" %}}
-    command: ['sh', '-c', "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done"]
+    - name: wait-for-db
+      image: {{% param "images.busybox" %}}
+      command:
+        [
+          "sh",
+          "-c",
+          "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done",
+        ]
 ...
 ```
 
@@ -45,7 +49,7 @@ spec:
 This obviously only checks if there is a DNS Record for your MariaDB Service and not if the database is ready. But you get the idea, right?
 {{% /alert %}}
 
-Let's see what has changed by analyzing your `example-web-python` Pod with the following command (use `{{% param cliToolName %}} get pod` or auto-completion to get the Pod name):
+Let's see what has changed by analyzing your newly created `example-web-app` Pod with the following command (use `{{% param cliToolName %}} get pod` or auto-completion to get the Pod name):
 
 ```bash
 {{% param cliToolName %}} describe pod <pod> --namespace <namespace>
@@ -110,11 +114,3 @@ A similar concept are the so-called pre and post deployment hooks. Those hooks b
 
 Check out the [official documentation](https://docs.openshift.com/container-platform/latest/applications/deployments/deployment-strategies.html) for further information.
 {{% /onlyWhen %}}
-
-
-## Save point
-
-You should now have the following resources in place:
-
-* {{% onlyWhenNot customer %}}[example-web-python.yaml](example-web-python.yaml){{% /onlyWhenNot %}}
-  {{% onlyWhen customer %}}[example-web-python-{{% param customer %}}.yaml](example-web-python-{{% param customer %}}.yaml){{% /onlyWhen %}}

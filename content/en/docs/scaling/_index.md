@@ -14,34 +14,41 @@ This lab does not depend on previous labs. You can start with an empty Namespace
 
 Create a new Deployment in your Namespace. So again, lets define the Deployment using YAML in a file `05_deployment.yaml` with the following content:
 
+{{% onlyWhenNot sbb %}}
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: example-web-python
-  name: example-web-python
+    app: example-web-app
+  name: example-web-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: example-web-python
+      app: example-web-app
   template:
     metadata:
       labels:
-        app: example-web-python
+        app: example-web-app
     spec:
       containers:
-      - image: {{% param "images.acendAwesomeApp-example-web-python" %}}
-        name: example-web-python
-        resources:
-          limits:
-            cpu: 100m
-            memory: 128Mi
-          requests:
-            cpu: 50m
-            memory: 128Mi
+        - image: {{% param "images.training-image-url" %}}
+          name: example-web-app
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 50m
+              memory: 128Mi
 ```
+
+{{% /onlyWhenNot %}}
+{{% onlyWhen sbb %}}
+{{< readfile file="/content/en/docs/scaling/example-web-app-deployment-java.yaml" code="true" lang="yaml" >}}
+{{% /onlyWhen %}}
 
 ```bash
 {{% param cliToolName %}} apply -f 05_deployment.yaml --namespace <namespace>
@@ -58,9 +65,8 @@ Which will give you an output similar to this:
 
 ```
 NAME                            DESIRED   CURRENT   READY   AGE
-example-web-python-86d9d584f8   1         1         1       110s
+example-web-app-86d9d584f8      1         1         1       110s
 ```
-
 
 Or for even more details:
 
@@ -70,11 +76,10 @@ Or for even more details:
 
 The ReplicaSet shows how many instances of a Pod are desired, current and ready.
 
-
 Now we scale our application to three replicas:
 
 ```bash
-{{% param cliToolName %}} scale deployment example-web-python --replicas=3 --namespace <namespace>
+{{% param cliToolName %}} scale deployment example-web-app --replicas=3 --namespace <namespace>
 ```
 
 Check the number of desired, current and ready replicas:
@@ -85,7 +90,7 @@ Check the number of desired, current and ready replicas:
 
 ```
 NAME                            DESIRED   CURRENT   READY   AGE
-example-web-python-86d9d584f8   3         3         3       4m33s
+example-web-app-86d9d584f8      3         3         3       4m33s
 
 ```
 
@@ -99,9 +104,9 @@ Which gives you an output similar to this:
 
 ```
 NAME                                  READY   STATUS    RESTARTS   AGE
-example-web-python-86d9d584f8-7vjcj   1/1     Running   0          5m2s
-example-web-python-86d9d584f8-hbvlv   1/1     Running   0          31s
-example-web-python-86d9d584f8-qg499   1/1     Running   0          31s
+example-web-app-86d9d584f8-7vjcj      1/1     Running   0          5m2s
+example-web-app-86d9d584f8-hbvlv      1/1     Running   0          31s
+example-web-app-86d9d584f8-qg499      1/1     Running   0          31s
 ```
 
 {{% onlyWhenNot openshift %}}
@@ -121,9 +126,8 @@ OpenShift supports [horizontal](https://docs.openshift.com/container-platform/la
 {{% onlyWhenNot openshift %}}
 Now we create a new Service of the type `ClusterIP`:
 
-
 ```bash
-kubectl expose deployment example-web-python --type="ClusterIP" --name="example-web-python" --port=5000 --target-port=5000 --namespace <namespace>
+kubectl expose deployment example-web-app --type="ClusterIP" --name="example-web-app" --port={{% param "images.training-image-port" %}} --target-port={{% param "images.training-image-port" %}} --namespace <namespace>
 ```
 
 and we need to create an Ingress to access the application:
@@ -145,61 +149,80 @@ Now we expose our application to the internet by creating a service and a route.
 First the Service:
 
 ```bash
-oc expose deployment example-web-python --name="example-web-python" --port=5000 --namespace <namespace>
+oc expose deployment example-web-app --name="example-web-app" --port={{% param "images.training-image-port" %}} --namespace <namespace>
 ```
 
 Then the Route:
 
+{{% onlyWhenNot baloise %}}
+
 ```bash
-oc expose service example-web-python --namespace <namespace>
+oc expose service example-web-app --namespace <namespace>
 ```
+
+{{% /onlyWhenNot %}}
+{{% onlyWhen baloise %}}
+
+```bash
+oc create route edge example-web-app --service example-web-app --namespace <namespace>
+```
+
+{{% /onlyWhen %}}
+
 {{% /onlyWhen %}}
 
 Let's look at our Service. We should see all three corresponding Endpoints:
 
 ```bash
-{{% param cliToolName %}} describe service example-web-python --namespace <namespace>
+{{% param cliToolName %}} describe service example-web-app --namespace <namespace>
 ```
+
 {{% onlyWhenNot openshift %}}
+
 ```
-Name:                     example-web-python
+Name:                     example-web-app
 Namespace:                acend-scale
-Labels:                   app=example-web-python
+Labels:                   app=example-web-app
 Annotations:              <none>
-Selector:                 app=example-web-python
+Selector:                 app=example-web-app
 Type:                     ClusterIP
 IP:                       10.39.245.205
-Port:                     <unset>  5000/TCP
-TargetPort:               5000/TCP
-Endpoints:                10.36.0.10:5000,10.36.0.11:5000,10.36.0.9:5000
+Port:                     <unset>  {{% param "images.training-image-port" %}}/TCP
+TargetPort:               {{% param "images.training-image-port" %}}/TCP
+Endpoints:                10.36.0.10:{{% param "images.training-image-port" %}},10.36.0.11:{{% param "images.training-image-port" %}},10.36.0.9:{{% param "images.training-image-port" %}}
 Session Affinity:         None
 External Traffic Policy:  Cluster
 Events:
   Type    Reason                Age   From                Message
   ----    ------                ----  ----                -------
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
+
 ```
-Name:              example-web-python
+Name:              example-web-app
 Namespace:         acend-test
-Labels:            app=example-web-python
+Labels:            app=example-web-app
 Annotations:       <none>
-Selector:          app=example-web-python
+Selector:          app=example-web-app
 Type:              ClusterIP
+IP Family Policy:  SingleStack
+IP Families:       IPv4
 IP:                172.30.89.44
 IPs:               172.30.89.44
-Port:              <unset>  5000/TCP
-TargetPort:        5000/TCP
-Endpoints:         10.125.4.70:5000,10.126.4.137:5000,10.126.4.138:5000
+Port:              <unset>  {{% param "images.training-image-port" %}}/TCP
+TargetPort:        {{% param "images.training-image-port" %}}/TCP
+Endpoints:         10.125.4.70:{{% param "images.training-image-port" %}},10.126.4.137:{{% param "images.training-image-port" %}},10.126.4.138:{{% param "images.training-image-port" %}}
 Session Affinity:  None
 Events:            <none>
 ```
+
 {{% /onlyWhen %}}
 
 Scaling of Pods is fast as {{% param distroName %}} simply creates new containers.
 
-You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{% onlyWhenNot openshift %}}http://example-web-python-<namespace>.<domain>{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://<route hostname>{{% /onlyWhen %}}`.
+You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{% onlyWhenNot openshift %}}http://example-web-app-<namespace>.<domain>{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://<route hostname>{{% /onlyWhen %}}`.
 
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}
@@ -207,30 +230,34 @@ You can find out the route's hostname by looking at the output of `oc get route`
 {{% /alert %}}
 {{% /onlyWhen %}}
 
-
 Now, execute the corresponding loop command for your operating system in another console.
 
 Linux:
 
-
 {{% onlyWhen openshift %}}
+
 ```bash
-URL=$(oc get routes example-web-python -o go-template='{{ .spec.host }}' --namespace <namespace>)
+URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace <namespace>)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
+
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 {{% onlyWhenNot mobi %}}
+
 ```bash
-URL=example-web-python-<namespace>.<domain>
+URL=example-web-app-<namespace>.<domain>
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
+
 ```bash
-URL=example-web-python-<namespace>.<appdomain>
+URL=example-web-app-<namespace>.<appdomain>
 while true; do sleep 1; curl -ks https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
+
 {{% /onlyWhen %}}
 
 {{% /onlyWhenNot %}}
@@ -249,62 +276,63 @@ Scale from 3 replicas to 1.
 The output shows which Pod is still alive and is responding to requests:
 
 ```
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:07,289
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:08,357
-example-web-python-86d9d584f8-hbvlv TIME: 17:33:09,423
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:10,494
-example-web-python-86d9d584f8-qg499 TIME: 17:33:11,559
-example-web-python-86d9d584f8-hbvlv TIME: 17:33:12,629
-example-web-python-86d9d584f8-qg499 TIME: 17:33:13,695
-example-web-python-86d9d584f8-hbvlv TIME: 17:33:14,771
-example-web-python-86d9d584f8-hbvlv TIME: 17:33:15,840
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:16,912
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:17,980
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:19,051
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:20,119
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:21,182
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:22,248
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:23,313
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:24,377
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:25,445
-example-web-python-86d9d584f8-7vjcj TIME: 17:33:26,513
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:07,289
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:08,357
+example-web-app-86d9d584f8-hbvlv TIME: 17:33:09,423
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:10,494
+example-web-app-86d9d584f8-qg499 TIME: 17:33:11,559
+example-web-app-86d9d584f8-hbvlv TIME: 17:33:12,629
+example-web-app-86d9d584f8-qg499 TIME: 17:33:13,695
+example-web-app-86d9d584f8-hbvlv TIME: 17:33:14,771
+example-web-app-86d9d584f8-hbvlv TIME: 17:33:15,840
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:16,912
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:17,980
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:19,051
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:20,119
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:21,182
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:22,248
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:23,313
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:24,377
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:25,445
+example-web-app-86d9d584f8-7vjcj TIME: 17:33:26,513
 ```
 
 The requests get distributed amongst the three Pods. As soon as you scale down to one Pod, there should be only one remaining Pod that responds.
 
 Let's make another test: What happens if you start a new Deployment while our request generator is still running?
 
-
 ```bash
-{{% param cliToolName %}} rollout restart deployment example-web-python --namespace <namespace>
+{{% param cliToolName %}} rollout restart deployment example-web-app --namespace <namespace>
 ```
-
 
 During a short period we won't get a response:
 
+{{% onlyWhenNot sbb %}}
+
 ```
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:24,121
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:25,189
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:26,262
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:27,328
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:28,395
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:29,459
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:30,531
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:31,596
-example-web-python-86d9d584f8-7vjcj TIME: 17:37:32,662
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:24,121
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:25,189
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:26,262
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:27,328
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:28,395
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:29,459
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:30,531
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:31,596
+example-web-app-86d9d584f8-7vjcj TIME: 17:37:32,662
 # no answer
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:33,729
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:34,794
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:35,862
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:36,929
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:37,995
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:39,060
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:40,118
-example-web-python-f4c5dd8fc-4nx2t TIME: 17:37:41,187
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:33,729
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:34,794
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:35,862
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:36,929
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:37,995
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:39,060
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:40,118
+example-web-app-f4c5dd8fc-4nx2t TIME: 17:37:41,187
 ```
 
 In our example, we use a very lightweight Pod. If we had used a more heavyweight Pod that needed a longer time to respond to requests, we would of course see a larger gap.
 An example for this would be a Java application with a startup time of 30 seconds:
+{{% /onlyWhenNot %}}
 
 ```
 example-spring-boot-2-73aln TIME: 16:48:25,251
@@ -345,7 +373,13 @@ Basically, there are two different kinds of checks that can be implemented:
 
 These probes can be implemented as HTTP checks, container execution checks (the execution of a command or script inside a container) or TCP socket checks.
 
-In our example, we want the application to tell {{% param distroName %}} that it is ready for requests with an appropriate readiness probe. Our example application has a health check context named health: `{{% onlyWhenNot openshift %}}http://<node-ip>:<node-port>/health{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://${URL}/health{{% /onlyWhen %}}`
+In our example, we want the application to tell {{% param distroName %}} that it is ready for requests with an appropriate readiness probe.
+{{% onlyWhenNot sbb %}}
+Our example application has a health check context named health: `{{% onlyWhenNot openshift %}}http://<node-ip>:<node-port>/health{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://${URL}/health{{% /onlyWhen %}}`
+{{% /onlyWhenNot %}}
+{{% onlyWhen sbb %}}
+Our example application has a health check context named health: `http://localhost:{{% param "images.training-image-probe-port" %}}/health`. This port is not exposed by a service. It is only accessible inside the cluster.
+{{% /onlyWhen %}}
 
 
 ## {{% task %}} Availability during deployment
@@ -356,7 +390,7 @@ In our deployment configuration inside the rolling update strategy section, we d
 You can directly edit the deployment (or any resource) with:
 
 ```bash
-kubectl edit deployment example-web-python --namespace <namespace>
+kubectl edit deployment example-web-app --namespace <namespace>
 ```
 
 {{% alert title="Note" color="info" %}}
@@ -380,92 +414,99 @@ spec:
 Now insert the readiness probe at `.spec.template.spec.containers` above the `resources: {}` line:
 
 ```yaml
+
 ...
-     containers:
-      - image: {{% param "images.acendAwesomeApp-example-web-python" %}}
-        imagePullPolicy: Always
-        name: example-web-python
-        # start to copy here
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 5000
-            scheme: HTTP
-          initialDelaySeconds: 10
-          timeoutSeconds: 1
-        # stop to copy here
-        resources: {}
+containers:
+  - image: {{% param "images.training-image-url" %}}
+    imagePullPolicy: Always
+    name: example-web-app
+    # start to copy here
+    readinessProbe:
+      httpGet:
+        path: /health
+        port: {{% param "images.training-image-probe-port" %}}
+        scheme: HTTP
+      initialDelaySeconds: 10
+      timeoutSeconds: 1
+    # stop to copy here
+    resources: {}
 ...
 ```
 
 The `containers` configuration then looks like:
 
 ```yaml
+
 ...
-      containers:
-      - image: {{% param "images.acendAwesomeApp-example-web-python" %}}
-        imagePullPolicy: Always
-        name: example-web-python
-        readinessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /health
-            port: 5000
-            scheme: HTTP
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 1
-        resources: {}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
+containers:
+  - image: {{% param "images.training-image-url" %}}
+    imagePullPolicy: Always
+    name: example-web-app
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /health
+        port: {{% param "images.training-image-probe-port" %}}
+        scheme: HTTP
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
 ...
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 Define the readiness probe on the Deployment using the following command:
 
 ```bash
-oc set probe deploy/example-web-python --readiness --get-url=http://:5000/health --initial-delay-seconds=10 --timeout-seconds=1 --namespace <namespace>
+oc set probe deploy/example-web-app --readiness --get-url=http://:{{% param "images.training-image-probe-port" %}}/health --initial-delay-seconds=10 --timeout-seconds=1 --namespace <namespace>
 ```
 
 The command above results in the following `readinessProbe` snippet being inserted into the Deployment:
 
 ```yaml
+
 ...
-     containers:
-      - image: {{% param "images.acendAwesomeApp-example-web-python" %}}
-        imagePullPolicy: Always
-        name: example-web-python
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 5000
-            scheme: HTTP
-          initialDelaySeconds: 10
-          timeoutSeconds: 1
+containers:
+  - image: {{% param "images.training-image-url" %}}
+    imagePullPolicy: Always
+    name: example-web-app
+    readinessProbe:
+      httpGet:
+        path: /health
+        port: {{% param "images.training-image-probe-port" %}}
+        scheme: HTTP
+      initialDelaySeconds: 10
+      timeoutSeconds: 1
 ...
 ```
+
 {{% /onlyWhen %}}
 
 We are now going to verify that a redeployment of the application does not lead to an interruption.
 
 Set up the loop again to periodically check the application's response (you don't have to set the `$URL` variable again if it is still defined):
 
-
 {{% onlyWhen openshift %}}
+
 ```bash
-URL=$(oc get routes example-web-python -o go-template='{{ .spec.host }}' --namespace <namespace>)
+URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace <namespace>)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
+
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
+
 ```bash
-URL=example-web-python-<namespace>.<domain>
+URL=example-web-app-<namespace>.<domain>
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
-{{% /onlyWhenNot %}}
 
+{{% /onlyWhenNot %}}
 
 Windows PowerShell:
 
@@ -477,20 +518,21 @@ while(1) {
 }
 ```
 
-
 {{% onlyWhenNot openshift %}}
 Start a new deployment by editing it (the so-called _ConfigChange_ trigger creates the new Deployment automatically):
 
 ```bash
-kubectl patch deployment example-web-python -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
+kubectl patch deployment example-web-app -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
 ```
+
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 Start a new deployment:
 
 ```bash
-oc rollout restart deployment example-web-python --namespace <namespace>
+oc rollout restart deployment example-web-app --namespace <namespace>
 ```
+
 {{% /onlyWhen %}}
 
 
@@ -513,10 +555,3 @@ Now delete a Pod (in another terminal) with the following command:
 ```
 
 Observe how {{% param distroName %}} instantly creates a new Pod in order to fulfill the desired number of running instances.
-
-
-## Save point
-
-You should now have the following resources in place:
-
-* [example-web-python.yaml](example-web-python.yaml)

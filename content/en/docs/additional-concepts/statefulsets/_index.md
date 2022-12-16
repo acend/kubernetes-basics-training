@@ -74,6 +74,9 @@ Create a file named `sts_nginx-cluster.yaml` with the following definition of a 
 {{% onlyWhenNot customer %}}
 {{< readfile file="/content/en/docs/additional-concepts/statefulsets/sts_nginx-cluster.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhenNot %}}
+{{% onlyWhen baloise %}}
+{{< readfile file="/content/en/docs/additional-concepts/statefulsets/sts_nginx-cluster_baloise.yaml" code="true" lang="yaml" >}}
+{{% /onlyWhen %}}
 {{% onlyWhen mobi %}}
 {{< readfile file="/content/en/docs/additional-concepts/statefulsets/sts_nginx-cluster_mobi.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
@@ -113,7 +116,7 @@ Set the StatefulSet's image tag to `latest`:
 
 {{% onlyWhenNot mobi %}}
 ```bash
-{{% param cliToolName %}} set image statefulset nginx-cluster nginx={{% param "images.nginxinc-nginx-unprivileged" %}} --namespace <namespace>
+{{% param cliToolName %}} set image statefulset nginx-cluster nginx={{% param "images.nginxinc-nginx-unprivileged" %}}:latest --namespace <namespace>
 ```
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}

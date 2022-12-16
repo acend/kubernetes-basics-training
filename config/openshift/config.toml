@@ -3,12 +3,9 @@ languageCode = "en-us"
 
 [Languages]
 [Languages.en]
-title = "Openshift Basics Training"
+title = "OpenShift Basics Training"
 
 [params]
 enabledModule = "base openshift"
 distroName = "OpenShift"
 cliToolName = "oc"
-
-[params.pdf]
-title="OpenShift Basics Training"

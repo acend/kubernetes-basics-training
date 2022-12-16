@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: mariadb
-        image: mariadb:10.5
+        image: REGISTRY-URL/acend/mariadb-105:1
         command:
         - 'bash'
         - '-eo'

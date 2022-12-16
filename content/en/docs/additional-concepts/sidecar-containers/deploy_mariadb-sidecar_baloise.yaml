@@ -1,6 +1,6 @@
       containers:
       - ...
-      - image: docker.io/prom/mysqld-exporter
+      - image: REGISTRY-URL/acend/mysqld-exporter
         name: mysqld-exporter
         env:
         - name: MYSQL_DATABASE_ROOT_PASSWORD

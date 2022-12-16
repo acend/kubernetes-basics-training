@@ -38,14 +38,23 @@ menu:
 {{% blocks/feature icon="fa-magic" url="https://acend.ch/documents/acend_kubectl-cheat-sheet_v1.pdf" title="kubectl Cheat Sheet" %}}
 {{% /blocks/feature %}}
 
+{{% onlyWhenNot baloise sbb %}}
 {{% blocks/feature icon="fa-chalkboard-teacher" url="https://drive.google.com/uc?export=download&id=1RAVHNu8rSJZpdUcYnh1sQZPZGohN6Dg7" title="OpenShift Basics" %}}
 {{% /blocks/feature %}}
+{{% /onlyWhenNot %}}
 
+{{% onlyWhen baloise sbb %}}
+{{% blocks/feature icon="fa-chalkboard-teacher" url="https://drive.google.com/uc?export=download&id=1jIFRJPqbAPNiz0hoAUPVEgCG29EAbsnB" title="OpenShift Basics incl. Containers" %}}
+{{% /blocks/feature %}}
+{{% /onlyWhen %}}
+
+{{% onlyWhenNot sbb %}}
 {{% blocks/feature icon="fa-chalkboard-teacher" url="https://www.cncf.io/wp-content/uploads/2018/03/CNCF-Presentation-Template-K8s-Deployment.pdf" title="Kubernetes Deployment Strategies" %}}
 {{% /blocks/feature %}}
 
 {{% blocks/feature icon="fa-chalkboard-teacher" url="https://drive.google.com/uc?export=download&id=1oCo230r62pfeho_7Yz48dYCc0VWTfz6-" title="OpenShift Architecture" %}}
 {{% /blocks/feature %}}
+{{% /onlyWhenNot %}}
 
 {{% blocks/feature icon="fa-chalkboard-teacher" url="https://drive.google.com/uc?export=download&id=1OuqogaO20aEbMn66Kna7uAQkjwc_PvPi" title="Kubernetes Best Practices" %}}
 {{% /blocks/feature %}}

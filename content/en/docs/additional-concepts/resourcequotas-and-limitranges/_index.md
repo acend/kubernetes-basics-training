@@ -9,7 +9,6 @@ In this lab, we are going to look at ResourceQuotas and LimitRanges. As {{% para
 For this lab to work it is vital that you use the namespace `<username>-quota`!
 {{% /alert %}}
 
-
 ## ResourceQuotas
 
 ResourceQuotas among other things limit the amount of resources Pods can use in a Namespace. They can also be used to limit the total number of a certain resource type in a {{% onlyWhenNot openshift %}}Namespace{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Project{{% /onlyWhen %}}. In more detail, there are these kinds of quotas:
@@ -62,7 +61,7 @@ metadata:
 spec:
   containers:
   - name: lr-demo-ctr
-    image: {{% param "images.nginxinc-nginx-unprivileged-fix-version" %}}
+    image: {{% param "images.nginxinc-nginx-unprivileged" %}}:latest
     resources:
       limits:
         memory: "200Mi"
@@ -114,7 +113,7 @@ This is exactly what _LimitRanges_ are for.
 Quoting the [Kubernetes documentation](https://kubernetes.io/docs/concepts/policy/limit-range/), LimitRanges can be used to:
 
 * Enforce minimum and maximum compute resource usage per Pod or container in a Namespace
-* Enforce minimum and maximum storage request per PersistentVolumeClaim in a Namespace
+* Enforce minimum and maximum storage requests per PersistentVolumeClaim in a Namespace
 * Enforce a ratio between request and limit for a resource in a Namespace
 * Set default request/limit for compute resources in a Namespace and automatically inject them to containers at runtime
 
@@ -128,7 +127,6 @@ The possibility of enforcing minimum and maximum resources and defining Resource
 {{% alert title="Warning" color="warning" %}}
 Remember to use the namespace `<username>-quota`, otherwise this lab will not work!
 {{% /alert %}}
-
 
 Analyse the LimitRange in your Namespace (there has to be one, if not you are using the wrong Namespace):
 
@@ -146,7 +144,6 @@ Type        Resource  Min  Max  Default Request  Default Limit  Max Limit/Reques
 Container   memory    -    -    16Mi             32Mi           -
 Container   cpu       -    -    10m              100m           -
 ```
-
 
 Check for the ResourceQuota in your Namespace (there has to be one, if not you are using the wrong Namespace):
 
@@ -177,17 +174,17 @@ metadata:
   name: stress2much
 spec:
   containers:
-  - command:
-    - stress
-    - --vm
-    - "1"
-    - --vm-bytes
-    - 85M
-    - --vm-hang
-    - "1"
-    image: {{% param "images.stress" %}}
-    imagePullPolicy: Always
-    name: stress
+    - command:
+        - stress
+        - --vm
+        - "1"
+        - --vm-bytes
+        - 85M
+        - --vm-hang
+        - "1"
+      image: {{% param "images.stress" %}}
+      imagePullPolicy: Always
+      name: stress
 ```
 
 Apply this resource with:
@@ -195,7 +192,6 @@ Apply this resource with:
 ```bash
 {{% param cliToolName %}} apply -f pod_stress2much.yaml --namespace <namespace>
 ```
-
 
 {{% alert title="Note" color="info" %}}
 You have to actively terminate the following command pressing `CTRL+c` on your keyboard.
@@ -226,6 +222,7 @@ The `stress2much` Pod was OOM (out of memory) killed. We can see this in the `ST
 ```
 
 Near the end of the output you can find the relevant status part:
+
 ```yaml
   containerStatuses:
   - containerID: docker://da2473f1c8ccdffbb824d03689e9fe738ed689853e9c2643c37f206d10f93a73
@@ -263,7 +260,6 @@ Let's fix this by recreating the Pod and explicitly setting the memory request t
 
 First, delete the `stress2much` pod with:
 
-
 ```bash
 {{% param cliToolName %}} delete pod stress2much --namespace <namespace>
 ```
@@ -277,24 +273,24 @@ metadata:
   name: stress
 spec:
   containers:
-  - command:
-    - stress
-    - --vm
-    - "1"
-    - --vm-bytes
-    - 85M
-    - --vm-hang
-    - "1"
-    image: {{% param "images.stress" %}}
-    imagePullPolicy: Always
-    name: stress
-    resources:
-      limits:
-        cpu: 100m
-        memory: 100Mi
-      requests:
-        cpu: 10m
-        memory: 85Mi
+    - command:
+        - stress
+        - --vm
+        - "1"
+        - --vm-bytes
+        - 85M
+        - --vm-hang
+        - "1"
+      image: {{% param "images.stress" %}}
+      imagePullPolicy: Always
+      name: stress
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100Mi
+        requests:
+          cpu: 10m
+          memory: 85Mi
 ```
 
 And apply this again with:
@@ -328,17 +324,17 @@ metadata:
   name: overbooked
 spec:
   containers:
-  - command:
-    - stress
-    - --vm
-    - "1"
-    - --vm-bytes
-    - 10M
-    - --vm-hang
-    - "1"
-    image: {{% param "images.stress" %}}
-    imagePullPolicy: Always
-    name: overbooked
+    - command:
+        - stress
+        - --vm
+        - "1"
+        - --vm-bytes
+        - 10M
+        - --vm-hang
+        - "1"
+      image: {{% param "images.stress" %}}
+      imagePullPolicy: Always
+      name: overbooked
 ```
 
 ```bash
@@ -384,24 +380,24 @@ metadata:
   name: overbooked
 spec:
   containers:
-  - command:
-    - stress
-    - --vm
-    - "1"
-    - --vm-bytes
-    - 10M
-    - --vm-hang
-    - "1"
-    image: {{% param "images.stress" %}}
-    imagePullPolicy: Always
-    name: overbooked
-    resources:
-      limits:
-        cpu: 100m
-        memory: 50Mi
-      requests:
-        cpu: 10m
-        memory: 10Mi
+    - command:
+        - stress
+        - --vm
+        - "1"
+        - --vm-bytes
+        - 10M
+        - --vm-hang
+        - "1"
+      image: {{% param "images.stress" %}}
+      imagePullPolicy: Always
+      name: overbooked
+      resources:
+        limits:
+          cpu: 100m
+          memory: 50Mi
+        requests:
+          cpu: 10m
+          memory: 10Mi
 ```
 
 And apply with:

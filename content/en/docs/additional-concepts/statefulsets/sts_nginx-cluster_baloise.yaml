@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: nginxinc/nginx-unprivileged:1.18-alpine
+          image: REGISTRY-URL/acend/nginx-unprivileged:1.18-alpine
           ports:
             - containerPort: 8080
               name: nginx

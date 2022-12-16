@@ -3,13 +3,38 @@ languageCode = "en-us"
 
 [Languages]
 [Languages.en]
-title = "Openshift Basics Training"
+title = "OpenShift Basics Training"
 
 [params]
-enabledModule = "base openshift baloise"
+enabledModule = "base openshift customer baloise nosecurity nolocalinstallation"
 distroName = "OpenShift"
 cliToolName = "oc"
 automaticSectionNumbers = true
+customer = "baloise"
 
-[params.pdf]
-title="OpenShift Basics Training"
+[params.images]
+deployment-image-url = "REGISTRY-URL/acend/example-web-go:latest"
+training-image-url = "REGISTRY-URL/acend/example-web-python:latest"
+training-image-port = "5000"
+training-image-probe-port = "5000"
+nginxinc-nginx-unprivileged = "REGISTRY-URL/acend/nginx-unprivileged"
+stress = "REGISTRY-URL/acend/stress:latest"
+busybox = "REGISTRY-URL/acend/busybox:1.28"
+
+[params.replaceContent]
+allowedHrefHosts = ['localhost', 'puzzle.ch', 'acend.ch']
+
+[[params.replaceContent.placeholders]]
+placeholder = "CHART-REPOSITORY-URL"
+queryParam = "c"
+defaultValue = "CHART-REPOSITORY-URL"
+
+[[params.replaceContent.placeholders]]
+placeholder = "CLUSTER-NAME"
+queryParam = "n"
+defaultValue = "CLUSTER-NAME"
+
+[[params.replaceContent.placeholders]]
+placeholder = "REGISTRY-URL"
+queryParam = "r"
+defaultValue = "REGISTRY-URL"
