@@ -9,6 +9,7 @@ In this lab, we are going to look at ResourceQuotas and LimitRanges. As {{% para
 For this lab to work it is vital that you use the namespace `<username>-quota`!
 {{% /alert %}}
 
+
 ## ResourceQuotas
 
 ResourceQuotas among other things limit the amount of resources Pods can use in a Namespace. They can also be used to limit the total number of a certain resource type in a {{% onlyWhenNot openshift %}}Namespace{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Project{{% /onlyWhen %}}. In more detail, there are these kinds of quotas:
