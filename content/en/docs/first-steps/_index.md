@@ -25,6 +25,7 @@ Authentication depends on the specific Kubernetes cluster environment. You may n
 
 A Namespace is a logical design used in Kubernetes to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). Authorized users inside a namespace are able to manage those resources. Namespace names have to be unique in your cluster.
 
+
 ### {{% task %}} Create a Namespace
 
 {{% alert title="Note" color="info" %}}
