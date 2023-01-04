@@ -9,25 +9,6 @@ In this lab, we are going to look at ResourceQuotas and LimitRanges. As {{% para
 For this lab to work it is vital that you use the namespace `<username>-quota`!
 {{% /alert %}}
 
-{{% onlyWhen rancher %}}
-
-
-## Namespace creation
-
-Make sure you're logged in on the Rancher web console. Choose the appropriate cluster and click on **Projects/Namespaces**. Under the Project `kubernetes-quotalab` click on **Add Namespace**.
-
-Choose a name for your Namespace, e.g. in the form of `<yourname>`-quota, expand the **Container Default Resource Limit** view and set the following values:
-
-* **CPU Limit**: 100
-* **CPU Reservation**: 10
-* **Memory Limit**: 32
-* **Memory Reservation**: 16
-
-{{< imgproc create_quotalab_namespace.png Resize  "1000x" >}}{{< /imgproc >}}
-
-Finally, click on **Create**.
-{{% /onlyWhen %}}
-
 
 ## ResourceQuotas
 

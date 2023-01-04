@@ -278,15 +278,6 @@ lab-2   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.77    <no
 lab-3   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.148   <none>        Ubuntu 18.04.3 LTS   4.15.0-66-generic   docker://19.3.8
 ```
 
-{{% onlyWhen rancher %}}
-{{% alert title="Note" color="info" %}}
-You can also use the Rancher web console to open the exposed application in your browser. The direct link is shown on your **Resources / Workload** page in the tab **Workload**. Look for your namespace and the deployment name. The link looks like `31665/tcp`.
-
-{{< imgproc nodeportrancher.png Resize  "500x" >}}{{< /imgproc >}}
-
-Or go to the **Service Discovery** tab and look for your Service name. The link there looks the same and is right below the Service name.
-{{% /alert %}}
-{{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 
 

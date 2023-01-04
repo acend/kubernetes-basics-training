@@ -30,20 +30,6 @@ acendTraining:
         appname: kubernetes-basics-mobi
         domain: k8s.puzzle.ch
     -
-      name: rancher
-      replicaCount: 1
-      image:
-        repository: quay.io/acend/kubernetes-basics-training
-        pullPolicy: Always
-        tag: ""
-        tagsuffix: "-rancher"
-      ingress:
-        annotations:
-          kubernetes.io/ingress.class: nginx-public
-        secretOverride: acend-wildcard
-        appname: kubernetes-basics-rancher
-        domain: training.acend.ch
-    -
       name: openshift
       replicaCount: 1
       image:
