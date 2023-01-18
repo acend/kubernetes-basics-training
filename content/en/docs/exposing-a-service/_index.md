@@ -187,15 +187,6 @@ Afterwards, we are able to access our app via our freshly created Ingress at `ht
 oc expose service example-web-go --namespace <namespace>
 ```
 
-{{% /onlyWhenNot %}}
-{{% onlyWhen baloise %}}
-
-```bash
-oc create route edge example-web-go --service example-web-go --namespace <namespace>
-```
-
-{{% /onlyWhen %}}
-
 The output should be:
 
 ```
@@ -203,6 +194,23 @@ route.route.openshift.io/example-web-go exposed
 ```
 
 We are now able to access our app via the freshly created route at `http://example-web-go-<namespace>.<appdomain>`
+
+{{% /onlyWhenNot %}}
+{{% onlyWhen baloise %}}
+
+```bash
+oc create route edge example-web-go --service example-web-go --namespace <namespace>
+```
+
+The output should be:
+
+```
+route.route.openshift.io/example-web-go created
+```
+
+We are now able to access our app via the freshly created route at `https://example-web-go-<namespace>.<appdomain>`
+
+{{% /onlyWhen %}}
 
 Find your actual app URL by looking at your route (HOST/PORT):
 
