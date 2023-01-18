@@ -222,7 +222,7 @@ Events:            <none>
 
 Scaling of Pods is fast as {{% param distroName %}} simply creates new containers.
 
-You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{% onlyWhenNot openshift %}}http://example-web-app-<namespace>.<domain>{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://<route hostname>{{% /onlyWhen %}}`.
+You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{% onlyWhenNot openshift %}}http://example-web-app-<namespace>.<domain>{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}{{% onlyWhenNot baloise %}}http://<route hostname>{{% /onlyWhenNot %}}{{% onlyWhen baloise %}}https://<route hostname>{{% /onlyWhen %}}{{% /onlyWhen %}}`.
 
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}
@@ -235,12 +235,22 @@ Now, execute the corresponding loop command for your operating system in another
 Linux:
 
 {{% onlyWhen openshift %}}
+{{% onlyWhenNot baloise %}}
 
 ```bash
 URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace <namespace>)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
+{{% /onlyWhenNot %}}
+{{% onlyWhen baloise %}}
+
+```bash
+URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace <namespace>)
+while true; do sleep 1; curl -s https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+```
+
+{{% /onlyWhen %}}
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 {{% onlyWhenNot mobi %}}
@@ -261,6 +271,7 @@ while true; do sleep 1; curl -ks https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N
 {{% /onlyWhen %}}
 
 {{% /onlyWhenNot %}}
+{{% onlyWhenNot baloise %}}
 
 Windows PowerShell:
 
@@ -272,6 +283,20 @@ while(1) {
 }
 ```
 
+{{% /onlyWhenNot %}}
+{{% onlyWhen baloise %}}
+
+Windows PowerShell:
+
+```bash
+while(1) {
+  Start-Sleep -s 1
+  Invoke-RestMethod https://<URL>/pod/
+  Get-Date -Uformat "+ TIME: %H:%M:%S,%3N"
+}
+```
+
+{{% /onlyWhen %}}
 Scale from 3 replicas to 1.
 The output shows which Pod is still alive and is responding to requests:
 
@@ -492,11 +517,22 @@ We are now going to verify that a redeployment of the application does not lead 
 Set up the loop again to periodically check the application's response (you don't have to set the `$URL` variable again if it is still defined):
 
 {{% onlyWhen openshift %}}
+{{% onlyWhenNot baloise %}}
 
 ```bash
 URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace <namespace>)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
+
+{{% /onlyWhenNot %}}
+{{% onlyWhen baloise %}}
+
+```bash
+URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace <namespace>)
+while true; do sleep 1; curl -s https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+```
+
+{{% /onlyWhen %}}
 
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
@@ -507,6 +543,7 @@ while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N";
 ```
 
 {{% /onlyWhenNot %}}
+{{% onlyWhenNot baloise %}}
 
 Windows PowerShell:
 
@@ -518,6 +555,20 @@ while(1) {
 }
 ```
 
+{{% /onlyWhenNot %}}
+{{% onlyWhen baloise %}}
+
+Windows PowerShell:
+
+```bash
+while(1) {
+  Start-Sleep -s 1
+  Invoke-RestMethod https://[URL]/pod/
+  Get-Date -Uformat "+ TIME: %H:%M:%S,%3N"
+}
+```
+
+{{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 Start a new deployment by editing it (the so-called _ConfigChange_ trigger creates the new Deployment automatically):
 
