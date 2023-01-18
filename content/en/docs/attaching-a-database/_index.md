@@ -545,10 +545,17 @@ You can also copy local files into a Pod using `{{% param cliToolName %}} cp`. B
 
 ### Solution
 
-This is how you copy the database dump into the MariaDB Pod:
+This is how you copy the database dump into the MariaDB Pod.
+
+Download the [dump.sql](https://raw.githubusercontent.com/acend/kubernetes-basics-training/main/content/en/docs/attaching-a-database/dump.sql) or get it with curl:
 
 ```bash
 curl -O https://raw.githubusercontent.com/acend/kubernetes-basics-training/main/content/en/docs/attaching-a-database/dump.sql
+```
+
+Copy the dump into the MariaDB Pod:
+
+```bash
 {{% param cliToolName %}} cp ./dump.sql <podname>:/tmp/ --namespace <namespace>
 ```
 
