@@ -410,7 +410,6 @@ Add the environment variables by directly editing the Deployment:
 
 {{% /onlyWhen %}}
 
-{{% alert title="Note" color="info" %}}
 The environment can also be checked with the `set env` command and the `--list` parameter:
 
 ```bash
@@ -444,6 +443,10 @@ SPRING_DATASOURCE_URL=jdbc:mysql://mariadb/$(SPRING_DATASOURCE_DATABASE_NAME)?au
 
 {{% /onlyWhen %}}
 
+{{% alert title="Warning" color="warning" %}}
+All example-web-app pods must be restarted by a new rollout. This rollout of the deployment was triggered automatically by editing the deployment definition (environment change).
+
+Do not proceed with the lab before all new pods are started successfully.
 {{% /alert %}}
 
 In order to find out if the change worked we can either look at the container's logs (`{{% param cliToolName %}} logs <pod>`) or we could register some "Hellos" in the application, delete the Pod, wait for the new Pod to be started and check if they are still there.
