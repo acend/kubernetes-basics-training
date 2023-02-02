@@ -9,21 +9,16 @@ menu:
 
 ## Setup instructions
 
-This training depends on the installation of `{{% param cliToolName %}}`.
+This training depends on `{{% param cliToolName %}}`, the {{% param distroName %}} command-line interfac command-line interface.
 
 {{% onlyWhen openshift %}}
 You have the choice of either using OpenShift's web terminal or installing `{{% param cliToolName %}}` locally.
 
 If you prefer to not install anything on your computer, follow the instructions on the {{<link "web-terminal">}} page.
 
-{{% onlyWhenNot baloise %}}
-The [Local installation](local-installation/) chapter explains how to locally install `{{% param cliToolName %}}` for the respective operating system.
-{{% /onlyWhenNot %}}
-{{% onlyWhen baloise %}}
-If you haven't done so already and wish to install `{{% param cliToolName %}}`, you should have received an email containing all the necessary information and references.
-{{% /onlyWhen %}}
+The {{<link "local-usage">}} chapter explains how to install `{{% param cliToolName %}}` for the respective operating system.
 
-Also have a look at the {{<link "more-tools-to-work-with-openshift">}}, which is however totally optional.
+Also have a look at the {{<link "more-tools-to-work-with-openshift">}}, which is, however, totally optional.
 {{% /onlyWhen %}}
 
 {{% onlyWhenNot openshift %}}

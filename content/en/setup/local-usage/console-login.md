@@ -1,6 +1,6 @@
 ---
 title: "Console login"
-weight: 14
+weight: 20
 type: docs
 onlyWhen: openshift
 ---

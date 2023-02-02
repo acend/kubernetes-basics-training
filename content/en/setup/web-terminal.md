@@ -5,18 +5,20 @@ type: docs
 onlyWhen: openshift
 ---
 
-## Using the web terminal
-
 Using OpenShift's web terminal might be more convenient for you as it doesn't require you to install `{{% param cliToolName %}}` locally on your computer.
 
+{{% alert title="Note" color="info" %}}
+If you do change your mind, head right over to {{<link "local-usage">}}.
+{{% /alert %}}
 
-### {{% task %}} Login on the web console
+
+## {{% task %}} Login on the web console
 
 First of all, open your browser.
 Then, log in on OpenShift's web console using the URL and credentials provided by your trainer.
 
 
-### {{% task %}} Initialize terminal
+## {{% task %}} Initialize terminal
 
 In OpenShift's web console:
 
@@ -28,7 +30,7 @@ In OpenShift's web console:
 ![Web terminal in the OpenShift console](../web-terminal.png)
 
 
-### {{% task %}} Verification
+## {{% task %}} Verification
 
 After the initial setup, you're presented with a web terminal.
 Tools like `{{% param cliToolName %}}` are already installed and you're also already logged in.
