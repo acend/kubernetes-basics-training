@@ -14,7 +14,15 @@ After we've familiarized ourselves with the platform, we are going to have a loo
 In OpenShift we have used the `<project>` identifier to select the correct project. Please use the same identifier in the context `<namespace>` to do the same for all upcoming labs. Ask your trainer if you want more information on that.
 {{% /onlyWhen %}}
 
-First, we are going to directly start a new Pod. For this we have to define our Kubernetes Pod resource definition. Create a new file `03_pod.yaml` with the following content:
+First, we are going to directly start a new Pod. For this we have to define our Kubernetes Pod resource definition. Create a new file `pod_awesome-app.yaml` with the following content:
+
+{{% onlyWhen openshift %}}
+{{% alert title="Note" color="info" %}}
+Alternatively, you can create the Pod definition on the web console. Simply click on the **plus sign button** on the upper right (1), make sure you've selected the correct **Project** (2) and paste the content.
+
+![OpenShift YAML import](import-yaml.png)
+{{% /alert %}}
+{{% /onlyWhen %}}
 
 ```yaml
 apiVersion: v1
@@ -39,7 +47,7 @@ spec:
 Now we can apply this with:
 
 ```bash
-{{% param cliToolName %}} apply -f 03_pod.yaml --namespace <namespace>
+{{% param cliToolName %}} apply -f pod_awesome-app.yaml --namespace <namespace>
 ```
 
 The output should be:
@@ -77,7 +85,7 @@ Now delete the newly created Pod:
 In some use cases it can make sense to start a single Pod. But this has its downsides and is not really a common practice. Let's look at another concept which is tightly coupled with the Pod: the so-called _Deployment_. A Deployment ensures that a Pod is monitored and checks that the number of running Pods corresponds to the number of requested Pods.
 
 
-To create a new Deployment we first define our Deployment in a new file `03_deployment.yaml` with the following content:
+To create a new Deployment we first define our Deployment in a new file `deployment_example-web-go.yaml` with the following content:
 
 ```yaml
 apiVersion: apps/v1
@@ -112,7 +120,7 @@ And with this we create our Deployment inside our already created namespace:
 
 
 ```bash
-{{% param cliToolName %}} apply -f 03_deployment.yaml --namespace <namespace>
+{{% param cliToolName %}} apply -f deployment_example-web-go.yaml --namespace <namespace>
 ```
 
 The output should be:
