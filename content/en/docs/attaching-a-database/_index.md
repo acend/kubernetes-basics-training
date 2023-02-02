@@ -410,7 +410,6 @@ Add the environment variables by directly editing the Deployment:
 
 {{% /onlyWhen %}}
 
-{{% alert title="Note" color="info" %}}
 The environment can also be checked with the `set env` command and the `--list` parameter:
 
 ```bash
@@ -444,6 +443,10 @@ SPRING_DATASOURCE_URL=jdbc:mysql://mariadb/$(SPRING_DATASOURCE_DATABASE_NAME)?au
 
 {{% /onlyWhen %}}
 
+{{% alert title="Warning" color="warning" %}}
+Do not proceed with the lab before all example-web-app pods are restarted successfully.
+
+The change of the deployment definition (environment change) triggers a new rollout and all example-web-app pods will be restarted. The application will not be connected to the database until all pods are restarted successfully.
 {{% /alert %}}
 
 In order to find out if the change worked we can either look at the container's logs (`{{% param cliToolName %}} logs <pod>`) or we could register some "Hellos" in the application, delete the Pod, wait for the new Pod to be started and check if they are still there.
@@ -545,10 +548,17 @@ You can also copy local files into a Pod using `{{% param cliToolName %}} cp`. B
 
 ### Solution
 
-This is how you copy the database dump into the MariaDB Pod:
+This is how you copy the database dump into the MariaDB Pod.
+
+Download the [dump.sql](https://raw.githubusercontent.com/acend/kubernetes-basics-training/main/content/en/docs/attaching-a-database/dump.sql) or get it with curl:
 
 ```bash
 curl -O https://raw.githubusercontent.com/acend/kubernetes-basics-training/main/content/en/docs/attaching-a-database/dump.sql
+```
+
+Copy the dump into the MariaDB Pod:
+
+```bash
 {{% param cliToolName %}} cp ./dump.sql <podname>:/tmp/ --namespace <namespace>
 ```
 

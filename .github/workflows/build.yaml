@@ -16,7 +16,7 @@ jobs:
         name: Set up npm for linting
         uses: actions/setup-node@v3
         with:
-          node-version: '15.x'
+          node-version: '18.x'
       -
         name: Lint Markdown
         run: npm ci && npm run mdlint
@@ -35,7 +35,7 @@ jobs:
           password: ${{ secrets.QUAYIO_TOKEN }}
       -
         name: Build Acend Version
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
@@ -61,7 +61,7 @@ jobs:
           path: trivy-results.txt
       -
         name: Build Mobi Version
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
@@ -72,7 +72,7 @@ jobs:
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-mobi
       -
         name: Build OpenShift Version
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
@@ -83,7 +83,7 @@ jobs:
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-openshift
       -
         name: Build Baloise Version
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
@@ -94,7 +94,7 @@ jobs:
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-baloise
       -
         name: Build SBB Version
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
@@ -112,7 +112,7 @@ jobs:
           password: ${{ secrets.QUAYIO_TOKEN_TECHLAB }}
       -
         name: Build techlab version
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
