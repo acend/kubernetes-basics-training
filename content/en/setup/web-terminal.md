@@ -20,6 +20,10 @@ Then, log in on OpenShift's web console using the URL and credentials provided b
 
 ## {{% task %}} Initialize terminal
 
+{{% alert title="Warning" color="warning" %}}
+Make sure to create a dedicated project for the web terminal!
+{{% /alert %}}
+
 In OpenShift's web console:
 
 1. Click on the terminal icon on the upper right
