@@ -9,7 +9,7 @@ menu:
 
 ## Setup instructions
 
-This training depends on `{{% param cliToolName %}}`, the {{% param distroName %}} command-line interfac command-line interface.
+This training depends on `{{% param cliToolName %}}`, the {{% param distroName %}} command-line interface.
 
 {{% onlyWhen openshift %}}
 You have the choice of either using OpenShift's web terminal or installing `{{% param cliToolName %}}` locally.
