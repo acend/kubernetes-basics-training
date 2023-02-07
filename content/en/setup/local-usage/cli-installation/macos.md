@@ -2,10 +2,48 @@
 title: "macOS"
 weight: 12
 type: docs
-onlyWhen: openshift
 ---
 
 ## Installation for macOS
+
+{{% onlyWhenNot openshift %}}
+
+Follow the steps outlined in <https://kubernetes.io/docs/tasks/tools/install-kubectl/>.
+
+In case the installation from the official package repositories didn't work (or a specific version is needed) the static binary can be downloaded and put into the following path:
+
+```
+~/bin
+```
+
+
+### File mode
+
+The `kubectl` binary has to be executable:
+
+```bash
+cd ~/bin
+chmod +x kubectl
+```
+
+
+### PATH variable
+
+In macOS, the directory `~/bin` should already be part of the `PATH` variable.
+In case `kubectl` is placed in a different directory, you can change the `PATH` variable with the following command:
+
+```bash
+export PATH=$PATH:[path to kubectl]
+```
+
+
+### Verification
+
+Now, verify your installation in {{<link "verification">}}.
+
+{{% /onlyWhenNot %}}
+
+{{% onlyWhen openshift %}}
 
 The straight-forward way to installing `oc` on your system is to install by downloading the binary.
 This is what we are going to do step by step.
@@ -41,3 +79,5 @@ With Homebrew, use `brew install openshift-cli`.
    You can undo this after the training.
 
 1. Now, head over to the {{<link "console-login">}} page.
+
+{{% /onlyWhen %}}
