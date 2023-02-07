@@ -12,7 +12,7 @@ This lab does not depend on previous labs. You can start with an empty Namespace
 
 ## {{% task %}} Scale the example application
 
-Create a new Deployment in your Namespace. So again, lets define the Deployment using YAML in a file `05_deployment.yaml` with the following content:
+Create a new Deployment in your Namespace. So again, lets define the Deployment using YAML in a file `deployment_example-web-app.yaml` with the following content:
 
 {{% onlyWhenNot sbb %}}
 
@@ -51,7 +51,7 @@ spec:
 {{% /onlyWhen %}}
 
 ```bash
-{{% param cliToolName %}} apply -f 05_deployment.yaml --namespace <namespace>
+{{% param cliToolName %}} apply -f deployment_example-web-app.yaml --namespace <namespace>
 ```
 
 If we want to scale our example application, we have to tell the Deployment that we want to have three running replicas instead of one.
