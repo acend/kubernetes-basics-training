@@ -358,7 +358,7 @@ If you created the deployment to see the output, you can delete it again as it's
 
 At this point, you are able to visualize your progress on the labs by browsing through the following page <http://localhost:5000/progress>
 
-If you are not able to open your awesome-app with localhost, because you are using a webshell, you can also use the ingress address like: `example-web-python-<namespace>.<domain>/progress` to access the dashboard.
+If you are not able to open your awesome-app with localhost, because you are using a webshell, you can also use the ingress address like: `example-web-app-<namespace>.<domain>/progress` to access the dashboard.
 
 You may need to set some extra permissions to let the dashboard monitor your progress. Have fun!
 
