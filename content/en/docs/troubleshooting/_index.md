@@ -149,7 +149,11 @@ Log files of a Pod can be shown with the following command:
 
 The parameter `-f` allows you to follow the log file (same as `tail -f`). With this, log files are streamed and new entries are shown immediately.
 
-When a Pod is in state `CrashLoopBackOff` it means that although multiple attempts have been made, no container inside the Pod could be started successfully. Now even though no container might be running at the moment the `{{% param cliToolName %}} logs` command is executed, there is a way to view the logs the application might have generated. This is achieved using the `-p` or `--previous` parameter:
+When a Pod is in state `CrashLoopBackOff` it means that although multiple attempts have been made, no container inside the Pod could be started successfully. Now even though no container might be running at the moment the `{{% param cliToolName %}} logs` command is executed, there is a way to view the logs the application might have generated. This is achieved using the `-p` or `--previous` parameter.
+
+{{% alert title="Note" color="info" %}}
+This command will only work on pods that had container restarts. You can check the `RESTARTS` column in the `oc get pods` output if this is the case.
+{{% /alert %}}
 
 ```bash
 {{% param cliToolName %}} logs -p <pod> --namespace <namespace>
@@ -358,7 +362,7 @@ If you created the deployment to see the output, you can delete it again as it's
 
 At this point, you are able to visualize your progress on the labs by browsing through the following page <http://localhost:5000/progress>
 
-If you are not able to open your awesome-app with localhost, because you are using a webshell, you can also use the ingress address like: `example-web-python-<namespace>.<domain>/progress` to access the dashboard.
+If you are not able to open your awesome-app with localhost, because you are using a webshell, you can also use the ingress address like: `example-web-app-<namespace>.<domain>/progress` to access the dashboard.
 
 You may need to set some extra permissions to let the dashboard monitor your progress. Have fun!
 
