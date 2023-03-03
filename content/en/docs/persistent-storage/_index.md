@@ -67,13 +67,9 @@ And create it with:
 kubectl apply -f pvc.yaml --namespace $USER
 ```
 
-We now have to insert the volume definition in the correct section of the MariaDB deployment:
+We now have to insert the volume definition in the correct section of the MariaDB deployment.
 
-```bash
-kubectl edit deployment mariadb --namespace $USER
-```
-
-Add both parts `volumeMounts` and `volumes`
+Change your local `mariadb.yaml` file and add the `volumeMounts` and `volumes` parts:
 
 ```yaml
 ...
@@ -94,6 +90,13 @@ Add both parts `volumeMounts` and `volumes`
       schedulerName: default-scheduler
 ...
 ```
+
+Then apply the change with:
+
+```bash
+kubectl apply -f mariadb.yaml --namespace $USER
+```
+
 
 {{% /onlyWhenNot %}}
 {{% onlyWhenNot openshift %}}
