@@ -149,7 +149,7 @@ spec:
 {{% onlyWhenNot openshift %}}
 Now we create a new Service of the type `ClusterIP`. Create a new file `svc-example-app.yaml` with the following content:
 
-{{< readfile file="/content/en/docs/exposing-a-service/svc-example-app.yaml" code="true" lang="yaml" >}}
+{{< readfile file="/content/en/docs/scaling/svc-example-app.yaml" code="true" lang="yaml" >}}
 
 and apply the file with:
 
@@ -468,37 +468,6 @@ containers:
       requests:
         cpu: 50m
         memory: 128Mi
-...
-```
-
-The `containers` configuration then looks like:
-
-```yaml
-
-...
-containers:
-  - image: {{% param "images.training-image-url" %}}
-    imagePullPolicy: Always
-    name: example-web-app
-    readinessProbe:
-      failureThreshold: 3
-      httpGet:
-        path: /health
-        port: {{% param "images.training-image-probe-port" %}}
-        scheme: HTTP
-      initialDelaySeconds: 10
-      periodSeconds: 10
-      successThreshold: 1
-      timeoutSeconds: 1
-    resources:
-      limits:
-        cpu: 100m
-        memory: 128Mi
-      requests:
-        cpu: 50m
-        memory: 128Mi
-    terminationMessagePath: /dev/termination-log
-    terminationMessagePolicy: File
 ...
 ```
 
