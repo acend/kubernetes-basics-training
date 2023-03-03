@@ -287,7 +287,7 @@ while true; do sleep 1; curl -s https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"
 {{% onlyWhenNot mobi %}}
 
 ```bash
-URL=example-web-app-<namespace>.<domain>
+URL=(kubectl get ingress example-web-app -o go-template="{{ (index .spec.rules 0).host }}" --namespace $USER)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
@@ -295,7 +295,7 @@ while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N";
 {{% onlyWhen mobi %}}
 
 ```bash
-URL=example-web-app-<namespace>.<appdomain>
+URL=(kubectl get ingress example-web-app -o go-template="{{ (index .spec.rules 0).host }}" --namespace $USER)
 while true; do sleep 1; curl -ks https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
