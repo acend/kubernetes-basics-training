@@ -294,13 +294,7 @@ and
 
 The first command inserts the values from the Secret, the second finally uses these values to put them in the environment variable `MYSQL_URI` which the application considers.
 
-You could also do the changes by directly editing the Deployment:
-
-```bash
-{{% param cliToolName %}} edit deployment example-web-app --namespace $USER
-```
-
-In the file, find the section which defines the containers. You should find it under:
+You can also do the changes by directly editing your local `deployment_example-web-app.yaml` file. Find the section which defines the containers. You should find it under:
 
 ```
 ...
@@ -375,6 +369,15 @@ Your file should now look like this:
         name: example-web-app
         ...
 ```
+
+Then use:
+
+```bash
+{{% param cliToolName %}} apply -f deployment_example-web-app.yaml --namespace $USER
+```
+
+to apply the changes.
+
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
