@@ -255,6 +255,10 @@ The `<appdomain>` is the default domain under which your applications will be ac
 
 ## {{% task %}} Expose as NodePort
 
+{{% alert title="Note" color="info" %}}
+This is a advanced lab, feel free to skip this. NodePorts are normaly not used for http based applications as we use the Layer 7 based Ingress resource. For non-http based application, a NodePort might be a suitable alternative.
+{{% /alert %}}
+
 There's a second option to make a Service accessible from outside: Use a [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport).
 
 In order to switch the Service type, change the existing `ClusterIP` Service by updating our Service definition in file `svc-web-go.yaml`to:
@@ -297,12 +301,6 @@ example-web-go   NodePort   10.43.91.62   <none>        5000:30692/TCP
 ```
 
 The `NodePort` number is assigned by Kubernetes and stays the same as long as the Service is not deleted. A NodePort Service is more suitable for infrastructure tools than for public URLs.
-
-{{% alert title="Note" color="info" %}}
-If `NodePort` is not supported in your environment then you can use `--type=ClusterIP` (or omit this parameter completely as it is the default) and use port forwarding to the Service instead.
-
-Head over to task 6.3 in [lab 6](../06/) to learn how to use port forwarding.
-{{% /alert %}}
 
 Open `http://<node-ip>:<node-port>` in your browser.
 You can use any node IP as the Service is exposed on all nodes using the same `NodePort`. Use `kubectl get nodes -o wide` to display the IPs (`INTERNAL-IP`) of the available nodes.
