@@ -22,13 +22,7 @@ Check out the [Init Containers documentation](https://docs.openshift.com/contain
 
 In {{<link "attaching-a-database">}} you created the `example-web-app` application. In this task, you are going to add an init container which checks if the MariaDB database is ready to be used before actually starting your example application.
 
-Edit your existing `example-web-app` Deployment with:
-
-```bash
-{{% param cliToolName %}} edit deployment example-web-app --namespace $USER
-```
-
-Add the init container into the existing Deployment (same indentation level as containers):
+Edit your existing `example-web-app` Deployment by changing your local `deployment_example-web-app.yaml`. Add the init container into the existing Deployment (same indentation level as containers):
 
 ```yaml
 ...
@@ -43,6 +37,12 @@ spec:
           "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done",
         ]
 ...
+```
+
+And then apply again with:
+
+```bash
+{{% param cliToolName %}} apply -f deployment_example-web-app.yaml --namespace $USER
 ```
 
 {{% alert title="Note" color="info" %}}
