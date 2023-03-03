@@ -25,13 +25,8 @@ In a sidecar pattern, the functionality of the main container is extended or enh
 In {{<link "persistent-storage">}} you created a MariaDB deployment. In this task you are going to add the [Prometheus MySQL exporter](https://github.com/prometheus/mysqld_exporter) to it.
 
 {{% onlyWhenNot openshift %}}
-Change the existing `mariadb` Deployment using:
+Change the existing `mariadb` Deployment by first editing your local `mariadb.yaml` file. Add a new (sidecar) container into your Deployment:
 
-```bash
-kubectl edit deployment mariadb --namespace $USER
-```
-
-And add a new (sidecar) container into your Deployment:
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 {{% onlyWhenNot baloise %}}
@@ -62,6 +57,14 @@ And add a new (sidecar) container to it:
 {{% onlyWhen mobi %}}
 {{< readfile file="/content/en/docs/additional-concepts/sidecar-containers/deploy_mariadb-sidecar_mobi.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
+
+{{% onlyWhenNot openshift %}}
+and then apply the change with:
+
+```bash
+{{% param cliToolName %}} apply -f mariadb.yaml --namespace $USER
+```
+{{% /onlyWhenNot %}}
 
 Your Pod now has two running containers. Verify this with:
 
