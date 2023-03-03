@@ -28,6 +28,11 @@ spec:
   selector:
     matchLabels:
       app: example-web-app
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -438,31 +443,7 @@ Our example application has a health check context named health: `http://localho
 {{% onlyWhenNot openshift %}}
 In our deployment configuration inside the rolling update strategy section, we define that our application always has to be available during an update: `maxUnavailable: 0`
 
-You can directly edit the deployment (or any resource) with:
-
-```bash
-kubectl edit deployment example-web-app --namespace $USER
-```
-
-{{% alert title="Note" color="info" %}}
-If you're not comfortable with `vi` then you can switch to another editor by setting the environment variable `EDITOR`
-or `KUBE_EDITOR`, e.g. `export KUBE_EDITOR=nano`.
-{{% /alert %}}
-
-Look for the following section and change the value for `maxUnavailable` to 0:
-
-```
-...
-spec:
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 0
-    type: RollingUpdate
-...
-```
-
-Now insert the readiness probe at `.spec.template.spec.containers` above the `resources: {}` line:
+Now insert the readiness probe at `.spec.template.spec.containers` above the `resources` line in your local `deployment_example-web-app.yaml` File:
 
 ```yaml
 
@@ -480,7 +461,13 @@ containers:
       initialDelaySeconds: 10
       timeoutSeconds: 1
     # stop to copy here
-    resources: {}
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 128Mi
 ...
 ```
 
@@ -503,10 +490,22 @@ containers:
       periodSeconds: 10
       successThreshold: 1
       timeoutSeconds: 1
-    resources: {}
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 128Mi
     terminationMessagePath: /dev/termination-log
     terminationMessagePolicy: File
 ...
+```
+
+apply the file with:
+
+```bash
+{{% param cliToolName %}} apply -f deployment_example-web-app.yaml --namespace $USER
 ```
 
 {{% /onlyWhenNot %}}
@@ -595,22 +594,12 @@ while(1) {
 ```
 
 {{% /onlyWhen %}}
-{{% onlyWhenNot openshift %}}
-Start a new deployment by editing it (the so-called _ConfigChange_ trigger creates the new Deployment automatically):
+
+Restart your Deployment with:
 
 ```bash
-kubectl patch deployment example-web-app -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace $USER
+{{% param cliToolName %}} rollout restart deployment example-web-app --namespace $USER
 ```
-
-{{% /onlyWhenNot %}}
-{{% onlyWhen openshift %}}
-Start a new deployment:
-
-```bash
-oc rollout restart deployment example-web-app --namespace $USER
-```
-
-{{% /onlyWhen %}}
 
 
 ## Self-healing
