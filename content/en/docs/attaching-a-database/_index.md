@@ -93,7 +93,7 @@ kubectl create secret generic mariadb \
   --from-literal=database-password=mysqlpassword \
   --from-literal=database-root-password=mysqlrootpassword \
   --from-literal=database-user=acend_user \
-  --namespace <namespace>
+  --namespace $USER
 ```
 
 {{% /onlyWhenNot %}}
@@ -107,7 +107,7 @@ oc create secret generic mariadb \
   --from-literal=database-password=mysqlpassword \
   --from-literal=database-root-password=mysqlrootpassword \
   --from-literal=database-user=acend_user \
-  --namespace <namespace> \
+  --namespace $USER \
   --dry-run=client -o yaml > secret_mariadb.yaml
 ```
 
@@ -125,7 +125,7 @@ oc apply -f secret_mariadb.yaml
 The Secret contains the database name, user, password, and the root password. However, these values will neither be shown with `{{% param cliToolName %}} get` nor with `{{% param cliToolName %}} describe`:
 
 ```bash
-{{% param cliToolName %}} get secret mariadb --output yaml --namespace <namespace>
+{{% param cliToolName %}} get secret mariadb --output yaml --namespace $USER
 ```
 
 ```
@@ -186,7 +186,7 @@ Save this snippet as `mariadb.yaml`:
 Apply it with:
 
 ```bash
-kubectl apply -f mariadb.yaml --namespace <namespace>
+kubectl apply -f mariadb.yaml --namespace $USER
 ```
 
 As soon as the container image for `mariadb:10.5` has been pulled, you will see a new Pod using `kubectl get pods`.
@@ -204,7 +204,7 @@ Save this snippet as `mariadb.yaml`:
 Apply it with:
 
 ```bash
-oc apply -f mariadb.yaml --namespace <namespace>
+oc apply -f mariadb.yaml --namespace $USER
 ```
 
 As soon as the container image has been pulled, you will see a new Pod using `oc get pods`.
@@ -283,8 +283,8 @@ Depending on the shell you use, the following `set env` command works but insert
 {{% /alert %}}
 
 ```bash
-{{% param cliToolName %}} set env --from=secret/mariadb --prefix=MYSQL_ deploy/example-web-app --namespace <namespace>
-{{% param cliToolName %}} set env deploy/example-web-app MYSQL_URI='mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)' --namespace <namespace>
+{{% param cliToolName %}} set env --from=secret/mariadb --prefix=MYSQL_ deploy/example-web-app --namespace $USER
+{{% param cliToolName %}} set env deploy/example-web-app MYSQL_URI='mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)' --namespace $USER
 ```
 
 The first command inserts the values from the Secret, the second finally uses these values to put them in the environment variable `MYSQL_URI` which the application considers.
@@ -292,7 +292,7 @@ The first command inserts the values from the Secret, the second finally uses th
 You could also do the changes by directly editing the Deployment:
 
 ```bash
-{{% param cliToolName %}} edit deployment example-web-app --namespace <namespace>
+{{% param cliToolName %}} edit deployment example-web-app --namespace $USER
 ```
 
 In the file, find the section which defines the containers. You should find it under:
@@ -376,7 +376,7 @@ Your file should now look like this:
 Add the environment variables by directly editing the Deployment:
 
 ```bash
-{{% param cliToolName %}} edit deployment example-web-app --namespace <namespace>
+{{% param cliToolName %}} edit deployment example-web-app --namespace $USER
 ```
 
 ```yaml
@@ -413,7 +413,7 @@ Add the environment variables by directly editing the Deployment:
 The environment can also be checked with the `set env` command and the `--list` parameter:
 
 ```bash
-{{% param cliToolName %}} set env deploy/example-web-app --list --namespace <namespace>
+{{% param cliToolName %}} set env deploy/example-web-app --list --namespace $USER
 ```
 
 This will show the environment as follows:
@@ -463,7 +463,7 @@ As described in {{<link "troubleshooting">}} we can log into a Pod with {{% only
 Show all Pods:
 
 ```bash
-{{% param cliToolName %}} get pods --namespace <namespace>
+{{% param cliToolName %}} get pods --namespace $USER
 ```
 
 Which gives you an output similar to this:
@@ -484,14 +484,14 @@ As mentioned in {{<link "troubleshooting">}}, remember to append the command wit
 {{% onlyWhenNot openshift %}}
 
 ```bash
-kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
+kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace $USER -- /bin/bash
 ```
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 
 ```bash
-oc rsh --namespace <namespace> <mariadb-pod-name>
+oc rsh --namespace $USER <mariadb-pod-name>
 ```
 
 {{% /onlyWhen %}}
@@ -532,7 +532,7 @@ If your database is empty you can generate some hellos by visiting the Service y
 You can find your app URL by looking at your route:
 
 ```bash
-oc get route --namespace <namespace>
+oc get route --namespace $USER
 ```
 {{% /alert %}}
 
@@ -559,7 +559,7 @@ curl -O https://raw.githubusercontent.com/acend/kubernetes-basics-training/main/
 Copy the dump into the MariaDB Pod:
 
 ```bash
-{{% param cliToolName %}} cp ./dump.sql <podname>:/tmp/ --namespace <namespace>
+{{% param cliToolName %}} cp ./dump.sql <podname>:/tmp/ --namespace $USER
 ```
 
 This is how you log into the MariaDB Pod:
@@ -567,14 +567,14 @@ This is how you log into the MariaDB Pod:
 {{% onlyWhenNot openshift %}}
 
 ```bash
-kubectl exec -it <podname> --namespace <namespace> -- /bin/bash
+kubectl exec -it <podname> --namespace $USER -- /bin/bash
 ```
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 
 ```bash
-oc rsh --namespace <namespace> <podname>
+oc rsh --namespace $USER <podname>
 ```
 
 {{% /onlyWhen %}}
@@ -603,7 +603,7 @@ Check your app to see the imported "Hellos".
 You can find your app URL by looking at your route:
 
 ```bash
-oc get route --namespace <namespace>
+{{% param cliToolName %}} get {{% onlyWhenNot openshift %}}ingress{{% /onlyWhen %}}{{% onlyWhen openshift %}}route{{% /onlyWhen %}} --namespace $USER
 ```
 {{% /alert %}}
 
@@ -613,14 +613,14 @@ A database dump can be created as follows:
 {{% onlyWhenNot openshift %}}
 
 ```bash
-kubectl exec -it <podname> --namespace <namespace> -- /bin/bash
+kubectl exec -it <podname> --namespace $USER -- /bin/bash
 ```
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 
 ```bash
-oc rsh --namespace <namespace> <podname>
+oc rsh --namespace $USER <podname>
 ```
 
 {{% /onlyWhen %}}

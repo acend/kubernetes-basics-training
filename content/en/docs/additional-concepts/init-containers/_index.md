@@ -25,7 +25,7 @@ In {{<link "attaching-a-database">}} you created the `example-web-app` applicati
 Edit your existing `example-web-app` Deployment with:
 
 ```bash
-{{% param cliToolName %}} edit deployment example-web-app --namespace <namespace>
+{{% param cliToolName %}} edit deployment example-web-app --namespace $USER
 ```
 
 Add the init container into the existing Deployment (same indentation level as containers):
@@ -52,7 +52,7 @@ This obviously only checks if there is a DNS Record for your MariaDB Service and
 Let's see what has changed by analyzing your newly created `example-web-app` Pod with the following command (use `{{% param cliToolName %}} get pod` or auto-completion to get the Pod name):
 
 ```bash
-{{% param cliToolName %}} describe pod <pod> --namespace <namespace>
+{{% param cliToolName %}} describe pod <pod> --namespace $USER
 ```
 
 You see the new init container with the name `wait-for-db`:
@@ -88,7 +88,7 @@ The init container has the `State: Terminated` and an `Exit Code: 0` which means
 You can also check the logs of the init container with:
 
 ```bash
-{{% param cliToolName %}} logs -c wait-for-db <pod> --namespace <namespace>
+{{% param cliToolName %}} logs -c wait-for-db <pod> --namespace $USER
 ```
 
 Which should give you something similar to:

@@ -12,7 +12,7 @@ In this lab, you will learn how to create and use ConfigMaps.
 A ConfigMap can be created using the `{{% param cliToolName %}} create configmap` command as follows:
 
 ```bash
-{{% param cliToolName %}} create configmap <name> <data-source> --namespace <namespace>
+{{% param cliToolName %}} create configmap <name> <data-source> --namespace $USER
 ```
 
 Where the `<data-source>` can be a file, directory, or command line input.
@@ -28,13 +28,13 @@ First, create a file called `java.properties` with the following content:
 Now you can create a ConfigMap based on that file:
 
 ```bash
-{{% param cliToolName %}} create configmap javaconfiguration --from-file=./java.properties --namespace <namespace>
+{{% param cliToolName %}} create configmap javaconfiguration --from-file=./java.properties --namespace $USER
 ```
 
 Verify that the ConfigMap was created successfully:
 
 ```bash
-{{% param cliToolName %}} get configmaps --namespace <namespace>
+{{% param cliToolName %}} get configmaps --namespace $USER
 ```
 
 ```
@@ -45,7 +45,7 @@ javaconfiguration   1      7s
 Have a look at its content:
 
 ```bash
-{{% param cliToolName %}} get configmap javaconfiguration -o yaml --namespace <namespace>
+{{% param cliToolName %}} get configmap javaconfiguration -o yaml --namespace $USER
 ```
 
 Which should yield output similar to this one:
@@ -71,7 +71,7 @@ If you are using Windows and your shell uses the POSIX-to-Windows path conversio
 {{% /alert %}}
 
 ```bash
-oc set volume deploy/example-web-app --add --configmap-name=javaconfiguration --mount-path=/etc/config --name=config-volume --type configmap --namespace <namespace>
+oc set volume deploy/example-web-app --add --configmap-name=javaconfiguration --mount-path=/etc/config --name=config-volume --type configmap --namespace $USER
 ```
 
 {{% alert title="Note" color="info" %}}
@@ -117,20 +117,20 @@ This means that the container should now be able to access the ConfigMap's conte
 {{% onlyWhen openshift %}}
 
 ```bash
-oc exec <pod name> --namespace <namespace> -- cat /etc/config/java.properties
+oc exec <pod name> --namespace $USER -- cat /etc/config/java.properties
 ```
 
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 
 ```bash
-kubectl exec -it <pod> --namespace <namespace> -- cat /etc/config/java.properties
+kubectl exec -it <pod> --namespace $USER -- cat /etc/config/java.properties
 ```
 
 {{% /onlyWhenNot %}}
 
 {{% alert title="Note" color="info" %}}
-On Windows, you can use Git Bash with `winpty kubectl exec -it <pod> --namespace <namespace> -- cat //etc/config/java.properties`.
+On Windows, you can use Git Bash with `winpty kubectl exec -it <pod> --namespace $USER -- cat //etc/config/java.properties`.
 {{% /alert %}}
 
 {{< readfile file="/content/en/docs/additional-concepts/configmaps/java.properties" code="true" lang="yaml" >}}

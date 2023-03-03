@@ -34,7 +34,7 @@ Using a StatefulSet, scaling is done serially:
 
 Let's use our RabbitMQ example again:
 
-1. The StatefulSet is scaled up using: `{{% param cliToolName %}} scale deployment rabbitmq --replicas=5 --namespace <namespace>`
+1. The StatefulSet is scaled up using: `{{% param cliToolName %}} scale deployment rabbitmq --replicas=5 --namespace $USER`
 1. `rabbitmq-3` is started
 1. As soon as Pod `rabbitmq-3` is in `Ready` state the same procedure starts for `rabbitmq-4`
 
@@ -84,13 +84,13 @@ Create a file named `sts_nginx-cluster.yaml` with the following definition of a 
 Create the StatefulSet:
   
 ```bash
-{{% param cliToolName %}} apply -f sts_nginx-cluster.yaml --namespace <namespace>
+{{% param cliToolName %}} apply -f sts_nginx-cluster.yaml --namespace $USER
 ```
 
 To watch the pods' progress, open a second console and execute the watch command:
 
 ```bash
-{{% param cliToolName %}} get pods --selector app=nginx -w --namespace <namespace>
+{{% param cliToolName %}} get pods --selector app=nginx -w --namespace $USER
 ```
 
 {{% alert title="Note" color="info" %}}
@@ -103,7 +103,7 @@ Friendly reminder that the `{{% param cliToolName %}} get -w` command will never
 Scale the StatefulSet up:
 
 ```bash
-{{% param cliToolName %}} scale statefulset nginx-cluster --replicas=3 --namespace <namespace>
+{{% param cliToolName %}} scale statefulset nginx-cluster --replicas=3 --namespace $USER
 ```
 
 You can again watch the pods' progress like you did in the first task.
@@ -116,12 +116,12 @@ Set the StatefulSet's image tag to `latest`:
 
 {{% onlyWhenNot mobi %}}
 ```bash
-{{% param cliToolName %}} set image statefulset nginx-cluster nginx={{% param "images.nginxinc-nginx-unprivileged" %}}:latest --namespace <namespace>
+{{% param cliToolName %}} set image statefulset nginx-cluster nginx={{% param "images.nginxinc-nginx-unprivileged" %}}:latest --namespace $USER
 ```
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
 ```bash
-kubectl set image statefulset nginx-cluster nginx={{% param "images.nginx" %}} --namespace <namespace>
+kubectl set image statefulset nginx-cluster nginx={{% param "images.nginx" %}} --namespace $USER
 ```
 {{% /onlyWhen %}}
 
@@ -132,7 +132,7 @@ Imagine you just realized that switching to the `latest` image tag was an awful 
 Rollback the change:
 
 ```bash
-{{% param cliToolName %}} rollout undo statefulset nginx-cluster --namespace <namespace>
+{{% param cliToolName %}} rollout undo statefulset nginx-cluster --namespace $USER
 ```
 
 
@@ -145,7 +145,7 @@ To avoid issues on your personal progress dashboard, we would advise not to dele
 {{% /alert %}}
 
 ```
-{{% param cliToolName %}} delete statefulset nginx-cluster --namespace <namespace>
+{{% param cliToolName %}} delete statefulset nginx-cluster --namespace $USER
 ```
 
 Further information can be found in the [Kubernetes' StatefulSet documentation](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) or this [published article](https://opensource.com/article/17/2/stateful-applications).

@@ -43,25 +43,25 @@ The parameter `.spec.template.spec.containers[0].image` shows that we use the sa
 Let's create our Job: Create a file named `job_database-dump.yaml` with the content above and execute the following command:
 
 ```bash
-{{% param cliToolName %}} apply -f ./job_database-dump.yaml --namespace <namespace>
+{{% param cliToolName %}} apply -f ./job_database-dump.yaml --namespace $USER
 ```
 
 Check if the Job was successful:
 
 ```bash
-{{% param cliToolName %}} describe jobs/database-dump --namespace <namespace>
+{{% param cliToolName %}} describe jobs/database-dump --namespace $USER
 ```
 
 The executed Pod can be shown as follows:
 
 ```bash
-{{% param cliToolName %}} get pods --namespace <namespace>
+{{% param cliToolName %}} get pods --namespace $USER
 ```
 
 To show all Pods belonging to a Job in a human-readable format, the following command can be used:
 
 ```bash
-{{% param cliToolName %}} get pods --selector=job-name=database-dump --output=go-template="{{range .items}}{{.metadata.name}}{{end}}" --namespace <namespace>
+{{% param cliToolName %}} get pods --selector=job-name=database-dump --output=go-template="{{range .items}}{{.metadata.name}}{{end}}" --namespace $USER
 ```
 
 

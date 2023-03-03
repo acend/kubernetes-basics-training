@@ -47,7 +47,7 @@ spec:
 Now we can apply this with:
 
 ```bash
-{{% param cliToolName %}} apply -f pod_awesome-app.yaml --namespace <namespace>
+{{% param cliToolName %}} apply -f pod_awesome-app.yaml --namespace $USER
 ```
 
 The output should be:
@@ -56,10 +56,10 @@ The output should be:
 pod/awesome-app created
 ```
 
-Use `{{% param cliToolName %}} get pods --namespace <namespace>` in order to show the running Pod:
+Use `{{% param cliToolName %}} get pods --namespace $USER` in order to show the running Pod:
 
 ```bash
-{{% param cliToolName %}} get pods --namespace <namespace>
+{{% param cliToolName %}} get pods --namespace $USER
 ```
 
 Which gives you an output similar to this:
@@ -76,7 +76,7 @@ Have a look at your awesome-app Pod inside the OpenShift web console.
 Now delete the newly created Pod:
 
 ```bash
-{{% param cliToolName %}} delete pod awesome-app --namespace <namespace>
+{{% param cliToolName %}} delete pod awesome-app --namespace $USER
 ```
 
 
@@ -120,7 +120,7 @@ And with this we create our Deployment inside our already created namespace:
 
 
 ```bash
-{{% param cliToolName %}} apply -f deployment_example-web-go.yaml --namespace <namespace>
+{{% param cliToolName %}} apply -f deployment_example-web-go.yaml --namespace $USER
 ```
 
 The output should be:
@@ -140,14 +140,14 @@ The `{{% param cliToolName %}} get -w` command will never end unless you termina
 {{% /alert %}}
 
 ```bash
-{{% param cliToolName %}} get pods -w --namespace <namespace>
+{{% param cliToolName %}} get pods -w --namespace $USER
 ```
 
 {{% alert title="Note" color="info" %}}
 Instead of using the `-w` parameter you can also use the `watch` command which should be available on most Linux distributions:
 
 ```bash
-watch {{% param cliToolName %}} get pods --namespace <namespace>
+watch {{% param cliToolName %}} get pods --namespace $USER
 ```
 
 {{% /alert %}}
@@ -170,7 +170,7 @@ However, the result is the same. The helper commands just simplify the process o
 As an example, let's look at creating above deployment, this time using a helper command instead. If you already created the Deployment using above YAML definition, you don't have to execute this command:
 
 ```yaml
-{{% param cliToolName %}} create deployment example-web-go --image={{% param "images.deployment-image-url" %}} --namespace <namespace>
+{{% param cliToolName %}} create deployment example-web-go --image={{% param "images.deployment-image-url" %}} --namespace $USER
 ```
 
 It's important to know that these helper commands exist.
@@ -183,7 +183,7 @@ Instead, we save the resources' YAML definitions in a Git repository and leave t
 Display the created Deployment using the following command:
 
 ```bash
-{{% param cliToolName %}} get deployments --namespace <namespace>
+{{% param cliToolName %}} get deployments --namespace $USER
 ```
 
 A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) defines the following facts:
@@ -198,13 +198,13 @@ A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deploym
 By using the `-o` (or `--output`) parameter we get a lot more information about the deployment itself. You can choose between YAML and JSON formatting by indicating `-o yaml` or `-o json`. In this training we are going to use YAML, but please feel free to replace `yaml` with `json` if you prefer.
 
 ```bash
-{{% param cliToolName %}} get deployment example-web-go -o yaml --namespace <namespace>
+{{% param cliToolName %}} get deployment example-web-go -o yaml --namespace $USER
 ```
 
 After the image has been pulled, {{% param distroName %}} deploys a Pod according to the Deployment:
 
 ```bash
-{{% param cliToolName %}} get pods --namespace <namespace>
+{{% param cliToolName %}} get pods --namespace $USER
 ```
 
 which gives you an output similar to this:
@@ -247,19 +247,19 @@ Have a look at [OpenShift's documentation](https://docs.openshift.com/container-
 First we clean up the already existing Deployment:
 
 ```bash
-oc delete deployment example-web-go --namespace <namespace>
+oc delete deployment example-web-go --namespace $USER
 ```
 
 We are now ready to create the build and deployment, all in one command:
 
 ```bash
-oc new-app --name example-web-go --labels app=example-web-go --context-dir go/ --strategy docker https://github.com/acend/awesome-apps.git --namespace <namespace>
+oc new-app --name example-web-go --labels app=example-web-go --context-dir go/ --strategy docker https://github.com/acend/awesome-apps.git --namespace $USER
 ```
 
 Let's watch the image's build process:
 
 ```bash
-oc logs bc/example-web-go --follow --namespace <namespace>
+oc logs bc/example-web-go --follow --namespace $USER
 ```
 
 The message `Push successful` signifies the image's successful build and push to OpenShift's internal image.
@@ -275,7 +275,7 @@ A build Pod changes its name with every build.
 Have a look at the new Deployment created by the `oc new-app` command:
 
 ```bash
-oc get deployment example-web-go -o yaml --namespace <namespace>
+oc get deployment example-web-go -o yaml --namespace $USER
 ```
 
 It looks the same as before with the only essential exception that it uses the image we just built instead of the pre-built image from Quay.io:

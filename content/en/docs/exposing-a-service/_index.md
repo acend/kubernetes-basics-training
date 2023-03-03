@@ -26,10 +26,30 @@ You can also use Ingress to expose your Service. Ingress is not a Service type, 
 Traffic routing is controlled by rules defined on the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}} resource. {{% onlyWhenNot openshift %}}An Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}A Route{{% /onlyWhen %}} may be configured to give Services externally reachable URLs, load balance traffic, terminate SSL / TLS, and offer name-based virtual hosting. An Ingress controller is responsible for fulfilling the route, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic.
 
 In order to create {{% onlyWhenNot openshift %}}an Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}a Route{{% /onlyWhen %}}, we first need to create a Service of type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types).
-We're going to do this with the command `{{% param cliToolName %}} expose`:
+
+To create the Service add a new file `svc-web-go.yaml` with the following content:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: example-web-go
+  name: example-web-go
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: example-web-go
+  type: ClusterIP
+```
+
+And then apply the file with:
 
 ```bash
-{{% param cliToolName %}} expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace <namespace>
+{{% param cliToolName %}} apply -f svc-web-go.yaml --namespace $USER
 ```
 
 {{% onlyWhen openshift %}}
@@ -43,7 +63,7 @@ As a consequence, the `oc expose` command above doesn't add anything new but it 
 Let's have a more detailed look at our Service:
 
 ```bash
-{{% param cliToolName %}} get services --namespace <namespace>
+{{% param cliToolName %}} get services --namespace $USER
 ```
 
 Which gives you an output similar to this:
@@ -60,7 +80,7 @@ Service IP (CLUSTER-IP) addresses stay the same for the duration of the Service'
 By executing the following command:
 
 ```bash
-{{% param cliToolName %}} get service example-web-go -o yaml --namespace <namespace>
+{{% param cliToolName %}} get service example-web-go -o yaml --namespace $USER
 ```
 
 You get additional information:
@@ -95,7 +115,7 @@ status:
 The Service's `selector` defines which Pods are being used as Endpoints. This happens based on labels. Look at the configuration of Service and Pod in order to find out what maps to what:
 
 ```bash
-{{% param cliToolName %}} get service example-web-go -o yaml --namespace <namespace>
+{{% param cliToolName %}} get service example-web-go -o yaml --namespace $USER
 ```
 
 ```
@@ -108,11 +128,11 @@ The Service's `selector` defines which Pods are being used as Endpoints. This ha
 With the following command you get details from the Pod:
 
 {{% alert title="Note" color="info" %}}
-First, get all Pod names from your namespace with (`{{% param cliToolName %}} get pods --namespace <namespace>`) and then replace \<pod\> in the following command. If you have installed and configured the bash completion, you can also press the TAB key for autocompletion of the Pod's name.
+First, get all Pod names from your namespace with (`{{% param cliToolName %}} get pods --namespace $USER`) and then replace \<pod\> in the following command. If you have installed and configured the bash completion, you can also press the TAB key for autocompletion of the Pod's name.
 {{% /alert %}}
 
 ```bash
-{{% param cliToolName %}} get pod <pod> -o yaml --namespace <namespace>
+{{% param cliToolName %}} get pod <pod> -o yaml --namespace $USER
 ```
 
 Let's have a look at the label section of the Pod and verify that the Service selector matches the Pod's labels:
@@ -127,7 +147,7 @@ Let's have a look at the label section of the Pod and verify that the Service se
 This link between Service and Pod can also be displayed in an easier fashion with the `{{% param cliToolName %}} describe` command:
 
 ```bash
-{{% param cliToolName %}} describe service example-web-go --namespace <namespace>
+{{% param cliToolName %}} describe service example-web-go --namespace $USER
 ```
 
 ```
@@ -170,7 +190,7 @@ As you see in the resource definition at `spec.rules[0].http.paths[0].backend.se
 Let's create the Ingress resource with:
 
 ```bash
-kubectl apply -f <path to ingress.yaml> --namespace <namespace>
+kubectl apply -f <path to ingress.yaml> --namespace $USER
 ```
 
 {{% onlyWhenNot mobi %}}
@@ -184,7 +204,7 @@ Afterwards, we are able to access our app via our freshly created Ingress at `ht
 {{% onlyWhenNot baloise %}}
 
 ```bash
-oc expose service example-web-go --namespace <namespace>
+oc expose service example-web-go --namespace $USER
 ```
 
 The output should be:
@@ -199,7 +219,7 @@ We are now able to access our app via the freshly created route at `http://examp
 {{% onlyWhen baloise %}}
 
 ```bash
-oc create route edge example-web-go --service example-web-go --namespace <namespace>
+oc create route edge example-web-go --service example-web-go --namespace $USER
 ```
 
 The output should be:
@@ -215,7 +235,7 @@ We are now able to access our app via the freshly created route at `https://exam
 Find your actual app URL by looking at your route (HOST/PORT):
 
 ```bash
-oc get route --namespace <namespace>
+oc get route --namespace $USER
 ```
 
 Browse to the URL and check the output of your app.
@@ -237,22 +257,37 @@ The `<appdomain>` is the default domain under which your applications will be ac
 
 There's a second option to make a Service accessible from outside: Use a [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport).
 
-In order to switch the Service type, we are going to delete the `ClusterIP` Service that we've created before:
+In order to switch the Service type, change the existing `ClusterIP` Service by updating our Service definition in file `svc-web-go.yaml`to:
 
-```bash
-kubectl delete service example-web-go --namespace=<namespace>
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: example-web-go
+  name: example-web-go
+
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: example-web-go
+  type: NodePort
+
 ```
 
-With the following command we create a Service:
+And then apply again with:
 
 ```bash
-kubectl expose deployment example-web-go --type=NodePort --name=example-web-go --port=5000 --target-port=5000 --namespace <namespace>
+{{% param cliToolName %}} apply -f svc-web-go.yaml --namespace $USER
 ```
 
-Let's have a more detailed look at our Service:
+Let's have a more detailed look at our new `NodePort` Service:
 
 ```bash
-kubectl get services --namespace <namespace>
+{{% param cliToolName %}} get services --namespace $USER
 ```
 
 Which gives you an output similar to this:
@@ -294,17 +329,17 @@ lab-3   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.148   <no
 Have a closer look at the resources created in your namespace `<namespace>` with the following commands and try to understand them:
 
 ```bash
-{{% param cliToolName %}} describe namespace <namespace>
+{{% param cliToolName %}} describe namespace $USER
 ```
 
 ```bash
-{{% param cliToolName %}} get all --namespace <namespace>
+{{% param cliToolName %}} get all --namespace $USER
 ```
 
 ```bash
-{{% param cliToolName %}} describe <resource> <name> --namespace <namespace>
+{{% param cliToolName %}} describe <resource> <name> --namespace $USER
 ```
 
 ```bash
-{{% param cliToolName %}} get <resource> <name> -o yaml --namespace <namespace>
+{{% param cliToolName %}} get <resource> <name> -o yaml --namespace $USER
 ```

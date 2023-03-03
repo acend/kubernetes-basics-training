@@ -24,7 +24,7 @@ Create a new pod by using this example:
 You can see the different value entries in the 'securityContext' section, let's figure how what do they do. So create the pod and connect into the shell:
 
 ```bash
-kubectl exec -it security-context-demo --namespace <namespace> -- sh
+kubectl exec -it security-context-demo --namespace $USER -- sh
 ```
 
 In the container run 'ps' to get a list of all running processes. The output shows, that the processes are running with the user 1000, which is the value from 'runAsUser':

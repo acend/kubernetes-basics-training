@@ -37,13 +37,13 @@ Prepend your command with `MSYS_NO_PATHCONV=1` if the resulting mount path was m
 
 {{% onlyWhenNot baloise %}}
 ```bash
-oc set volume dc/mariadb --add --name=mariadb-data --claim-name=mariadb-data --type persistentVolumeClaim --mount-path=/var/lib/mysql --claim-size=1G --overwrite --namespace <namespace>
+oc set volume dc/mariadb --add --name=mariadb-data --claim-name=mariadb-data --type persistentVolumeClaim --mount-path=/var/lib/mysql --claim-size=1G --overwrite --namespace $USER
 ```
 {{% /onlyWhenNot %}}
 
 {{% onlyWhen baloise %}}
 ```bash
-oc set volume deploy/mariadb --add --name=mariadb-data --claim-name=mariadb-data --type persistentVolumeClaim --mount-path=/var/lib/mysql --claim-size=1G --overwrite --namespace <namespace>
+oc set volume deploy/mariadb --add --name=mariadb-data --claim-name=mariadb-data --type persistentVolumeClaim --mount-path=/var/lib/mysql --claim-size=1G --overwrite --namespace $USER
 ```
 {{% /onlyWhen %}}
 
@@ -64,13 +64,13 @@ Save it to `pvc.yaml`:
 And create it with:
 
 ```bash
-kubectl apply -f pvc.yaml --namespace <namespace>
+kubectl apply -f pvc.yaml --namespace $USER
 ```
 
 We now have to insert the volume definition in the correct section of the MariaDB deployment:
 
 ```bash
-kubectl edit deployment mariadb --namespace <namespace>
+kubectl edit deployment mariadb --namespace $USER
 ```
 
 Add both parts `volumeMounts` and `volumes`
@@ -107,13 +107,13 @@ We need to redeploy the application pod, our application automatically creates t
 If you want to force a redeployment of a Pod, you can use this:
 
 ```bash
-{{% param cliToolName %}} rollout restart deployment example-web-app --namespace <namespace>
+{{% param cliToolName %}} rollout restart deployment example-web-app --namespace $USER
 ```
 
 Using the command `{{% param cliToolName %}} get persistentvolumeclaim` or `{{% param cliToolName %}} get pvc`, we can display the freshly created PersistentVolumeClaim:
 
 ```bash
-{{% param cliToolName %}} get pvc --namespace <namespace>
+{{% param cliToolName %}} get pvc --namespace $USER
 ```
 
 Which gives you an output similar to this:
@@ -132,7 +132,7 @@ If the container is not able to start it is the right moment to debug it!
 Check the logs from the container and search for the error.
 
 ```bash
-{{% param cliToolName %}} logs mariadb-f845ccdb7-hf2x5 --namespace <namespace>
+{{% param cliToolName %}} logs mariadb-f845ccdb7-hf2x5 --namespace $USER
 ```
 
 {{% alert title="Note" color="info" %}}

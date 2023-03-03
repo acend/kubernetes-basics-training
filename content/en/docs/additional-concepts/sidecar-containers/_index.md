@@ -28,7 +28,7 @@ In {{<link "persistent-storage">}} you created a MariaDB deployment. In this tas
 Change the existing `mariadb` Deployment using:
 
 ```bash
-kubectl edit deployment mariadb --namespace <namespace>
+kubectl edit deployment mariadb --namespace $USER
 ```
 
 And add a new (sidecar) container into your Deployment:
@@ -38,7 +38,7 @@ And add a new (sidecar) container into your Deployment:
 Change the existing `mariadb` DeploymentConfig using:
 
 ```bash
-oc edit dc mariadb --namespace <namespace>
+oc edit dc mariadb --namespace $USER
 ```
 
 {{% /onlyWhenNot %}}
@@ -46,7 +46,7 @@ oc edit dc mariadb --namespace <namespace>
 Change the existing `mariadb` Deployment using:
 
 ```bash
-oc edit deploy mariadb --namespace <namespace>
+oc edit deploy mariadb --namespace $USER
 ```
 
 {{% /onlyWhen %}}
@@ -66,7 +66,7 @@ And add a new (sidecar) container to it:
 Your Pod now has two running containers. Verify this with:
 
 ```bash
-{{% param cliToolName %}} get pod --namespace <namespace>
+{{% param cliToolName %}} get pod --namespace $USER
 ```
 
 The output should look similar to this:
@@ -81,7 +81,7 @@ Note the `READY` column which shows you 2 ready containers.
 You can get the logs from the mysqld-exporter with:
 
 ```bash
-{{% param cliToolName %}} logs <pod> -c mysqld-exporter --namespace <namespace>
+{{% param cliToolName %}} logs <pod> -c mysqld-exporter --namespace $USER
 ```
 
 Which gives you an output similar to this:
@@ -102,7 +102,7 @@ time="2020-05-10T11:31:02Z" level=info msg="Listening on :9104" source="mysqld_e
 By using the `port-forward` subcommand, you can even have a look at the Prometheus metrics using your browser:
 
 ```bash
-{{% param cliToolName %}} port-forward <pod> 9104 --namespace <namespace>
+{{% param cliToolName %}} port-forward <pod> 9104 --namespace $USER
 ```
 
 Now open <http://localhost:9104/metrics> in your browser.

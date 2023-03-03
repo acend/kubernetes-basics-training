@@ -51,14 +51,14 @@ spec:
 {{% /onlyWhen %}}
 
 ```bash
-{{% param cliToolName %}} apply -f deployment_example-web-app.yaml --namespace <namespace>
+{{% param cliToolName %}} apply -f deployment_example-web-app.yaml --namespace $USER
 ```
 
 If we want to scale our example application, we have to tell the Deployment that we want to have three running replicas instead of one.
 Let's have a closer look at the existing ReplicaSet:
 
 ```bash
-{{% param cliToolName %}} get replicasets --namespace <namespace>
+{{% param cliToolName %}} get replicasets --namespace $USER
 ```
 
 Which will give you an output similar to this:
@@ -71,7 +71,7 @@ example-web-app-86d9d584f8      1         1         1       110s
 Or for even more details:
 
 ```bash
-{{% param cliToolName %}} get replicaset <replicaset> -o yaml --namespace <namespace>
+{{% param cliToolName %}} get replicaset <replicaset> -o yaml --namespace $USER
 ```
 
 The ReplicaSet shows how many instances of a Pod are desired, current and ready.
@@ -79,13 +79,13 @@ The ReplicaSet shows how many instances of a Pod are desired, current and ready.
 Now we scale our application to three replicas:
 
 ```bash
-{{% param cliToolName %}} scale deployment example-web-app --replicas=3 --namespace <namespace>
+{{% param cliToolName %}} scale deployment example-web-app --replicas=3 --namespace $USER
 ```
 
 Check the number of desired, current and ready replicas:
 
 ```bash
-{{% param cliToolName %}} get replicasets --namespace <namespace>
+{{% param cliToolName %}} get replicasets --namespace $USER
 ```
 
 ```
@@ -97,7 +97,7 @@ example-web-app-86d9d584f8      3         3         3       4m33s
 Look at how many Pods there are:
 
 ```bash
-{{% param cliToolName %}} get pods --namespace <namespace>
+{{% param cliToolName %}} get pods --namespace $USER
 ```
 
 Which gives you an output similar to this:
@@ -127,10 +127,10 @@ OpenShift supports [horizontal](https://docs.openshift.com/container-platform/la
 Now we create a new Service of the type `ClusterIP`:
 
 ```bash
-kubectl expose deployment example-web-app --type="ClusterIP" --name="example-web-app" --port={{% param "images.training-image-port" %}} --target-port={{% param "images.training-image-port" %}} --namespace <namespace>
+{{% param cliToolName %}} expose deployment example-web-app --type="ClusterIP" --name="example-web-app" --port={{% param "images.training-image-port" %}} --target-port={{% param "images.training-image-port" %}} --namespace $USER
 ```
 
-and we need to create an Ingress to access the application:
+and then we add the Ingress to access our application:
 
 {{% onlyWhenNot customer %}}
 {{< readfile file="/content/en/docs/scaling/ingress.template.yaml" code="true" lang="yaml" >}}
@@ -140,7 +140,11 @@ and we need to create an Ingress to access the application:
 {{< readfile file="/content/en/docs/scaling/ingress-mobi.template.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
 
-Apply this Ingress definition using, e.g., `kubectl create -f ingress.yaml --namespace <namespace>`
+Apply this Ingress definition using, e.g.:
+
+```yaml
+{{% param cliToolName %}} create -f ingress.yaml --namespace $USER
+```
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
@@ -149,7 +153,7 @@ Now we expose our application to the internet by creating a service and a route.
 First the Service:
 
 ```bash
-oc expose deployment example-web-app --name="example-web-app" --port={{% param "images.training-image-port" %}} --namespace <namespace>
+oc expose deployment example-web-app --name="example-web-app" --port={{% param "images.training-image-port" %}} --namespace $USER
 ```
 
 Then the Route:
@@ -157,14 +161,14 @@ Then the Route:
 {{% onlyWhenNot baloise %}}
 
 ```bash
-oc expose service example-web-app --namespace <namespace>
+oc expose service example-web-app --namespace $USER
 ```
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen baloise %}}
 
 ```bash
-oc create route edge example-web-app --service example-web-app --namespace <namespace>
+oc create route edge example-web-app --service example-web-app --namespace $USER
 ```
 
 {{% /onlyWhen %}}
@@ -174,7 +178,7 @@ oc create route edge example-web-app --service example-web-app --namespace <name
 Let's look at our Service. We should see all three corresponding Endpoints:
 
 ```bash
-{{% param cliToolName %}} describe service example-web-app --namespace <namespace>
+{{% param cliToolName %}} describe service example-web-app --namespace $USER
 ```
 
 {{% onlyWhenNot openshift %}}
@@ -238,7 +242,7 @@ Linux:
 {{% onlyWhenNot baloise %}}
 
 ```bash
-URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace <namespace>)
+URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace $USER)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
@@ -246,7 +250,7 @@ while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N";
 {{% onlyWhen baloise %}}
 
 ```bash
-URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace <namespace>)
+URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace $USER)
 while true; do sleep 1; curl -s https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
@@ -327,7 +331,7 @@ The requests get distributed amongst the three Pods. As soon as you scale down t
 Let's make another test: What happens if you start a new Deployment while our request generator is still running?
 
 ```bash
-{{% param cliToolName %}} rollout restart deployment example-web-app --namespace <namespace>
+{{% param cliToolName %}} rollout restart deployment example-web-app --namespace $USER
 ```
 
 During a short period we won't get a response:
@@ -415,7 +419,7 @@ In our deployment configuration inside the rolling update strategy section, we d
 You can directly edit the deployment (or any resource) with:
 
 ```bash
-kubectl edit deployment example-web-app --namespace <namespace>
+kubectl edit deployment example-web-app --namespace $USER
 ```
 
 {{% alert title="Note" color="info" %}}
@@ -488,7 +492,7 @@ containers:
 Define the readiness probe on the Deployment using the following command:
 
 ```bash
-oc set probe deploy/example-web-app --readiness --get-url=http://:{{% param "images.training-image-probe-port" %}}/health --initial-delay-seconds=10 --timeout-seconds=1 --namespace <namespace>
+oc set probe deploy/example-web-app --readiness --get-url=http://:{{% param "images.training-image-probe-port" %}}/health --initial-delay-seconds=10 --timeout-seconds=1 --namespace $USER
 ```
 
 The command above results in the following `readinessProbe` snippet being inserted into the Deployment:
@@ -520,7 +524,7 @@ Set up the loop again to periodically check the application's response (you don'
 {{% onlyWhenNot baloise %}}
 
 ```bash
-URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace <namespace>)
+URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace $USER)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
@@ -528,7 +532,7 @@ while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N";
 {{% onlyWhen baloise %}}
 
 ```bash
-URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace <namespace>)
+URL=$(oc get routes example-web-app -o go-template="{{ .spec.host }}" --namespace $USER)
 while true; do sleep 1; curl -s https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
@@ -573,7 +577,7 @@ while(1) {
 Start a new deployment by editing it (the so-called _ConfigChange_ trigger creates the new Deployment automatically):
 
 ```bash
-kubectl patch deployment example-web-app -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
+kubectl patch deployment example-web-app -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace $USER
 ```
 
 {{% /onlyWhenNot %}}
@@ -581,7 +585,7 @@ kubectl patch deployment example-web-app -p "{\"spec\":{\"template\":{\"metadata
 Start a new deployment:
 
 ```bash
-oc rollout restart deployment example-web-app --namespace <namespace>
+oc rollout restart deployment example-web-app --namespace $USER
 ```
 
 {{% /onlyWhen %}}
@@ -596,13 +600,13 @@ Look for a running Pod (status `RUNNING`) that you can bear to kill via `{{% par
 Show all Pods and watch for changes:
 
 ```bash
-{{% param cliToolName %}} get pods -w --namespace <namespace>
+{{% param cliToolName %}} get pods -w --namespace $USER
 ```
 
 Now delete a Pod (in another terminal) with the following command:
 
 ```bash
-{{% param cliToolName %}} delete pod <pod> --namespace <namespace>
+{{% param cliToolName %}} delete pod <pod> --namespace $USER
 ```
 
 Observe how {{% param distroName %}} instantly creates a new Pod in order to fulfill the desired number of running instances.
