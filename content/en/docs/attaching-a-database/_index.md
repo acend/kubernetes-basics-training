@@ -284,6 +284,11 @@ Depending on the shell you use, the following `set env` command works but insert
 
 ```bash
 {{% param cliToolName %}} set env --from=secret/mariadb --prefix=MYSQL_ deploy/example-web-app --namespace $USER
+```
+
+and
+
+```bash
 {{% param cliToolName %}} set env deploy/example-web-app MYSQL_URI='mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)' --namespace $USER
 ```
 
