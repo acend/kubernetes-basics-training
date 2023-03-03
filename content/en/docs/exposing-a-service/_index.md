@@ -29,22 +29,7 @@ In order to create {{% onlyWhenNot openshift %}}an Ingress{{% /onlyWhenNot %}}{{
 
 To create the Service add a new file `svc-web-go.yaml` with the following content:
 
-```yaml
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: example-web-go
-  name: example-web-go
-spec:
-  ports:
-  - port: 5000
-    protocol: TCP
-    targetPort: 5000
-  selector:
-    app: example-web-go
-  type: ClusterIP
-```
+{{< readfile file="/content/en/docs/exposing-a-service/svc-web-go.yaml" code="true" lang="yaml" >}}
 
 And then apply the file with:
 

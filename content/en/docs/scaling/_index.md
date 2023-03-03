@@ -50,6 +50,8 @@ spec:
 {{< readfile file="/content/en/docs/scaling/example-web-app-deployment-java.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
 
+and then apply with:
+
 ```bash
 {{% param cliToolName %}} apply -f deployment_example-web-app.yaml --namespace $USER
 ```
@@ -140,13 +142,17 @@ spec:
 ## Check for uninterruptible Deployments
 
 {{% onlyWhenNot openshift %}}
-Now we create a new Service of the type `ClusterIP`:
+Now we create a new Service of the type `ClusterIP`. Create a new file `svc-example-app.yaml` with the following content:
+
+{{< readfile file="/content/en/docs/exposing-a-service/svc-example-app.yaml" code="true" lang="yaml" >}}
+
+and apply the file with:
 
 ```bash
-{{% param cliToolName %}} expose deployment example-web-app --type="ClusterIP" --name="example-web-app" --port={{% param "images.training-image-port" %}} --target-port={{% param "images.training-image-port" %}} --namespace $USER
+{{% param cliToolName %}} apply -f svc-example-app.yaml --namespace $USER
 ```
 
-and then we add the Ingress to access our application:
+Then we add the Ingress to access our application:
 
 {{% onlyWhenNot customer %}}
 {{< readfile file="/content/en/docs/scaling/ingress.template.yaml" code="true" lang="yaml" >}}
@@ -159,7 +165,7 @@ and then we add the Ingress to access our application:
 Apply this Ingress definition using, e.g.:
 
 ```yaml
-{{% param cliToolName %}} create -f ingress.yaml --namespace $USER
+{{% param cliToolName %}} apply -f ingress.yaml --namespace $USER
 ```
 
 {{% /onlyWhenNot %}}
