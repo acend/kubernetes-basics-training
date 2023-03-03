@@ -190,7 +190,7 @@ As you see in the resource definition at `spec.rules[0].http.paths[0].backend.se
 Let's create the Ingress resource with:
 
 ```bash
-kubectl apply -f <path to ingress.yaml> --namespace $USER
+kubectl apply -f ingress.yaml --namespace $USER
 ```
 
 {{% onlyWhenNot mobi %}}
