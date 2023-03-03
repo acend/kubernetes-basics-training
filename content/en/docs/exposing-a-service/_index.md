@@ -266,7 +266,6 @@ metadata:
   labels:
     app: example-web-go
   name: example-web-go
-
 spec:
   ports:
   - port: 5000
