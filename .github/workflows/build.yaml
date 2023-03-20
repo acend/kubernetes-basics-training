@@ -43,23 +43,6 @@ jobs:
           tags: |
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}
       -
-        name: Run vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}'
-          format: 'table'
-          output: 'trivy-results.txt'
-          exit-code: '0'
-          ignore-unfixed: true
-          vuln-type: 'os'
-          severity: 'CRITICAL,HIGH'
-      -
-        name: Archive vulnerability scan results
-        uses: actions/upload-artifact@v3
-        with:
-          name: trivy-results-build
-          path: trivy-results.txt
-      -
         name: Build Mobi Version
         uses: docker/build-push-action@v4
         with:
@@ -134,7 +117,7 @@ jobs:
       -
         name: Create KUBECONFIG
         env:
-          KUBE_CONFIG: '${{ secrets.KUBECONFIG_TEST }}'
+          KUBE_CONFIG: '${{ secrets.KUBECONFIG_K8S_ACEND_TEST }}'
         run: |
           mkdir -p $HOME/.kube
           echo "$KUBE_CONFIG" > $HOME/.kube/config
@@ -167,7 +150,7 @@ jobs:
           message: |
            PR environments:
            * [acend](https://kubernetes-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch)
-           * [Mobi](https://kubernetes-basics-mobi-pr-${{ github.event.pull_request.number }}.k8s.puzzle.ch)
+           * [Mobi](https://kubernetes-basics-mobi-pr-${{ github.event.pull_request.number }}.training.puzzle.ch)
            * [OpenShift](https://openshift-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch)
            * [OpenShift Baloise](https://openshift-basics-baloise-pr-${{ github.event.pull_request.number }}.training.acend.ch)
            * [OpenShift SBB](https://openshift-basics-sbb-pr-${{ github.event.pull_request.number }}.training.acend.ch)

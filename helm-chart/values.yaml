@@ -3,77 +3,67 @@ acendTraining:
   deployments:
     - 
       name: acend
-      replicaCount: 1
+      replicaCount: 2
       image:
         repository: quay.io/acend/kubernetes-basics-training
         pullPolicy: Always
         tag: ""
         tagsuffix: ""
       ingress:
-        annotations:
-          kubernetes.io/ingress.class: nginx-public
         secretOverride: acend-wildcard
         appname: kubernetes-basics
         domain: training.acend.ch
     - 
       name: mobi
-      replicaCount: 1
+      replicaCount: 2
       image:
         repository: quay.io/acend/kubernetes-basics-training
         pullPolicy: Always
         tag: ""
         tagsuffix: "-mobi"
       ingress:
-        annotations:
-          kubernetes.io/ingress.class: nginx-public
-        useDefaultSecret: true
+        secretOverride: acend-wildcard
         appname: kubernetes-basics-mobi
-        domain: k8s.puzzle.ch
+        domain: training.puzzle.ch
     -
       name: openshift
-      replicaCount: 1
+      replicaCount: 2
       image:
         repository: quay.io/acend/kubernetes-basics-training
         pullPolicy: Always
         tag: ""
         tagsuffix: "-openshift"
       ingress:
-        annotations:
-          kubernetes.io/ingress.class: nginx-public
         secretOverride: acend-wildcard
         appname: openshift-basics
         domain: training.acend.ch
     -
       name: baloise
-      replicaCount: 1
+      replicaCount: 2
       image:
         repository: quay.io/acend/kubernetes-basics-training
         pullPolicy: Always
         tag: ""
         tagsuffix: "-baloise"
       ingress:
-        annotations:
-          kubernetes.io/ingress.class: nginx-public
         secretOverride: acend-wildcard
         appname: openshift-basics-baloise
         domain: training.acend.ch
     -
       name: sbb
-      replicaCount: 1
+      replicaCount: 2
       image:
         repository: quay.io/acend/kubernetes-basics-training
         pullPolicy: Always
         tag: ""
         tagsuffix: "-sbb"
       ingress:
-        annotations:
-          kubernetes.io/ingress.class: nginx-public
         secretOverride: acend-wildcard
         appname: openshift-basics-sbb
         domain: training.acend.ch
     -
       name: techlab
-      replicaCount: 1
+      replicaCount: 2
       image:
         repository: quay.io/appuio/techlab
         pullPolicy: Always
@@ -81,9 +71,8 @@ acendTraining:
         tagsuffix: ""
       ingress:
         annotations:
-          kubernetes.io/ingress.class: nginx-public
           kubernetes.io/tls-acme: "true"
-          cert-manager.io/cluster-issuer: acend-letsencrypt
+          cert-manager.io/cluster-issuer: letsencrypt-prod
         appname: techlab
         domain: training.acend.ch
         domainmain: appuio.ch
