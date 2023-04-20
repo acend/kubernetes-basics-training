@@ -241,7 +241,7 @@ The `<appdomain>` is the default domain under which your applications will be ac
 ## {{% task %}} Expose as NodePort
 
 {{% alert title="Note" color="info" %}}
-This is a advanced lab, feel free to skip this. NodePorts are normaly not used for http based applications as we use the Layer 7 based Ingress resource. For non-http based application, a NodePort might be a suitable alternative.
+This is an advanced lab, so feel free to skip this. NodePorts are usually not used for http-based applications as we use the layer 7-based Ingress resource. Only for non-http based applications, a NodePort might be a suitable alternative.
 {{% /alert %}}
 
 There's a second option to make a Service accessible from outside: Use a [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport).

@@ -127,21 +127,21 @@ OpenShift supports [horizontal](https://docs.openshift.com/container-platform/la
 {{% /alert %}}
 {{% /onlyWhen %}}
 
-As we changed the number of replicas with the `{{% param cliToolName %}} scale deployment` command, the `example-web-app` Deployment differs now from your local `deployment_example-web-app.yaml` file. Change your local `deployment_example-web-app.yaml` file to match the current number of replicas and update the value `replicas` to `3`:
+As we changed the number of replicas with the `{{% param cliToolName %}} scale deployment` command, the `example-web-app` Deployment now differs from your local `deployment_example-web-app.yaml` file. Change your local `deployment_example-web-app.yaml` file to match the current number of replicas and update the value `replicas` to `3`:
 
-```yaml
+{{< highlight YAML "hl_lines=7" >}}
 [...]
 metadata:
   labels:
     app: example-web-app
   name: example-web-app
 spec:
-  replicas: 3 # <- this line changes
+  replicas: 3
   selector:
     matchLabels:
       app: example-web-app
 [...]
-```
+{{< /highlight >}}
 
 
 ## Check for uninterruptible Deployments
