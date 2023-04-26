@@ -309,7 +309,7 @@ spec:
 ...
 ```
 
-The dash before `image: ` defines the beginning of a new container definition. The following specifications should be inserted into this container definition:
+The dash before `image:` defines the beginning of a new container definition. The following specifications should be inserted into this container definition:
 
 ```yaml
         env:
