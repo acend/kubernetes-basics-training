@@ -28,20 +28,20 @@ Edit your existing `example-web-app` Deployment with:
 {{% param cliToolName %}} edit deployment example-web-app --namespace <namespace>
 ```
 
-Add the init container into the existing Deployment (same indentation level as containers):
+Add the init container into the existing Deployment under `.spec.template.spec`:
 
 ```yaml
 ...
-spec:
-  initContainers:
-    - name: wait-for-db
-      image: {{% param "images.busybox" %}}
-      command:
-        [
-          "sh",
-          "-c",
-          "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done",
-        ]
+    spec:
+      initContainers:
+        - name: wait-for-db
+          image: {{% param "images.busybox" %}}
+          command:
+            [
+              "sh",
+              "-c",
+              "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done",
+            ]
 ...
 ```
 
