@@ -309,32 +309,32 @@ spec:
 ...
 ```
 
-The dash defines the beginning of a separate container definition. The following specifications should be inserted into this container definition:
+The dash before `image:` defines the beginning of a new container definition. The following specifications should be inserted into this container definition:
 
 ```yaml
-- env:
-    - name: MYSQL_DATABASE_NAME
-      valueFrom:
-        secretKeyRef:
-          key: database-name
-          name: mariadb
-    - name: MYSQL_DATABASE_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          key: database-password
-          name: mariadb
-    - name: MYSQL_DATABASE_ROOT_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          key: database-root-password
-          name: mariadb
-    - name: MYSQL_DATABASE_USER
-      valueFrom:
-        secretKeyRef:
-          key: database-user
-          name: mariadb
-    - name: MYSQL_URI
-      value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
+        env:
+          - name: MYSQL_DATABASE_NAME
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: mariadb
+          - name: MYSQL_DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: mariadb
+          - name: MYSQL_DATABASE_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-root-password
+                name: mariadb
+          - name: MYSQL_DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: mariadb
+          - name: MYSQL_URI
+            value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
 ```
 
 Your file should now look like this:
@@ -342,7 +342,11 @@ Your file should now look like this:
 ```
       ...
       containers:
-      - env:
+      - image: {{% param "images.training-image-url" %}}
+        imagePullPolicy: Always
+        name: example-web-app
+        ...
+        env:
         - name: MYSQL_DATABASE_NAME
           valueFrom:
             secretKeyRef:
@@ -365,10 +369,6 @@ Your file should now look like this:
               name: mariadb
         - name: MYSQL_URI
           value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
-        image: {{% param "images.training-image-url" %}}
-        imagePullPolicy: Always
-        name: example-web-app
-        ...
 ```
 
 {{% /onlyWhenNot %}}
@@ -382,7 +382,11 @@ Add the environment variables by directly editing the Deployment:
 ```yaml
       ...
       containers:
-      - env:
+      - image: {{% param "images.training-image-url" %}}
+        imagePullPolicy: Always
+        name: example-web-app
+        ...
+        env:
         - name: SPRING_DATASOURCE_DATABASE_NAME
           valueFrom:
             secretKeyRef:
@@ -402,9 +406,6 @@ Add the environment variables by directly editing the Deployment:
           value: com.mysql.cj.jdbc.Driver
         - name: SPRING_DATASOURCE_URL
           value: jdbc:mysql://mariadb/$(SPRING_DATASOURCE_DATABASE_NAME)?autoReconnect=true
-        image: {{% param "images.training-image-url" %}}
-        imagePullPolicy: Always
-        name: example-web-app
         ...
 ```
 
