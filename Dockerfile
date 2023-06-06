@@ -1,4 +1,4 @@
-FROM docker.io/klakegg/hugo:0.109.0-ext-ubuntu AS builder
+FROM docker.io/klakegg/hugo:0.111.3-ext-ubuntu AS builder
 
 ARG TRAINING_HUGO_ENV=default
 
