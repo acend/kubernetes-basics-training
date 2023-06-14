@@ -530,11 +530,14 @@ select * from hello;
 
 {{% alert title="Note" color="info" %}}
 If your database is empty you can generate some hellos by visiting the Service you exposed in lab {{<link "exposing-a-service" >}} task "Expose the Service".
+
+{{% onlyWhen openshift %}}
 You can find your app URL by looking at your route:
 
 ```bash
 oc get route --namespace <namespace>
 ```
+{{% /onlyWhen %}}
 {{% /alert %}}
 
 
@@ -600,6 +603,7 @@ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST $MYSQL_DATABASE < 
 
 Check your app to see the imported "Hellos".
 
+{{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}
 You can find your app URL by looking at your route:
 
@@ -609,6 +613,8 @@ oc get route --namespace <namespace>
 {{% /alert %}}
 
 {{% alert title="Note" color="info" %}}
+{{% /onlyWhen %}}
+
 A database dump can be created as follows:
 
 {{% onlyWhenNot openshift %}}
