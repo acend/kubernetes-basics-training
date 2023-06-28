@@ -602,7 +602,7 @@ oc get route --namespace <namespace>
 {{% /alert %}}
 {{% /onlyWhen %}}
 
-{{% onlyWhennot openshift %}}
+{{% onlyWhenNot openshift %}}
 
 {{% alert title="Note" color="info" %}}
 You can find your app URL by looking at your ingress:
@@ -611,7 +611,7 @@ You can find your app URL by looking at your ingress:
 kubectl get ingress --namespace <namespace>
 ```
 {{% /alert %}}
-{{% /onlyWhennot %}}
+{{% /onlyWhenNot %}}
 
 {{% alert title="Note" color="info" %}}
 A database dump can be created as follows:
