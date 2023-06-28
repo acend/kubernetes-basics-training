@@ -528,15 +528,6 @@ Show any entered "Hellos" with:
 select * from hello;
 ```
 
-{{% alert title="Note" color="info" %}}
-If your database is empty you can generate some hellos by visiting the Service you exposed in lab {{<link "exposing-a-service" >}} task "Expose the Service".
-You can find your app URL by looking at your route:
-
-```bash
-oc get route --namespace <namespace>
-```
-{{% /alert %}}
-
 
 ## {{% task %}} Import a database dump
 
@@ -600,6 +591,8 @@ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST $MYSQL_DATABASE < 
 
 Check your app to see the imported "Hellos".
 
+{{% onlyWhen openshift %}}
+
 {{% alert title="Note" color="info" %}}
 You can find your app URL by looking at your route:
 
@@ -607,6 +600,18 @@ You can find your app URL by looking at your route:
 oc get route --namespace <namespace>
 ```
 {{% /alert %}}
+{{% /onlyWhen %}}
+
+{{% onlyWhenNot openshift %}}
+
+{{% alert title="Note" color="info" %}}
+You can find your app URL by looking at your ingress:
+
+```bash
+kubectl get ingress --namespace <namespace>
+```
+{{% /alert %}}
+{{% /onlyWhenNot %}}
 
 {{% alert title="Note" color="info" %}}
 A database dump can be created as follows:
