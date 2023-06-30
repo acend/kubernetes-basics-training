@@ -152,7 +152,7 @@ The parameter `-f` allows you to follow the log file (same as `tail -f`). With t
 When a Pod is in state `CrashLoopBackOff` it means that although multiple attempts have been made, no container inside the Pod could be started successfully. Now even though no container might be running at the moment the `{{% param cliToolName %}} logs` command is executed, there is a way to view the logs the application might have generated. This is achieved using the `-p` or `--previous` parameter.
 
 {{% alert title="Note" color="info" %}}
-This command will only work on pods that had container restarts. You can check the `RESTARTS` column in the `oc get pods` output if this is the case.
+This command will only work on pods that had container restarts. You can check the `RESTARTS` column in the `{{% param cliToolName %}} get pods` output if this is the case.
 {{% /alert %}}
 
 ```bash
