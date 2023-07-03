@@ -33,7 +33,7 @@ Change the existing `mariadb` Deployment by first editing your local `mariadb.ya
 Change the existing `mariadb` DeploymentConfig using:
 
 ```bash
-oc edit dc mariadb --namespace $USER
+oc edit dc mariadb --namespace <namespace>
 ```
 
 {{% /onlyWhenNot %}}
@@ -41,7 +41,7 @@ oc edit dc mariadb --namespace $USER
 Change the existing `mariadb` Deployment using:
 
 ```bash
-oc edit deploy mariadb --namespace $USER
+oc edit deploy mariadb --namespace <namespace>
 ```
 
 {{% /onlyWhen %}}
@@ -62,15 +62,14 @@ And add a new (sidecar) container to it:
 and then apply the change with:
 
 ```bash
-{{% param cliToolName %}} apply -f mariadb.yaml --namespace $USER
+{{% param cliToolName %}} apply -f mariadb.yaml --namespace <namespace>
 ```
 {{% /onlyWhenNot %}}
 
 Your Pod now has two running containers. Verify this with:
 
 ```bash
-{{% param cliToolName %}} get pod --namespace $USER
-```
+{{% param cliToolName %}} get pod --namespace <namespace>
 
 The output should look similar to this:
 
@@ -84,7 +83,7 @@ Note the `READY` column which shows you 2 ready containers.
 You can get the logs from the mysqld-exporter with:
 
 ```bash
-{{% param cliToolName %}} logs <pod> -c mysqld-exporter --namespace $USER
+{{% param cliToolName %}} logs <pod> -c mysqld-exporter --namespace <namespace>
 ```
 
 Which gives you an output similar to this:
@@ -105,7 +104,7 @@ time="2020-05-10T11:31:02Z" level=info msg="Listening on :9104" source="mysqld_e
 By using the `port-forward` subcommand, you can even have a look at the Prometheus metrics:
 
 ```bash
-{{% param cliToolName %}} port-forward <pod> 9104 --namespace $USER
+{{% param cliToolName %}} port-forward <pod> 9104 --namespace <namespace>
 ```
 
 And then use `curl` to check the mysqld_exporter metrics with:

@@ -34,7 +34,7 @@ To create the Service add a new file `svc-web-go.yaml` with the following conten
 And then apply the file with:
 
 ```bash
-{{% param cliToolName %}} apply -f svc-web-go.yaml --namespace $USER
+{{% param cliToolName %}} apply -f svc-web-go.yaml --namespace <namespace>
 ```
 
 {{% onlyWhen openshift %}}
@@ -48,7 +48,7 @@ As a consequence, the `oc expose` command above doesn't add anything new but it 
 Let's have a more detailed look at our Service:
 
 ```bash
-{{% param cliToolName %}} get services --namespace $USER
+{{% param cliToolName %}} get services --namespace <namespace>
 ```
 
 Which gives you an output similar to this:
@@ -65,7 +65,7 @@ Service IP (CLUSTER-IP) addresses stay the same for the duration of the Service'
 By executing the following command:
 
 ```bash
-{{% param cliToolName %}} get service example-web-go -o yaml --namespace $USER
+{{% param cliToolName %}} get service example-web-go -o yaml --namespace <namespace>
 ```
 
 You get additional information:
@@ -100,7 +100,7 @@ status:
 The Service's `selector` defines which Pods are being used as Endpoints. This happens based on labels. Look at the configuration of Service and Pod in order to find out what maps to what:
 
 ```bash
-{{% param cliToolName %}} get service example-web-go -o yaml --namespace $USER
+{{% param cliToolName %}} get service example-web-go -o yaml --namespace <namespace>
 ```
 
 ```
@@ -113,11 +113,11 @@ The Service's `selector` defines which Pods are being used as Endpoints. This ha
 With the following command you get details from the Pod:
 
 {{% alert title="Note" color="info" %}}
-First, get all Pod names from your namespace with (`{{% param cliToolName %}} get pods --namespace $USER`) and then replace \<pod\> in the following command. If you have installed and configured the bash completion, you can also press the TAB key for autocompletion of the Pod's name.
+First, get all Pod names from your namespace with (`{{% param cliToolName %}} get pods --namespace <namespace>`) and then replace \<pod\> in the following command. If you have installed and configured the bash completion, you can also press the TAB key for autocompletion of the Pod's name.
 {{% /alert %}}
 
 ```bash
-{{% param cliToolName %}} get pod <pod> -o yaml --namespace $USER
+{{% param cliToolName %}} get pod <pod> -o yaml --namespace <namespace>
 ```
 
 Let's have a look at the label section of the Pod and verify that the Service selector matches the Pod's labels:
@@ -132,7 +132,7 @@ Let's have a look at the label section of the Pod and verify that the Service se
 This link between Service and Pod can also be displayed in an easier fashion with the `{{% param cliToolName %}} describe` command:
 
 ```bash
-{{% param cliToolName %}} describe service example-web-go --namespace $USER
+{{% param cliToolName %}} describe service example-web-go --namespace <namespace>
 ```
 
 ```
@@ -175,7 +175,7 @@ As you see in the resource definition at `spec.rules[0].http.paths[0].backend.se
 Let's create the Ingress resource with:
 
 ```bash
-kubectl apply -f ingress.yaml --namespace $USER
+kubectl apply -f ingress.yaml --namespace <namespace>
 ```
 
 {{% onlyWhenNot mobi %}}
@@ -189,7 +189,7 @@ Afterwards, we are able to access our app via our freshly created Ingress at `ht
 {{% onlyWhenNot baloise %}}
 
 ```bash
-oc expose service example-web-go --namespace $USER
+oc expose service example-web-go --namespace <namespace>
 ```
 
 The output should be:
@@ -204,7 +204,7 @@ We are now able to access our app via the freshly created route at `http://examp
 {{% onlyWhen baloise %}}
 
 ```bash
-oc create route edge example-web-go --service example-web-go --namespace $USER
+oc create route edge example-web-go --service example-web-go --namespace <namespace>
 ```
 
 The output should be:
@@ -220,7 +220,7 @@ We are now able to access our app via the freshly created route at `https://exam
 Find your actual app URL by looking at your route (HOST/PORT):
 
 ```bash
-oc get route --namespace $USER
+oc get route --namespace <namespace>
 ```
 
 Browse to the URL and check the output of your app.
@@ -269,13 +269,13 @@ spec:
 And then apply again with:
 
 ```bash
-{{% param cliToolName %}} apply -f svc-web-go.yaml --namespace $USER
+{{% param cliToolName %}} apply -f svc-web-go.yaml --namespace <namespace>
 ```
 
 Let's have a more detailed look at our new `NodePort` Service:
 
 ```bash
-{{% param cliToolName %}} get services --namespace $USER
+{{% param cliToolName %}} get services --namespace <namespace>
 ```
 
 Which gives you an output similar to this:
@@ -311,17 +311,17 @@ lab-3   Ready    controlplane,etcd,worker   150m   v1.17.4   5.102.145.148   <no
 Have a closer look at the resources created in your namespace `<namespace>` with the following commands and try to understand them:
 
 ```bash
-{{% param cliToolName %}} describe namespace $USER
+{{% param cliToolName %}} describe namespace <namespace>
 ```
 
 ```bash
-{{% param cliToolName %}} get all --namespace $USER
+{{% param cliToolName %}} get all --namespace <namespace>
 ```
 
 ```bash
-{{% param cliToolName %}} describe <resource> <name> --namespace $USER
+{{% param cliToolName %}} describe <resource> <name> --namespace <namespace>
 ```
 
 ```bash
-{{% param cliToolName %}} get <resource> <name> -o yaml --namespace $USER
+{{% param cliToolName %}} get <resource> <name> -o yaml --namespace <namespace>
 ```

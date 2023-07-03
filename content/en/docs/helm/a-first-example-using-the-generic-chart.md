@@ -71,7 +71,7 @@ Don't forget to replace `<username>` and `<namespace>`.
 {{% /alert %}}
 
 ```bash
-helm install my-first-release-<username> . --namespace $USER
+helm install my-first-release-<username> . --namespace <namespace>
 ```
 
 You should get the following output:

@@ -20,11 +20,11 @@ With {{% param distroName %}} you can open a remote shell into a Pod without ins
 If you're using Git Bash on Windows, you need to append the command with `winpty`.
 {{% /alert %}}
 
-Choose a Pod with `{{% param cliToolName %}} get pods --namespace $USER` and execute the following command:
+Choose a Pod with `{{% param cliToolName %}} get pods --namespace <namespace>` and execute the following command:
 {{% onlyWhenNot openshift %}}
 
 ```bash
-kubectl exec -it <pod> --namespace $USER -- /bin/bash
+kubectl exec -it <pod> --namespace <namespace> -- /bin/bash
 ```
 
 {{% /onlyWhenNot %}}
@@ -32,7 +32,7 @@ kubectl exec -it <pod> --namespace $USER -- /bin/bash
 {{% onlyWhen openshift %}}
 
 ```bash
-oc rsh --namespace $USER <pod>
+oc rsh --namespace <namespace> <pod>
 ```
 
 {{% /onlyWhen %}}
@@ -90,13 +90,13 @@ exit
 Single commands inside a container can also be executed with `kubectl exec`:
 
 ```bash
-kubectl exec <pod> --namespace $USER -- env
+kubectl exec <pod> --namespace <namespace> -- env
 ```
 
 Example:
 
 ```bash
-$ kubectl exec example-web-app-69b658f647-xnm94 --namespace $USER -- env
+$ kubectl exec example-web-app-69b658f647-xnm94 --namespace <namespace> -- env
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=example-web-app-xnm94
 KUBERNETES_SERVICE_PORT_DNS_TCP=53
@@ -112,7 +112,7 @@ KUBERNETES_PORT_53_TCP=tcp://172.30.0.1:53
 Single commands inside a container can also be executed with `oc rsh`:
 
 ```bash
-oc rsh --namespace $USER <pod> <command>
+oc rsh --namespace <namespace> <pod> <command>
 ```
 
 Example:
@@ -144,7 +144,7 @@ The quick way of using it is `oc debug RESOURCE/NAME` but have a good look at it
 Log files of a Pod can be shown with the following command:
 
 ```bash
-{{% param cliToolName %}} logs <pod> --namespace $USER
+{{% param cliToolName %}} logs <pod> --namespace <namespace>
 ```
 
 The parameter `-f` allows you to follow the log file (same as `tail -f`). With this, log files are streamed and new entries are shown immediately.
@@ -156,7 +156,7 @@ This command will only work on pods that had container restarts. You can check t
 {{% /alert %}}
 
 ```bash
-{{% param cliToolName %}} logs -p <pod> --namespace $USER
+{{% param cliToolName %}} logs -p <pod> --namespace <namespace>
 ```
 
 {{% onlyWhen baloise %}}
@@ -173,7 +173,7 @@ Baloise uses [Splunk](https://www.splunk.com/) to aggregate and visualize all lo
 Get the name of the Pod:
 
 ```bash
-{{% param cliToolName %}} get pod --namespace $USER
+{{% param cliToolName %}} get pod --namespace <namespace>
 ```
 
 Then execute the port forwarding command using the Pod's name:
@@ -185,7 +185,7 @@ Best run this command in a separate shell, or in the background by adding a "&" 
 {{% onlyWhenNot sbb %}}
 
 ```bash
-{{% param cliToolName %}} port-forward <pod> 5000:5000 --namespace $USER
+{{% param cliToolName %}} port-forward <pod> 5000:5000 --namespace <namespace>
 ```
 
 Don't forget to change the Pod name to your own installation. If configured, you can use auto-completion.
@@ -201,7 +201,7 @@ Forwarding from [::1]:5000 -> 5000
 {{% onlyWhen sbb %}}
 
 ```bash
-{{% param cliToolName %}} port-forward <pod> {{% param "images.training-image-probe-port" %}}:{{% param "images.training-image-probe-port" %}} --namespace $USER
+{{% param cliToolName %}} port-forward <pod> {{% param "images.training-image-probe-port" %}}:{{% param "images.training-image-probe-port" %}} --namespace <namespace>
 ```
 
 Don't forget to change the Pod name to your own installation. If configured, you can use auto-completion.
@@ -258,7 +258,7 @@ Make sure to have a look at the events because they can give you more informatio
 Use the following command to list the events in chronological order:
 
 ```bash
-{{% param cliToolName %}} get events --sort-by=.metadata.creationTimestamp --namespace $USER
+{{% param cliToolName %}} get events --sort-by=.metadata.creationTimestamp --namespace <namespace>
 ```
 
 
@@ -320,7 +320,7 @@ If you want to see the HTTP requests `{{% param cliToolName %}}` sends to the Ku
 For example, to see the API request for creating a deployment:
 
 ```bash
-{{% param cliToolName %}} create deployment test-deployment --image={{% param "images.training-image-url" %}} --namespace $USER --replicas=0 --v=10
+{{% param cliToolName %}} create deployment test-deployment --image={{% param "images.training-image-url" %}} --namespace <namespace> --replicas=0 --v=10
 ```
 
 The resulting output looks like this:
@@ -350,7 +350,7 @@ As you can see, the output conveniently contains the corresponding `curl` comman
 If you created the deployment to see the output, you can delete it again as it's not used anywhere else (which is also the reason why the replicas are set to `0`):
 
 ```bash
-{{% param cliToolName %}} delete deploy/test-deployment --namespace $USER
+{{% param cliToolName %}} delete deploy/test-deployment --namespace <namespace>
 ```
 
 {{% /alert %}}

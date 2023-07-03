@@ -42,7 +42,7 @@ Edit your existing `example-web-app` Deployment by changing your local `deployme
 And then apply again with:
 
 ```bash
-{{% param cliToolName %}} apply -f deployment_example-web-app.yaml --namespace $USER
+{{% param cliToolName %}} apply -f deployment_example-web-app.yaml --namespace <namespace>
 ```
 
 {{% alert title="Note" color="info" %}}
@@ -52,7 +52,7 @@ This obviously only checks if there is a DNS Record for your MariaDB Service and
 Let's see what has changed by analyzing your newly created `example-web-app` Pod with the following command (use `{{% param cliToolName %}} get pod` or auto-completion to get the Pod name):
 
 ```bash
-{{% param cliToolName %}} describe pod <pod> --namespace $USER
+{{% param cliToolName %}} describe pod <pod> --namespace <namespace>
 ```
 
 You see the new init container with the name `wait-for-db`:
@@ -88,7 +88,7 @@ The init container has the `State: Terminated` and an `Exit Code: 0` which means
 You can also check the logs of the init container with:
 
 ```bash
-{{% param cliToolName %}} logs -c wait-for-db <pod> --namespace $USER
+{{% param cliToolName %}} logs -c wait-for-db <pod> --namespace <namespace>
 ```
 
 Which should give you something similar to:

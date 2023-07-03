@@ -179,13 +179,13 @@ Subcharts are an alternative way to define dependencies within a chart: A chart 
 We are now going to deploy the application in a specific version (which is not the latest release on purpose). Also note that we define our custom `values.yaml` file with the `-f` parameter:
 
 ```bash
-helm install wordpress bitnami/wordpress -f values.yaml --namespace $USER
+helm install wordpress bitnami/wordpress -f values.yaml --namespace <namespace>
 ```
 
 Look for the newly created resources with `helm ls` and `{{% param cliToolName %}} get deploy,pod,ingress,pvc`:
 
 ```bash
-helm ls --namespace $USER
+helm ls --namespace <namespace>
 ```
 
 which gives you:
@@ -198,7 +198,7 @@ wordpress <namespace>         1     2021-03-25 14:27:38.231722961 +0100 CET     
 and
 
 ```bash
-{{% param cliToolName %}} get deploy,pod,ingress,pvc --namespace $USER
+{{% param cliToolName %}} get deploy,pod,ingress,pvc --namespace <namespace>
 ```
 
 which gives you:
@@ -222,7 +222,7 @@ persistentvolumeclaim/wordpress                  Bound    pvc-83ebf739-0b0e-45a2
 In order to check the values used in a given release, execute:
 
 ```bash
-helm get values wordpress --namespace $USER
+helm get values wordpress --namespace <namespace>
 ```
 
 which gives you:
@@ -293,15 +293,15 @@ This is specific to the wordpress Bitami Chart, and might be different when inst
 Use the following commands to gather the secrets and store them in environment variables. Make sure to replace `<namespace>` with your current value.
 
 ```bash
-export WORDPRESS_PASSWORD=$({{% param cliToolName %}} get secret wordpress -o jsonpath="{.data.wordpress-password}" --namespace $USER | base64 --decode)
+export WORDPRESS_PASSWORD=$({{% param cliToolName %}} get secret wordpress -o jsonpath="{.data.wordpress-password}" --namespace <namespace> | base64 --decode)
 ```
 
 ```bash
-export MARIADB_ROOT_PASSWORD=$({{% param cliToolName %}} get secret wordpress-mariadb -o jsonpath="{.data.mariadb-root-password}" --namespace $USER | base64 --decode)
+export MARIADB_ROOT_PASSWORD=$({{% param cliToolName %}} get secret wordpress-mariadb -o jsonpath="{.data.mariadb-root-password}" --namespace <namespace> | base64 --decode)
 ```
 
 ```bash
-export MARIADB_PASSWORD=$({{% param cliToolName %}} get secret wordpress-mariadb -o jsonpath="{.data.mariadb-password}" --namespace $USER | base64 --decode)
+export MARIADB_PASSWORD=$({{% param cliToolName %}} get secret wordpress-mariadb -o jsonpath="{.data.mariadb-password}" --namespace <namespace> | base64 --decode)
 ```
 
 Then do the upgrade with the following command:
@@ -316,7 +316,7 @@ And then observe the changes in your WordPress and MariaDB Apps
 ## Cleanup
 
 ```bash
-helm uninstall wordpress --namespace $USER
+helm uninstall wordpress --namespace <namespace>
 ```
 
 

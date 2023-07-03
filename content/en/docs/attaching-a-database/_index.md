@@ -93,7 +93,7 @@ kubectl create secret generic mariadb \
   --from-literal=database-password=mysqlpassword \
   --from-literal=database-root-password=mysqlrootpassword \
   --from-literal=database-user=acend_user \
-  --namespace $USER
+  --namespace <namespace>
 ```
 
 {{% /onlyWhenNot %}}
@@ -107,7 +107,7 @@ oc create secret generic mariadb \
   --from-literal=database-password=mysqlpassword \
   --from-literal=database-root-password=mysqlrootpassword \
   --from-literal=database-user=acend_user \
-  --namespace $USER \
+  --namespace <namespace> \
   --dry-run=client -o yaml > secret_mariadb.yaml
 ```
 
@@ -125,7 +125,7 @@ oc apply -f secret_mariadb.yaml
 The Secret contains the database name, user, password, and the root password. However, these values will neither be shown with `{{% param cliToolName %}} get` nor with `{{% param cliToolName %}} describe`:
 
 ```bash
-{{% param cliToolName %}} get secret mariadb --output yaml --namespace $USER
+{{% param cliToolName %}} get secret mariadb --output yaml --namespace <namespace>
 ```
 
 ```
@@ -186,7 +186,7 @@ Save this snippet as `mariadb.yaml`:
 Apply it with:
 
 ```bash
-kubectl apply -f mariadb.yaml --namespace $USER
+kubectl apply -f mariadb.yaml --namespace <namespace>
 ```
 
 As soon as the container image for `mariadb:10.5` has been pulled, you will see a new Pod using `kubectl get pods`.
@@ -204,7 +204,7 @@ Save this snippet as `mariadb.yaml`:
 Apply it with:
 
 ```bash
-oc apply -f mariadb.yaml --namespace $USER
+oc apply -f mariadb.yaml --namespace <namespace>
 ```
 
 As soon as the container image has been pulled, you will see a new Pod using `oc get pods`.
@@ -283,13 +283,13 @@ Depending on the shell you use, the following `set env` command works but insert
 {{% /alert %}}
 
 ```bash
-{{% param cliToolName %}} set env --from=secret/mariadb --prefix=MYSQL_ deploy/example-web-app --namespace $USER
+{{% param cliToolName %}} set env --from=secret/mariadb --prefix=MYSQL_ deploy/example-web-app --namespace <namespace>
 ```
 
 and
 
 ```bash
-{{% param cliToolName %}} set env deploy/example-web-app MYSQL_URI='mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)' --namespace $USER
+{{% param cliToolName %}} set env deploy/example-web-app MYSQL_URI='mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)' --namespace <namespace>
 ```
 
 The first command inserts the values from the Secret, the second finally uses these values to put them in the environment variable `MYSQL_URI` which the application considers.
@@ -373,7 +373,7 @@ Your file should now look like this:
 Then use:
 
 ```bash
-{{% param cliToolName %}} apply -f deployment_example-web-app.yaml --namespace $USER
+{{% param cliToolName %}} apply -f deployment_example-web-app.yaml --namespace <namespace>
 ```
 
 to apply the changes.
@@ -384,7 +384,7 @@ to apply the changes.
 Add the environment variables by directly editing the Deployment:
 
 ```bash
-{{% param cliToolName %}} edit deployment example-web-app --namespace $USER
+{{% param cliToolName %}} edit deployment example-web-app --namespace <namespace>
 ```
 
 ```yaml
@@ -422,7 +422,7 @@ Add the environment variables by directly editing the Deployment:
 The environment can also be checked with the `set env` command and the `--list` parameter:
 
 ```bash
-{{% param cliToolName %}} set env deploy/example-web-app --list --namespace $USER
+{{% param cliToolName %}} set env deploy/example-web-app --list --namespace <namespace>
 ```
 
 This will show the environment as follows:
@@ -472,7 +472,7 @@ As described in {{<link "troubleshooting">}} we can log into a Pod with {{% only
 Show all Pods:
 
 ```bash
-{{% param cliToolName %}} get pods --namespace $USER
+{{% param cliToolName %}} get pods --namespace <namespace>
 ```
 
 Which gives you an output similar to this:
@@ -493,14 +493,14 @@ As mentioned in {{<link "troubleshooting">}}, remember to append the command wit
 {{% onlyWhenNot openshift %}}
 
 ```bash
-kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace $USER -- /bin/bash
+kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
 ```
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 
 ```bash
-oc rsh --namespace $USER <mariadb-pod-name>
+oc rsh --namespace <namespace> <mariadb-pod-name>
 ```
 
 {{% /onlyWhen %}}
@@ -559,7 +559,7 @@ curl -O https://raw.githubusercontent.com/acend/kubernetes-basics-training/main/
 Copy the dump into the MariaDB Pod:
 
 ```bash
-{{% param cliToolName %}} cp ./dump.sql <podname>:/tmp/ --namespace $USER
+{{% param cliToolName %}} cp ./dump.sql <podname>:/tmp/ --namespace <namespace>
 ```
 
 This is how you log into the MariaDB Pod:
@@ -567,14 +567,14 @@ This is how you log into the MariaDB Pod:
 {{% onlyWhenNot openshift %}}
 
 ```bash
-kubectl exec -it <podname> --namespace $USER -- /bin/bash
+kubectl exec -it <podname> --namespace <namespace> -- /bin/bash
 ```
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 
 ```bash
-oc rsh --namespace $USER <podname>
+oc rsh --namespace <namespace> <podname>
 ```
 
 {{% /onlyWhen %}}
@@ -605,7 +605,7 @@ Check your app to see the imported "Hellos".
 You can find your app URL by looking at your route:
 
 ```bash
-{{% param cliToolName %}} get {{% onlyWhenNot openshift %}}ingress{{% /onlyWhen %}}{{% onlyWhen openshift %}}route{{% /onlyWhen %}} --namespace $USER
+{{% param cliToolName %}} get {{% onlyWhenNot openshift %}}ingress{{% /onlyWhen %}}{{% onlyWhen openshift %}}route{{% /onlyWhen %}} --namespace <namespace>
 ```
 {{% /alert %}}
 {{% /onlyWhen %}}
@@ -627,14 +627,14 @@ A database dump can be created as follows:
 {{% onlyWhenNot openshift %}}
 
 ```bash
-kubectl exec -it <podname> --namespace $USER -- /bin/bash
+kubectl exec -it <podname> --namespace <namespace> -- /bin/bash
 ```
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 
 ```bash
-oc rsh --namespace $USER <podname>
+oc rsh --namespace <namespace> <podname>
 ```
 
 {{% /onlyWhen %}}

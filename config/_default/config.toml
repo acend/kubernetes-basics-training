@@ -93,6 +93,18 @@ busybox = "docker.io/busybox:1.28"
 # Enable Lunr.js offline search
 offlineSearch = true
 
+[[params.replaceContent.placeholders]]
+placeholder = "<namespace>"
+queryParam = "n"
+defaultValue = "$USER"
+
+[[params.replaceContent.placeholders]]
+placeholder = "<appdomain>"
+queryParam = "a"
+defaultValue = "training.cluster.acend.ch"
+
+
+
 [params.ui]
 # Enable to show the side bar menu in its compact state.
 sidebar_menu_compact = false

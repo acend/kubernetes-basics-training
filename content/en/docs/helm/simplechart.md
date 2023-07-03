@@ -67,18 +67,18 @@ Before actually deploying our generated chart, we can check the (to be) generate
 
 
 ```bash
-helm install --dry-run --debug --namespace $USER myfirstrelease ./mychart
+helm install --dry-run --debug --namespace <namespace> myfirstrelease ./mychart
 ```
 
 
 Finally, the following command creates a new release and deploys the application:
 
 ```bash
-helm install --namespace $USER myfirstrelease ./mychart
+helm install --namespace <namespace> myfirstrelease ./mychart
 ```
 
 
-With `{{% param cliToolName %}} get pods --namespace $USER` you should see a new Pod:
+With `{{% param cliToolName %}} get pods --namespace <namespace>` you should see a new Pod:
 
 ```bash
 NAME                                     READY   STATUS    RESTARTS   AGE
@@ -88,7 +88,7 @@ myfirstrelease-mychart-6d4956b75-ng8x4   1/1     Running   0          2m21s
 You can list the newly created Helm release with the following command:
 
 ```bash
-helm ls --namespace $USER
+helm ls --namespace <namespace>
 ```
 
 
@@ -248,7 +248,7 @@ Use `<namespace>.<domain>` as your hostname. It might take some time until your 
 Apply the change by upgrading our release:
 
 ```bash
-helm upgrade --namespace $USER myfirstrelease ./mychart
+helm upgrade --namespace <namespace> myfirstrelease ./mychart
 ```
 
 This will result in something similar to:
@@ -285,7 +285,7 @@ Update the replica count of your nginx Deployment to 2 using `--set name=value`
 ### Solution
 
 ```bash
-helm upgrade --namespace $USER --set replicaCount=2 myfirstrelease ./mychart
+helm upgrade --namespace <namespace> --set replicaCount=2 myfirstrelease ./mychart
 ```
 
 Values that have been set using `--set` can be reset by helm upgrade with `--reset-values`.
@@ -301,7 +301,7 @@ Have a look at the `values.yaml` file in your chart and study all the possible c
 To remove an application, simply remove the Helm release with the following command:
 
 ```bash
-helm uninstall myfirstrelease --namespace $USER
+helm uninstall myfirstrelease --namespace <namespace>
 ```
 
-Do this with our deployed release. With `{{% param cliToolName %}} get pods --namespace $USER` you should no longer see your application Pod.
+Do this with our deployed release. With `{{% param cliToolName %}} get pods --namespace <namespace>` you should no longer see your application Pod.
