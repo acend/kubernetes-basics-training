@@ -52,7 +52,6 @@ As a consequence, the `oc expose` command above doesn't add anything new but it 
 {{% /onlyWhen %}}
 
 
-
 Let's have a more detailed look at our Service:
 
 ```bash

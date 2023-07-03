@@ -30,20 +30,10 @@ Change the existing `mariadb` Deployment by first editing your local `mariadb.ya
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 {{% onlyWhenNot baloise %}}
-Change the existing `mariadb` DeploymentConfig using:
-
-```bash
-oc edit dc mariadb --namespace <namespace>
-```
-
+Change the existing `mariadb` DeploymentConfig by first editing your local `mariadb.yaml` file. Add a new (sidecar) container into your Deployment.
 {{% /onlyWhenNot %}}
 {{% onlyWhen baloise %}}
-Change the existing `mariadb` Deployment using:
-
-```bash
-oc edit deploy mariadb --namespace <namespace>
-```
-
+Change the existing `mariadb` Deployment using by first editing your local `mariadb.yaml` file. Add a new (sidecar) container into your Deployment:
 {{% /onlyWhen %}}
 And add a new (sidecar) container to it:
 {{% /onlyWhen %}}
@@ -58,18 +48,17 @@ And add a new (sidecar) container to it:
 {{< readfile file="/content/en/docs/additional-concepts/sidecar-containers/deploy_mariadb-sidecar_mobi.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
 
-{{% onlyWhenNot openshift %}}
 and then apply the change with:
 
 ```bash
 {{% param cliToolName %}} apply -f mariadb.yaml --namespace <namespace>
 ```
-{{% /onlyWhenNot %}}
 
 Your Pod now has two running containers. Verify this with:
 
 ```bash
 {{% param cliToolName %}} get pod --namespace <namespace>
+```
 
 The output should look similar to this:
 
