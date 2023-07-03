@@ -37,6 +37,12 @@ And then apply the file with:
 {{% param cliToolName %}} apply -f svc-web-go.yaml --namespace <namespace>
 ```
 
+There is also am imperative command to create a service and expose your application which can be used instead of the yaml file with the `{{% param cliToolName %}} apply ...` y command
+
+```bash
+{{% param cliToolName %}} expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace <namespace>
+```
+
 {{% onlyWhen openshift %}}
 {{% onlyWhenNot baloise %}}
 You will get the error message reading `Error from server (AlreadyExists): services "example-web-go" already exists` here. This is because the `oc new-app` command you executed during lab 3 already created a service. This is the default behavior of `oc new-app` while `oc create deployment` doesn't have this functionality.
@@ -44,6 +50,8 @@ You will get the error message reading `Error from server (AlreadyExists): servi
 As a consequence, the `oc expose` command above doesn't add anything new but it demonstrates how to easily create a service based on a deployment.
 {{% /onlyWhenNot %}}
 {{% /onlyWhen %}}
+
+
 
 Let's have a more detailed look at our Service:
 
