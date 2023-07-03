@@ -37,9 +37,9 @@ And then apply the file with:
 {{% param cliToolName %}} apply -f svc-web-go.yaml --namespace <namespace>
 ```
 
-There is also am imperative command to create a service and expose your application which can be used instead of the yaml file with the `{{% param cliToolName %}} apply ...` y command
+There is also am imperative command to create a service and expose your application which can be used instead of the yaml file with the `{{% param cliToolName %}} apply ...` command
 
-```bash
+```
 {{% param cliToolName %}} expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace <namespace>
 ```
 
