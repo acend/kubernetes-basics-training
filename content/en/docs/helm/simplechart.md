@@ -171,7 +171,7 @@ spec:
 Thus, we need to change this value inside our `mychart/values.yaml` file. This is also where we enable the TLS part:
 
 {{% alert title="Note" color="info" %}}
-Make sure to replace the `<namespace>` and `<domain>` accordingly.
+Make sure to replace the `<namespace>` and `<appdomain>` accordingly.
 {{% /alert %}}
 
 {{% onlyWhen openshift %}}
@@ -183,13 +183,13 @@ ingress:
   className: ""
   annotations:
   hosts:
-    - host: mychart-<namespace>.<domain>
+    - host: mychart-<namespace>.<appdomain>
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls:
     - hosts:
-        -  mychart-<namespace>.<domain>
+        -  mychart-<namespace>.<appdomain>
 [...]
 ```
 
@@ -201,13 +201,13 @@ ingress:
 ingress:
   enabled: true
   hosts:
-    - host: mychart-<namespace>.<domain>
+    - host: mychart-<namespace>.<appdomain>
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls:
     - hosts:
-        - mychart-<namespace>.<domain>
+        - mychart-<namespace>.<appdomain>
 [...]
 ```
 
@@ -225,7 +225,7 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: mychart-<namespace>.<domain>
+    - host: mychart-<namespace>.<appdomain>
       paths:
         - path: /
           pathType: ImplementationSpecific
@@ -239,9 +239,9 @@ ingress:
 {{% /onlyWhen %}}
 
 {{% alert title="Note" color="info" %}}
-Make sure to set the proper value as hostname. `<domain>` will be provided by the trainer.
+Make sure to set the proper value as hostname. `<appdomain>` will be provided by the trainer.
 {{% onlyWhen mobi %}}
-Use `<namespace>.<domain>` as your hostname. It might take some time until your ingress hostname is accessible, as the DNS name first has to be propagated correctly.
+Use `<namespace>.<appdomain>` as your hostname. It might take some time until your ingress hostname is accessible, as the DNS name first has to be propagated correctly.
 {{% /onlyWhen %}}
 {{% /alert %}}
 
@@ -266,11 +266,11 @@ NOTES:
 ```
 
 {{% onlyWhenNot customer %}}
-Check whether the ingress was successfully deployed by accessing the URL `http://mychart-<namespace>.<domain>/`
+Check whether the ingress was successfully deployed by accessing the URL `http://mychart-<namespace>.<appdomain>/`
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
-Check whether the ingress was successfully deployed by accessing the URL `https://mychart-<namespace>.<domain>/`
+Check whether the ingress was successfully deployed by accessing the URL `https://mychart-<namespace>.<appdomain>/`
 
 {{% /onlyWhen %}}
 

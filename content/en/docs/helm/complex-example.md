@@ -75,7 +75,7 @@ containerSecurityContext:
 {{% /onlyWhen %}}
 ingress:
   enabled: true
-  hostname: wordpress-<namespace>.<domain>
+  hostname: wordpress-<namespace>.<appdomain>
 
 mariadb:
   primary:
@@ -90,11 +90,11 @@ mariadb:
 ```
 
 {{% alert title="Note" color="info" %}}
-Make sure to set the proper value as hostname. `<domain>` will be provided by the trainer.
+Make sure to set the proper value as hostname. `<appdomain>` will be provided by the trainer.
 {{% /alert %}}
 
 {{% onlyWhen mobi %}}
-Use `wordpress-<namespace>.<domain>` as your hostname. It might take some time until your ingress hostname is accessible, as the DNS name first has to be propagated correctly.
+Use `wordpress-<namespace>.<appdomain>` as your hostname. It might take some time until your ingress hostname is accessible, as the DNS name first has to be propagated correctly.
 {{% /onlyWhen %}}
 
 If you look inside the [Chart.yaml](https://github.com/bitnami/charts/blob/master/bitnami/wordpress/Chart.yaml) file of the WordPress chart, you'll see a dependency to the [MariaDB Helm chart](https://github.com/bitnami/charts/tree/master/bitnami/mariadb). All the MariaDB values are used by this dependent Helm chart and the chart is automatically deployed when installing WordPress.

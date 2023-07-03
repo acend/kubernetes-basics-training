@@ -253,7 +253,7 @@ Events:            <none>
 
 Scaling of Pods is fast as {{% param distroName %}} simply creates new containers.
 
-You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{% onlyWhenNot openshift %}}http://example-web-app-<namespace>.<domain>{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}{{% onlyWhenNot baloise %}}http://<route hostname>{{% /onlyWhenNot %}}{{% onlyWhen baloise %}}https://<route hostname>{{% /onlyWhen %}}{{% /onlyWhen %}}`.
+You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{% onlyWhenNot openshift %}}http://example-web-app-<namespace>.<appdomain>{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}{{% onlyWhenNot baloise %}}http://<route hostname>{{% /onlyWhenNot %}}{{% onlyWhen baloise %}}https://<route hostname>{{% /onlyWhen %}}{{% /onlyWhen %}}`.
 
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}
