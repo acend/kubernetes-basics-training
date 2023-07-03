@@ -44,6 +44,12 @@ spec:
 
 ```
 
+{{% onlyWhen openshift %}}
+{{% alert title="Note" color="info" %}}
+If you used the web console to import the Pod's YAML definition, don't execute the following command.
+{{% /alert %}}
+{{% /onlyWhen %}}
+
 Now we can apply this with:
 
 ```bash
@@ -85,7 +91,14 @@ Now delete the newly created Pod:
 In some use cases it can make sense to start a single Pod. But this has its downsides and is not really a common practice. Let's look at another concept which is tightly coupled with the Pod: the so-called _Deployment_. A Deployment ensures that a Pod is monitored and checks that the number of running Pods corresponds to the number of requested Pods.
 
 
-To create a new Deployment we first define our Deployment in a new file `deployment_example-web-go.yaml` with the following content:
+To create a new Deployment we first define our Deployment in a new file `deployment_example-web-go.yaml` with the content below.
+
+{{% onlyWhen openshift %}}
+{{% alert title="Note" color="info" %}}
+You could, of course, again import the YAML on the web console as described above.
+{{% /alert %}}
+{{% /onlyWhen %}}
+
 
 ```yaml
 apiVersion: apps/v1
@@ -117,6 +130,12 @@ spec:
 ```
 
 And with this we create our Deployment inside our already created namespace:
+
+{{% onlyWhen openshift %}}
+{{% alert title="Note" color="info" %}}
+If you used the web console to import the Deployment's YAML definition, don't execute the following command.
+{{% /alert %}}
+{{% /onlyWhen %}}
 
 
 ```bash

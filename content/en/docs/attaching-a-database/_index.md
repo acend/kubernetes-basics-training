@@ -308,32 +308,32 @@ spec:
 ...
 ```
 
-The dash defines the beginning of a separate container definition. The following specifications should be inserted into this container definition:
+The dash before `image:` defines the beginning of a new container definition. The following specifications should be inserted into this container definition:
 
 ```yaml
-- env:
-    - name: MYSQL_DATABASE_NAME
-      valueFrom:
-        secretKeyRef:
-          key: database-name
-          name: mariadb
-    - name: MYSQL_DATABASE_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          key: database-password
-          name: mariadb
-    - name: MYSQL_DATABASE_ROOT_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          key: database-root-password
-          name: mariadb
-    - name: MYSQL_DATABASE_USER
-      valueFrom:
-        secretKeyRef:
-          key: database-user
-          name: mariadb
-    - name: MYSQL_URI
-      value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
+        env:
+          - name: MYSQL_DATABASE_NAME
+            valueFrom:
+              secretKeyRef:
+                key: database-name
+                name: mariadb
+          - name: MYSQL_DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: mariadb
+          - name: MYSQL_DATABASE_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-root-password
+                name: mariadb
+          - name: MYSQL_DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                key: database-user
+                name: mariadb
+          - name: MYSQL_URI
+            value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
 ```
 
 Your file should now look like this:
@@ -341,7 +341,11 @@ Your file should now look like this:
 ```
       ...
       containers:
-      - env:
+      - image: {{% param "images.training-image-url" %}}
+        imagePullPolicy: Always
+        name: example-web-app
+        ...
+        env:
         - name: MYSQL_DATABASE_NAME
           valueFrom:
             secretKeyRef:
@@ -364,10 +368,6 @@ Your file should now look like this:
               name: mariadb
         - name: MYSQL_URI
           value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
-        image: {{% param "images.training-image-url" %}}
-        imagePullPolicy: Always
-        name: example-web-app
-        ...
 ```
 
 Then use:
@@ -390,7 +390,11 @@ Add the environment variables by directly editing the Deployment:
 ```yaml
       ...
       containers:
-      - env:
+      - image: {{% param "images.training-image-url" %}}
+        imagePullPolicy: Always
+        name: example-web-app
+        ...
+        env:
         - name: SPRING_DATASOURCE_DATABASE_NAME
           valueFrom:
             secretKeyRef:
@@ -410,9 +414,6 @@ Add the environment variables by directly editing the Deployment:
           value: com.mysql.cj.jdbc.Driver
         - name: SPRING_DATASOURCE_URL
           value: jdbc:mysql://mariadb/$(SPRING_DATASOURCE_DATABASE_NAME)?autoReconnect=true
-        image: {{% param "images.training-image-url" %}}
-        imagePullPolicy: Always
-        name: example-web-app
         ...
 ```
 
@@ -535,15 +536,6 @@ Show any entered "Hellos" with:
 select * from hello;
 ```
 
-{{% alert title="Note" color="info" %}}
-If your database is empty you can generate some hellos by visiting the Service you exposed in lab {{<link "exposing-a-service" >}} task "Expose the Service".
-You can find your app URL by looking at your route:
-
-```bash
-oc get route --namespace $USER
-```
-{{% /alert %}}
-
 
 ## {{% task %}} Import a database dump
 
@@ -607,6 +599,8 @@ mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST $MYSQL_DATABASE < 
 
 Check your app to see the imported "Hellos".
 
+{{% onlyWhen openshift %}}
+
 {{% alert title="Note" color="info" %}}
 You can find your app URL by looking at your route:
 
@@ -614,6 +608,18 @@ You can find your app URL by looking at your route:
 {{% param cliToolName %}} get {{% onlyWhenNot openshift %}}ingress{{% /onlyWhen %}}{{% onlyWhen openshift %}}route{{% /onlyWhen %}} --namespace $USER
 ```
 {{% /alert %}}
+{{% /onlyWhen %}}
+
+{{% onlyWhenNot openshift %}}
+
+{{% alert title="Note" color="info" %}}
+You can find your app URL by looking at your ingress:
+
+```bash
+kubectl get ingress --namespace <namespace>
+```
+{{% /alert %}}
+{{% /onlyWhenNot %}}
 
 {{% alert title="Note" color="info" %}}
 A database dump can be created as follows:

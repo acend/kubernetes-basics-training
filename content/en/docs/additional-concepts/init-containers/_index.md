@@ -26,16 +26,16 @@ Edit your existing `example-web-app` Deployment by changing your local `deployme
 
 ```yaml
 ...
-spec:
-  initContainers:
-    - name: wait-for-db
-      image: {{% param "images.busybox" %}}
-      command:
-        [
-          "sh",
-          "-c",
-          "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done",
-        ]
+    spec:
+      initContainers:
+        - name: wait-for-db
+          image: {{% param "images.busybox" %}}
+          command:
+            [
+              "sh",
+              "-c",
+              "until nslookup mariadb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done",
+            ]
 ...
 ```
 
