@@ -101,7 +101,7 @@ defaultValue = "$USER"
 [[params.replaceContent.placeholders]]
 placeholder = "<appdomain>"
 queryParam = "a"
-defaultValue = "training.cluster.acend.ch"
+defaultValue = "<appdomain>"
 
 
 
