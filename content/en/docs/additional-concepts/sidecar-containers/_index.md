@@ -25,30 +25,15 @@ In a sidecar pattern, the functionality of the main container is extended or enh
 In {{<link "persistent-storage">}} you created a MariaDB deployment. In this task you are going to add the [Prometheus MySQL exporter](https://github.com/prometheus/mysqld_exporter) to it.
 
 {{% onlyWhenNot openshift %}}
-Change the existing `mariadb` Deployment using:
+Change the existing `mariadb` Deployment by first editing your local `mariadb.yaml` file. Add a new (sidecar) container into your Deployment:
 
-```bash
-kubectl edit deployment mariadb --namespace <namespace>
-```
-
-And add a new (sidecar) container into your Deployment:
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 {{% onlyWhenNot baloise %}}
-Change the existing `mariadb` DeploymentConfig using:
-
-```bash
-oc edit dc mariadb --namespace <namespace>
-```
-
+Change the existing `mariadb` DeploymentConfig by first editing your local `mariadb.yaml` file. Add a new (sidecar) container into your Deployment.
 {{% /onlyWhenNot %}}
 {{% onlyWhen baloise %}}
-Change the existing `mariadb` Deployment using:
-
-```bash
-oc edit deploy mariadb --namespace <namespace>
-```
-
+Change the existing `mariadb` Deployment using by first editing your local `mariadb.yaml` file. Add a new (sidecar) container into your Deployment:
 {{% /onlyWhen %}}
 And add a new (sidecar) container to it:
 {{% /onlyWhen %}}
@@ -62,6 +47,12 @@ And add a new (sidecar) container to it:
 {{% onlyWhen mobi %}}
 {{< readfile file="/content/en/docs/additional-concepts/sidecar-containers/deploy_mariadb-sidecar_mobi.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
+
+and then apply the change with:
+
+```bash
+{{% param cliToolName %}} apply -f mariadb.yaml --namespace <namespace>
+```
 
 Your Pod now has two running containers. Verify this with:
 
@@ -99,10 +90,14 @@ time="2020-05-10T11:31:02Z" level=info msg=" --collect.info_schema.innodb_cmpmem
 time="2020-05-10T11:31:02Z" level=info msg="Listening on :9104" source="mysqld_exporter.go:283"
 ```
 
-By using the `port-forward` subcommand, you can even have a look at the Prometheus metrics using your browser:
+By using the `port-forward` subcommand, you can even have a look at the Prometheus metrics:
 
 ```bash
 {{% param cliToolName %}} port-forward <pod> 9104 --namespace <namespace>
 ```
 
-Now open <http://localhost:9104/metrics> in your browser.
+And then use `curl` to check the mysqld_exporter metrics with:
+
+```bash
+curl http://localhost:9104/metrics
+```

@@ -26,9 +26,20 @@ You can also use Ingress to expose your Service. Ingress is not a Service type, 
 Traffic routing is controlled by rules defined on the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}} resource. {{% onlyWhenNot openshift %}}An Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}A Route{{% /onlyWhen %}} may be configured to give Services externally reachable URLs, load balance traffic, terminate SSL / TLS, and offer name-based virtual hosting. An Ingress controller is responsible for fulfilling the route, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic.
 
 In order to create {{% onlyWhenNot openshift %}}an Ingress{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}a Route{{% /onlyWhen %}}, we first need to create a Service of type [ClusterIP](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types).
-We're going to do this with the command `{{% param cliToolName %}} expose`:
+
+To create the Service add a new file `svc-web-go.yaml` with the following content:
+
+{{< readfile file="/content/en/docs/exposing-a-service/svc-web-go.yaml" code="true" lang="yaml" >}}
+
+And then apply the file with:
 
 ```bash
+{{% param cliToolName %}} apply -f svc-web-go.yaml --namespace <namespace>
+```
+
+There is also am imperative command to create a service and expose your application which can be used instead of the yaml file with the `{{% param cliToolName %}} apply ...` command
+
+```
 {{% param cliToolName %}} expose deployment example-web-go --type=ClusterIP --name=example-web-go --port=5000 --target-port=5000 --namespace <namespace>
 ```
 
@@ -39,6 +50,7 @@ You will get the error message reading `Error from server (AlreadyExists): servi
 As a consequence, the `oc expose` command above doesn't add anything new but it demonstrates how to easily create a service based on a deployment.
 {{% /onlyWhenNot %}}
 {{% /onlyWhen %}}
+
 
 Let's have a more detailed look at our Service:
 
@@ -170,11 +182,11 @@ As you see in the resource definition at `spec.rules[0].http.paths[0].backend.se
 Let's create the Ingress resource with:
 
 ```bash
-kubectl apply -f <path to ingress.yaml> --namespace <namespace>
+kubectl apply -f ingress.yaml --namespace <namespace>
 ```
 
 {{% onlyWhenNot mobi %}}
-Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<domain>`
+Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<appdomain>`
 {{% /onlyWhenNot %}}
 {{% onlyWhen mobi %}}
 Afterwards, we are able to access our app via our freshly created Ingress at `https://example-web-go-<namespace>.<appdomain>`. Although we have not configured the Ingress to use TLS, it is available with a `https` address. This is because of the setup at Mobiliar and not default behavior.
@@ -235,24 +247,42 @@ The `<appdomain>` is the default domain under which your applications will be ac
 
 ## {{% task %}} Expose as NodePort
 
+{{% alert title="Note" color="info" %}}
+This is an advanced lab, so feel free to skip this. NodePorts are usually not used for http-based applications as we use the layer 7-based Ingress resource. Only for non-http based applications, a NodePort might be a suitable alternative.
+{{% /alert %}}
+
 There's a second option to make a Service accessible from outside: Use a [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport).
 
-In order to switch the Service type, we are going to delete the `ClusterIP` Service that we've created before:
+In order to switch the Service type, change the existing `ClusterIP` Service by updating our Service definition in file `svc-web-go.yaml`to:
 
-```bash
-kubectl delete service example-web-go --namespace=<namespace>
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: example-web-go
+  name: example-web-go
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: example-web-go
+  type: NodePort
+
 ```
 
-With the following command we create a Service:
+And then apply again with:
 
 ```bash
-kubectl expose deployment example-web-go --type=NodePort --name=example-web-go --port=5000 --target-port=5000 --namespace <namespace>
+{{% param cliToolName %}} apply -f svc-web-go.yaml --namespace <namespace>
 ```
 
-Let's have a more detailed look at our Service:
+Let's have a more detailed look at our new `NodePort` Service:
 
 ```bash
-kubectl get services --namespace <namespace>
+{{% param cliToolName %}} get services --namespace <namespace>
 ```
 
 Which gives you an output similar to this:
@@ -263,12 +293,6 @@ example-web-go   NodePort   10.43.91.62   <none>        5000:30692/TCP
 ```
 
 The `NodePort` number is assigned by Kubernetes and stays the same as long as the Service is not deleted. A NodePort Service is more suitable for infrastructure tools than for public URLs.
-
-{{% alert title="Note" color="info" %}}
-If `NodePort` is not supported in your environment then you can use `--type=ClusterIP` (or omit this parameter completely as it is the default) and use port forwarding to the Service instead.
-
-Head over to task 6.3 in [lab 6](../06/) to learn how to use port forwarding.
-{{% /alert %}}
 
 Open `http://<node-ip>:<node-port>` in your browser.
 You can use any node IP as the Service is exposed on all nodes using the same `NodePort`. Use `kubectl get nodes -o wide` to display the IPs (`INTERNAL-IP`) of the available nodes.

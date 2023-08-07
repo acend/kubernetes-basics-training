@@ -28,6 +28,11 @@ spec:
   selector:
     matchLabels:
       app: example-web-app
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -49,6 +54,8 @@ spec:
 {{% onlyWhen sbb %}}
 {{< readfile file="/content/en/docs/scaling/example-web-app-deployment-java.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
+
+and then apply with:
 
 ```bash
 {{% param cliToolName %}} apply -f deployment_example-web-app.yaml --namespace <namespace>
@@ -120,17 +127,37 @@ OpenShift supports [horizontal](https://docs.openshift.com/container-platform/la
 {{% /alert %}}
 {{% /onlyWhen %}}
 
+As we changed the number of replicas with the `{{% param cliToolName %}} scale deployment` command, the `example-web-app` Deployment now differs from your local `deployment_example-web-app.yaml` file. Change your local `deployment_example-web-app.yaml` file to match the current number of replicas and update the value `replicas` to `3`:
+
+{{< highlight YAML "hl_lines=7" >}}
+[...]
+metadata:
+  labels:
+    app: example-web-app
+  name: example-web-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: example-web-app
+[...]
+{{< /highlight >}}
+
 
 ## Check for uninterruptible Deployments
 
 {{% onlyWhenNot openshift %}}
-Now we create a new Service of the type `ClusterIP`:
+Now we create a new Service of the type `ClusterIP`. Create a new file `svc-example-app.yaml` with the following content:
+
+{{< readfile file="/content/en/docs/scaling/svc-example-app.yaml" code="true" lang="yaml" >}}
+
+and apply the file with:
 
 ```bash
-kubectl expose deployment example-web-app --type="ClusterIP" --name="example-web-app" --port={{% param "images.training-image-port" %}} --target-port={{% param "images.training-image-port" %}} --namespace <namespace>
+{{% param cliToolName %}} apply -f svc-example-app.yaml --namespace <namespace>
 ```
 
-and we need to create an Ingress to access the application:
+Then we add the Ingress to access our application:
 
 {{% onlyWhenNot customer %}}
 {{< readfile file="/content/en/docs/scaling/ingress.template.yaml" code="true" lang="yaml" >}}
@@ -140,7 +167,11 @@ and we need to create an Ingress to access the application:
 {{< readfile file="/content/en/docs/scaling/ingress-mobi.template.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
 
-Apply this Ingress definition using, e.g., `kubectl create -f ingress.yaml --namespace <namespace>`
+Apply this Ingress definition using, e.g.:
+
+```yaml
+{{% param cliToolName %}} apply -f ingress.yaml --namespace <namespace>
+```
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
@@ -222,7 +253,7 @@ Events:            <none>
 
 Scaling of Pods is fast as {{% param distroName %}} simply creates new containers.
 
-You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{% onlyWhenNot openshift %}}http://example-web-app-<namespace>.<domain>{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}{{% onlyWhenNot baloise %}}http://<route hostname>{{% /onlyWhenNot %}}{{% onlyWhen baloise %}}https://<route hostname>{{% /onlyWhen %}}{{% /onlyWhen %}}`.
+You can check the availability of your Service while you scale the number of replicas up and down in your browser: `{{% onlyWhenNot openshift %}}http://example-web-app-<namespace>.<appdomain>{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}{{% onlyWhenNot baloise %}}http://<route hostname>{{% /onlyWhenNot %}}{{% onlyWhen baloise %}}https://<route hostname>{{% /onlyWhen %}}{{% /onlyWhen %}}`.
 
 {{% onlyWhen openshift %}}
 {{% alert title="Note" color="info" %}}
@@ -256,7 +287,7 @@ while true; do sleep 1; curl -s https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"
 {{% onlyWhenNot mobi %}}
 
 ```bash
-URL=example-web-app-<namespace>.<domain>
+URL=(kubectl get ingress example-web-app -o go-template="{{ (index .spec.rules 0).host }}" --namespace <namespace>)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
@@ -264,7 +295,7 @@ while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N";
 {{% onlyWhen mobi %}}
 
 ```bash
-URL=example-web-app-<namespace>.<appdomain>
+URL=(kubectl get ingress example-web-app -o go-template="{{ (index .spec.rules 0).host }}" --namespace <namespace>)
 while true; do sleep 1; curl -ks https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
@@ -412,31 +443,7 @@ Our example application has a health check context named health: `http://localho
 {{% onlyWhenNot openshift %}}
 In our deployment configuration inside the rolling update strategy section, we define that our application always has to be available during an update: `maxUnavailable: 0`
 
-You can directly edit the deployment (or any resource) with:
-
-```bash
-kubectl edit deployment example-web-app --namespace <namespace>
-```
-
-{{% alert title="Note" color="info" %}}
-If you're not comfortable with `vi` then you can switch to another editor by setting the environment variable `EDITOR`
-or `KUBE_EDITOR`, e.g. `export KUBE_EDITOR=nano`.
-{{% /alert %}}
-
-Look for the following section and change the value for `maxUnavailable` to 0:
-
-```
-...
-spec:
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 0
-    type: RollingUpdate
-...
-```
-
-Now insert the readiness probe at `.spec.template.spec.containers` above the `resources: {}` line:
+Now insert the readiness probe at `.spec.template.spec.containers` above the `resources` line in your local `deployment_example-web-app.yaml` File:
 
 ```yaml
 
@@ -454,33 +461,20 @@ containers:
       initialDelaySeconds: 10
       timeoutSeconds: 1
     # stop to copy here
-    resources: {}
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 128Mi
 ...
 ```
 
-The `containers` configuration then looks like:
+apply the file with:
 
-```yaml
-
-...
-containers:
-  - image: {{% param "images.training-image-url" %}}
-    imagePullPolicy: Always
-    name: example-web-app
-    readinessProbe:
-      failureThreshold: 3
-      httpGet:
-        path: /health
-        port: {{% param "images.training-image-probe-port" %}}
-        scheme: HTTP
-      initialDelaySeconds: 10
-      periodSeconds: 10
-      successThreshold: 1
-      timeoutSeconds: 1
-    resources: {}
-    terminationMessagePath: /dev/termination-log
-    terminationMessagePolicy: File
-...
+```bash
+{{% param cliToolName %}} apply -f deployment_example-web-app.yaml --namespace <namespace>
 ```
 
 {{% /onlyWhenNot %}}
@@ -538,7 +532,7 @@ while true; do sleep 1; curl -s https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"
 {{% onlyWhenNot openshift %}}
 
 ```bash
-URL=example-web-app-<namespace>.<domain>
+URL=$(kubectl get ingress example-web-app -o go-template="{{ (index .spec.rules 0).host }}" --namespace <namespace>)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 
@@ -569,22 +563,12 @@ while(1) {
 ```
 
 {{% /onlyWhen %}}
-{{% onlyWhenNot openshift %}}
-Start a new deployment by editing it (the so-called _ConfigChange_ trigger creates the new Deployment automatically):
+
+Restart your Deployment with:
 
 ```bash
-kubectl patch deployment example-web-app -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"`date +'%s'`\"}}}}}" --namespace <namespace>
+{{% param cliToolName %}} rollout restart deployment example-web-app --namespace <namespace>
 ```
-
-{{% /onlyWhenNot %}}
-{{% onlyWhen openshift %}}
-Start a new deployment:
-
-```bash
-oc rollout restart deployment example-web-app --namespace <namespace>
-```
-
-{{% /onlyWhen %}}
 
 
 ## Self-healing

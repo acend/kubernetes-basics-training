@@ -48,7 +48,7 @@ defaultValue = "<proxy>:<port>"
 
 [[params.replaceContent.placeholders]]
 placeholder = "<noproxy-list>"
-queryParam = "n"
+queryParam = "np"
 defaultValue = "<noproxy-list>"
 
 [[params.replaceContent.placeholders]]

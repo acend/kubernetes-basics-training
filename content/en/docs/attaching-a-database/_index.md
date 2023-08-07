@@ -284,18 +284,17 @@ Depending on the shell you use, the following `set env` command works but insert
 
 ```bash
 {{% param cliToolName %}} set env --from=secret/mariadb --prefix=MYSQL_ deploy/example-web-app --namespace <namespace>
+```
+
+and
+
+```bash
 {{% param cliToolName %}} set env deploy/example-web-app MYSQL_URI='mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)' --namespace <namespace>
 ```
 
 The first command inserts the values from the Secret, the second finally uses these values to put them in the environment variable `MYSQL_URI` which the application considers.
 
-You could also do the changes by directly editing the Deployment:
-
-```bash
-{{% param cliToolName %}} edit deployment example-web-app --namespace <namespace>
-```
-
-In the file, find the section which defines the containers. You should find it under:
+You can also do the changes by directly editing your local `deployment_example-web-app.yaml` file. Find the section which defines the containers. You should find it under:
 
 ```
 ...
@@ -370,6 +369,15 @@ Your file should now look like this:
         - name: MYSQL_URI
           value: mysql://$(MYSQL_DATABASE_USER):$(MYSQL_DATABASE_PASSWORD)@mariadb/$(MYSQL_DATABASE_NAME)
 ```
+
+Then use:
+
+```bash
+{{% param cliToolName %}} apply -f deployment_example-web-app.yaml --namespace <namespace>
+```
+
+to apply the changes.
+
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
@@ -597,7 +605,7 @@ Check your app to see the imported "Hellos".
 You can find your app URL by looking at your route:
 
 ```bash
-oc get route --namespace <namespace>
+{{% param cliToolName %}} get {{% onlyWhenNot openshift %}}ingress{{% /onlyWhen %}}{{% onlyWhen openshift %}}route{{% /onlyWhen %}} --namespace <namespace>
 ```
 {{% /alert %}}
 {{% /onlyWhen %}}

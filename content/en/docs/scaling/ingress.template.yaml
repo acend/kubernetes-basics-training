@@ -5,7 +5,7 @@ metadata:
   name: example-web-app
 spec:
   rules:
-    - host: example-web-app-<namespace>.<domain>
+    - host: example-web-app-<namespace>.<appdomain>
       http:
         paths:
           - path: /
