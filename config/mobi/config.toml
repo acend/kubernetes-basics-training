@@ -16,7 +16,7 @@
     disable = false
 
 [params]
-enabledModule = "base"
+enabledModule = "base mobi"
 copyright = "Puzzle ITC GmbH"
 imagePrefix = "puzzle_"
 customer = "mobi"
