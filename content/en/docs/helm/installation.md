@@ -22,26 +22,6 @@ Install the CLI for your **Operating System**
    * Windows: Find the `helm` binary in the unpacked directory and move it to its desired destination
      * The desired destination should be listed in your $PATH environment variable (`echo $PATH`)
 
-{{% onlyWhen mobi %}}
-
-
-## Proxy configuration
-
-{{% alert title="Note" color="info" %}}
-If you have direct access to the internet from your location, the proxy configuration is not required.
-{{% /alert %}}
-
-Set your HTTP proxy environment variables so that a chart repository can be added to your Helm repos in a later lab:
-
-```bash
-export HTTP_PROXY="http://<username>:<password>@<proxy>:<port>"
-export HTTPS_PROXY="http://<username>:<password>@<proxy>:<port>"
-export NO_PROXY="<noproxy-list>"
-```
-
-Replace `<username`> and `<password>` with your credentials. If you have special characters in your password, escape them with their corresponding hexadecimal values according to [this article](https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters).
-{{% /onlyWhen %}}
-
 
 ## {{% task %}} Verify
 

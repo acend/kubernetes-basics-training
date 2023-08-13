@@ -16,29 +16,6 @@ Check out [Artifact Hub](https://artifacthub.io/) where you'll find a huge numbe
 
 As this WordPress Helm chart is published in Bitnami's Helm repository, we're first going to add it to our local repo list:
 
-{{% onlyWhen mobi %}}
-You have to set your `HTTP_PROXY` environment variable in order to access the bitnami helm repository:
-
-```bash
-# Linux
-export HTTP_PROXY="http://<username>:<password>@<proxy>:<port>"
-export HTTPS_PROXY="http://<username>:<password>@<proxy>:<port>"
-
-# Windows cmd
-setx HTTP_PROXY="http://<username>:<password>@<proxy>:<port>"
-setx HTTPS_PROXY="http://<username>:<password>@<proxy>:<port>"
-setx http_proxy="http://<username>:<password>@<proxy>:<port>"
-setx https_proxy="http://<username>:<password>@<proxy>:<port>"
-
-# Windows Powershell
-$env:HTTP_PROXY="http://<username>:<password>@<proxy>:<port>"
-$env:HTTPS_PROXY="http://<username>:<password>@<proxy>:<port>"
-$env:http_proxy="http://<username>:<password>@<proxy>:<port>"
-$env:https_proxy="http://<username>:<password>@<proxy>:<port>"
-```
-
-Replace `<username>` and `<password>` with your account details. If you have special chars in your password, you have to escape them with hexadecimal value according to [this](https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters).
-{{% /onlyWhen %}}
 
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -93,62 +70,7 @@ mariadb:
 Make sure to set the proper value as hostname. `<appdomain>` will be provided by the trainer.
 {{% /alert %}}
 
-{{% onlyWhen mobi %}}
-Use `wordpress-<namespace>.<appdomain>` as your hostname. It might take some time until your ingress hostname is accessible, as the DNS name first has to be propagated correctly.
-{{% /onlyWhen %}}
-
 If you look inside the [Chart.yaml](https://github.com/bitnami/charts/blob/master/bitnami/wordpress/Chart.yaml) file of the WordPress chart, you'll see a dependency to the [MariaDB Helm chart](https://github.com/bitnami/charts/tree/master/bitnami/mariadb). All the MariaDB values are used by this dependent Helm chart and the chart is automatically deployed when installing WordPress.
-
-{{% onlyWhen mobi %}}
-The WordPress and MariaDB charts use the following container images (at the time of writing):
-
-* `docker.io/bitnami/wordpress:5.4.0-debian-10-r6`
-* `docker.io/bitnami/mariadb:10.3.22-debian-10-r60`
-
-As we cannot access these images, we'll have to overwrite them. Add the following to your `values.yaml` file in order to do so:
-
-```yaml
-[...]
-image:
-  registry: REGISTRY-URL
-  repository: puzzle/helm-techlab/wordpress
-
-mariadb:
-  image:
-    registry: REGISTRY-URL
-    repository: puzzle/helm-techlab/mariadb
-[...]
-```
-
-You have to merge the `mariadb` part with the already defined `mariadb` part from the lab instructions above. Your final `values.yaml` should look like:
-
-```yaml
----
-image:
-  registry: REGISTRY-URL
-  repository: puzzle/helm-techlab/wordpress
-
-service:
-  type: ClusterIP
-
-ingress:
-  enabled: true
-  hostname: wordpress-<namespace>.<appdomain>
-
-mariadb:
-  image:
-    registry: REGISTRY-URL
-    repository: puzzle/helm-techlab/mariadb
-  primary:
-    persistence:
-      size: 1Gi
-```
-
-Make sure to replace `<namespace>`.
-
-The image tag remains as already defined in the orginial [`values.yaml`](https://github.com/bitnami/charts/blob/master/bitnami/wordpress/values.yaml) file from the chart.
-
-{{% /onlyWhen %}}
 
 The `Chart.yaml` file allows us to define dependencies on other charts. In our Wordpress chart we use the `Chart.yaml` to add a `mariadb` to store the WordPress data in.
 

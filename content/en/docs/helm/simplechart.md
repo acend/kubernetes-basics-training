@@ -17,19 +17,6 @@ helm create mychart
 
 You will now find a `mychart` directory with the newly created chart. It already is a valid and fully functional chart which deploys an nginx instance. Have a look at the generated files and their content. For an explanation of the files, visit the [Helm Developer Documentation](https://docs.helm.sh/developing_charts/#the-chart-file-structure). In a later section you'll find all the information about Helm templates.
 
-{{% onlyWhen mobi %}}
-Because you cannot pull the `nginx` container image on your cluster, you have to use the `REGISTRY-URL/puzzle/k8s/kurs/nginx` container image. Change your `mychart/values.yaml` to match the following:
-
-```yaml
-[...]
-image:
-  repository: REGISTRY-URL/puzzle/k8s/kurs/nginx
-  tag: stable
-  pullPolicy: IfNotPresent
-[...]
-```
-
-{{% /onlyWhen %}}
 {{% onlyWhen openshift %}}
 The default image freshly created chart deploys is a simple nginx image listening on port `80`.
 
@@ -96,9 +83,8 @@ helm ls --namespace <namespace>
 
 Our freshly deployed nginx is not yet accessible from outside the {{% param distroName %}} cluster.
 To expose it, we have to make sure a so called ingress resource will be deployed as well.
-{{% onlyWhenNot mobi %}}<!-- No TLS on mobi ingress-->
+
 Also make sure the application is accessible via TLS.
-{{% /onlyWhenNot %}}
 
 A look into the file `templates/ingress.yaml` reveals that the rendering of the ingress and its values is configurable through values(`values.yaml`):
 
@@ -214,35 +200,9 @@ ingress:
 {{% /onlyWhenNot %}}
 
 {{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-Therefore, we need to change this value inside our `values.yaml` file.
-
-```yaml
-...
-ingress:
-  enabled: true
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: mychart-<namespace>.<appdomain>
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
-...
-```
-
-{{% /onlyWhen %}}
 
 {{% alert title="Note" color="info" %}}
 Make sure to set the proper value as hostname. `<appdomain>` will be provided by the trainer.
-{{% onlyWhen mobi %}}
-Use `<namespace>.<appdomain>` as your hostname. It might take some time until your ingress hostname is accessible, as the DNS name first has to be propagated correctly.
-{{% /onlyWhen %}}
 {{% /alert %}}
 
 Apply the change by upgrading our release:
@@ -269,10 +229,6 @@ NOTES:
 Check whether the ingress was successfully deployed by accessing the URL `http://mychart-<namespace>.<appdomain>/`
 
 {{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-Check whether the ingress was successfully deployed by accessing the URL `https://mychart-<namespace>.<appdomain>/`
-
-{{% /onlyWhen %}}
 
 
 ## {{% task %}} Overwrite value using commandline param

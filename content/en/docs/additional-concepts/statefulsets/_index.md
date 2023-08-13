@@ -77,9 +77,6 @@ Create a file named `sts_nginx-cluster.yaml` with the following definition of a 
 {{% onlyWhen baloise %}}
 {{< readfile file="/content/en/docs/additional-concepts/statefulsets/sts_nginx-cluster_baloise.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
-{{% onlyWhen mobi %}}
-{{< readfile file="/content/en/docs/additional-concepts/statefulsets/sts_nginx-cluster_mobi.yaml" code="true" lang="yaml" >}}
-{{% /onlyWhen %}}
 
 Create the StatefulSet:
   
@@ -114,16 +111,10 @@ You can again watch the pods' progress like you did in the first task.
 In order to update the image tag in use in a StatefulSet, you can use the `{{% param cliToolName %}} set image` command.
 Set the StatefulSet's image tag to `latest`:
 
-{{% onlyWhenNot mobi %}}
+
 ```bash
 {{% param cliToolName %}} set image statefulset nginx-cluster nginx={{% param "images.nginxinc-nginx-unprivileged" %}}:latest --namespace <namespace>
 ```
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-```bash
-kubectl set image statefulset nginx-cluster nginx={{% param "images.nginx" %}} --namespace <namespace>
-```
-{{% /onlyWhen %}}
 
 
 ## {{% task %}} Rollback

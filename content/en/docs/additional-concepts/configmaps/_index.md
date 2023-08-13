@@ -102,14 +102,7 @@ Basically, a Deployment has to be extended with the following config:
 
 {{% onlyWhenNot openshift %}}
 Here is a complete example Deployment of a sample Java app:
-
-{{% onlyWhenNot customer %}}
 {{< readfile file="/content/en/docs/additional-concepts/configmaps/spring-boot-example.yaml" code="true" lang="yaml" >}}
-{{% /onlyWhenNot %}}
-
-{{% onlyWhen mobi %}}
-{{< readfile file="/content/en/docs/additional-concepts/configmaps/spring-boot-example-mobi.yaml" code="true" lang="yaml" >}}
-{{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 
 This means that the container should now be able to access the ConfigMap's content in `/etc/config/java.properties`. Let's check:
