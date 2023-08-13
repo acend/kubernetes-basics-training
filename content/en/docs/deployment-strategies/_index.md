@@ -17,4 +17,4 @@ This [document](https://www.cncf.io/wp-content/uploads/2018/03/CNCF-Presentation
 
 ## {{% task %}} Apply deployment strategies
 
-Apply some deployment strategies to the example from [lab 5](../05).
+Apply some deployment strategies to the example from the [Scaling](../scaling).
