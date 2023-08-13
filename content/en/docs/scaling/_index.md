@@ -163,10 +163,6 @@ Then we add the Ingress to access our application:
 {{< readfile file="/content/en/docs/scaling/ingress.template.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhenNot %}}
 
-{{% onlyWhen mobi %}}
-{{< readfile file="/content/en/docs/scaling/ingress-mobi.template.yaml" code="true" lang="yaml" >}}
-{{% /onlyWhen %}}
-
 Apply this Ingress definition using, e.g.:
 
 ```yaml
@@ -284,23 +280,10 @@ while true; do sleep 1; curl -s https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"
 {{% /onlyWhen %}}
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
-{{% onlyWhenNot mobi %}}
-
 ```bash
 URL=(kubectl get ingress example-web-app -o go-template="{{ (index .spec.rules 0).host }}" --namespace <namespace>)
 while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
-
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-
-```bash
-URL=(kubectl get ingress example-web-app -o go-template="{{ (index .spec.rules 0).host }}" --namespace <namespace>)
-while true; do sleep 1; curl -ks https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
-```
-
-{{% /onlyWhen %}}
-
 {{% /onlyWhenNot %}}
 {{% onlyWhenNot baloise %}}
 

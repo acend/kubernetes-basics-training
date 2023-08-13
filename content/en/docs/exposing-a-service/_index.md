@@ -173,10 +173,6 @@ In order to create the Ingress resource, we first need to create the file `ingre
 {{< readfile file="/content/en/docs/exposing-a-service/ingress.template.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhenNot %}}
 
-{{% onlyWhen mobi %}}
-{{< readfile file="/content/en/docs/exposing-a-service/ingress-mobi.template.yaml" code="true" lang="yaml" >}}
-{{% /onlyWhen %}}
-
 As you see in the resource definition at `spec.rules[0].http.paths[0].backend.service.name` we use the previously created `example-web-go` ClusterIP Service.
 
 Let's create the Ingress resource with:
@@ -185,12 +181,7 @@ Let's create the Ingress resource with:
 kubectl apply -f ingress.yaml --namespace <namespace>
 ```
 
-{{% onlyWhenNot mobi %}}
 Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<appdomain>`
-{{% /onlyWhenNot %}}
-{{% onlyWhen mobi %}}
-Afterwards, we are able to access our app via our freshly created Ingress at `https://example-web-go-<namespace>.<appdomain>`. Although we have not configured the Ingress to use TLS, it is available with a `https` address. This is because of the setup at Mobiliar and not default behavior.
-{{% /onlyWhen %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
 {{% onlyWhenNot baloise %}}

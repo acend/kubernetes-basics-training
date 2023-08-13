@@ -179,10 +179,6 @@ Save this snippet as `mariadb.yaml`:
 {{< readfile file="/content/en/docs/attaching-a-database/mariadb.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhenNot %}}
 
-{{% onlyWhen mobi %}}
-{{< readfile file="/content/en/docs/attaching-a-database/mariadb-mobi.yaml" code="true" lang="yaml" >}}
-{{% /onlyWhen %}}
-
 Apply it with:
 
 ```bash

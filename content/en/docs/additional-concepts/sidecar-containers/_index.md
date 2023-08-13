@@ -44,9 +44,6 @@ And add a new (sidecar) container to it:
 {{% onlyWhen baloise %}}
 {{< readfile file="/content/en/docs/additional-concepts/sidecar-containers/deploy_mariadb-sidecar_baloise.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhen %}}
-{{% onlyWhen mobi %}}
-{{< readfile file="/content/en/docs/additional-concepts/sidecar-containers/deploy_mariadb-sidecar_mobi.yaml" code="true" lang="yaml" >}}
-{{% /onlyWhen %}}
 
 and then apply the change with:
 
