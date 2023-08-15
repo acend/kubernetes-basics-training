@@ -285,8 +285,8 @@ example-web-go   NodePort   10.43.91.62   <none>        5000:30692/TCP
 
 The `NodePort` number is assigned by Kubernetes and stays the same as long as the Service is not deleted. A NodePort Service is more suitable for infrastructure tools than for public URLs.
 
-Open `http://<node-ip>:<node-port>` in your browser.
-You can use any node IP as the Service is exposed on all nodes using the same `NodePort`. Use `kubectl get nodes -o wide` to display the IPs (`INTERNAL-IP`) of the available nodes.
+Open `http://<node-ip>:<node-port>` in your browser or use `curl http://<node-ip>:<node-port>` when the public ip is not available in your browser.
+You can use any node IP as the Service is exposed on all nodes using the same `NodePort`. Use `kubectl get nodes -o wide` to display the IPs (`INTERNAL-IP` or `EXTERNAL-IP`) of the available nodes. Depending on your environment, use the internal or external (public) ip address.
 
 ```bash
 kubectl get node -o wide
