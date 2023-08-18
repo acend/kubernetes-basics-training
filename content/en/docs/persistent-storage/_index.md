@@ -71,25 +71,23 @@ We now have to insert the volume definition in the correct section of the MariaD
 
 Change your local `mariadb.yaml` file and add the `volumeMounts` and `volumes` parts:
 
-```yaml
-...
-        resources: {}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        # start to copy here
-        volumeMounts:
-        - name: mariadb-data
-          mountPath: /var/lib/mysql
+{{< highlight YAML "hl_lines=8-15" >}}
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 50m
+              memory: 128Mi
+          # start to copy here
+          volumeMounts:
+          - name: mariadb-data
+            mountPath: /var/lib/mysql
       volumes:
       - name: mariadb-data
         persistentVolumeClaim:
           claimName: mariadb-data
-      # stop to copy here
-      dnsPolicy: ClusterFirst
-      restartPolicy: Always
-      schedulerName: default-scheduler
-...
-```
+{{< /highlight >}}
 
 Then apply the change with:
 
