@@ -31,7 +31,6 @@ imagePrefix = "appuio_"
 enabledModule = "base ocplight nosecurity openshift techlab"
 distroName = "OpenShift"
 cliToolName = "oc"
-netpolNS = ""
 
 ############################## social links ##############################
 [params.links]
