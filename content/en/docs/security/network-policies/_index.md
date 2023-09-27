@@ -11,6 +11,12 @@ One CNI function is the ability to enforce network policies and implement an in-
 If you are not yet familiar with Kubernetes Network Policies we suggest going to the [Kubernetes Documentation](https://kubernetes.io/docs/concepts/services-networking/network-policies/).
 {{% /alert %}}
 
+{{% onlyWhen openshift %}}
+{{% alert title="Warning" color="warning" %}}
+For this lab to work it is vital that you use the namespace `<username>-netpol`!
+{{% /alert %}}
+{{% /onlyWhen %}}
+
 
 ### {{% task %}} Deploy a simple frontend/backend application
 
@@ -22,10 +28,16 @@ The application consists of two client deployments (`frontend` and `not-frontend
 
 Create a file `simple-app.yaml` with the above content.
 
+{{% onlyWhen openshift %}}
+{{% alert title="Warning" color="warning" %}}
+Remember to use the namespace `<username>-netpol`, otherwise this lab will not work!
+{{% /alert %}}
+{{% /onlyWhen %}}
+
 Deploy the app:
 
 ```bash
-kubectl apply -f simple-app.yaml
+kubectl apply -f simple-app.yaml {{% param netpolNS %}}
 ```
 
 this gives you the following output:
