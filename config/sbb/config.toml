@@ -10,6 +10,7 @@ enabledModule = "base ocplight nosecurity openshift sbb"
 distroName = "OpenShift"
 cliToolName = "oc"
 automaticSectionNumbers = true
+netpolNS = ""
 
 [params.images]
 training-image-url = "quay.io/appuio/example-spring-boot:latest"

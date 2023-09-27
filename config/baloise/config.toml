@@ -11,6 +11,7 @@ distroName = "OpenShift"
 cliToolName = "oc"
 automaticSectionNumbers = true
 customer = "baloise"
+netpolNS = ""
 
 [params.images]
 deployment-image-url = "REGISTRY-URL/acend/example-web-go:latest"
