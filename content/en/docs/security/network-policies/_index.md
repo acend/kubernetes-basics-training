@@ -38,12 +38,12 @@ Deploy the app:
 
 {{% onlyWhen openshift %}}
 ```bash
-kubectl apply -f simple-app.yaml --namespace <namespace>-netpol
+{{% param cliToolName %}} apply -f simple-app.yaml --namespace <namespace>-netpol
 ```
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 ```bash
-kubectl apply -f simple-app.yaml
+{{% param cliToolName %}} apply -f simple-app.yaml
 ```
 {{% /onlyWhenNot %}}
 
@@ -60,12 +60,12 @@ Verify with the following command that everything is up and running:
 
 {{% onlyWhen openshift %}}
 ```bash
-kubectl get all --namespace <namespace>-netpol
+{{% param cliToolName %}} get all --namespace <namespace>-netpol
 ```
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 ```bash
-kubectl get all
+{{% param cliToolName %}} get all
 ```
 {{% /onlyWhenNot %}}
 
@@ -95,17 +95,17 @@ Let us make life a bit easier by storing the pods name into an environment varia
 
 {{% onlyWhen openshift %}}
 ```bash
-export FRONTEND=$(kubectl get pods -l app=frontend --namespace <namespace>-netpol -o jsonpath='{.items[0].metadata.name}')
+export FRONTEND=$({{% param cliToolName %}} get pods -l app=frontend --namespace <namespace>-netpol -o jsonpath='{.items[0].metadata.name}')
 echo ${FRONTEND}
-export NOT_FRONTEND=$(kubectl get pods -l app=not-frontend --namespace <namespace>-netpol -o jsonpath='{.items[0].metadata.name}')
+export NOT_FRONTEND=$({{% param cliToolName %}} get pods -l app=not-frontend --namespace <namespace>-netpol -o jsonpath='{.items[0].metadata.name}')
 echo ${NOT_FRONTEND}
 ```
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 ```bash
-export FRONTEND=$(kubectl get pods -l app=frontend -o jsonpath='{.items[0].metadata.name}')
+export FRONTEND=$({{% param cliToolName %}} get pods -l app=frontend -o jsonpath='{.items[0].metadata.name}')
 echo ${FRONTEND}
-export NOT_FRONTEND=$(kubectl get pods -l app=not-frontend -o jsonpath='{.items[0].metadata.name}')
+export NOT_FRONTEND=$({{% param cliToolName %}} get pods -l app=not-frontend -o jsonpath='{.items[0].metadata.name}')
 echo ${NOT_FRONTEND}
 ```
 {{% /onlyWhenNot %}}
@@ -117,26 +117,26 @@ Now we generate some traffic as a baseline test.
 
 {{% onlyWhen openshift %}}
 ```bash
-kubectl exec --namespace <namespace>-netpol -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec --namespace <namespace>-netpol -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
 
 and
 
 
 ```bash
-kubectl exec --namespace <namespace>-netpol -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec --namespace <namespace>-netpol -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 ```bash
-kubectl exec -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
 
 and
 
 
 ```bash
-kubectl exec -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
 {{% /onlyWhenNot %}}
 
@@ -190,24 +190,24 @@ Ok, then let's create the policy with:
 
 {{% onlyWhen openshift %}}
 ```bash
-kubectl apply -f backend-ingress-deny.yaml --namespace <namespace>-netpol
+{{% param cliToolName %}} apply -f backend-ingress-deny.yaml --namespace <namespace>-netpol
 ```
 
 and you can verify the created `NetworkPolicy` with:
 
 ```bash
-kubectl get netpol --namespace <namespace>-netpol
+{{% param cliToolName %}} get netpol --namespace <namespace>-netpol
 ```
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 ```bash
-kubectl apply -f backend-ingress-deny.yaml
+{{% param cliToolName %}} apply -f backend-ingress-deny.yaml
 ```
 
 and you can verify the created `NetworkPolicy` with:
 
 ```bash
-kubectl get netpol
+{{% param cliToolName %}} get netpol
 ```
 {{% /onlyWhenNot %}}
 
@@ -227,24 +227,24 @@ We can now execute the connectivity check again:
 
 {{% onlyWhen openshift %}}
 ```bash
-kubectl exec --namespace <namespace>-netpol -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec --namespace <namespace>-netpol -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
 
 and
 
 ```bash
-kubectl exec --namespace <namespace>-netpol -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec --namespace <namespace>-netpol -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 ```bash
-kubectl exec -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
 
 and
 
 ```bash
-kubectl exec -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
 {{% /onlyWhenNot %}}
 
@@ -298,12 +298,12 @@ Apply the new policy:
 
 {{% onlyWhen openshift %}}
 ```bash
-kubectl apply -f backend-allow-ingress-frontend.yaml --namespace <namespace>-netpol
+{{% param cliToolName %}} apply -f backend-allow-ingress-frontend.yaml --namespace <namespace>-netpol
 ```
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 ```bash
-kubectl apply -f backend-allow-ingress-frontend.yaml
+{{% param cliToolName %}} apply -f backend-allow-ingress-frontend.yaml
 ```
 {{% /onlyWhenNot %}}
 
@@ -311,24 +311,24 @@ and then execute the connectivity test again:
 
 {{% onlyWhen openshift %}}
 ```bash
-kubectl exec --namespace <namespace>-netpol -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec --namespace <namespace>-netpol -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
 
 and
 
 ```bash
-kubectl exec --namespace <namespace>-netpol -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec --namespace <namespace>-netpol -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 ```bash
-kubectl exec -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
 
 and
 
 ```bash
-kubectl exec -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
 {{% /onlyWhenNot %}}
 
@@ -359,12 +359,12 @@ Note that this is working despite the fact we did not delete the previous `backe
 
 {{% onlyWhen openshift %}}
 ```bash
-kubectl get netpol --namespace <namespace>-netpol
+{{% param cliToolName %}} get netpol --namespace <namespace>-netpol
 ```
 {{% /onlyWhen %}}
 {{% onlyWhenNot openshift %}}
 ```bash
-kubectl get netpol
+{{% param cliToolName %}} get netpol
 ```
 {{% /onlyWhenNot %}}
 
