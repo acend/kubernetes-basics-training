@@ -79,7 +79,6 @@ enabledModule = "base cloudscale"
 distroName = "Kubernetes"
 cliToolName = "kubectl"
 customer = "none"
-netpolNS = "something else"
 
 [params.images]
 deployment-image-url = "quay.io/acend/example-web-go:latest"
