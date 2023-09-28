@@ -17,6 +17,7 @@ For this lab to work it is vital that you use the namespace `<username>-netpol`!
 {{% /alert %}}
 {{% /onlyWhen %}}
 
+
 ### {{% task %}} Deploy a simple frontend/backend application
 
 First we need a simple application to show the effects on Kubernetes network policies. Let's have a look at the following resource definitions:
