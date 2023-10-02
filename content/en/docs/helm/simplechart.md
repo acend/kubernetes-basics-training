@@ -167,7 +167,11 @@ Make sure to replace the `<namespace>` and `<appdomain>` accordingly.
 ingress:
   enabled: true
   className: ""
+  # as we learned in previous labs, OpenShift uses Routes instead of Ingresses
+  # to let OpenShift automatically generate the corresponding Route, we need the following annotation. more information:
+  # https://docs.openshift.com/container-platform/latest/networking/routes/route-configuration.html#nw-ingress-creating-a-route-via-an-ingress_route-configuration
   annotations:
+    route.openshift.io/termination: "edge"
   hosts:
     - host: mychart-<namespace>.<appdomain>
       paths:
@@ -222,11 +226,11 @@ STATUS: deployed
 REVISION: 2
 NOTES:
 1. Get the application URL by running these commands:
-  http://<namespace>.<appdomain>/
+  https://<namespace>.<appdomain>/
 ```
 
 {{% onlyWhenNot customer %}}
-Check whether the ingress was successfully deployed by accessing the URL `http://mychart-<namespace>.<appdomain>/`
+Check whether the ingress was successfully deployed by accessing the URL `https://mychart-<namespace>.<appdomain>/`
 
 {{% /onlyWhenNot %}}
 
