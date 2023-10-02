@@ -11,6 +11,12 @@ One CNI function is the ability to enforce network policies and implement an in-
 If you are not yet familiar with Kubernetes Network Policies we suggest going to the [Kubernetes Documentation](https://kubernetes.io/docs/concepts/services-networking/network-policies/).
 {{% /alert %}}
 
+{{% onlyWhen openshift %}}
+{{% alert title="Warning" color="warning" %}}
+For this lab to work it is vital that you use the namespace `<username>-netpol`!
+{{% /alert %}}
+{{% /onlyWhen %}}
+
 
 ### {{% task %}} Deploy a simple frontend/backend application
 
@@ -22,11 +28,24 @@ The application consists of two client deployments (`frontend` and `not-frontend
 
 Create a file `simple-app.yaml` with the above content.
 
+{{% onlyWhen openshift %}}
+{{% alert title="Warning" color="warning" %}}
+Remember to use the namespace `<username>-netpol`, otherwise this lab will not work!
+{{% /alert %}}
+{{% /onlyWhen %}}
+
 Deploy the app:
 
+{{% onlyWhen openshift %}}
 ```bash
-kubectl apply -f simple-app.yaml
+{{% param cliToolName %}} apply -f simple-app.yaml --namespace <namespace>-netpol
 ```
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
+```bash
+{{% param cliToolName %}} apply -f simple-app.yaml
+```
+{{% /onlyWhenNot %}}
 
 this gives you the following output:
 
@@ -39,9 +58,17 @@ service/backend created
 
 Verify with the following command that everything is up and running:
 
+{{% onlyWhen openshift %}}
 ```bash
-kubectl get all
+{{% param cliToolName %}} get all --namespace <namespace>-netpol
 ```
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
+```bash
+{{% param cliToolName %}} get all
+```
+{{% /onlyWhenNot %}}
+
 
 ```
 NAME                               READY   STATUS    RESTARTS   AGE
@@ -66,28 +93,53 @@ replicaset.apps/not-frontend-8f467ccbd   1         1         1       3m17s
 
 Let us make life a bit easier by storing the pods name into an environment variable so we can reuse it later again:
 
+{{% onlyWhen openshift %}}
 ```bash
-export FRONTEND=$(kubectl get pods -l app=frontend -o jsonpath='{.items[0].metadata.name}')
+export FRONTEND=$({{% param cliToolName %}} get pods -l app=frontend --namespace <namespace>-netpol -o jsonpath='{.items[0].metadata.name}')
 echo ${FRONTEND}
-export NOT_FRONTEND=$(kubectl get pods -l app=not-frontend -o jsonpath='{.items[0].metadata.name}')
+export NOT_FRONTEND=$({{% param cliToolName %}} get pods -l app=not-frontend --namespace <namespace>-netpol -o jsonpath='{.items[0].metadata.name}')
 echo ${NOT_FRONTEND}
 ```
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
+```bash
+export FRONTEND=$({{% param cliToolName %}} get pods -l app=frontend -o jsonpath='{.items[0].metadata.name}')
+echo ${FRONTEND}
+export NOT_FRONTEND=$({{% param cliToolName %}} get pods -l app=not-frontend -o jsonpath='{.items[0].metadata.name}')
+echo ${NOT_FRONTEND}
+```
+{{% /onlyWhenNot %}}
 
 
 ## {{% task %}} Verify connectivity
 
 Now we generate some traffic as a baseline test.
 
+{{% onlyWhen openshift %}}
 ```bash
-kubectl exec -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec --namespace <namespace>-netpol -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
 
 and
 
 
 ```bash
-kubectl exec -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec --namespace <namespace>-netpol -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
+```bash
+{{% param cliToolName %}} exec -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+```
+
+and
+
+
+```bash
+{{% param cliToolName %}} exec -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+```
+{{% /onlyWhenNot %}}
+
 
 This will execute a simple `curl` call from the `frontend` and `not-frondend` application to the `backend` application:
 
@@ -136,15 +188,28 @@ The policy will deny all ingress traffic as it is of type Ingress but specifies 
 
 Ok, then let's create the policy with:
 
+{{% onlyWhen openshift %}}
 ```bash
-kubectl apply -f backend-ingress-deny.yaml
+{{% param cliToolName %}} apply -f backend-ingress-deny.yaml --namespace <namespace>-netpol
 ```
 
 and you can verify the created `NetworkPolicy` with:
 
 ```bash
-kubectl get netpol
+{{% param cliToolName %}} get netpol --namespace <namespace>-netpol
 ```
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
+```bash
+{{% param cliToolName %}} apply -f backend-ingress-deny.yaml
+```
+
+and you can verify the created `NetworkPolicy` with:
+
+```bash
+{{% param cliToolName %}} get netpol
+```
+{{% /onlyWhenNot %}}
 
 which gives you an output similar to this:
 
@@ -160,15 +225,28 @@ backend-ingress-deny   app=backend    2s
 
 We can now execute the connectivity check again:
 
+{{% onlyWhen openshift %}}
 ```bash
-kubectl exec -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec --namespace <namespace>-netpol -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
 
 and
 
 ```bash
-kubectl exec -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec --namespace <namespace>-netpol -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
+```bash
+{{% param cliToolName %}} exec -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+```
+
+and
+
+```bash
+{{% param cliToolName %}} exec -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+```
+{{% /onlyWhenNot %}}
 
 but this time you see that the `frontend` and `not-frontend` application cannot connect anymore to the `backend`:
 
@@ -218,21 +296,41 @@ The file should look like this:
 
 Apply the new policy:
 
+{{% onlyWhen openshift %}}
 ```bash
-kubectl apply -f backend-allow-ingress-frontend.yaml
+{{% param cliToolName %}} apply -f backend-allow-ingress-frontend.yaml --namespace <namespace>-netpol
 ```
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
+```bash
+{{% param cliToolName %}} apply -f backend-allow-ingress-frontend.yaml
+```
+{{% /onlyWhenNot %}}
 
 and then execute the connectivity test again:
 
+{{% onlyWhen openshift %}}
 ```bash
-kubectl exec -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec --namespace <namespace>-netpol -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
 
 and
 
 ```bash
-kubectl exec -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+{{% param cliToolName %}} exec --namespace <namespace>-netpol -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
 ```
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
+```bash
+{{% param cliToolName %}} exec -ti ${FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+```
+
+and
+
+```bash
+{{% param cliToolName %}} exec -ti ${NOT_FRONTEND} -- curl -I --connect-timeout 5 backend:8080
+```
+{{% /onlyWhenNot %}}
 
 This time, the `frontend` application is able to connect to the `backend` but the `not-frontend` application still cannot connect to the `backend`:
 
@@ -259,9 +357,16 @@ command terminated with exit code 28
 
 Note that this is working despite the fact we did not delete the previous `backend-ingress-deny` policy:
 
+{{% onlyWhen openshift %}}
 ```bash
-kubectl get netpol
+{{% param cliToolName %}} get netpol --namespace <namespace>-netpol
 ```
+{{% /onlyWhen %}}
+{{% onlyWhenNot openshift %}}
+```bash
+{{% param cliToolName %}} get netpol
+```
+{{% /onlyWhenNot %}}
 
 ```
 NAME                             POD-SELECTOR   AGE
