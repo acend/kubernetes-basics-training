@@ -90,7 +90,7 @@ Authorized users inside a Project are able to manage those resources. Project na
 {{% onlyWhen baloise %}}
 You would usually create your first Project here using `oc new-project`.
 This is, however, not possible on the provided cluster.
-Instead, a Project named `<username>-training` has been pre-created for you.
+Instead, a Project named `<username>-training-test` has been pre-created for you.
 Use this Project for all labs in this training except for {{<link "resourcequotas-and-limitranges">}}.
 
 {{% alert title="Note" color="info" %}}
