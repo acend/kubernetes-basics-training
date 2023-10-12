@@ -107,23 +107,12 @@ Here is a complete example Deployment of a sample Java app:
 
 This means that the container should now be able to access the ConfigMap's content in `/etc/config/java.properties`. Let's check:
 
-{{% onlyWhen openshift %}}
-
 ```bash
-oc exec <pod name> --namespace <namespace> -- cat /etc/config/java.properties
+{{% param cliToolName %}} exec <pod> --namespace <namespace> -- cat /etc/config/java.properties
 ```
-
-{{% /onlyWhen %}}
-{{% onlyWhenNot openshift %}}
-
-```bash
-kubectl exec -it <pod> --namespace <namespace> -- cat /etc/config/java.properties
-```
-
-{{% /onlyWhenNot %}}
 
 {{% alert title="Note" color="info" %}}
-On Windows, you can use Git Bash with `winpty kubectl exec -it <pod> --namespace <namespace> -- cat //etc/config/java.properties`.
+On Windows, you can use Git Bash with `winpty {{% param cliToolName %}} exec -it <pod> --namespace <namespace> -- cat //etc/config/java.properties`.
 {{% /alert %}}
 
 {{< readfile file="/content/en/docs/additional-concepts/configmaps/java.properties" code="true" lang="yaml" >}}
