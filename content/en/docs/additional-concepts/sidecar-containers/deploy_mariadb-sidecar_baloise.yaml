@@ -1,6 +1,6 @@
       containers:
       - ...
-      - image: REGISTRY-URL/acend/mysqld-exporter
+      - image: REGISTRY-URL/acend/mysqld-exporter:latest-2023.06.17-00.13.04
         name: mysqld-exporter
         env:
         - name: MYSQL_DATABASE_ROOT_PASSWORD
