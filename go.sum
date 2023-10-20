@@ -6,6 +6,7 @@ github.com/acend/docsy-acend v0.0.0-20220803144727-ae91bbd8a950 h1:U9lxN8KbS2BMD
 github.com/acend/docsy-acend v0.0.0-20220803144727-ae91bbd8a950/go.mod h1:h8XZkPe1VufdOQfFXcLVQ7FvOJyIMKr8rJcSvWStG2g=
 github.com/acend/docsy-acend v0.0.0-20230301101952-9253f0a31c68 h1:trqoLzVYYvjHqexqpuqNzObHdJ3oSP6EqWfl3w/nPPE=
 github.com/acend/docsy-acend v0.0.0-20230301101952-9253f0a31c68/go.mod h1:h8XZkPe1VufdOQfFXcLVQ7FvOJyIMKr8rJcSvWStG2g=
+github.com/acend/docsy-acend v1.0.0/go.mod h1:h8XZkPe1VufdOQfFXcLVQ7FvOJyIMKr8rJcSvWStG2g=
 github.com/acend/docsy-plus v0.0.0-20220428195954-da462686a1f4 h1:NH8RTlmPMcTPxfZYlqYWWcqoQ5STebCQikKByJVRnAA=
 github.com/acend/docsy-plus v0.0.0-20220428195954-da462686a1f4/go.mod h1:FUTTPmi3S92rVMbCYqXdGNxixdyqACBrFTK7dOuMttQ=
 github.com/acend/docsy-plus v0.0.0-20220803122230-63e7228e737f h1:RMe3ZZ9KHUImhufaGViI6gnSTraEk+xvlTu9ae1lbys=
