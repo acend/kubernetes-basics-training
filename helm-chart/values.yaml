@@ -62,6 +62,18 @@ acendTraining:
         appname: openshift-basics-sbb
         domain: training.acend.ch
     -
+      name: bfh
+      replicaCount: 2
+      image:
+        repository: quay.io/acend/kubernetes-basics-training
+        pullPolicy: Always
+        tag: ""
+        tagsuffix: "-bfh"
+      ingress:
+        secretOverride: acend-wildcard
+        appname: bfh-openshift-lab
+        domain: training.acend.ch
+    -
       name: techlab
       replicaCount: 2
       image:
