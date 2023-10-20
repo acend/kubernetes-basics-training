@@ -1,7 +1,7 @@
 ---
 title: "Sidecar containers"
 weight: 97
-onlyWhenNot: sbb
+onlyWhenNot: nosidecarcontainers
 ---
 
 Let's first have another look at the Pod's description [on the Kubernetes documentation page](https://kubernetes.io/docs/concepts/workloads/pods/pod/):
