@@ -71,7 +71,7 @@ acendTraining:
         tagsuffix: "-bfh"
       ingress:
         secretOverride: acend-wildcard
-        appname: bfh-openshift-lab
+        appname: openshift-basics-bfh
         domain: training.acend.ch
     -
       name: techlab
