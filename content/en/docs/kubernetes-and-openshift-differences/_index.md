@@ -2,7 +2,7 @@
 title: "Kubernetes and OpenShift differences"
 weight: 14
 onlyWhen: openshift
-onlyWhenNot: ocplight
+onlyWhenNot: nokubernetesandopenshiftdifferences
 ---
 
 {{% onlyWhen baloise %}}

@@ -6,7 +6,7 @@ languageCode = "en-us"
 title = "OpenShift Basics Training"
 
 [params]
-enabledModule = "base ocplight nosecurity openshift sbb"
+enabledModule = "base nodaemonsets nodeploymentstrategies nokubernetesandopenshiftdifferences nosecurity nostatefulsets nosidecarcontainers openshift sbb"
 distroName = "OpenShift"
 cliToolName = "oc"
 automaticSectionNumbers = true

@@ -1,7 +1,7 @@
 ---
 title: "StatefulSets"
 weight: 91
-onlyWhenNot: sbb
+onlyWhenNot: nostatefulsets
 ---
 
 Stateless applications or applications with a stateful backend can be described as Deployments.

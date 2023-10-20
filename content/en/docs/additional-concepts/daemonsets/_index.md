@@ -1,7 +1,7 @@
 ---
 title: "DaemonSets"
 weight: 92
-onlyWhenNot: sbb
+onlyWhenNot: nodaemonsets
 ---
 
 A DaemonSet is almost identical to a normal Deployment. The difference is that it makes sure that exactly one Pod is running on every (or some specified) Node. When a new Node is added, the DaemonSet automatically deploys a Pod on the new Node if its selector matches.
