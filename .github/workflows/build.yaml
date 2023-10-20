@@ -87,6 +87,17 @@ jobs:
           tags: |
             quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-sbb
       -
+        name: Build BFH Version
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          build-args: |
+            TRAINING_HUGO_ENV=bfh
+          push: true
+          tags: |
+            quay.io/acend/kubernetes-basics-training:pr-${{ github.event.pull_request.number }}-bfh
+      -
         name: Login to quay.io appuio organization
         uses: docker/login-action@v3
         with:
@@ -141,6 +152,7 @@ jobs:
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-openshift --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-baloise --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-sbb --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
+          kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-bfh --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-techlab --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
       -
         name: Comment PR Environments in PR
@@ -154,4 +166,5 @@ jobs:
            * [OpenShift](https://openshift-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch)
            * [OpenShift Baloise](https://openshift-basics-baloise-pr-${{ github.event.pull_request.number }}.training.acend.ch)
            * [OpenShift SBB](https://openshift-basics-sbb-pr-${{ github.event.pull_request.number }}.training.acend.ch)
+           * [OpenShift BFH](https://openshift-basics-bfh-pr-${{ github.event.pull_request.number }}.training.acend.ch)
            * [APPUiO Techlab](https://techlab-pr-${{ github.event.pull_request.number }}.training.acend.ch)
