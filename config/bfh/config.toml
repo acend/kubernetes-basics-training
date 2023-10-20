@@ -1,0 +1,11 @@
+title = "BFH OpenShift Lab"
+languageCode = "en-us"
+
+[Languages]
+[Languages.en]
+title = "BFH OpenShift Lab"
+
+[params]
+enabledModule = "base openshift bfh nosecurity"
+distroName = "OpenShift"
+cliToolName = "oc"
