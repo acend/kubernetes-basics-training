@@ -1,7 +1,7 @@
 ---
 title: "Deployment strategies"
 weight: 11
-onlyWhenNot: ocplight
+onlyWhenNot: nodeploymentstrategies
 ---
 
 {{% onlyWhen baloise %}}
