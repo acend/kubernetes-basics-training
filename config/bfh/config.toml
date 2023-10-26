@@ -9,3 +9,6 @@ title = "BFH OpenShift Basics Training"
 enabledModule = "base openshift bfh nodaemonsets nodeploymentstrategies nohelm nokubernetesandopenshiftdifferences nokustomize noresourcequotasandlimitranges nosecurity nosidecarcontainers nostatefulsets"
 distroName = "OpenShift"
 cliToolName = "oc"
+
+[params.images]
+training-image-url = "quay.io/acend/example-web-python:bfh"
