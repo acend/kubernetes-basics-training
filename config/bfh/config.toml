@@ -1,0 +1,14 @@
+title = "BFH OpenShift Basics Training"
+languageCode = "en-us"
+
+[Languages]
+[Languages.en]
+title = "BFH OpenShift Basics Training"
+
+[params]
+enabledModule = "base openshift bfh nodaemonsets nodeploymentstrategies nohelm nokubernetesandopenshiftdifferences nokustomize noresourcequotasandlimitranges nosecurity nosidecarcontainers nostatefulsets"
+distroName = "OpenShift"
+cliToolName = "oc"
+
+[params.images]
+training-image-url = "quay.io/acend/example-web-python:bfh"

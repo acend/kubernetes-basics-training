@@ -1,7 +1,7 @@
 ---
 title: "Kustomize"
 weight: 13
-onlyWhenNot: techlab
+onlyWhenNot: nokustomize
 ---
 
 {{% onlyWhen baloise %}}
