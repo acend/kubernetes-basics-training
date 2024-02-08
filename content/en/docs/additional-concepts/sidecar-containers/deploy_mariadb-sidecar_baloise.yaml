@@ -1,13 +1,13 @@
       containers:
-      - ...
-      - image: REGISTRY-URL/acend/mysqld-exporter:latest-2023.06.17-00.13.04
-        name: mysqld-exporter
-        env:
-        - name: MYSQL_DATABASE_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: database-root-password
-              name: mariadb
-        - name: DATA_SOURCE_NAME
-          value: root:$MYSQL_DATABASE_ROOT_PASSWORD@(localhost:3306)/
+        - ...
+        - image: REGISTRY-URL/acend/mysqld-exporter:latest-2023.06.17-00.13.04
+          name: mysqld-exporter
+          env:
+          - name: MYSQL_DATABASE_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-root-password
+                name: mariadb
+          - name: DATA_SOURCE_NAME
+            value: root:$MYSQL_DATABASE_ROOT_PASSWORD@(localhost:3306)/
       ...
