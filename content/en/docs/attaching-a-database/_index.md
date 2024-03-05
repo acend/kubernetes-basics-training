@@ -578,7 +578,7 @@ oc rsh --namespace <namespace> <podname>
 This command shows how to drop the whole database:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST $MYSQL_DATABASE
+mariadb -u$MYSQL_USER -p$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST $MYSQL_DATABASE
 ```
 
 ```bash
@@ -590,7 +590,7 @@ exit
 Import a dump:
 
 ```bash
-mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST $MYSQL_DATABASE < /tmp/dump.sql
+mariadb -u$MYSQL_USER -p$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST $MYSQL_DATABASE < /tmp/dump.sql
 ```
 
 Check your app to see the imported "Hellos".
