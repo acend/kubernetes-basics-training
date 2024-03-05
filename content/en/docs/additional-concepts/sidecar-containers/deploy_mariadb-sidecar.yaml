@@ -1,13 +1,13 @@
       containers:
-      - ...
-      - image: docker.io/prom/mysqld-exporter:v0.14.0
-        name: mysqld-exporter
-        env:
-        - name: MYSQL_DATABASE_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: database-root-password
-              name: mariadb
-        - name: DATA_SOURCE_NAME
-          value: root:$MYSQL_DATABASE_ROOT_PASSWORD@(localhost:3306)/
+        - ...
+        - image: docker.io/prom/mysqld-exporter:v0.14.0
+          name: mysqld-exporter
+          env:
+          - name: MYSQL_DATABASE_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-root-password
+                name: mariadb
+          - name: DATA_SOURCE_NAME
+            value: root:$MYSQL_DATABASE_ROOT_PASSWORD@(localhost:3306)/
       ...
