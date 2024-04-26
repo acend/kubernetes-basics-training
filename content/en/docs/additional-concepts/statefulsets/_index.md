@@ -113,7 +113,7 @@ Set the StatefulSet's image tag to `latest`:
 
 
 ```bash
-{{% param cliToolName %}} set image statefulset nginx-cluster nginx={{% param "images.nginxinc-nginx-unprivileged" %}}:latest --namespace <namespace>
+{{% param cliToolName %}} set image statefulset nginx-cluster nginx={{% param "containerImages.nginxinc-nginx-unprivileged" %}}:latest --namespace <namespace>
 ```
 
 

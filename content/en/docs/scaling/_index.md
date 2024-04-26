@@ -39,7 +39,7 @@ spec:
         app: example-web-app
     spec:
       containers:
-        - image: {{% param "images.training-image-url" %}}
+        - image: {{% param "containerImages.training-image-url" %}}
           name: example-web-app
           resources:
             limits:
@@ -176,7 +176,7 @@ Now we expose our application to the internet by creating a service and a route.
 First the Service:
 
 ```bash
-oc expose deployment example-web-app --name="example-web-app" --port={{% param "images.training-image-port" %}} --namespace <namespace>
+oc expose deployment example-web-app --name="example-web-app" --port={{% param "containerImages.training-image-port" %}} --namespace <namespace>
 ```
 
 Then the Route:
@@ -214,9 +214,9 @@ Annotations:              <none>
 Selector:                 app=example-web-app
 Type:                     ClusterIP
 IP:                       10.39.245.205
-Port:                     <unset>  {{% param "images.training-image-port" %}}/TCP
-TargetPort:               {{% param "images.training-image-port" %}}/TCP
-Endpoints:                10.36.0.10:{{% param "images.training-image-port" %}},10.36.0.11:{{% param "images.training-image-port" %}},10.36.0.9:{{% param "images.training-image-port" %}}
+Port:                     <unset>  {{% param "containerImages.training-image-port" %}}/TCP
+TargetPort:               {{% param "containerImages.training-image-port" %}}/TCP
+Endpoints:                10.36.0.10:{{% param "containerImages.training-image-port" %}},10.36.0.11:{{% param "containerImages.training-image-port" %}},10.36.0.9:{{% param "containerImages.training-image-port" %}}
 Session Affinity:         None
 External Traffic Policy:  Cluster
 Events:
@@ -238,9 +238,9 @@ IP Family Policy:  SingleStack
 IP Families:       IPv4
 IP:                172.30.89.44
 IPs:               172.30.89.44
-Port:              <unset>  {{% param "images.training-image-port" %}}/TCP
-TargetPort:        {{% param "images.training-image-port" %}}/TCP
-Endpoints:         10.125.4.70:{{% param "images.training-image-port" %}},10.126.4.137:{{% param "images.training-image-port" %}},10.126.4.138:{{% param "images.training-image-port" %}}
+Port:              <unset>  {{% param "containerImages.training-image-port" %}}/TCP
+TargetPort:        {{% param "containerImages.training-image-port" %}}/TCP
+Endpoints:         10.125.4.70:{{% param "containerImages.training-image-port" %}},10.126.4.137:{{% param "containerImages.training-image-port" %}},10.126.4.138:{{% param "containerImages.training-image-port" %}}
 Session Affinity:  None
 Events:            <none>
 ```
@@ -417,7 +417,7 @@ In our example, we want the application to tell {{% param distroName %}} that it
 Our example application has a health check context named health: `{{% onlyWhenNot openshift %}}http://<node-ip>:<node-port>/health{{% /onlyWhenNot %}}{{% onlyWhen openshift %}}http://${URL}/health{{% /onlyWhen %}}`
 {{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
-Our example application has a health check context named health: `http://localhost:{{% param "images.training-image-probe-port" %}}/health`. This port is not exposed by a service. It is only accessible inside the cluster.
+Our example application has a health check context named health: `http://localhost:{{% param "containerImages.training-image-probe-port" %}}/health`. This port is not exposed by a service. It is only accessible inside the cluster.
 {{% /onlyWhen %}}
 
 
@@ -432,14 +432,14 @@ Now insert the readiness probe at `.spec.template.spec.containers` above the `re
 
 ...
 containers:
-  - image: {{% param "images.training-image-url" %}}
+  - image: {{% param "containerImages.training-image-url" %}}
     imagePullPolicy: Always
     name: example-web-app
     # start to copy here
     readinessProbe:
       httpGet:
         path: /health
-        port: {{% param "images.training-image-probe-port" %}}
+        port: {{% param "containerImages.training-image-probe-port" %}}
         scheme: HTTP
       initialDelaySeconds: 10
       timeoutSeconds: 1
@@ -465,7 +465,7 @@ apply the file with:
 Define the readiness probe on the Deployment using the following command:
 
 ```bash
-oc set probe deploy/example-web-app --readiness --get-url=http://:{{% param "images.training-image-probe-port" %}}/health --initial-delay-seconds=10 --timeout-seconds=1 --namespace <namespace>
+oc set probe deploy/example-web-app --readiness --get-url=http://:{{% param "containerImages.training-image-probe-port" %}}/health --initial-delay-seconds=10 --timeout-seconds=1 --namespace <namespace>
 ```
 
 The command above results in the following `readinessProbe` snippet being inserted into the Deployment:
@@ -474,13 +474,13 @@ The command above results in the following `readinessProbe` snippet being insert
 
 ...
 containers:
-  - image: {{% param "images.training-image-url" %}}
+  - image: {{% param "containerImages.training-image-url" %}}
     imagePullPolicy: Always
     name: example-web-app
     readinessProbe:
       httpGet:
         path: /health
-        port: {{% param "images.training-image-probe-port" %}}
+        port: {{% param "containerImages.training-image-probe-port" %}}
         scheme: HTTP
       initialDelaySeconds: 10
       timeoutSeconds: 1
