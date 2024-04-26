@@ -71,7 +71,7 @@ metadata:
 spec:
   containers:
   - name: lr-demo-ctr
-    image: {{% param "images.nginxinc-nginx-unprivileged" %}}:latest
+    image: {{% param "containerImages.nginxinc-nginx-unprivileged" %}}:latest
     resources:
       limits:
         memory: "200Mi"
@@ -200,7 +200,7 @@ spec:
         - 85M
         - --vm-hang
         - "1"
-      image: {{% param "images.stress" %}}
+      image: {{% param "containerImages.stress" %}}
       imagePullPolicy: Always
       name: stress
 ```
@@ -244,7 +244,7 @@ Near the end of the output you can find the relevant status part:
 ```yaml
   containerStatuses:
   - containerID: docker://da2473f1c8ccdffbb824d03689e9fe738ed689853e9c2643c37f206d10f93a73
-    image: {{% param "images.stress" %}}
+    image: {{% param "containerImages.stress" %}}
     lastState:
       terminated:
         ...
@@ -299,7 +299,7 @@ spec:
         - 85M
         - --vm-hang
         - "1"
-      image: {{% param "images.stress" %}}
+      image: {{% param "containerImages.stress" %}}
       imagePullPolicy: Always
       name: stress
       resources:
@@ -350,7 +350,7 @@ spec:
         - 10M
         - --vm-hang
         - "1"
-      image: {{% param "images.stress" %}}
+      image: {{% param "containerImages.stress" %}}
       imagePullPolicy: Always
       name: overbooked
 ```
@@ -406,7 +406,7 @@ spec:
         - 10M
         - --vm-hang
         - "1"
-      image: {{% param "images.stress" %}}
+      image: {{% param "containerImages.stress" %}}
       imagePullPolicy: Always
       name: overbooked
       resources:
