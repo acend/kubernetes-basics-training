@@ -80,7 +80,7 @@ distroName = "Kubernetes"
 cliToolName = "kubectl"
 customer = "none"
 
-[params.images]
+[params.containerImages]
 deployment-image-url = "quay.io/acend/example-web-go:latest"
 training-image-url = "quay.io/acend/example-web-python:latest"
 training-image-port = "5000"
