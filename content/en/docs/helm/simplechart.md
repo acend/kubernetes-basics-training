@@ -177,9 +177,6 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls:
-    - hosts:
-        -  mychart-<namespace>.<appdomain>
 [...]
 ```
 
@@ -195,9 +192,6 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls:
-    - hosts:
-        - mychart-<namespace>.<appdomain>
 [...]
 ```
 
