@@ -10,5 +10,5 @@ enabledModule = "base openshift bfh nodaemonsets nodeploymentstrategies nohelm n
 distroName = "OpenShift"
 cliToolName = "oc"
 
-[params.images]
+[params.containerImages]
 training-image-url = "quay.io/acend/example-web-python:bfh"

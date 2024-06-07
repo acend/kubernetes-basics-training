@@ -201,7 +201,7 @@ Forwarding from [::1]:5000 -> 5000
 {{% onlyWhen sbb %}}
 
 ```bash
-{{% param cliToolName %}} port-forward <pod> {{% param "images.training-image-probe-port" %}}:{{% param "images.training-image-probe-port" %}} --namespace <namespace>
+{{% param cliToolName %}} port-forward <pod> {{% param "containerImages.training-image-probe-port" %}}:{{% param "containerImages.training-image-probe-port" %}} --namespace <namespace>
 ```
 
 Don't forget to change the Pod name to your own installation. If configured, you can use auto-completion.
@@ -209,8 +209,8 @@ Don't forget to change the Pod name to your own installation. If configured, you
 The output of the command should look like this:
 
 ```
-Forwarding from 127.0.0.1:{{% param "images.training-image-probe-port" %}} -> {{% param "images.training-image-probe-port" %}}
-Forwarding from [::1]:{{% param "images.training-image-probe-port" %}} -> {{% param "images.training-image-probe-port" %}}
+Forwarding from 127.0.0.1:{{% param "containerImages.training-image-probe-port" %}} -> {{% param "containerImages.training-image-probe-port" %}}
+Forwarding from [::1]:{{% param "containerImages.training-image-probe-port" %}} -> {{% param "containerImages.training-image-probe-port" %}}
 ```
 
 {{% /onlyWhen %}}
@@ -228,14 +228,14 @@ curl localhost:5000
 
 {{% /onlyWhenNot %}}
 {{% onlyWhen sbb %}}
-Now the health endpoint is available at: <http://localhost:{{% param "images.training-image-probe-port" %}}/>.
+Now the health endpoint is available at: <http://localhost:{{% param "containerImages.training-image-probe-port" %}}/>.
 
 We could not access this endpoint before because it is only exposed inside the cluster.
 
-The application probe endpoint is now available with the following link: <http://localhost:{{% param "images.training-image-probe-port" %}}/health>. Or try a `curl` command:
+The application probe endpoint is now available with the following link: <http://localhost:{{% param "containerImages.training-image-probe-port" %}}/health>. Or try a `curl` command:
 
 ```bash
-curl localhost:{{% param "images.training-image-probe-port" %}}/health
+curl localhost:{{% param "containerImages.training-image-probe-port" %}}/health
 ```
 
 {{% /onlyWhen %}}
@@ -279,7 +279,7 @@ The following `{{% param cliToolName %}}` subcommands support this flag (non-fin
 For example, we can use the `--dry-run=client` flag to create a template for our Deployment:
 
 ```bash
-{{% param cliToolName %}} create deployment example-web-app --image={{% param "images.training-image-url" %}} --namespace acend-test --dry-run=client -o yaml
+{{% param cliToolName %}} create deployment example-web-app --image={{% param "containerImages.training-image-url" %}} --namespace acend-test --dry-run=client -o yaml
 ```
 
 The result is the following YAML output:
@@ -306,7 +306,7 @@ spec:
         app: example-web-app
     spec:
       containers:
-        - image: {{% param "images.training-image-url" %}}
+        - image: {{% param "containerImages.training-image-url" %}}
           name: example-web
           resources: {}
 status: {}
@@ -320,13 +320,13 @@ If you want to see the HTTP requests `{{% param cliToolName %}}` sends to the Ku
 For example, to see the API request for creating a deployment:
 
 ```bash
-{{% param cliToolName %}} create deployment test-deployment --image={{% param "images.training-image-url" %}} --namespace <namespace> --replicas=0 --v=10
+{{% param cliToolName %}} create deployment test-deployment --image={{% param "containerImages.training-image-url" %}} --namespace <namespace> --replicas=0 --v=10
 ```
 
 The resulting output looks like this:
 
 ```bash
-I1114 15:31:13.605759   85289 request.go:1073] Request Body: {"kind":"Deployment","apiVersion":"apps/v1","metadata":{"name":"test-deployment","namespace":"acend-test","creationTimestamp":null,"labels":{"app":"test-deployment"}},"spec":{"replicas":0,"selector":{"matchLabels":{"app":"test-deployment"}},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"test-deployment"}},"spec":{"containers":[{"name":"example-web","image":"{{% param "images.training-image-url" %}}","resources":{}}]}},"strategy":{}},"status":{}}
+I1114 15:31:13.605759   85289 request.go:1073] Request Body: {"kind":"Deployment","apiVersion":"apps/v1","metadata":{"name":"test-deployment","namespace":"acend-test","creationTimestamp":null,"labels":{"app":"test-deployment"}},"spec":{"replicas":0,"selector":{"matchLabels":{"app":"test-deployment"}},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"test-deployment"}},"spec":{"containers":[{"name":"example-web","image":"{{% param "containerImages.training-image-url" %}}","resources":{}}]}},"strategy":{}},"status":{}}
 I1114 15:31:13.605817   85289 round_trippers.go:466] curl -v -XPOST  -H "Accept: application/json, */*" -H "Content-Type: application/json" -H "User-Agent: oc/4.11.0 (linux/amd64) kubernetes/262ac9c" -H "Authorization: Bearer <masked>" 'https://api.ocp-staging.cloudscale.puzzle.ch:6443/apis/apps/v1/namespaces/acend-test/deployments?fieldManager=kubectl-create&fieldValidation=Ignore'
 I1114 15:31:13.607320   85289 round_trippers.go:495] HTTP Trace: DNS Lookup for api.ocp-staging.cloudscale.puzzle.ch resolved to [{5.102.150.82 }]
 I1114 15:31:13.611279   85289 round_trippers.go:510] HTTP Trace: Dial to tcp:5.102.150.82:6443 succeed
@@ -340,7 +340,7 @@ I1114 15:31:13.675200   85289 round_trippers.go:580]     X-Kubernetes-Pf-Flowsch
 I1114 15:31:13.675215   85289 round_trippers.go:580]     X-Kubernetes-Pf-Prioritylevel-Uid: 47f392da-68d1-4e43-9d77-ff5f7b7ecd2e
 I1114 15:31:13.675230   85289 round_trippers.go:580]     Content-Length: 1739
 I1114 15:31:13.675244   85289 round_trippers.go:580]     Date: Mon, 14 Nov 2022 14:31:13 GMT
-I1114 15:31:13.676116   85289 request.go:1073] Response Body: {"kind":"Deployment","apiVersion":"apps/v1","metadata":{"name":"test-deployment","namespace":"acend-test","uid":"a6985d28-3caa-451f-a648-4c7cde3b51ac","resourceVersion":"2069385577","generation":1,"creationTimestamp":"2022-11-14T14:31:13Z","labels":{"app":"test-deployment"},"managedFields":[{"manager":"kubectl-create","operation":"Update","apiVersion":"apps/v1","time":"2022-11-14T14:31:13Z","fieldsType":"FieldsV1","fieldsV1":{"f:metadata":{"f:labels":{".":{},"f:app":{}}},"f:spec":{"f:progressDeadlineSeconds":{},"f:replicas":{},"f:revisionHistoryLimit":{},"f:selector":{},"f:strategy":{"f:rollingUpdate":{".":{},"f:maxSurge":{},"f:maxUnavailable":{}},"f:type":{}},"f:template":{"f:metadata":{"f:labels":{".":{},"f:app":{}}},"f:spec":{"f:containers":{"k:{\"name\":\"example-web\"}":{".":{},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:resources":{},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{}}},"f:dnsPolicy":{},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:terminationGracePeriodSeconds":{}}}}}}]},"spec":{"replicas":0,"selector":{"matchLabels":{"app":"test-deployment"}},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"test-deployment"}},"spec":{"containers":[{"name":"example-web","image":"{{% param "images.training-image-url" %}}","resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"Always"}],"restartPolicy":"Always","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}},"strategy":{"type":"RollingUpdate","rollingUpdate":{"maxUnavailable":"25%","maxSurge":"25%"}},"revisionHistoryLimit":10,"progressDeadlineSeconds":600},"status":{}}
+I1114 15:31:13.676116   85289 request.go:1073] Response Body: {"kind":"Deployment","apiVersion":"apps/v1","metadata":{"name":"test-deployment","namespace":"acend-test","uid":"a6985d28-3caa-451f-a648-4c7cde3b51ac","resourceVersion":"2069385577","generation":1,"creationTimestamp":"2022-11-14T14:31:13Z","labels":{"app":"test-deployment"},"managedFields":[{"manager":"kubectl-create","operation":"Update","apiVersion":"apps/v1","time":"2022-11-14T14:31:13Z","fieldsType":"FieldsV1","fieldsV1":{"f:metadata":{"f:labels":{".":{},"f:app":{}}},"f:spec":{"f:progressDeadlineSeconds":{},"f:replicas":{},"f:revisionHistoryLimit":{},"f:selector":{},"f:strategy":{"f:rollingUpdate":{".":{},"f:maxSurge":{},"f:maxUnavailable":{}},"f:type":{}},"f:template":{"f:metadata":{"f:labels":{".":{},"f:app":{}}},"f:spec":{"f:containers":{"k:{\"name\":\"example-web\"}":{".":{},"f:image":{},"f:imagePullPolicy":{},"f:name":{},"f:resources":{},"f:terminationMessagePath":{},"f:terminationMessagePolicy":{}}},"f:dnsPolicy":{},"f:restartPolicy":{},"f:schedulerName":{},"f:securityContext":{},"f:terminationGracePeriodSeconds":{}}}}}}]},"spec":{"replicas":0,"selector":{"matchLabels":{"app":"test-deployment"}},"template":{"metadata":{"creationTimestamp":null,"labels":{"app":"test-deployment"}},"spec":{"containers":[{"name":"example-web","image":"{{% param "containerImages.training-image-url" %}}","resources":{},"terminationMessagePath":"/dev/termination-log","terminationMessagePolicy":"File","imagePullPolicy":"Always"}],"restartPolicy":"Always","terminationGracePeriodSeconds":30,"dnsPolicy":"ClusterFirst","securityContext":{},"schedulerName":"default-scheduler"}},"strategy":{"type":"RollingUpdate","rollingUpdate":{"maxUnavailable":"25%","maxSurge":"25%"}},"revisionHistoryLimit":10,"progressDeadlineSeconds":600},"status":{}}
 deployment.apps/test-deployment created
 ```
 

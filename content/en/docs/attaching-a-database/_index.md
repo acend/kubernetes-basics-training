@@ -337,7 +337,7 @@ Your file should now look like this:
 ```
       ...
       containers:
-      - image: {{% param "images.training-image-url" %}}
+      - image: {{% param "containerImages.training-image-url" %}}
         imagePullPolicy: Always
         name: example-web-app
         ...
@@ -386,7 +386,7 @@ Add the environment variables by directly editing the Deployment:
 ```yaml
       ...
       containers:
-      - image: {{% param "images.training-image-url" %}}
+      - image: {{% param "containerImages.training-image-url" %}}
         imagePullPolicy: Always
         name: example-web-app
         ...

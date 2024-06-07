@@ -11,7 +11,7 @@ distroName = "OpenShift"
 cliToolName = "oc"
 automaticSectionNumbers = true
 
-[params.images]
+[params.containerImages]
 training-image-url = "quay.io/appuio/example-spring-boot:latest"
 training-image-port = "8080"
 training-image-probe-port = "9000"

@@ -12,7 +12,7 @@ cliToolName = "oc"
 automaticSectionNumbers = true
 customer = "baloise"
 
-[params.images]
+[params.containerImages]
 deployment-image-url = "REGISTRY-URL/acend/example-web-go:latest"
 training-image-url = "REGISTRY-URL/acend/example-web-python:latest"
 training-image-port = "5000"

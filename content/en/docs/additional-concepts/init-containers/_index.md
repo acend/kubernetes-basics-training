@@ -29,7 +29,7 @@ Edit your existing `example-web-app` Deployment by changing your local `deployme
     spec:
       initContainers:
         - name: wait-for-db
-          image: {{% param "images.busybox" %}}
+          image: {{% param "containerImages.busybox" %}}
           command:
             [
               "sh",
