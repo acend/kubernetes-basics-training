@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/acend/kubernetes-basics-training#readme",
   "devDependencies": {
-    "husky": "9.1.2",
+    "husky": "9.1.3",
     "markdownlint-cli": "0.41.0"
   }
 }
