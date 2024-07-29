@@ -37,7 +37,7 @@ jobs:
           password: ${{ secrets.QUAYIO_TOKEN }}
       -
         name: Build Acend Version
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
@@ -46,7 +46,7 @@ jobs:
             quay.io/acend/kubernetes-basics-training:latest
       -
         name: Build Mobi Version
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
@@ -57,7 +57,7 @@ jobs:
             quay.io/acend/kubernetes-basics-training:latest-mobi
       -
         name: Build OpenShift Version
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
@@ -68,7 +68,7 @@ jobs:
             quay.io/acend/kubernetes-basics-training:latest-openshift
       -
         name: Build Baloise Version
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
@@ -79,7 +79,7 @@ jobs:
             quay.io/acend/kubernetes-basics-training:latest-baloise
       -
         name: Build SBB Version
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
@@ -90,7 +90,7 @@ jobs:
             quay.io/acend/kubernetes-basics-training:latest-sbb
       -
         name: Build BFH Version
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
@@ -108,7 +108,7 @@ jobs:
           password: ${{ secrets.QUAYIO_TOKEN_TECHLAB }}
       -
         name: Build techlab version
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
