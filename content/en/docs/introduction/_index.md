@@ -51,6 +51,8 @@ Kubernetes consists of control plane and worker (minion, compute) nodes.
 OpenShift basically consists of control plane and worker nodes.
 {{% /onlyWhen %}}
 
+![Kubernetes Architecture](architecture.png)
+
 
 ### Control plane and worker nodes
 
@@ -181,3 +183,19 @@ Have a look at the [official documentation](https://kubernetes.io/docs/concepts/
 {{% onlyWhen openshift %}}
 Have a look at the [official documentation](https://docs.openshift.com/container-platform/latest/nodes/jobs/nodes-nodes-jobs.html).
 {{% /onlyWhen %}}
+
+
+## History
+
+There is a official Kubernetes Documentary available on Youtube.
+
+* [Kubernetes: The Documentary [PART 1]](https://www.youtube.com/watch?v=BE77h7dmoQU)
+* [Kubernetes: The Documentary [PART 2]](https://www.youtube.com/watch?v=318elIq37PE)
+
+Inspired by the open source success of Docker in 2013 and seeing the need for innovation in the area of large-scale cloud computing, a handful of forward-thinking Google engineers set to work on the container orchestrator that would come to be known as Kubernetes– this new tool would forever change the way the internet is built.
+
+These engineers overcome technical challenges, resistance to open source from within, naysayers, and intense competition from other big players in the industry.
+
+Most engineers know about “The Container Orchestrator Wars’’ but most people would not be able to explain exactly what happened, and why it was Kubernetes that ultimately came out on top.
+
+There is no topic more relevant to the current open source landscape. This film captures the story directly from the people who lived it, featuring interviews with prominent engineers from Google, Red Hat, Twitter and others.

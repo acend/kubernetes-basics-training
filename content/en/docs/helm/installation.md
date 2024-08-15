@@ -7,6 +7,10 @@ This guide shows you how to install the `helm` CLI tool. `helm` can be installed
 We are going to use the pre-built releases.
 `helm` binaries can be found on [Helm's release page](https://github.com/helm/helm/releases) for the usual variety of operating systems.
 
+{{% alert title="Warning" color="warning" %}}
+If you do this training in our acend web based environment, no installation is required.
+{{% /alert %}}
+
 
 ## {{% task %}} Install CLI
 

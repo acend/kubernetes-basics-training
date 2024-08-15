@@ -7,7 +7,7 @@ In this lab, we will interact with the {{% param distroName %}} cluster for the 
 
 {{% onlyWhenNot nosetup %}}
 {{% alert title="Warning" color="warning" %}}
-Please make sure you completed {{<link "setup">}} before you continue with this lab.
+Please make sure you completed {{<link "setup">}} before you continue with this lab. If you do this training in our acend web based environment, no setup is required.
 {{% /alert %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhenNot openshift %}}
@@ -22,15 +22,14 @@ Authentication depends on the specific Kubernetes cluster environment. You may n
 
 ## Namespaces
 
+{{% alert title="Note" color="info" %}}
+If you work in our acend web based environment, your Namespace has already been created and you can skip this task.
+{{% /alert %}}
 
 A Namespace is a logical design used in Kubernetes to organize and separate your applications, Deployments, Pods, Ingresses, Services, etc. on a top-level basis. Take a look at the [Kubernetes docs](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). Authorized users inside a namespace are able to manage those resources. Namespace names have to be unique in your cluster.
 
 
 ### {{% task %}} Create a Namespace
-
-{{% alert title="Note" color="info" %}}
-If you work in our lab environment, your Namespace has already been created and you can skip this task.
-{{% /alert %}}
 
 Create a new namespace on the Kubernetes Cluster.. The `kubectl help` output can help you figure out the right command.
 

@@ -157,7 +157,7 @@ and apply the file with:
 {{% param cliToolName %}} apply -f svc-example-app.yaml --namespace <namespace>
 ```
 
-Then we add the Ingress to access our application:
+Then we add the Ingress to access our application. Create a new file `ing-example-web-app.yaml` with the following content:
 
 {{% onlyWhenNot customer %}}
 {{< readfile file="/content/en/docs/scaling/ingress.template.yaml" code="true" lang="yaml" >}}
@@ -166,7 +166,7 @@ Then we add the Ingress to access our application:
 Apply this Ingress definition using, e.g.:
 
 ```yaml
-{{% param cliToolName %}} apply -f ingress.yaml --namespace <namespace>
+{{% param cliToolName %}} apply -f ing-example-web-app.yaml --namespace <namespace>
 ```
 
 {{% /onlyWhenNot %}}
@@ -282,7 +282,7 @@ while true; do sleep 1; curl -s https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"
 {{% onlyWhenNot openshift %}}
 ```bash
 URL=$(kubectl get ingress example-web-app -o go-template="{{ (index .spec.rules 0).host }}" --namespace <namespace>)
-while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
+while true; do sleep 1; curl -s https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 {{% /onlyWhenNot %}}
 {{% onlyWhenNot baloise %}}
