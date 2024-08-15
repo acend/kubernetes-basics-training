@@ -15,6 +15,6 @@ spec:
                 name: example-web-app
                 port: 
                   number: 5000
-tls:
-  - hosts:
-    - example-web-app-<namespace>.<appdomain>
+  tls:
+    - hosts:
+      - example-web-app-<namespace>.<appdomain>

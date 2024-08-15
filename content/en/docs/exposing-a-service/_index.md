@@ -167,7 +167,7 @@ The `Endpoints` show the IP addresses of all currently matched Pods.
 
 With the ClusterIP Service ready, we can now create the {{% onlyWhenNot openshift %}}Ingress{{% /onlyWhen %}}{{% onlyWhen openshift %}}Route{{% /onlyWhen %}} resource.
 {{% onlyWhenNot openshift %}}
-In order to create the Ingress resource, we first need to create the file `ingress.yaml` and change the `host` entry to match your environment:
+In order to create the Ingress resource, we first need to create the file `ing-example-web-go.yaml` and change the `host` entry to match your environment:
 
 {{% onlyWhenNot customer %}}
 {{< readfile file="/content/en/docs/exposing-a-service/ingress.template.yaml" code="true" lang="yaml" >}}
@@ -178,7 +178,7 @@ As you see in the resource definition at `spec.rules[0].http.paths[0].backend.se
 Let's create the Ingress resource with:
 
 ```bash
-kubectl apply -f ingress.yaml --namespace <namespace>
+kubectl apply -f ing-example-web-go.yaml --namespace <namespace>
 ```
 
 Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<appdomain>`
