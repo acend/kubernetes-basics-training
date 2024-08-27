@@ -4,7 +4,7 @@ weight: 102
 onlyWhenNot: openshift
 ---
 
-In the concept of security context for a pod or container, there are severals thing to consider:
+In the concept of security context for a pod or container, there are several things to consider:
 
 * Access control
 * SElinux
