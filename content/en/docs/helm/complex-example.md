@@ -53,6 +53,10 @@ containerSecurityContext:
 ingress:
   enabled: true
   hostname: wordpress-<namespace>.<appdomain>
+  extraTls:
+  - hosts:
+      - wordpress-<namespace>.<appdomain>
+
 
 mariadb:
   primary:
@@ -157,6 +161,9 @@ containerSecurityContext:
 ingress:
   enabled: true
   hostname: wordpress-<namespace>.<appdomain>
+  extraTls:
+  - hosts:
+      - wordpress-<namespace>.<appdomain>
 mariadb:
   primary:
     containerSecurityContext:
