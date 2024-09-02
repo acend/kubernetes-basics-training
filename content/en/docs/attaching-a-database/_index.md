@@ -489,7 +489,7 @@ As mentioned in {{<link "troubleshooting">}}, remember to append the command wit
 {{% onlyWhenNot openshift %}}
 
 ```bash
-kubectl exec -it mariadb-f845ccdb7-hf2x5 --namespace <namespace> -- /bin/bash
+kubectl exec -it deployments/mariadb --namespace <namespace> -- /bin/bash
 ```
 
 {{% /onlyWhenNot %}}
