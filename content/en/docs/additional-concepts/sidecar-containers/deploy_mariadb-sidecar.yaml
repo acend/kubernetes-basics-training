@@ -9,5 +9,5 @@
                 key: database-root-password
                 name: mariadb
           - name: DATA_SOURCE_NAME
-            value: root:$MYSQL_DATABASE_ROOT_PASSWORD@(localhost:3306)/
+            value: root:$(MYSQL_DATABASE_ROOT_PASSWORD)@(localhost:3306)/
       ...
