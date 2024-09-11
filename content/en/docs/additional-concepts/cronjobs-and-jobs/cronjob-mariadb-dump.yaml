@@ -6,7 +6,6 @@ spec:
   schedule: "5 4 * * *"
   concurrencyPolicy: "Replace"
   startingDeadlineSeconds: 200
-  suspend: true
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 1
   jobTemplate:
