@@ -7,7 +7,7 @@ onlyWhen: openshift
 
 ## Other ways to work with OpenShift
 
-If you don't have access to a running OpenShift development environment (anymore), there's
+If you don't have access to a running OpenShift development environment (anymore), there are several options to get one.
 
 * [OpenShift Developer Sandbox](https://developers.redhat.com/developer-sandbox): 30 days of no-cost access to a shared cluster on OpenShift
 * [OpenShift Local](https://developers.redhat.com/products/openshift-local/overview): A local OpenShift environmennt running on your machine
