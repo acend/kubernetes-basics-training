@@ -1,14 +1,17 @@
 ---
-title: "More tools to work with OpenShift"
+title: "Other ways to work with OpenShift"
 weight: 30
 type: docs
 onlyWhen: openshift
 ---
 
-## More tools to work with OpenShift
+## Other ways to work with OpenShift
 
-* [Red Hat OpenShift Local](https://developers.redhat.com/products/openshift-local/overview)
-* [Red Hat OpenShift Dev Spaces](https://developers.redhat.com/products/openshift-dev-spaces/overview)
+If you don't have access to a running OpenShift development environment (anymore), there are several options to get one.
+
+* [OpenShift Developer Sandbox](https://developers.redhat.com/developer-sandbox): 30 days of no-cost access to a shared cluster on OpenShift
+* [OpenShift Local](https://developers.redhat.com/products/openshift-local/overview): A local OpenShift environmennt running on your machine
+* [OKD single node installation](https://docs.okd.io/latest/installing/installing_sno/install-sno-preparing-to-install-sno.html): OKD (OpenShift community edition) single node installation
 
 
 ## Next steps
