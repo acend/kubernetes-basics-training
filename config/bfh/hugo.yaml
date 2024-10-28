@@ -1,0 +1,31 @@
+title: BFH OpenShift Basics Training
+theme:
+  - docsy-timkoko
+  - docsy-plus
+  - docsy
+languageCode: en-us
+Languages:
+  en:
+    title: BFH OpenShift Basics Training
+module:
+  hugoVersion:
+    extended: true
+    min: 0.100.0
+  imports:
+    - path: github.com/tim-koko/docsy-timkoko
+      disable: false
+    - path: github.com/acend/docsy-plus
+      disable: false
+    - path: github.com/google/docsy
+      disable: false
+    - path: github.com/google/docsy/dependencies
+      disable: false
+params:
+  enabledModule: >-
+    base openshift bfh nodaemonsets nodeploymentstrategies nohelm
+    nokubernetesandopenshiftdifferences nokustomize
+    noresourcequotasandlimitranges nosecurity nosidecarcontainers nostatefulsets
+  distroName: OpenShift
+  cliToolName: oc
+  containerImages:
+    training-image-url: 'quay.io/acend/example-web-python:bfh'
