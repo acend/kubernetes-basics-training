@@ -30,6 +30,8 @@ params:
   cliToolName: oc
   containerImages:
     training-image-url: 'quay.io/acend/example-web-python:bfh'
+  github_repo: ""
+  github_branch: ""
   imagePrefix: "timkoko_"
   links:
     user:
