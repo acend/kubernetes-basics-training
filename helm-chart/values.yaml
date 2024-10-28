@@ -70,9 +70,12 @@ acendTraining:
         tag: ""
         tagsuffix: "-bfh"
       ingress:
-        secretOverride: acend-wildcard
+        annotations:
+          kubernetes.io/tls-acme: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+        secretOverride: cert-timkoko
         appname: openshift-basics-bfh
-        domain: training.acend.ch
+        domain: training.tim-koko.ch
     -
       name: techlab
       replicaCount: 2
