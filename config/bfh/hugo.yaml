@@ -2,6 +2,10 @@ title: BFH OpenShift Basics Training
 languageCode: en-us
 Languages:
   en:
+    menu:
+      main:
+        - copyright: Tim&Koko AG
+          url: https://www.tim-koko.ch
     title: BFH OpenShift Basics Training
 module:
   hugoVersion:
@@ -17,6 +21,7 @@ module:
     - path: github.com/google/docsy/dependencies
       disable: false
 params:
+  copyright: "Tim&Koko AG"
   enabledModule: >-
     base openshift bfh nodaemonsets nodeploymentstrategies nohelm
     nokubernetesandopenshiftdifferences nokustomize
@@ -25,3 +30,12 @@ params:
   cliToolName: oc
   containerImages:
     training-image-url: 'quay.io/acend/example-web-python:bfh'
+  imagePrefix: "timkoko_"
+  links:
+    user:
+      - name: Twitter
+        icon: fab fa-twitter
+        url: https://twitter.com/tim_und_koko
+      - name: LinkedIn
+        icon: fab fa-linkedin-in
+        url: https://linkedin.com/company/tim-koko/
