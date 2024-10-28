@@ -8,6 +8,8 @@ menu:
 
 {{< blocks/section color="light">}}
 
+{{% onlyWhenNot bfh %}}
+
 {{% onlyWhenNot openshift %}}
 {{% onlyWhenNot mobi %}}
 {{% blocks/feature icon="fa-magic" url="https://acend.ch/documents/acend_kubectl-cheat-sheet_v1.pdf" title="kubectl Cheat Sheet" %}}
@@ -64,6 +66,8 @@ menu:
 {{% /blocks/feature %}}
 {{% /onlyWhen %}}
 {{% /onlyWhen %}}
+
+{{% /onlyWhenNot %}}
 
 {{% blocks/feature icon="fa-print" url="../pdf/pdf.pdf" title="Lab PDF" %}}
 {{% /blocks/feature %}}

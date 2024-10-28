@@ -7,7 +7,7 @@ In this lab, we will interact with the {{% param distroName %}} cluster for the 
 
 {{% onlyWhenNot nosetup %}}
 {{% alert title="Warning" color="warning" %}}
-Please make sure you completed {{<link "setup">}} before you continue with this lab. If you do this training in our acend web based environment, no setup is required.
+Please make sure you completed {{<link "setup">}} before you continue with this lab.
 {{% /alert %}}
 {{% /onlyWhenNot %}}
 {{% onlyWhenNot openshift %}}
