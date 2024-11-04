@@ -173,28 +173,17 @@ Apply this Ingress definition using, e.g.:
 {{% onlyWhen openshift %}}
 Now we expose our application to the internet by creating a service and a route.
 
-First the Service:
+First the service:
 
 ```bash
 oc expose deployment example-web-app --name="example-web-app" --port={{% param "containerImages.training-image-port" %}} --namespace <namespace>
 ```
 
-Then the Route:
-
-{{% onlyWhenNot baloise %}}
-
-```bash
-oc expose service example-web-app --namespace <namespace>
-```
-
-{{% /onlyWhenNot %}}
-{{% onlyWhen baloise %}}
+Then the route:
 
 ```bash
 oc create route edge example-web-app --service example-web-app --namespace <namespace>
 ```
-
-{{% /onlyWhen %}}
 
 {{% /onlyWhen %}}
 
