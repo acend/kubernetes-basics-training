@@ -166,5 +166,5 @@ jobs:
            * [OpenShift](https://openshift-basics-pr-${{ github.event.pull_request.number }}.training.acend.ch)
            * [OpenShift Baloise](https://openshift-basics-baloise-pr-${{ github.event.pull_request.number }}.training.acend.ch)
            * [OpenShift SBB](https://openshift-basics-sbb-pr-${{ github.event.pull_request.number }}.training.acend.ch)
-           * [OpenShift BFH](https://openshift-basics-bfh-pr-${{ github.event.pull_request.number }}.training.acend.ch)
+           * [OpenShift BFH](https://openshift-basics-bfh-pr-${{ github.event.pull_request.number }}.training.tim-koko.ch)
            * [APPUiO Techlab](https://techlab-pr-${{ github.event.pull_request.number }}.training.acend.ch)

@@ -184,22 +184,6 @@ kubectl apply -f ing-example-web-go.yaml --namespace <namespace>
 Afterwards, we are able to access our freshly created Ingress at `http://example-web-go-<namespace>.<appdomain>`
 {{% /onlyWhenNot %}}
 {{% onlyWhen openshift %}}
-{{% onlyWhenNot baloise %}}
-
-```bash
-oc expose service example-web-go --namespace <namespace>
-```
-
-The output should be:
-
-```
-route.route.openshift.io/example-web-go exposed
-```
-
-We are now able to access our app via the freshly created route at `http://example-web-go-<namespace>.<appdomain>`
-
-{{% /onlyWhenNot %}}
-{{% onlyWhen baloise %}}
 
 ```bash
 oc create route edge example-web-go --service example-web-go --namespace <namespace>
@@ -212,8 +196,6 @@ route.route.openshift.io/example-web-go created
 ```
 
 We are now able to access our app via the freshly created route at `https://example-web-go-<namespace>.<appdomain>`
-
-{{% /onlyWhen %}}
 
 Find your actual app URL by looking at your route (HOST/PORT):
 
