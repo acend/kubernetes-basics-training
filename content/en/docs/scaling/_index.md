@@ -182,7 +182,7 @@ oc expose deployment example-web-app --name="example-web-app" --port={{% param "
 Then the route:
 
 ```bash
-oc create route edge example-web-app --service example-web-app --namespace <namespace>
+oc create route edge example-web-app --port 5000 --service example-web-app --namespace <namespace>
 ```
 
 {{% /onlyWhen %}}
