@@ -262,20 +262,6 @@ URL=$(kubectl get ingress example-web-app -o go-template="{{ (index .spec.rules 
 while true; do sleep 1; curl -s https://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N"; done
 ```
 {{% /onlyWhenNot %}}
-{{% onlyWhenNot baloise %}}
-
-Windows PowerShell:
-
-```bash
-while(1) {
-  Start-Sleep -s 1
-  Invoke-RestMethod http://<URL>/pod/
-  Get-Date -Uformat "+ TIME: %H:%M:%S,%3N"
-}
-```
-
-{{% /onlyWhenNot %}}
-{{% onlyWhen baloise %}}
 
 Windows PowerShell:
 
@@ -287,7 +273,6 @@ while(1) {
 }
 ```
 
-{{% /onlyWhen %}}
 Scale from 3 replicas to 1.
 The output shows which Pod is still alive and is responding to requests:
 
@@ -486,32 +471,16 @@ while true; do sleep 1; curl -s http://${URL}/pod/; date "+ TIME: %H:%M:%S,%3N";
 ```
 
 {{% /onlyWhenNot %}}
-{{% onlyWhenNot baloise %}}
 
 Windows PowerShell:
 
 ```bash
 while(1) {
   Start-Sleep -s 1
-  Invoke-RestMethod http://[URL]/pod/
+  Invoke-RestMethod https://<URL>/pod/
   Get-Date -Uformat "+ TIME: %H:%M:%S,%3N"
 }
 ```
-
-{{% /onlyWhenNot %}}
-{{% onlyWhen baloise %}}
-
-Windows PowerShell:
-
-```bash
-while(1) {
-  Start-Sleep -s 1
-  Invoke-RestMethod https://[URL]/pod/
-  Get-Date -Uformat "+ TIME: %H:%M:%S,%3N"
-}
-```
-
-{{% /onlyWhen %}}
 
 Restart your Deployment with:
 
