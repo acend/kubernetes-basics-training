@@ -13,18 +13,6 @@ acendTraining:
         secretOverride: acend-wildcard
         appname: kubernetes-basics
         domain: training.acend.ch
-    - 
-      name: mobi
-      replicaCount: 2
-      image:
-        repository: quay.io/acend/kubernetes-basics-training
-        pullPolicy: Always
-        tag: ""
-        tagsuffix: "-mobi"
-      ingress:
-        secretOverride: acend-wildcard
-        appname: kubernetes-basics-mobi
-        domain: training.puzzle.ch
     -
       name: openshift
       replicaCount: 2
