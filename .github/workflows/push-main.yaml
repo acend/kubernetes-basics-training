@@ -45,17 +45,6 @@ jobs:
           tags: |
             quay.io/acend/kubernetes-basics-training:latest
       -
-        name: Build Mobi Version
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ./Dockerfile
-          build-args: |
-            TRAINING_HUGO_ENV=mobi
-          push: true
-          tags: |
-            quay.io/acend/kubernetes-basics-training:latest-mobi
-      -
         name: Build OpenShift Version
         uses: docker/build-push-action@v6
         with:
@@ -150,7 +139,6 @@ jobs:
           TRAINING_NAMESPACE: 'acend-kubernetes-basics-training-prod'
         run: |
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-acend --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
-          kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-mobi --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-openshift --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-baloise --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-sbb --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
