@@ -24,7 +24,11 @@ And finally for the HPA to do its job, we also have to deploy the HPA object in 
 
 {{< readfile file="/content/en/docs/additional-concepts/hpa/hpa.yaml" code="true" lang="yaml" >}}
 
-Apply all those files with `cat *hpa.yaml | {{% param cliToolName %}} apply -f -`
+Apply all those files with:
+
+```bash
+cat *hpa.yaml | {{% param cliToolName %}} apply -f -
+```
 
 
 ## {{% task %}} Trigger the HPA
@@ -38,7 +42,7 @@ To see our HPA in action, lets generate some traffic on our hpa-demo-deployment 
 Now lets watch how the HPA increases the replica count of our Deployment:
 
 ```bash
-watch {{% param cliToolName %}} get deploy,pod,hpa -l run=hpa-demo-deployment  --namespace <namespace>
+watch {{% param cliToolName %}} get deploy,pod,hpa -l run=hpa-demo-deployment --namespace <namespace>
 ```
 
 At beginn, you just have one Pod:
