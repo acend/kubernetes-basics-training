@@ -24,12 +24,12 @@ And finally for the HPA to do its job, we also have to deploy the HPA object in 
 
 {{< readfile file="/content/en/docs/additional-concepts/hpa/hpa.yaml" code="true" lang="yaml" >}}
 
-Apply all those files with `{{% param cliToolName %}} apply -f ...`
+Apply all those files with `cat *hpa.yaml | {{% param cliToolName %}} apply -f -`
 
 
 ## {{% task %}} Trigger the HPA
 
-To see our HPA in action, lets generate some traffic on our hpa-demo-deployment. We use a simple while loop with a `wget` call to our `hpa-demo-deployment` service:
+To see our HPA in action, lets generate some traffic on our hpa-demo-deployment in a seperate terminal: We use a simple while loop with a `wget` call to our `hpa-demo-deployment` service:
 
 ```bash
 {{% param cliToolName %}}  run -i --tty load-generator --rm --image=busybox --restart=Never --namespace <namespace> -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://hpa-demo-deployment; done"
@@ -102,4 +102,5 @@ pod/hpa-demo-deployment-9cc6d54b5-vt9zg   1/1     Running   0          39s
 NAME                                                      REFERENCE                        TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
 horizontalpodautoscaler.autoscaling/hpa-demo-deployment   Deployment/hpa-demo-deployment   cpu: 46%/50%   1         10        6          42h
 ```
-When you stop the `load-generator` you also see that the Deployment scales back to 1 replica.
+
+Stop the `load-generator` by closing the terminal. You will see that the deployment scales back to 1 replica.
