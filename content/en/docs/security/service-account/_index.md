@@ -28,7 +28,7 @@ In Kubernetes, Role-Based Access Control (RBAC) is used to manage permissions fo
 
 In this task, we will create a Role that allows listing pods and bind it to our ServiceAccount so that it has the necessary permissions to query running pods.
 
-Create a file named `role.yaml` to define a Role with permissions to list Pods:
+Create a file named `role.yaml` to define a Role with permissions to list Pods (make sure that the namespace in `subject` is correctly set to your namespace)
 
 {{< readfile file="/content/en/docs/security/service-account/role.yaml" code="true" lang="yaml" >}}
 
@@ -46,7 +46,7 @@ and apply both files using:
 
 ## {{% task %}} Create a Job That Lists Running Pods
 
-And now finnly we start a Kubernetes Job thas lists all running pods. Create the `job.yaml` file with the following content:
+And now finaly we start a Kubernetes Job thas lists all running pods. Create the `job.yaml` file with the following content:
 
 {{< readfile file="/content/en/docs/security/service-account/job.yaml" code="true" lang="yaml" >}}
 
@@ -66,26 +66,23 @@ The job should list all running pods in your namespace.
 
 ## Why is kubectl in the Job Using the Created Service Account?
 
-In Kubernetes, when a pod runs, it automatically assumes the identity of a ServiceAccount assigned to it. By default, pods use the default ServiceAccount, which has minimal permissions. However, we explicitly assigned our pod-reader ServiceAccount to the Job using:
+In Kubernetes, when a Pod runs, it automatically assumes the identity of a ServiceAccount assigned to it. By default, Pods use the default ServiceAccount, which has minimal permissions. However, we explicitly assigned our `pod-reader` ServiceAccount to the Job using:
 
 ```yaml
 serviceAccountName: pod-reader
 ```
 How This Works:
 
-1. Pod Uses the ServiceAccount Token
-When a pod is created, Kubernetes automatically mounts a ServiceAccount token inside the pod at `/var/run/secrets/kubernetes.io/serviceaccount/token.` This token is a JWT (JSON Web Token) used for authenticating with the Kubernetes API.
-2. RBAC Controls API Access
-The {{% param cliToolName %}} connects the pod-reader ServiceAccount to the Role that allows listing pods.
+1. When a pod is created, Kubernetes automatically mounts a ServiceAccount token inside the pod at `/var/run/secrets/kubernetes.io/serviceaccount/token.` This token is a JWT (JSON Web Token) used for authenticating with the Kubernetes API.
+2. The RoleBinding connects the `pod-reader` ServiceAccount to the Role that allows listing pods.
 When kubectl get pods runs inside the Job’s container, it authenticates using the pod-reader ServiceAccount token.
-3. Result: Scoped Permissions
-The {{% param cliToolName %}} command inside the pod is executed with the permissions granted by the Role.
-Since we only gave "get" and "list" permissions on pods, the job can list pods but not modify or delete them.
+3. The `kubectl` command inside the Pod is executed with the permissions granted by the Role.
+Since we only gave "get" and "list" permissions on Pods, the job can list Pods but not modify or delete them.
 This ensures least privilege access, improving security by preventing unnecessary permissions from being granted.
 
-When {{% param cliToolName %}} runs inside a pod, it follows Kubernetes' in-cluster authentication process. Specifically, it:
+When `kubectl` runs inside a Pod, it follows Kubernetes in-cluster authentication process. Specifically, it:
 
-* Checks for the `KUBERNETES_SERVICE_HOST` and `KUBERNETES_SERVICE_PORT` environment variables, which are automatically set inside every pod to point to the Kubernetes API server.
+* Checks for the `KUBERNETES_SERVICE_HOST` and `KUBERNETES_SERVICE_PORT` environment variables, which are automatically set inside every Pod to point to the Kubernetes API server.
 * Looks for credentials in `~/.kube/config` (like when used locally).
 * If no kubeconfig is found, it falls back to in-cluster authentication, which means it:
   * Reads the token from `/var/run/secrets/kubernetes.io/serviceaccount/token`
