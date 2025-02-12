@@ -1,5 +1,5 @@
 ---
-title: "Service Account"
+title: "Service Accounts"
 weight: 103
 ---
 
