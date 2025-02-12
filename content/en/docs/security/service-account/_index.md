@@ -28,11 +28,11 @@ In Kubernetes, Role-Based Access Control (RBAC) is used to manage permissions fo
 
 In this task, we will create a Role that allows listing pods and bind it to our ServiceAccount so that it has the necessary permissions to query running pods.
 
-Create a file named `role.yaml` to define a Role with permissions to list Pods (make sure that the namespace in `subject` is correctly set to your namespace)
+Create a file named `role.yaml` to define a Role with permissions to list Pods:
 
 {{< readfile file="/content/en/docs/security/service-account/role.yaml" code="true" lang="yaml" >}}
 
-Now create a `rolebinding.yaml` file to bind the Role to the ServiceAccount:
+Now create a `rolebinding.yaml` file to bind the Role to the ServiceAccount (make sure that the namespace in `subject` is correctly set to your namespace):
 
 {{< readfile file="/content/en/docs/security/service-account/rolebinding.yaml" code="true" lang="yaml" >}}
 
