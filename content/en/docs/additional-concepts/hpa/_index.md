@@ -10,6 +10,7 @@ HPA continuously monitors the resource usage of pods and adjusts the number of r
 
 For more details, see also the Kubernetes documentation on [Horizontal Pod Autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
 
+
 ## {{% task %}} Create a Deployment, Service and the HPA
 
 Let's try this out, first, we create a new Deployment with the file `deploy-hpa.yaml`.
@@ -29,6 +30,7 @@ Apply all those files with:
 ```bash
 cat *hpa.yaml | {{% param cliToolName %}} apply -f -
 ```
+
 
 ## {{% task %}} Trigger the HPA
 
