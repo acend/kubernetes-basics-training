@@ -1,0 +1,14 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: list-pods-job
+spec:
+  template:
+    spec:
+      serviceAccountName: pod-reader
+      containers:
+      - name: kubectl-container
+        image: bitnami/kubectl
+        command: ["kubectl", "get", "pods", "--field-selector=status.phase=Running"]
+      restartPolicy: Never
