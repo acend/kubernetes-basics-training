@@ -1,6 +1,7 @@
 ---
 title: "Horizontal Pod Autoscaler (HPA)"
 weight: 98
+onlyWhenNot: openshift
 ---
 
 The Horizontal Pod Autoscaler (HPA) in Kubernetes is a feature that automatically scales the number of pods in a deployment, replica set, or stateful set based on observed CPU utilization, memory usage, or custom metrics.
@@ -8,7 +9,6 @@ The Horizontal Pod Autoscaler (HPA) in Kubernetes is a feature that automaticall
 HPA continuously monitors the resource usage of pods and adjusts the number of replicas to maintain a desired performance level. The scaling process is based on metrics collected from the [Kubernetes Metrics Server](https://kubernetes-sigs.github.io/metrics-server/) or external monitoring systems like Prometheus.
 
 For more details, see also the Kubernetes documentation on [Horizontal Pod Autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/).
-
 
 ## {{% task %}} Create a Deployment, Service and the HPA
 
@@ -29,7 +29,6 @@ Apply all those files with:
 ```bash
 cat *hpa.yaml | {{% param cliToolName %}} apply -f -
 ```
-
 
 ## {{% task %}} Trigger the HPA
 
