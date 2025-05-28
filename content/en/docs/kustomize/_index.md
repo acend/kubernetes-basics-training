@@ -17,7 +17,7 @@ This lab is optional.
 
 Kustomize can be used in two different ways:
 
-* As a standalone `kustomize` binary, downloadable from [here](https://kubectl.docs.kubernetes.io/installation/kustomize/)
+* As a standalone `kustomize` binary, downloadable from [kubernetes.io](https://kubectl.docs.kubernetes.io/installation/kustomize/)
 * With the parameter `--kustomize` or `-k` in certain `{{% param cliToolName %}}` subcommands such as `apply` or `create`
 
 {{% alert title="Note" color="info" %}}
