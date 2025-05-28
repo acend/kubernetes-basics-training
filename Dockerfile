@@ -30,7 +30,7 @@ RUN wkhtmltopdf --enable-internal-links --enable-local-file-access \
     --dpi 600 \
     /pdf/index.html /pdf.pdf
 
-FROM docker.io/nginxinc/nginx-unprivileged:1.27-alpine
+FROM docker.io/nginxinc/nginx-unprivileged:1.28-alpine
 
 LABEL maintainer acend.ch
 LABEL org.opencontainers.image.title="acend.ch's Kubernetes Basics Training"
