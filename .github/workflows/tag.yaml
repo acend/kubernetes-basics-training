@@ -1,0 +1,37 @@
+name: Tag image
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: openshift-labs-bfh
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  REGISTRY_PASSWORD: ${{ github.token }}
+  REGISTRY_USER: ${{ github.actor }}
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Set date
+        run: |
+          echo "DATE=$(date +"%y%m%d-%H%M%S")" >> $GITHUB_ENV
+
+      - name: Log in to image registry
+        uses: redhat-actions/podman-login@v1
+        with:
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          registry: ${{ env.IMAGE_REGISTRY }}
+
+      - name: Tag image
+        run: |
+          skopeo copy --preserve-digests \
+            docker://${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr-${{ github.event.number }} \
+            docker://${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DATE }} --additional-tag latest
