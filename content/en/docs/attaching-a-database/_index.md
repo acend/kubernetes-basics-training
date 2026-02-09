@@ -23,16 +23,6 @@ Please make sure you completed labs {{<link "first-steps">}} and {{<link "scalin
 {{% onlyWhenNot baloise %}}
 We are going to use an OpenShift template to create the database. This can be done by either using the Web Console or the CLI. Both are going to be explained in this lab, so pick the one you are more comfortable with.
 
-
-### Instantiate a template using the Web Console
-
-Make sure you are in OpenShift's **Developer** view (upper left dropdown) and have selected the correct Project:
-
-{{< imgproc selection.png Resize  "600x" >}}{{< /imgproc >}}
-
-Now click **+Add**, choose **Database**, **MariaDB (Ephemeral)** and then **Instantiate Template**. A form opens. Check that the first field corresponds to the correct Project and set the **MariaDB Database Name** field to `acend_exampledb` and leave the remaining fields as they are. Finally, click **Create** at the end of the form.
-
-
 ### Instantiate a template using the CLI
 
 {{% alert title="Warning" color="warning" %}}
