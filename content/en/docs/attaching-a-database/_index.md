@@ -21,13 +21,7 @@ Please make sure you completed labs {{<link "first-steps">}} and {{<link "scalin
 
 {{% onlyWhen openshift %}}
 {{% onlyWhenNot baloise %}}
-We are going to use an OpenShift template to create the database. This can be done by either using the Web Console or the CLI. Both are going to be explained in this lab, so pick the one you are more comfortable with.
-
-### Instantiate a template using the CLI
-
-{{% alert title="Warning" color="warning" %}}
-Do not execute these steps if you already have created a MariaDB database using the Web Console.
-{{% /alert %}}
+We are going to use an OpenShift template to create the database. This can be done by using the CLI.
 
 We are going to instantiate the MariaDB Template from the `openshift` Project. Before we can do that, we need to know what parameters the Template expects. Let's find out:
 
