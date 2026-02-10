@@ -34,14 +34,13 @@ image:
 ...
 ```
 
-And then change the containerPort in the `mychart/templates/deployment.yaml`
+And then change the port in the `mychart/values.yaml`
 
 ```yaml
 ...
-ports:
-- name: http
-  containerPort: 8080
-  protocol: TCP
+service:
+  type: ClusterIP
+  port: 8080
 ...
 ```
 
@@ -157,7 +156,7 @@ spec:
 Thus, we need to change this value inside our `mychart/values.yaml` file. This is also where we enable the TLS part:
 
 {{% alert title="Note" color="info" %}}
-Make sure to replace the `<namespace>` and `<appdomain>` accordingly.
+Make sure to replace the `namespace` and `appdomain` accordingly.
 {{% /alert %}}
 
 {{% onlyWhen openshift %}}
@@ -200,7 +199,7 @@ ingress:
 {{% /onlyWhenNot %}}
 
 {{% alert title="Note" color="info" %}}
-Make sure to set the proper value as hostname. `<appdomain>` will be provided by the trainer.
+Make sure to set the proper value as hostname. `appdomain` will be provided by the trainer.
 {{% /alert %}}
 
 Apply the change by upgrading our release:
