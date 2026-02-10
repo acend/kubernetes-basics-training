@@ -83,16 +83,6 @@ Your Ingress resource should look similar to this:
 {{< readfile file="/content/en/docs/kubernetes-and-openshift-differences/ingress_v1.yaml" code="true" lang="yaml" >}}
 
 
-### Deployments and DeploymentConfigs
-
-OpenShift introduced the concept of _DeploymentConfigs_ which later got introduced to upstream Kubernetes as Deployments.
-The reason they don't have the same name is because Deployments lack some features that DeploymentConfigs offer.
-It's advisable however to use Deployments wherever possible as they're compatible with other Kubernetes distributions where DeploymentConfigs are only supported on OpenShift.
-
-The [OpenShift documentation](https://docs.openshift.com/container-platform/latest/applications/deployments/what-deployments-are.html) offers a detailed explanation of the differences.
-The features additionally offered by DeploymentConfigs can be summarized as automation features to e.g. automatically trigger a new deployment when the upstream image is updated.
-
-
 ### ImageStreams
 
 One of the reasons Kubernetes Deployments cannot support the missing automation features is because in OpenShift, they are based on other resource types like the _ImageStream_.

@@ -141,7 +141,7 @@ and
 {{% /onlyWhenNot %}}
 
 
-This will execute a simple `curl` call from the `frontend` and `not-frondend` application to the `backend` application:
+This will execute a simple `curl` call from the `frontend` and `not-frontend` application to the `backend` application:
 
 ```
 # Frontend
