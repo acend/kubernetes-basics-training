@@ -36,7 +36,7 @@ In {{<link "first-steps">}} you created your first Project on OpenShift.
 You won't find the concept of a "Project" in Kubernetes except in other Kubernetes distributions, specifically in Rancher.
 
 {{% alert title="Note" color="info" %}}
-[Rancher's](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/#about-projects) and [OpenShift's](https://docs.openshift.com/container-platform/latest/rest_api/project_apis/project-apis-index.html) concepts of a project have nothing in common.
+[Rancher's](https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/manage-clusters/projects-and-namespaces) and [OpenShift's](https://docs.openshift.com/container-platform/latest/rest_api/project_apis/project-apis-index.html) concepts of a project have nothing in common.
 {{% /alert %}}
 
 A Project in OpenShift is based on the Namespace resource type.
@@ -81,6 +81,16 @@ Make use of the Kubernetes documentation about Ingress resources.
 Your Ingress resource should look similar to this:
 
 {{< readfile file="/content/en/docs/kubernetes-and-openshift-differences/ingress_v1.yaml" code="true" lang="yaml" >}}
+
+
+### Deployments and DeploymentConfigs
+
+OpenShift introduced the concept of _DeploymentConfigs_ which later got introduced to upstream Kubernetes as Deployments.
+The reason they don't have the same name is because Deployments lack some features that DeploymentConfigs offer.
+It's advisable however to use Deployments wherever possible as they're compatible with other Kubernetes distributions where DeploymentConfigs are only supported on OpenShift.
+
+The [OpenShift documentation](https://docs.openshift.com/container-platform/latest/applications/deployments/what-deployments-are.html) offers a detailed explanation of the differences.
+The features additionally offered by DeploymentConfigs can be summarized as automation features to e.g. automatically trigger a new deployment when the upstream image is updated.
 
 
 ### ImageStreams

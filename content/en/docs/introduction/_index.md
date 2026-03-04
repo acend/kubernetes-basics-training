@@ -135,7 +135,9 @@ A Pod is the smallest entity in Kubernetes.
 A Pod is the smallest entity in Kubernetes and OpenShift.
 {{% /onlyWhen %}}
 It represents one instance of your running application process.
-The Pod consists of at least one container which contains your application.
+The Pod consists of at least two containers, one for your application itself and another one as part of the Kubernetes design, to keep the network namespace.
+The so-called infrastructure container (or pause container) is therefore automatically added by Kubernetes.
+
 The application ports from inside the Pod are exposed via Services.
 
 
