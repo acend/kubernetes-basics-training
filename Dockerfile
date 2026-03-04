@@ -1,4 +1,4 @@
-FROM docker.io/floryn90/hugo:0.134.2-ext-ubuntu AS builder
+FROM docker.io/floryn90/hugo:0.157.0-ext-ubuntu AS builder
 
 ARG TRAINING_HUGO_ENV=default
 
@@ -6,8 +6,12 @@ COPY . /src
 
 RUN hugo --environment ${TRAINING_HUGO_ENV} --minify
 
+USER root
+
 RUN apt-get update \
     && apt-get install -y imagemagick
+
+USER hugo
 
 RUN find /src/public/docs/ -regex '.*\(jpg\|jpeg\|png\|gif\)' -exec mogrify -path /src/public/pdf -resize 800\> -unsharp 0.25x0.25+8+0.065 "{}" \;
 RUN find /src/public/setup/ -regex '.*\(jpg\|jpeg\|png\|gif\)' -exec mogrify -path /src/public -resize 800\> -unsharp 0.25x0.25+8+0.065 "{}" \;
