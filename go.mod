@@ -6,7 +6,7 @@ require (
 	github.com/acend/docsy-acend v1.0.0 // indirect
 	github.com/acend/docsy-plus v1.2.0 // indirect
 	github.com/appuio/docsy-appuio v0.0.0-20220406070952-30ec4d3b2e21 // indirect
-	github.com/google/docsy v0.11.0 // indirect
+	github.com/google/docsy v0.14.3 // indirect
 	github.com/google/docsy/dependencies v0.7.2 // indirect
 	github.com/puzzle/docsy-puzzle v0.0.0-20230123144731-757054047a02 // indirect
 )
