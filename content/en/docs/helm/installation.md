@@ -8,7 +8,7 @@ We are going to use the pre-built releases.
 `helm` binaries can be found on [Helm's release page](https://github.com/helm/helm/releases) for the usual variety of operating systems.
 
 {{% alert title="Warning" color="warning" %}}
-If you do this training in our acend web based environment, no installation is required.
+If you do this training in our web based environment, no installation is required.
 {{% /alert %}}
 
 
