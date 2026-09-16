@@ -19,92 +19,27 @@ Please make sure you completed labs {{<link "first-steps">}} and {{<link "scalin
 
 ## {{% task %}} Instantiate a MariaDB database
 
-{{% onlyWhen openshift %}}
-{{% onlyWhenNot baloise %}}
-We are going to use an OpenShift template to create the database. This can be done by using the CLI.
-
-We are going to instantiate the MariaDB Template from the `openshift` Project. Before we can do that, we need to know what parameters the Template expects. Let's find out:
-
-```bash
-oc process --parameters openshift//mariadb-ephemeral
-```
-
-```
-NAME                    DESCRIPTION                                                               GENERATOR           VALUE
-MEMORY_LIMIT            Maximum amount of memory the container can use.                                               512Mi
-NAMESPACE               The OpenShift Namespace where the ImageStream resides.                                        openshift
-DATABASE_SERVICE_NAME   The name of the OpenShift Service exposed for the database.                                   mariadb
-MYSQL_USER              Username for MariaDB user that will be used for accessing the database.   expression          user[A-Z0-9]{3}
-MYSQL_PASSWORD          Password for the MariaDB connection user.                                 expression          [a-zA-Z0-9]{16}
-MYSQL_ROOT_PASSWORD     Password for the MariaDB root user.                                       expression          [a-zA-Z0-9]{16}
-MYSQL_DATABASE          Name of the MariaDB database accessed.                                                        sampledb
-MARIADB_VERSION         Version of MariaDB image to be used (10.2 or latest).                                         10.2
-```
-
-As you might already see, each of the parameters has a default value ("VALUE" column). Also, the parameters `MYSQL_USER`, `MYSQL_PASSWORD` and `MYSQL_ROOT_PASSWORD` are going to be generated ("GENERATOR" is set to `expression` and "VALUE" contains a regular expression). This means we don't necessarily have to overwrite any of them so let's simply use those defaults:
-
-```bash
-oc process openshift//mariadb-ephemeral -pMYSQL_DATABASE=acend_exampledb  | oc apply --namespace=<namespace> -f -
-```
-
-The output should be:
-
-```
-secret/mariadb created
-service/mariadb created
-deploymentconfig.apps.openshift.io/mariadb created
-```
-
-
-## {{% task %}} Inspection
-
-What just happened is that you instantiated an OpenShift Template that creates multiple resources using the (default) values as parameters. Let's have a look at the resources that have just been created by looking at the Template's definition:
-
-```bash
-oc get templates -n openshift mariadb-ephemeral -o yaml
-```
-
-The Template's content reveals a Secret, a Service and a DeploymentConfig.
-{{% /onlyWhen %}}
-{{% /onlyWhenNot %}}
-{{% onlyWhenNot openshift %}}
-
 We are first going to create a so-called _Secret_ in which we store sensitive data. The secret will be used to access the database and also to create the initial database.
 
 ```bash
-kubectl create secret generic mariadb \
+{{% param cliToolName %}} create secret generic mariadb \
   --from-literal=database-name=acend_exampledb \
   --from-literal=database-password=mysqlpassword \
   --from-literal=database-root-password=mysqlrootpassword \
   --from-literal=database-user=acend_user \
   --namespace <namespace>
-```
-
-{{% /onlyWhenNot %}}
-{{% onlyWhen baloise %}}
-We are first going to create a so-called _Secret_ in which we store sensitive data. The secret will be used to access the database and also to create the initial database.
-The `oc create secret` command helps us create the secret like so:
-
-```bash
-oc create secret generic mariadb \
-  --from-literal=database-name=acend_exampledb \
-  --from-literal=database-password=mysqlpassword \
-  --from-literal=database-root-password=mysqlrootpassword \
-  --from-literal=database-user=acend_user \
-  --namespace <namespace> \
   --dry-run=client -o yaml > secret_mariadb.yaml
 ```
 
 Above command has not yet created any resources on our cluster as we used the `--dry-run=client` parameter and redirected the output into the file `secret_mariadb.yaml`.
 
-The reason we haven't actually created the Secret yet but instead put the resource definition in a file has to do with the way things work at Baloise. The file will help you later.
-But for now, create the Secret by applying the file's content:
+The reason we haven't actually created the Secret yet but instead put the resource definition in a file is that it make it easier to use the secret to again and to convert this into, for example, a `sealedsecret` and use it in the context of GitOps. 
+
+Create the Secret by applying the file's content:
 
 ```bash
-oc apply -f secret_mariadb.yaml
+{{% param cliToolName %}} apply -f secret_mariadb.yaml
 ```
-
-{{% /onlyWhen %}}
 
 The Secret contains the database name, user, password, and the root password. However, these values will neither be shown with `{{% param cliToolName %}} get` nor with `{{% param cliToolName %}} describe`:
 
@@ -151,7 +86,6 @@ At Baloise, secrets are managed by HashiCorp Vault and integrated into OpenShift
 {{% /onlyWhen %}}
 {{% /alert %}}
 
-{{% onlyWhenNot openshift %}}
 We are now going to create a Deployment and a Service. As a first example, we use a database without persistent storage. Only use an ephemeral database for testing purposes as a restart of the Pod leads to data loss. We are going to look at how to persist this data in a persistent volume later on.
 
 As we had seen in the earlier labs, all resources like Deployments, Services, Secrets and so on can be displayed in YAML or JSON format. It doesn't end there, capabilities also include the creation and exportation of resources using YAML or JSON files.
@@ -163,16 +97,24 @@ Save this snippet as `mariadb.yaml`:
 {{< readfile file="/content/en/docs/attaching-a-database/mariadb.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhenNot %}}
 
+{{% onlyWhen openshift %}}
+{{< readfile file="/content/en/docs/attaching-a-database/mariadb-openshift.yaml" code="true" lang="yaml" >}}
+{{% /onlyWhen %}}
+
 Apply it with:
 
 ```bash
-kubectl apply -f mariadb.yaml --namespace <namespace>
+{{% param cliToolName %}} apply -f mariadb.yaml --namespace <namespace>
 ```
-
+{{% onlyWhenNot openshift %}}
 As soon as the container image for `mariadb:10.5` has been pulled, you will see a new Pod using `kubectl get pods`.
+{{% /onlyWhenNot %}}
+
+{{% onlyWhen openshift %}}
+As soon as the container image for `mariadb-1011-c10s:latest` has been pulled, you will see a new Pod using `oc get pods`.
+{{% /onlyWhen %}}
 
 The environment variables defined in the deployment configure the MariaDB Pod and how our frontend will be able to access it.
-{{% /onlyWhenNot %}}
 {{% onlyWhen baloise %}}
 We are now going to create a Deployment and a Service. As a first example, we use a database without persistent storage. Only use an ephemeral database for testing purposes as a restart of the Pod leads to data loss. We are going to look at how to persist this data in a persistent volume later on.
 
@@ -470,20 +412,11 @@ Log into the MariaDB Pod:
 As mentioned in {{<link "troubleshooting">}}, remember to append the command with `winpty` if you're using Git Bash on Windows.
 {{% /alert %}}
 
-{{% onlyWhenNot openshift %}}
 
 ```bash
-kubectl exec -it deployments/mariadb --namespace <namespace> -- /bin/bash
+{{% param cliToolName %}} exec -it deployments/mariadb --namespace <namespace> -- /bin/bash
 ```
 
-{{% /onlyWhenNot %}}
-{{% onlyWhen openshift %}}
-
-```bash
-oc rsh --namespace <namespace> <mariadb-pod-name>
-```
-
-{{% /onlyWhen %}}
 
 You are now able to connect to the database and display the data. Login with:
 
@@ -544,20 +477,10 @@ Copy the dump into the MariaDB Pod:
 
 This is how you log into the MariaDB Pod:
 
-{{% onlyWhenNot openshift %}}
 
 ```bash
-kubectl exec -it <podname> --namespace <namespace> -- /bin/bash
+{{% param cliToolName %}} exec -it <podname> --namespace <namespace> -- /bin/bash
 ```
-
-{{% /onlyWhenNot %}}
-{{% onlyWhen openshift %}}
-
-```bash
-oc rsh --namespace <namespace> <podname>
-```
-
-{{% /onlyWhen %}}
 
 This command shows how to drop the whole database:
 
@@ -604,20 +527,10 @@ kubectl get ingress --namespace <namespace>
 {{% alert title="Note" color="info" %}}
 A database dump can be created as follows:
 
-{{% onlyWhenNot openshift %}}
 
 ```bash
-kubectl exec -it <podname> --namespace <namespace> -- /bin/bash
+{{% param cliToolName %}} exec -it <podname> --namespace <namespace> -- /bin/bash
 ```
-
-{{% /onlyWhenNot %}}
-{{% onlyWhen openshift %}}
-
-```bash
-oc rsh --namespace <namespace> <podname>
-```
-
-{{% /onlyWhen %}}
 
 ```bash
 mysqldump --user=$MYSQL_USER --password=$MYSQL_PASSWORD -h$MARIADB_SERVICE_HOST $MYSQL_DATABASE > /tmp/dump.sql
