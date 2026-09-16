@@ -15,47 +15,11 @@ The PersistentVolumeClaim only represents a request but not the storage itself. 
 
 ## Attaching a volume to a Pod
 
-{{% onlyWhenNot openshift %}}
 In a second step, the PVC from before is going to be attached to the Pod. In {{<link "scaling">}} we edited the deployment configuration in order to insert a readiness probe. We are now going to do the same for inserting the persistent volume.
-{{% /onlyWhenNot %}}
-{{% onlyWhen openshift %}}
-In a second step, the PVC from before is going to be attached to the Pod. In {{<link "scaling">}} we used `{{% param cliToolName %}} set` to add a readiness probe to the Deployment. We are now going to do the same and insert the PersistentVolume.
-{{% /onlyWhen %}}
 
 
 ## {{% task %}} Add a PersistentVolume
 
-{{% onlyWhen openshift %}}
-The `oc set volume` command makes it possible to create a PVC and attach it to a Deployment in one fell swoop:
-
-{{% alert title="Note" color="info" %}}
-If you are using Windows, your shell might assume that it has to use the POSIX-to-Windows path conversion for the mount path `/var/lib/mysql`.
-PowerShell is known to not do this while, e.g., Git Bash does.
-
-Prepend your command with `MSYS_NO_PATHCONV=1` if the resulting mount path was mistakenly converted.
-{{% /alert %}}
-
-{{% onlyWhenNot baloise %}}
-```bash
-oc set volume dc/mariadb --add --name=mariadb-data --claim-name=mariadb-data --type persistentVolumeClaim --mount-path=/var/lib/mysql --claim-size=1G --overwrite --namespace <namespace>
-```
-{{% /onlyWhenNot %}}
-
-{{% onlyWhen baloise %}}
-```bash
-oc set volume deploy/mariadb --add --name=mariadb-data --claim-name=mariadb-data --type persistentVolumeClaim --mount-path=/var/lib/mysql --claim-size=1G --overwrite --namespace <namespace>
-```
-{{% /onlyWhen %}}
-
-With the instruction above we create a PVC named `mariadb-data` of 1Gi in size, attach it to the DeploymentConfig `mariadb` and mount it at `/var/lib/mysql`. This is where the MariaDB process writes its data by default so after we make this change, the database will not even notice that it is writing in a PersistentVolume.
-{{% /onlyWhen %}}
-{{% onlyWhen openshift %}}
-{{% alert title="Note" color="info" %}}
-Because we just changed the DeploymentConfig with the `oc set` command, a new Pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
-{{% /alert %}}
-{{% /onlyWhen %}}
-
-{{% onlyWhenNot openshift %}}
 The following command creates a PersistentVolumeClaim which requests a volume of 1Gi size.
 Save it to `pvc.yaml`:
 
@@ -64,7 +28,7 @@ Save it to `pvc.yaml`:
 And create it with:
 
 ```bash
-kubectl apply -f pvc.yaml --namespace <namespace>
+{{% param cliToolName %}} apply -f pvc.yaml --namespace <namespace>
 ```
 
 We now have to insert the volume definition in the correct section of the MariaDB deployment.
@@ -92,16 +56,12 @@ Change your local `mariadb.yaml` file and add the `volumeMounts` and `volumes` p
 Then apply the change with:
 
 ```bash
-kubectl apply -f mariadb.yaml --namespace <namespace>
+{{% param cliToolName %}} apply -f mariadb.yaml --namespace <namespace>
 ```
 
-
-{{% /onlyWhenNot %}}
-{{% onlyWhenNot openshift %}}
 {{% alert title="Note" color="info" %}}
 Because we just changed the Deployment a new Pod was automatically redeployed. This unfortunately also means that we just lost the data we inserted before.
 {{% /alert %}}
-{{% /onlyWhenNot %}}
 
 We need to redeploy the application pod, our application automatically creates the database schema at startup time. Wait for the database pod to be started fully before restarting the application pod.
 
