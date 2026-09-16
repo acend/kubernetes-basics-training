@@ -399,12 +399,21 @@ Show all Pods:
 
 Which gives you an output similar to this:
 
+{{% onlyWhenNot openshift %}}
 ```
 NAME                                  READY   STATUS      RESTARTS   AGE
 example-web-app-574544fd68-qfkcm      1/1     Running     0          2m20s
 mariadb-f845ccdb7-hf2x5               1/1     Running     0          31m
 mariadb-1-deploy                      0/1     Completed   0          11m
 ```
+{{% /onlyWhenNot %}}
+{{% onlyWhen openshift %}}
+```
+NAME                                  READY   STATUS      RESTARTS   AGE
+example-web-app-574544fd68-qfkcm      1/1     Running     0          2m20s
+mariadb-f845ccdb7-hf2x5               1/1     Running     0          31m
+```
+{{% /onlyWhen %}}
 
 Log into the MariaDB Pod:
 
