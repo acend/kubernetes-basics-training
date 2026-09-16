@@ -27,7 +27,7 @@ We are first going to create a so-called _Secret_ in which we store sensitive da
   --from-literal=database-password=mysqlpassword \
   --from-literal=database-root-password=mysqlrootpassword \
   --from-literal=database-user=acend_user \
-  --namespace <namespace>
+  --namespace <namespace> \
   --dry-run=client -o yaml > secret_mariadb.yaml
 ```
 
