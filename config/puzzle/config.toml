@@ -1,11 +1,11 @@
 theme = ["docsy-puzzle", "docsy-plus", "docsy"]
 
 [params]
-copyright = "Puzzle ITC GmbH"
+copyright = "Puzzle ITC"
 imagePrefix = "puzzle_"
 
 [[Languages.en.menu.main]]
-copyright = "Puzzle ITC GmbH"
+copyright = "Puzzle ITC"
 url = "https://www.puzzle.ch"
 
 ############################## social links ##############################
@@ -16,9 +16,6 @@ icon = "fab fa-github"
 url = "https://github.com/acend/container-basics-training"
 
 [[params.links.user]]
-name = "Twitter"
-icon = "fab fa-twitter"
-url = "https://twitter.com/puzzleitc"
 
 [[params.links.user]]
 name = "LinkedIn"
