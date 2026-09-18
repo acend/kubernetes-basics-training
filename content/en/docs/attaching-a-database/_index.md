@@ -421,6 +421,11 @@ Log into the MariaDB Pod:
 As mentioned in {{<link "troubleshooting">}}, remember to append the command with `winpty` if you're using Git Bash on Windows.
 {{% /alert %}}
 
+{{% onlyWhen openshift %}}
+{{% alert title="Note" color="info" %}}
+On OpenShift you can also use the `oc rsh` command to start a remote shell. Use `oc rsh --help` to see how it works.
+{{% /alert %}}
+{{% /onlyWhen %}}
 
 ```bash
 {{% param cliToolName %}} exec -it deployments/mariadb --namespace <namespace> -- /bin/bash
