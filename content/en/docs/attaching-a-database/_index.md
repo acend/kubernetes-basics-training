@@ -33,7 +33,7 @@ We are first going to create a so-called _Secret_ in which we store sensitive da
 
 Above command has not yet created any resources on our cluster as we used the `--dry-run=client` parameter and redirected the output into the file `secret_mariadb.yaml`.
 
-The reason we haven't actually created the Secret yet but instead put the resource definition in a file is that it make it easier to use the secret to again and to convert this into, for example, a `sealedsecret` and use it in the context of GitOps. 
+The reason we haven't actually created the Secret yet but instead put the resource definition in a file is that it make it easier to use the secret to again and to convert this into, for example, a `sealedsecret` and use it in the context of GitOps.
 
 Create the Secret by applying the file's content:
 
