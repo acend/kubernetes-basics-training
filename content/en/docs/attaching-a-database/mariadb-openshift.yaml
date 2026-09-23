@@ -1,85 +1,63 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: mariadb
   labels:
-    template: mariadb-ephemeral-template
+    app: mariadb
 spec:
   ports:
-  - name: mariadb
-    port: 3306
-    protocol: TCP
-    targetPort: 3306
+    - port: 3306
   selector:
-    name: mariadb
-  type: ClusterIP
+    app: mariadb
 ---
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  labels:
-    template: mariadb-ephemeral-template
   name: mariadb
+  labels:
+    app: mariadb
 spec:
   selector:
-    name: mariadb
+    matchLabels:
+      app: mariadb
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
-        name: mariadb
+        app: mariadb
     spec:
       containers:
-      - env:
-        - name: MYSQL_USER
-          valueFrom:
-            secretKeyRef:
-              key: database-user
+        - image: quay.io/sclorg/mariadb-1011-c10s:latest
+          name: mariadb
+          env:
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: database-user
+                  name: mariadb
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: database-password
+                  name: mariadb
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: database-root-password
+                  name: mariadb
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: database-name
+                  name: mariadb
+          livenessProbe:
+            tcpSocket:
+              port: 3306
+          ports:
+            - containerPort: 3306
               name: mariadb
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: database-password
-              name: mariadb
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: database-root-password
-              name: mariadb
-        - name: MYSQL_DATABASE
-          valueFrom:
-            secretKeyRef:
-              key: database-name
-              name: mariadb
-        image: image-registry.openshift-image-registry.svc:5000/openshift/mariadb:10.3-el8
-        imagePullPolicy: IfNotPresent
-        livenessProbe:
-          exec:
-            command:
-            - /bin/sh
-            - -i
-            - -c
-            - MYSQL_PWD="$MYSQL_PASSWORD" mysqladmin -u $MYSQL_USER ping
-          failureThreshold: 3
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 1
-        name: mariadb
-        ports:
-        - containerPort: 3306
-          protocol: TCP
-        readinessProbe:
-          exec:
-            command:
-            - /bin/sh
-            - -i
-            - -c
-            - MYSQL_PWD="$MYSQL_PASSWORD" mysqladmin -u $MYSQL_USER ping
-          failureThreshold: 3
-          initialDelaySeconds: 5
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 1
           resources:
             limits:
               cpu: 500m
@@ -87,22 +65,3 @@ spec:
             requests:
               cpu: 50m
               memory: 128Mi
-
-        volumeMounts:
-        - mountPath: /var/lib/mysql/data
-          name: mariadb-data
-      restartPolicy: Always
-      volumes:
-      - emptyDir: {}
-        name: mariadb-data
-  triggers:
-  - type: ConfigChange
-  - type: ImageChange
-    imageChangeParams:
-      automatic: true
-      containerNames:
-      - mariadb
-      from:
-        kind: ImageStreamTag
-        name: mariadb:10.3-el8
-        namespace: openshift

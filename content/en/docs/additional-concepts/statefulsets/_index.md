@@ -34,7 +34,7 @@ Using a StatefulSet, scaling is done serially:
 
 Let's use our RabbitMQ example again:
 
-1. The StatefulSet is scaled up using: `{{% param cliToolName %}} scale deployment rabbitmq --replicas=5 --namespace <namespace>`
+1. The StatefulSet is scaled up using: `{{% param cliToolName %}} scale statefulset rabbitmq --replicas=5 --namespace <namespace>`
 1. `rabbitmq-3` is started
 1. As soon as Pod `rabbitmq-3` is in `Ready` state the same procedure starts for `rabbitmq-4`
 
