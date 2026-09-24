@@ -36,7 +36,7 @@ In {{<link "first-steps">}} you created your first Project on OpenShift.
 You won't find the concept of a "Project" in Kubernetes except in other Kubernetes distributions, specifically in Rancher.
 
 {{% alert title="Note" color="info" %}}
-[Rancher's](https://rancher.com/docs/rancher/v2.x/en/cluster-admin/projects-and-namespaces/#about-projects) and [OpenShift's](https://docs.openshift.com/container-platform/latest/rest_api/project_apis/project-apis-index.html) concepts of a project have nothing in common.
+[Rancher's](https://ranchermanager.docs.rancher.com/how-to-guides/new-user-guides/manage-clusters/projects-and-namespaces) and [OpenShift's](https://docs.openshift.com/container-platform/latest/rest_api/project_apis/project-apis-index.html) concepts of a project have nothing in common.
 {{% /alert %}}
 
 A Project in OpenShift is based on the Namespace resource type.
