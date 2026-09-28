@@ -58,7 +58,7 @@ containerSecurityContext:
 {{% onlyWhen openshift %}}
 ingress:
   enabled: true
-  hostname: wordpress-<namespace>.{{% param labAppUrl %}}
+  hostname: wordpress-<namespace>.<appdomain>
   ingressClassName: openshift-default
   annotations:
     route.openshift.io/termination: edge
@@ -67,10 +67,10 @@ ingress:
 {{% onlyWhenNot openshift %}}
 ingress:
   enabled: true
-  hostname: wordpress-<namespace>.{{% param labAppUrl %}}
+  hostname: wordpress-<namespace>.<appdomain>
   extraTls:
   - hosts:
-    - wordpress-<namespace>.{{% param labAppUrl %}}
+    - wordpress-<namespace>.<appdomain>
 {{% /onlyWhenNot %}}
 image:
   repository: bitnamilegacy/wordpress
@@ -90,7 +90,7 @@ mariadb:
 ```
 
 {{% alert title="Note" color="info" %}}
-Make sure to replace the `<namespace>` and `{{% param labAppUrl %}}` accordingly.
+Make sure to replace the `<namespace>` and `<appdomain>` accordingly.
 {{% /alert %}}
 
 
@@ -159,7 +159,7 @@ pod/wordpress-6bf6df9c5d-w4fpx   1/1     Running   0          2m6s
 pod/wordpress-mariadb-0          1/1     Running   0          2m6s
 
 NAME                           HOSTS                                          ADDRESS       PORTS   AGE
-ingress.extensions/wordpress   wordpress-<namespace>.{{% param labAppUrl %}}              10.100.1.10   80      2m6s
+ingress.extensions/wordpress   wordpress-<namespace>.<appdomain>              10.100.1.10   80      2m6s
 
 NAME                                             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS            AGE
 persistentvolumeclaim/data-wordpress-mariadb-0   Bound    pvc-859fe3b4-b598-4f86-b7ed-a3a183f700fd   1Gi        RWO            cloudscale-volume-ssd   2m6s
@@ -185,7 +185,7 @@ ingress:
   annotations:
     route.openshift.io/termination: edge
   enabled: true
-  hostname: wordpress-<namespace>.{{% param labAppUrl %}}
+  hostname: wordpress-<namespace>.<appdomain>
   ingressClassName: openshift-default
   tls: true
 mariadb:
@@ -216,10 +216,10 @@ updateStrategy:
 USER-SUPPLIED VALUES:
 ingress:
   enabled: true
-  hostname: wordpress-<namespace>.{{% param labAppUrl %}}
+  hostname: wordpress-<namespace>.<appdomain>
   extraTls:
   - hosts:
-    - wordpress-<namespace>.{{% param labAppUrl %}}
+    - wordpress-<namespace>.<appdomain>
 mariadb:
   primary:
     persistence:
@@ -235,7 +235,7 @@ updateStrategy:
 
 {{% /onlyWhenNot %}}
 
-As soon as all deployments are ready (meaning pods `wordpress` and `mariadb` are running) you can open the application with the URL `https://wordpress-<namespace>.{{% param labAppUrl %}}` from your Ingress resource defined in `values.yaml`.
+As soon as all deployments are ready (meaning pods `wordpress` and `mariadb` are running) you can open the application with the URL `https://wordpress-<namespace>.<appdomain>` from your Ingress resource defined in `values.yaml`.
 
 
 ## Upgrade
