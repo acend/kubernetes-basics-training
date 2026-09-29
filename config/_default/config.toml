@@ -80,6 +80,8 @@ distroName = "Kubernetes"
 cliToolName = "kubectl"
 customer = "none"
 
+labAppUrl = "apps.lab.clusters.t-k.ch"
+
 [params.containerImages]
 deployment-image-url = "quay.io/acend/example-web-go:latest"
 training-image-url = "quay.io/acend/example-web-python:latest"
