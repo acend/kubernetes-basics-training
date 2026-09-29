@@ -93,7 +93,7 @@ As we had seen in the earlier labs, all resources like Deployments, Services, Se
 In our case we want to create a Deployment and Service for our MariaDB database.
 Save this snippet as `mariadb.yaml`:
 
-{{% onlyWhenNot customer %}}
+{{% onlyWhenNot openshift %}}
 {{< readfile file="/content/en/docs/attaching-a-database/mariadb.yaml" code="true" lang="yaml" >}}
 {{% /onlyWhenNot %}}
 
