@@ -220,7 +220,6 @@ My name is kustomize-app-production
 
 Kustomize has more features of which we just covered a couple. Please refer to the docs for more information.
 
-* Kustomize documentation: <https://kubernetes-sigs.github.io/kustomize/>
-* API reference: <https://kubernetes-sigs.github.io/kustomize/api-reference/>
-* Another `kustomization.yaml` reference: <https://kubectl.docs.kubernetes.io/pages/reference/kustomize.html>
+* Kustomize documentation: <https://kubectl.docs.kubernetes.io/guides/>
+* Kustomize reference docs: <https://kubectl.docs.kubernetes.io/references/kustomize/>
 * Examples: <https://github.com/kubernetes-sigs/kustomize/tree/master/examples>
